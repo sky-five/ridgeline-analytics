@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: targets_monthly
+    description: >
+      Monthly targets for the executive scorecard. MRR and signups come from a linear trend on
+      2024-2026 actuals plus 5% (signups adjusted for storm season); rates are flat goals.
+    config:
+      column_types: {month: date, metric: varchar, target: double}
+    columns:
+      - name: metric
+        data_tests:
+          - accepted_values: {arguments: {values: [mrr, signups, free_to_paid_60d, nrr_12m]}}
