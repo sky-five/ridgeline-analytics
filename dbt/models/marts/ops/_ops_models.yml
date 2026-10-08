@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: fct_measurement_quality
+    description: One row per measurement report order, with turnaround and whether the contractor asked for a redo.
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: order_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: account_id, data_type: varchar}
+      - {name: ordered_at, data_type: timestamp}
+      - {name: ordered_month, data_type: date}
+      - {name: region, data_type: varchar}
+      - {name: roof_type, data_type: varchar}
+      - {name: tier, data_type: varchar}
+      - {name: turnaround_hours, data_type: double}
+      - {name: is_redo, data_type: boolean}
+      - {name: redo_reason, data_type: varchar}
