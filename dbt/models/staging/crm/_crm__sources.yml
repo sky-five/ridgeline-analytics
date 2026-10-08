@@ -7,7 +7,9 @@ sources:
       freshness:
         warn_after: {count: 36, period: hour}
         error_after: {count: 72, period: hour}
-      loaded_at_field: updated_at
+      # freshness = when the pipeline last loaded successfully, not business activity:
+      # sparse tables (e.g. CRM deals) can go days without new rows.
+      loaded_at_query: "select max(inserted_at) from raw_crm._dlt_loads where status = 0"
     tables:
       - name: crm_deals
       - name: crm_calls

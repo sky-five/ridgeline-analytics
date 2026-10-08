@@ -1,5 +1,8 @@
 -- Per channel per day: spend, signups, and the paid conversions those signups produced.
+-- CAC only uses signup cohorts whose 60-day outcome is known: the window ends cac_lag_days before the day.
 {% set start_date = "cast('" ~ var('history_start_date') ~ "' as date)" %}
+{% set lag = var('cac_lag_days') | int %}
+{% set frame = "rows between " ~ (lag + (var('cac_window_days') | int) - 1) ~ " preceding and " ~ lag ~ " preceding" %}
 
 with days as (
     {{ dbt_utils.date_spine(datepart="day", start_date=start_date, end_date=dbt.dateadd('day', 1, as_of_date())) }}
@@ -44,12 +47,8 @@ daily as (
 windowed as (
     select
         *,
-        sum(spend_usd) over (
-            partition by channel order by date_day rows between 89 preceding and current row
-        ) as spend_90d,
-        sum(paid_60d_from_cohort) over (
-            partition by channel order by date_day rows between 89 preceding and current row
-        ) as paid_90d
+        sum(spend_usd) over (partition by channel order by date_day {{ frame }}) as spend_window,
+        sum(paid_60d_from_cohort) over (partition by channel order by date_day {{ frame }}) as paid_window
     from daily
 )
 
@@ -59,5 +58,5 @@ select
     cast(spend_usd as {{ dbt.type_numeric() }}) as spend_usd,
     cast(signups as {{ dbt.type_bigint() }}) as signups,
     cast(paid_60d_from_cohort as {{ dbt.type_bigint() }}) as paid_60d_from_cohort,
-    cast(spend_90d / nullif(paid_90d, 0) as {{ dbt.type_numeric() }}) as cac_usd
+    cast(spend_window / nullif(paid_window, 0) as {{ dbt.type_numeric() }}) as cac_usd
 from windowed
