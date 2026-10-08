@@ -53,3 +53,9 @@ def test_events_have_properties_dict(api):
 def test_unknown_table(api):
     with pytest.raises(KeyError):
         next(api.fetch("nope"))
+
+
+def test_arrow_pages_match_json_pages(api):
+    arrow_rows = sum(t.num_rows for t in api.fetch_arrow("contractor_leads", page_size=10_000))
+    json_rows = sum(len(p) for p in api.fetch("contractor_leads"))
+    assert arrow_rows == json_rows > 0
