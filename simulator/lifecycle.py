@@ -67,7 +67,7 @@ class _Builder:
             return
         for etype, lam in rates.items():
             n = self.r.poisson(lam * weeks)
-            self.add_events(etype, sorted(start + (end - start) * self.r.random(n)))
+            self.add_events(etype, list(pd.DatetimeIndex(start + (end - start) * self.r.random(n)).sort_values()))
 
     def _order(self, t: pd.Timestamp) -> None:
         r = self.r
