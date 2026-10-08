@@ -109,7 +109,7 @@ def _simulate(seed: int) -> dict[str, pd.DataFrame]:
     for df in t.values():  # uniform datetime dtype, None -> NaT
         for c in df.columns:
             if c.endswith("_at") or c in ("period_start_date", "_day_end", "spend_date"):
-                df[c] = pd.to_datetime(df[c]).astype("datetime64[us]")
+                df[c] = pd.to_datetime(df[c]).dt.floor("s").astype("datetime64[us]")
     return t
 
 

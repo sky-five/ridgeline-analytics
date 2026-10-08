@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import date
 
 SEED = 20260101
-SIM_VERSION = 1  # bump when simulator logic changes (invalidates the history cache)
+SIM_VERSION = 2  # bump when simulator logic changes (invalidates the history cache)
 START_DATE = date(2024, 1, 1)
 HORIZON_DATE = date(2027, 12, 31)
 
