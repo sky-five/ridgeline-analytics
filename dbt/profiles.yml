@@ -1,0 +1,7 @@
+ridgeline:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('RIDGELINE_DUCKDB_PATH', '../warehouse/ridgeline.duckdb') }}"
+      threads: 4

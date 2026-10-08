@@ -1,0 +1,142 @@
+version: 2
+
+models:
+  - name: stg_app_db__accounts
+    description: One row per contractor account.
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: channel
+        data_tests:
+          - accepted_values:
+              arguments: {values: [google_ads, organic, facebook, referral, supplier_partner, trade_show]}
+      - name: region
+        data_tests:
+          - accepted_values:
+              arguments: {values: [Southeast, Southwest, Midwest, Northeast, West, Canada]}
+      - name: crew_size
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["1", "2-5", "6-15", "16+"]}
+
+  - name: stg_app_db__subscriptions
+    description: Current state of each subscription.
+    columns:
+      - name: subscription_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_app_db__accounts'), field: account_id}}
+      - name: status
+        data_tests:
+          - accepted_values: {arguments: {values: [active, canceled]}}
+      - name: plan
+        data_tests:
+          - accepted_values: {arguments: {values: [essentials, scale]}}
+
+  - name: stg_app_db__subscription_changes
+    description: Append-only log of every subscription change, with MRR before and after.
+    columns:
+      - name: change_id
+        data_tests: [unique, not_null]
+      - name: change_type
+        data_tests:
+          - accepted_values:
+              arguments: {values: [new, upgrade, downgrade, addon_added, addon_removed, cancel, reactivate]}
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_app_db__accounts'), field: account_id}}
+
+  - name: stg_app_db__invoices
+    columns:
+      - name: invoice_id
+        data_tests: [unique, not_null]
+      - name: line_type
+        data_tests:
+          - accepted_values: {arguments: {values: [subscription, measurement]}}
+      - name: status
+        data_tests:
+          - accepted_values: {arguments: {values: [open, paid]}}
+
+  - name: stg_app_db__measurement_orders
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: tier
+        data_tests:
+          - accepted_values: {arguments: {values: [2h, 6h, 24h]}}
+      - name: roof_type
+        data_tests:
+          - accepted_values: {arguments: {values: [gable, hip, complex, flat]}}
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_app_db__accounts'), field: account_id}}
+
+  - name: stg_product_events__events
+    columns:
+      - name: event_id
+        data_tests: [unique, not_null]
+      - name: event_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [login, measurement_ordered, proposal_sent, proposal_signed, job_created, invoice_paid]
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_app_db__accounts'), field: account_id}}
+
+  - name: stg_crm__deals
+    columns:
+      - name: deal_id
+        data_tests: [unique, not_null]
+      - name: stage
+        data_tests:
+          - accepted_values: {arguments: {values: [open, won, lost]}}
+
+  - name: stg_crm__calls
+    columns:
+      - name: call_id
+        data_tests: [unique, not_null]
+      - name: outcome
+        data_tests:
+          - accepted_values: {arguments: {values: [connected, voicemail, no_answer, demo_booked]}}
+
+  - name: stg_support__tickets
+    columns:
+      - name: ticket_id
+        data_tests: [unique, not_null]
+      - name: status
+        data_tests:
+          - accepted_values: {arguments: {values: [open, solved]}}
+      - name: priority
+        data_tests:
+          - accepted_values: {arguments: {values: [low, normal, high, urgent]}}
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_app_db__accounts'), field: account_id}}
+
+  - name: stg_ads__ad_spend
+    columns:
+      - name: spend_id
+        data_tests: [unique, not_null]
+      - name: channel
+        data_tests:
+          - accepted_values: {arguments: {values: [google_ads, facebook, supplier_partner, trade_show]}}
+
+  - name: stg_contractor_ops__leads
+    columns:
+      - name: lead_id
+        data_tests: [unique, not_null]
+      - name: lead_source
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [instant_estimator, google_lsa, referral, door_knocking, facebook, home_show]
+      - name: outcome
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [won, lost_price, lost_competitor, lost_no_decision, unqualified, no_response, open]
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_app_db__accounts'), field: account_id}}

@@ -1,0 +1,25 @@
+name: ridgeline
+version: "1.0.0"
+profile: ridgeline
+config-version: 2
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  as_of_date: "2026-10-07"
+  history_start_date: "2024-01-01"
+
+models:
+  ridgeline:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: table
+    marts:
+      +materialized: table
