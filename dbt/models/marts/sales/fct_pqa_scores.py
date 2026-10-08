@@ -43,10 +43,16 @@ def points(r) -> int:
     return min(p, 100)
 
 
+def _to_pandas(relation) -> pd.DataFrame:
+    """DuckDB gives a relation with .df(); Snowflake gives a Snowpark DataFrame with UPPERCASE columns."""
+    df = relation.to_pandas() if hasattr(relation, "to_pandas") else relation.df()
+    return df.rename(columns=str.lower)
+
+
 def model(dbt, session):
     dbt.config(materialized="table", packages=["scikit-learn", "pandas", "numpy"])
     as_of = pd.Timestamp(dbt.config.get("as_of_date"))
-    df = dbt.ref("fct_account_funnel").df()
+    df = _to_pandas(dbt.ref("fct_account_funnel"))
     df["signup_at"] = pd.to_datetime(df.signup_at)
 
     df["proposal_wk1"] = df.proposal_wk1.astype(int)

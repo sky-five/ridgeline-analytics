@@ -33,3 +33,26 @@ models:
       - {name: called_within_3d, data_type: boolean}
       - {name: rep, data_type: varchar}
       - {name: converted_60d, data_type: boolean}
+
+unit_tests:
+  - name: rep_followups_only_count_calls_after_eligibility
+    description: >
+      Calls before an account became eligible don't count as follow-ups; the rep is whoever made the
+      first eligible call; accounts too young to judge get a null outcome.
+    model: fct_rep_followups
+    given:
+      - input: ref('fct_pqa_scores')
+        rows:
+          - {account_id: early, signup_at: "2026-01-01 09:00:00", decile: 10, split: test, is_paid_60d: true}
+          - {account_id: quick, signup_at: "2026-01-01 09:00:00", decile: 10, split: test, is_paid_60d: false}
+          - {account_id: young, signup_at: "2026-09-20 09:00:00", decile: 10, split: not_labelled, is_paid_60d: false}
+      - input: ref('stg_crm__calls')
+        rows:
+          - {account_id: early, rep: Avery, called_at: "2026-01-05 10:00:00"}
+          - {account_id: quick, rep: Riley, called_at: "2026-01-16 10:00:00"}
+          - {account_id: quick, rep: Avery, called_at: "2026-01-20 10:00:00"}
+    expect:
+      rows:
+        - {account_id: early, first_call_at: null, rep: null, called_within_3d: false, converted_60d: true}
+        - {account_id: quick, first_call_at: "2026-01-16 10:00:00", rep: Riley, called_within_3d: true, converted_60d: false}
+        - {account_id: young, first_call_at: null, rep: null, called_within_3d: false, converted_60d: null}

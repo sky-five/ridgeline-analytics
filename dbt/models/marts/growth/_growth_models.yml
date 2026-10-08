@@ -44,7 +44,7 @@ models:
       - {name: spend_usd, data_type: "numeric(28,6)"}
       - {name: signups, data_type: bigint}
       - {name: paid_60d_from_cohort, data_type: bigint}
-      - {name: cac_usd, data_type: "numeric(28,6)", description: Trailing 90-day spend / paid conversions.}
+      - {name: cac_usd, data_type: "numeric(28,6)", description: "Spend / paid conversions over the 90 days of signups ending 60 days ago (cohorts with a known outcome)."}
 
   - name: fct_cohort_retention
     description: Paid cohorts (by first paid month) and how many accounts and how much MRR remain each month after.
@@ -95,3 +95,33 @@ unit_tests:
         - {account_id: a, is_paid_60d: true, is_activated: true, is_mature: true}
         - {account_id: b, is_paid_60d: false, is_activated: false, is_mature: true}
         - {account_id: c, is_paid_60d: false, is_activated: false, is_mature: false}
+
+  - name: cac_uses_only_complete_cohorts
+    description: >
+      CAC must not count recent signups whose 60-day outcome isn't known yet (it would inflate CAC).
+      With lag 1 and window 2, each day's CAC uses the two days before yesterday.
+    model: fct_marketing_channel_daily
+    overrides:
+      vars: {history_start_date: "2025-01-01", as_of_date: "2025-01-05", cac_lag_days: 1, cac_window_days: 2}
+    given:
+      - input: ref('fct_account_funnel')
+        rows:
+          - {account_id: a1, channel: google_ads, signup_at: "2025-01-01 10:00:00", is_paid_60d: true}
+          - {account_id: a2, channel: google_ads, signup_at: "2025-01-02 10:00:00", is_paid_60d: true}
+          - {account_id: a3, channel: google_ads, signup_at: "2025-01-03 10:00:00", is_paid_60d: true}
+          - {account_id: a4, channel: google_ads, signup_at: "2025-01-04 10:00:00", is_paid_60d: true}
+          - {account_id: a5, channel: google_ads, signup_at: "2025-01-05 10:00:00", is_paid_60d: false}
+      - input: ref('stg_ads__ad_spend')
+        rows:
+          - {spend_date: "2025-01-01", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-02", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-03", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-04", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-05", channel: google_ads, spend_usd: 100}
+    expect:
+      rows:
+        - {date_day: "2025-01-01", cac_usd: null}
+        - {date_day: "2025-01-02", cac_usd: 100}
+        - {date_day: "2025-01-03", cac_usd: 100}
+        - {date_day: "2025-01-04", cac_usd: 100}
+        - {date_day: "2025-01-05", cac_usd: 100}

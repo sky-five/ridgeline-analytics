@@ -4,7 +4,8 @@ models:
   - name: fct_contractor_leads
     description: >
       Contractors' homeowner leads, with one non-overlapping outcome per lead and speed to lead in minutes.
-      Speed to lead is null (bucket "missing") when the first-contact time was not logged.
+      Speed to lead is null when there is no first-contact time: bucket "not_contacted" when the lead was never
+      reached (no response, or still open with no later stage), "missing" when it was worked but the time wasn't logged.
     config:
       contract: {enforced: true}
     columns:
@@ -29,7 +30,7 @@ models:
       - {name: speed_to_lead_min, data_type: bigint}
       - name: speed_bucket
         data_type: varchar
-        data_tests: [{accepted_values: {arguments: {values: [missing, lt_5m, 5_60m, 1_24h, gt_1d]}}}]
+        data_tests: [{accepted_values: {arguments: {values: [not_contacted, missing, lt_5m, 5_60m, 1_24h, gt_1d]}}}]
       - {name: missing_contact_ts, data_type: boolean}
       - {name: missing_inspection_ts, data_type: boolean}
 
@@ -67,8 +68,14 @@ unit_tests:
           - {lead_id: l1, created_at: "2026-05-01 10:00:00", first_contact_at: null, outcome: won}
           - {lead_id: l2, created_at: "2026-05-01 10:00:00", first_contact_at: "2026-05-01 10:03:00", outcome: lost_price}
           - {lead_id: l3, created_at: "2026-05-01 10:00:00", first_contact_at: "2026-05-02 12:00:00", outcome: open}
+          - {lead_id: l4, created_at: "2026-05-01 10:00:00", first_contact_at: null, outcome: no_response}
+          - {lead_id: l5, created_at: "2026-05-01 10:00:59", first_contact_at: "2026-05-01 10:05:30", outcome: won}
+          - {lead_id: l6, created_at: "2026-05-01 10:00:00", first_contact_at: null, inspection_at: null, proposal_sent_at: null, outcome: open}
     expect:
       rows:
-        - {lead_id: l1, speed_to_lead_min: null, speed_bucket: missing, outcome_group: won}
-        - {lead_id: l2, speed_to_lead_min: 3, speed_bucket: lt_5m, outcome_group: lost}
-        - {lead_id: l3, speed_to_lead_min: 1560, speed_bucket: gt_1d, outcome_group: open}
+        - {lead_id: l1, speed_to_lead_min: null, speed_bucket: missing, outcome_group: won, missing_contact_ts: true}
+        - {lead_id: l2, speed_to_lead_min: 3, speed_bucket: lt_5m, outcome_group: lost, missing_contact_ts: false}
+        - {lead_id: l3, speed_to_lead_min: 1560, speed_bucket: gt_1d, outcome_group: open, missing_contact_ts: false}
+        - {lead_id: l4, speed_to_lead_min: null, speed_bucket: not_contacted, outcome_group: no_response, missing_contact_ts: false}
+        - {lead_id: l5, speed_to_lead_min: 4, speed_bucket: lt_5m, outcome_group: won, missing_contact_ts: false}
+        - {lead_id: l6, speed_to_lead_min: null, speed_bucket: not_contacted, outcome_group: open, missing_contact_ts: false}
