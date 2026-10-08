@@ -32,7 +32,8 @@ class AccountHistory:
     crew_size: str
     intent: float
     proposal_wk1: bool = False
-    events: pd.DataFrame = field(default_factory=pd.DataFrame)  # account_id, event_type, occurred_at, value_usd
+    # columns: account_id, event_type, occurred_at, value_usd
+    events: pd.DataFrame = field(default_factory=pd.DataFrame)
     subscription: dict | None = None
     subscription_changes: list[dict] = field(default_factory=list)
     invoices: list[dict] = field(default_factory=list)
@@ -120,7 +121,8 @@ def simulate_account(acct) -> AccountHistory:
     b.add_events("measurement_ordered", within(14, n_meas))
     props = within(7 if wk1 else 14, n_prop)
     b.add_events("proposal_sent", props)
-    b.add_events("proposal_signed", [p + pd.Timedelta(days=float(r.uniform(0.5, 5))) for p in props[:n_signed]])
+    signed = [p + pd.Timedelta(days=float(r.uniform(0.5, 5))) for p in props[:n_signed]]
+    b.add_events("proposal_signed", signed)
 
     # --- conversion
     logit = (-3.1 + 0.9 * acct.intent + ch.conv_logit + crew.conv_logit + 1.6 * wk1
