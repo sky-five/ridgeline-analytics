@@ -1,0 +1,11 @@
+.venv/
+warehouse/
+.cache/
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/
+__pycache__/
+.dlt/secrets.toml
+.superpowers/
+.user.yml
