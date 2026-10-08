@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: fct_support_tickets
+    description: One row per support ticket with response and resolution times.
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: ticket_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: account_id, data_type: varchar}
+      - {name: created_at, data_type: timestamp}
+      - {name: first_reply_minutes, data_type: bigint}
+      - {name: resolution_hours, data_type: double}
+      - name: priority
+        data_type: varchar
+        data_tests: [{accepted_values: {arguments: {values: [low, normal, high, urgent]}}}]
+      - name: channel
+        data_type: varchar
+        data_tests: [{accepted_values: {arguments: {values: [email, chat, phone]}}}]
+      - {name: subject, data_type: varchar}
+      - {name: body, data_type: varchar}
+      - name: status
+        data_type: varchar
+        data_tests: [{accepted_values: {arguments: {values: [open, solved]}}}]
+      - {name: is_paying_at_creation, data_type: boolean}
+
+  - name: fct_account_health
+    description: >
+      Paying accounts with a rule-based health score (0-100). Start at 100; -30 if fewer than 4 logins in 30 days,
+      -20 if no proposals in 30 days, -20 if a measurement redo in 90 days, -10 per ticket beyond 2 in 90 days.
+      At risk below 40, watch below 70.
+    config:
+      contract: {enforced: true}
+    data_tests:
+      - dbt_utils.expression_is_true:
+          arguments: {expression: "health_score between 0 and 100"}
+    columns:
+      - {name: account_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: company_name, data_type: varchar}
+      - {name: current_plan, data_type: varchar}
+      - {name: mrr, data_type: "numeric(28,6)"}
+      - {name: logins_30d, data_type: bigint}
+      - {name: proposals_30d, data_type: bigint}
+      - {name: tickets_90d, data_type: bigint}
+      - {name: redo_90d, data_type: bigint}
+      - {name: health_score, data_type: integer}
+      - name: risk_band
+        data_type: varchar
+        data_tests: [{accepted_values: {arguments: {values: [healthy, watch, at_risk]}}}]
+
+unit_tests:
+  - name: health_score_rules
+    description: The documented scoring rules give 100, 50 and 0 for three crafted accounts.
+    model: fct_account_health
+    given:
+      - input: ref('dim_accounts')
+        rows:
+          - {account_id: a, is_paying: true, current_mrr: 249}
+          - {account_id: b, is_paying: true, current_mrr: 249}
+          - {account_id: c, is_paying: true, current_mrr: 349}
+          - {account_id: d, is_paying: false, current_mrr: 0}
+      - input: ref('int_account_activity')
+        rows:
+          - {account_id: a, logins_30d: 10, proposals_30d: 3, tickets_90d: 1, redo_90d: 0}
+          - {account_id: b, logins_30d: 2, proposals_30d: 5, tickets_90d: 0, redo_90d: 1}
+          - {account_id: c, logins_30d: 0, proposals_30d: 0, tickets_90d: 6, redo_90d: 2}
+          - {account_id: d, logins_30d: 0, proposals_30d: 0, tickets_90d: 0, redo_90d: 0}
+    expect:
+      rows:
+        - {account_id: a, health_score: 100, risk_band: healthy}
+        - {account_id: b, health_score: 50, risk_band: watch}
+        - {account_id: c, health_score: 0, risk_band: at_risk}

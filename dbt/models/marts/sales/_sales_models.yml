@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: fct_pqa_scores
+    description: >
+      Product-qualified account (PQA) score: how likely a free account is to pay within 60 days, from what it did
+      in its first 14 days. A logistic regression trained on 2024-2025 signups and back-tested on 2026 signups,
+      next to a transparent points score a sales lead can read.
+    config:
+      as_of_date: "{{ var('as_of_date') }}"
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: decile
+        data_tests: [not_null]
+      - name: split
+        data_tests:
+          - accepted_values: {arguments: {values: [train, test, not_labelled]}}
+      - name: score_points
+        data_tests:
+          - dbt_utils.accepted_range: {arguments: {min_value: 0, max_value: 100}}
+
+  - name: fct_rep_followups
+    description: >
+      Top-decile free accounts once they become call-eligible (14 days after signup): did a rep call within
+      3 days, and did the account convert?
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: account_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: became_eligible_at, data_type: timestamp}
+      - {name: first_call_at, data_type: timestamp}
+      - {name: called_within_3d, data_type: boolean}
+      - {name: rep, data_type: varchar}
+      - {name: converted_60d, data_type: boolean}
+
+unit_tests:
+  - name: rep_followups_only_count_calls_after_eligibility
+    description: >
+      Calls before an account became eligible don't count as follow-ups; the rep is whoever made the
+      first eligible call; accounts too young to judge get a null outcome.
+    model: fct_rep_followups
+    given:
+      - input: ref('fct_pqa_scores')
+        rows:
+          - {account_id: early, signup_at: "2026-01-01 09:00:00", decile: 10, split: test, is_paid_60d: true}
+          - {account_id: quick, signup_at: "2026-01-01 09:00:00", decile: 10, split: test, is_paid_60d: false}
+          - {account_id: young, signup_at: "2026-09-20 09:00:00", decile: 10, split: not_labelled, is_paid_60d: false}
+      - input: ref('stg_crm__calls')
+        rows:
+          - {account_id: early, rep: Avery, called_at: "2026-01-05 10:00:00"}
+          - {account_id: quick, rep: Riley, called_at: "2026-01-16 10:00:00"}
+          - {account_id: quick, rep: Avery, called_at: "2026-01-20 10:00:00"}
+    expect:
+      rows:
+        - {account_id: early, first_call_at: null, rep: null, called_within_3d: false, converted_60d: true}
+        - {account_id: quick, first_call_at: "2026-01-16 10:00:00", rep: Riley, called_within_3d: true, converted_60d: false}
+        - {account_id: young, first_call_at: null, rep: null, called_within_3d: false, converted_60d: null}

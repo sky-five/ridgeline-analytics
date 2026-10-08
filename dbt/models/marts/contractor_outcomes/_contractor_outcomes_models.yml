@@ -1,0 +1,106 @@
+version: 2
+
+models:
+  - name: fct_contractor_leads
+    description: >
+      Contractors' homeowner leads, with one non-overlapping outcome per lead and speed to lead in minutes.
+      Speed to lead is null when there is no first-contact time: bucket "not_contacted" when the lead was never
+      reached (no response, or still open with no later stage), "missing" when it was worked but the time wasn't logged.
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: lead_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: account_id, data_type: varchar}
+      - name: lead_source
+        data_type: varchar
+        data_tests:
+          - accepted_values:
+              arguments: {values: [instant_estimator, google_lsa, referral, door_knocking, facebook, home_show]}
+      - {name: created_at, data_type: timestamp}
+      - {name: created_month, data_type: date}
+      - {name: first_contact_at, data_type: timestamp}
+      - {name: inspection_at, data_type: timestamp}
+      - {name: proposal_sent_at, data_type: timestamp}
+      - {name: closed_at, data_type: timestamp}
+      - {name: outcome, data_type: varchar}
+      - name: outcome_group
+        data_type: varchar
+        data_tests: [{accepted_values: {arguments: {values: [won, lost, unqualified, no_response, open]}}}]
+      - {name: proposal_value_usd, data_type: "numeric(28,6)"}
+      - {name: speed_to_lead_min, data_type: bigint}
+      - name: speed_bucket
+        data_type: varchar
+        data_tests: [{accepted_values: {arguments: {values: [not_contacted, missing, lt_5m, 5_60m, 1_24h, gt_1d]}}}]
+      - {name: missing_contact_ts, data_type: boolean}
+      - {name: missing_inspection_ts, data_type: boolean}
+
+  - name: fct_contractor_benchmarks
+    description: >
+      Each contractor's monthly lead results against peers with the same crew size.
+      Percentiles are null when the contractor had fewer than 5 leads that month.
+    config:
+      contract: {enforced: true}
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: {combination_of_columns: [account_id, month]}
+      - dbt_utils.expression_is_true:
+          arguments: {expression: "close_rate between 0 and 1"}
+    columns:
+      - {name: account_id, data_type: varchar}
+      - {name: month, data_type: date}
+      - {name: crew_size, data_type: varchar}
+      - {name: region, data_type: varchar}
+      - {name: leads, data_type: bigint}
+      - {name: closed, data_type: bigint}
+      - {name: won, data_type: bigint}
+      - {name: close_rate, data_type: double}
+      - {name: median_speed_min, data_type: double}
+      - {name: close_rate_pctile, data_type: double}
+      - {name: speed_pctile, data_type: double}
+
+unit_tests:
+  - name: contractor_leads_missing_contact
+    description: A lead with no logged first contact gets a null speed and the "missing" bucket, and still counts as won.
+    model: fct_contractor_leads
+    given:
+      - input: ref('stg_contractor_ops__leads')
+        rows:
+          - {lead_id: l1, created_at: "2026-05-01 10:00:00", first_contact_at: null, outcome: won}
+          - {lead_id: l2, created_at: "2026-05-01 10:00:00", first_contact_at: "2026-05-01 10:03:00", outcome: lost_price}
+          - {lead_id: l3, created_at: "2026-05-01 10:00:00", first_contact_at: "2026-05-02 12:00:00", outcome: open}
+          - {lead_id: l4, created_at: "2026-05-01 10:00:00", first_contact_at: null, outcome: no_response}
+          - {lead_id: l5, created_at: "2026-05-01 10:00:59", first_contact_at: "2026-05-01 10:05:30", outcome: won}
+          - {lead_id: l6, created_at: "2026-05-01 10:00:00", first_contact_at: null, inspection_at: null, proposal_sent_at: null, outcome: open}
+    expect:
+      rows:
+        - {lead_id: l1, speed_to_lead_min: null, speed_bucket: missing, outcome_group: won, missing_contact_ts: true}
+        - {lead_id: l2, speed_to_lead_min: 3, speed_bucket: lt_5m, outcome_group: lost, missing_contact_ts: false}
+        - {lead_id: l3, speed_to_lead_min: 1560, speed_bucket: gt_1d, outcome_group: open, missing_contact_ts: false}
+        - {lead_id: l4, speed_to_lead_min: null, speed_bucket: not_contacted, outcome_group: no_response, missing_contact_ts: false}
+        - {lead_id: l5, speed_to_lead_min: 4, speed_bucket: lt_5m, outcome_group: won, missing_contact_ts: false}
+        - {lead_id: l6, speed_to_lead_min: null, speed_bucket: not_contacted, outcome_group: open, missing_contact_ts: false}
+
+  - name: benchmarks_no_speed_rank_without_speed_data
+    description: A contractor with no logged contact times gets no speed percentile (instead of the best one).
+    model: fct_contractor_benchmarks
+    given:
+      - input: ref('dim_accounts')
+        rows:
+          - {account_id: x, crew_size: "2-5", region: West}
+          - {account_id: y, crew_size: "2-5", region: West}
+      - input: ref('fct_contractor_leads')
+        rows:
+          - {account_id: x, created_month: "2026-05-01", outcome_group: won, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: won, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: won, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: 10}
+    expect:
+      rows:
+        - {account_id: x, speed_pctile: null, close_rate_pctile: 0.0}
+        - {account_id: y, speed_pctile: 0.0, close_rate_pctile: 1.0}

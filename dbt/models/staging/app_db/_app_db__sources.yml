@@ -1,0 +1,18 @@
+version: 2
+sources:
+  - name: app_db
+    description: Ridgeline's production app database (simulated), loaded by dlt.
+    schema: raw_app_db
+    config:
+      freshness:
+        warn_after: {count: 36, period: hour}
+        error_after: {count: 72, period: hour}
+      # freshness = when the pipeline last loaded successfully, not business activity:
+      # sparse tables (e.g. CRM deals) can go days without new rows.
+      loaded_at_query: "select max(inserted_at) from raw_app_db._dlt_loads where status = 0"
+    tables:
+      - name: accounts
+      - name: subscriptions
+      - name: subscription_changes
+      - name: invoices
+      - name: measurement_orders

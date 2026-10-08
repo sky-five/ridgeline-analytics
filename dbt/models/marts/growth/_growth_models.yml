@@ -1,0 +1,127 @@
+version: 2
+
+models:
+  - name: fct_account_funnel
+    description: >
+      One row per account with its first-14-day behaviour and funnel milestones.
+      "Mature" accounts signed up at least 60 days before the as-of date, so their 60-day outcome is known.
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: account_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: signup_at, data_type: timestamp}
+      - {name: signup_month, data_type: date}
+      - {name: channel, data_type: varchar}
+      - {name: region, data_type: varchar}
+      - {name: crew_size, data_type: varchar}
+      - {name: logins_14d, data_type: bigint}
+      - {name: measurements_14d, data_type: bigint}
+      - {name: proposals_14d, data_type: bigint}
+      - {name: signed_14d, data_type: bigint}
+      - {name: active_days_14d, data_type: bigint}
+      - {name: proposal_wk1, data_type: boolean}
+      - {name: first_measurement_at, data_type: timestamp}
+      - {name: first_proposal_at, data_type: timestamp}
+      - {name: first_signed_at, data_type: timestamp}
+      - {name: first_paid_at, data_type: timestamp}
+      - {name: is_activated, data_type: boolean, description: Sent a proposal within 14 days of signup.}
+      - {name: measured_60d, data_type: boolean}
+      - {name: proposed_60d, data_type: boolean}
+      - {name: signed_60d, data_type: boolean}
+      - {name: is_paid_60d, data_type: boolean, description: First paid less than 60 days after signup.}
+      - {name: is_mature, data_type: boolean}
+
+  - name: fct_marketing_channel_daily
+    description: Spend, signups and paid conversions per channel per day, with trailing-90-day CAC.
+    config:
+      contract: {enforced: true}
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: {combination_of_columns: [date_day, channel]}
+    columns:
+      - {name: date_day, data_type: date}
+      - {name: channel, data_type: varchar}
+      - {name: spend_usd, data_type: "numeric(28,6)"}
+      - {name: signups, data_type: bigint}
+      - {name: paid_60d_from_cohort, data_type: bigint}
+      - {name: cac_usd, data_type: "numeric(28,6)", description: "Spend / paid conversions over the 90 days of signups ending 60 days ago (cohorts with a known outcome)."}
+
+  - name: fct_cohort_retention
+    description: Paid cohorts (by first paid month) and how many accounts and how much MRR remain each month after.
+    config:
+      contract: {enforced: true}
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments: {combination_of_columns: [cohort_month, months_since_start]}
+      - dbt_utils.expression_is_true:
+          arguments: {expression: "logo_retention between 0 and 1"}
+      - dbt_utils.expression_is_true:
+          arguments: {expression: "grr <= 1.0001"}
+    columns:
+      - {name: cohort_month, data_type: date}
+      - {name: months_since_start, data_type: integer}
+      - {name: cohort_accounts, data_type: bigint}
+      - {name: retained_accounts, data_type: bigint}
+      - {name: cohort_start_mrr, data_type: "numeric(28,6)"}
+      - {name: retained_mrr, data_type: "numeric(28,6)"}
+      - {name: logo_retention, data_type: double}
+      - {name: nrr, data_type: double}
+      - {name: grr, data_type: double}
+
+unit_tests:
+  - name: funnel_paid_60d_boundary
+    description: Paid just under 60 days counts; paid at exactly 60 days does not.
+    model: fct_account_funnel
+    overrides:
+      vars: {as_of_date: "2025-12-31"}
+    given:
+      - input: ref('dim_accounts')
+        rows:
+          - {account_id: a, signup_at: "2025-01-01 00:00:00", first_paid_at: "2025-03-01 23:00:00"}
+          - {account_id: b, signup_at: "2025-01-01 00:00:00", first_paid_at: "2025-03-02 00:00:00"}
+          - {account_id: c, signup_at: "2025-12-01 00:00:00", first_paid_at: null}
+      - input: ref('int_account_first14d')
+        rows:
+          - {account_id: a, proposals_14d: 1}
+          - {account_id: b, proposals_14d: 0}
+          - {account_id: c, proposals_14d: 0}
+      - input: ref('int_account_milestones')
+        rows:
+          - {account_id: a}
+          - {account_id: b}
+          - {account_id: c}
+    expect:
+      rows:
+        - {account_id: a, is_paid_60d: true, is_activated: true, is_mature: true}
+        - {account_id: b, is_paid_60d: false, is_activated: false, is_mature: true}
+        - {account_id: c, is_paid_60d: false, is_activated: false, is_mature: false}
+
+  - name: cac_uses_only_complete_cohorts
+    description: >
+      CAC must not count recent signups whose 60-day outcome isn't known yet (it would inflate CAC).
+      With lag 1 and window 2, each day's CAC uses the two days before yesterday.
+    model: fct_marketing_channel_daily
+    overrides:
+      vars: {history_start_date: "2025-01-01", as_of_date: "2025-01-05", cac_lag_days: 1, cac_window_days: 2}
+    given:
+      - input: ref('fct_account_funnel')
+        rows:
+          - {account_id: a1, channel: google_ads, signup_at: "2025-01-01 10:00:00", is_paid_60d: true}
+          - {account_id: a2, channel: google_ads, signup_at: "2025-01-02 10:00:00", is_paid_60d: true}
+          - {account_id: a3, channel: google_ads, signup_at: "2025-01-03 10:00:00", is_paid_60d: true}
+          - {account_id: a4, channel: google_ads, signup_at: "2025-01-04 10:00:00", is_paid_60d: true}
+          - {account_id: a5, channel: google_ads, signup_at: "2025-01-05 10:00:00", is_paid_60d: false}
+      - input: ref('stg_ads__ad_spend')
+        rows:
+          - {spend_date: "2025-01-01", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-02", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-03", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-04", channel: google_ads, spend_usd: 100}
+          - {spend_date: "2025-01-05", channel: google_ads, spend_usd: 100}
+    expect:
+      rows:
+        - {date_day: "2025-01-01", cac_usd: null}
+        - {date_day: "2025-01-02", cac_usd: 100}
+        - {date_day: "2025-01-03", cac_usd: 100}
+        - {date_day: "2025-01-04", cac_usd: 100}
+        - {date_day: "2025-01-05", cac_usd: 100}
