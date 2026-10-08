@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: fct_pqa_scores
+    description: >
+      Product-qualified account (PQA) score: how likely a free account is to pay within 60 days, from what it did
+      in its first 14 days. A logistic regression trained on 2024-2025 signups and back-tested on 2026 signups,
+      next to a transparent points score a sales lead can read.
+    config:
+      as_of_date: "{{ var('as_of_date') }}"
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: decile
+        data_tests: [not_null]
+      - name: split
+        data_tests:
+          - accepted_values: {arguments: {values: [train, test, not_labelled]}}
+      - name: score_points
+        data_tests:
+          - dbt_utils.accepted_range: {arguments: {min_value: 0, max_value: 100}}
+
+  - name: fct_rep_followups
+    description: >
+      Top-decile free accounts once they become call-eligible (14 days after signup): did a rep call within
+      3 days, and did the account convert?
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: account_id, data_type: varchar, constraints: [{type: not_null}], data_tests: [unique]}
+      - {name: became_eligible_at, data_type: timestamp}
+      - {name: first_call_at, data_type: timestamp}
+      - {name: called_within_3d, data_type: boolean}
+      - {name: rep, data_type: varchar}
+      - {name: converted_60d, data_type: boolean}
