@@ -19,7 +19,7 @@ GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQ
 |---|---|
 | `simulator/` | Deterministic history of six systems: app DB, product events, CRM, support desk, ad spend, and contractors' own homeowner leads. Served "as of" any date through a paginated mock API with `updated_at` cursors. |
 | `pipelines/` | One dlt source per system. Incremental on `updated_at`, merge for mutable tables, append for logs, schema contracts that freeze data types. Loads about 1.2M rows in ~30s. |
-| `dbt/` | Staging → intermediate → six domain mart folders. 28 models, 12 with enforced contracts, 84 tests. |
+| `dbt/` | Staging → intermediate → six domain mart folders. 28 models, 12 with enforced contracts, 88 tests. |
 
 ## Data model (marts)
 
@@ -44,21 +44,21 @@ GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQ
 | Kind | Count | Examples |
 |---|---|---|
 | dbt generic tests | 76 | Keys, accepted values, relationships, `dbt_utils` range and combination checks |
-| dbt unit tests | 5 | MRR movement classification, month-boundary handling, the 60-day paid cutoff, health-score rules, missing lead timestamps |
+| dbt unit tests | 9 | MRR movement types and month boundaries, the 60-day paid cutoff, early signals stopping at first payment (no leakage), CAC using only cohorts with a known outcome, rep follow-ups, health-score rules, speed-to-lead buckets, peer ranks |
 | dbt singular tests | 3 | Every subscription invoice equals the MRR log at issue time. Last-day MRR ties to the sum of accounts. The score's top decile beats average by ≥2.5× on held-out data. |
 | Model contracts | 12 marts | Column names and types are enforced at build time |
-| Source freshness | 11 sources | Warn after 36h, error after 72h |
-| pytest | 40 | Simulator determinism, history stable across dates, planted patterns present, API paging, dlt idempotency and merge behaviour |
+| Source freshness | 11 tables | Time since the last successful pipeline load: warn after 36h, error after 72h |
+| pytest | 41 | Simulator determinism, history stable across dates, planted patterns present, API paging, dlt idempotency and merge behaviour |
 
 ## What the data shows (as of 2026-10-07)
 
 | Finding | Number |
 |---|---|
 | MRR / paying accounts | $243.7k / 779 |
-| Accounts that send a proposal in their first 14 days | convert 40% vs 5% (~9×) |
-| Top 10% by score, on 2026 signups the model never saw | 64% convert vs 16% average |
-| Homeowner leads contacted in under 5 minutes | close 39% vs 21% at 5–60 minutes |
-| Contacted leads with no first-contact time logged | 8%, a data-quality gap the dashboards must show |
+| Accounts that send a proposal in their first 14 days | convert 39% vs 5% (~8×) |
+| Top 10% by score, on 2026 signups the model never saw | 59% convert vs 16% average (3.7×) |
+| Homeowner leads contacted in under 5 minutes | close 39% vs 20% at 5–60 minutes |
+| Leads worked but with no first-contact time logged | 7%, a data-quality gap the dashboards must show |
 | 12-month NRR | 61% (SMB churn is heavy, so retention is a key lever) |
 
 ## Planted patterns
@@ -82,7 +82,7 @@ uv pip install --python .venv/Scripts/python.exe -r requirements.txt   # macOS/L
 .venv/Scripts/python -m pytest -m "not e2e"                              # Python tests
 ```
 
-`run_all.py` loads data as of yesterday by default. `--as-of YYYY-MM-DD` picks any date from 2024-01-01 on, and the same date always gives the same data. The first run simulates the full history (about a minute) and caches it in `.cache/`.
+`run_all.py` loads data as of yesterday by default. `--as-of YYYY-MM-DD` picks a date between 2024-03-01 (before that, some systems have no rows yet) and 2027-12-31 (the end of the simulated history). The same date always gives the same data. Use `--fresh` when moving to an earlier date. The first run simulates the full history (about a minute) and caches it in `.cache/`.
 
 ## Repo map
 
