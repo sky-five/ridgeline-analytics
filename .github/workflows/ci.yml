@@ -1,0 +1,66 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('simulator/**') }}
+
+      - name: Lint Python
+        run: ruff check .
+
+      - name: Unit tests (simulator, pipelines)
+        run: pytest -m "not e2e" -q
+
+      - name: Pick as-of date (yesterday, UTC)
+        run: echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
+
+      - name: Load + dbt build
+        run: python scripts/run_all.py --fresh --as-of "$AS_OF"
+
+      - name: Source freshness
+        working-directory: dbt
+        run: |
+          dbt source freshness --profiles-dir . --vars "{as_of_date: '$AS_OF'}"
+
+      - name: Lint SQL
+        working-directory: dbt
+        run: sqlfluff lint models
+
+      - name: Upload dbt artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-artifacts
+          path: |
+            dbt/target/manifest.json
+            dbt/target/run_results.json
+            dbt/target/sources.json

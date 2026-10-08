@@ -22,10 +22,10 @@ DUCKDB_PATH = ROOT / "warehouse" / "ridgeline.duckdb"
 DLT_DIR = ROOT / ".dlt_pipelines"
 
 
-def _dbt(*args: str, as_of: date) -> None:
+def _dbt(*args: str, as_of: date, warehouse: Path) -> None:
     exe = Path(sys.executable).parent / ("dbt.exe" if os.name == "nt" else "dbt")
     cmd = [str(exe), *args, "--profiles-dir", ".", "--vars", f"{{as_of_date: '{as_of}'}}"]
-    env = {**os.environ, "RIDGELINE_DUCKDB_PATH": str(DUCKDB_PATH)}
+    env = {**os.environ, "RIDGELINE_DUCKDB_PATH": str(warehouse)}
     print("+", " ".join(cmd[1:]), flush=True)
     subprocess.run(cmd, cwd=DBT_DIR, env=env, check=True)
 
@@ -37,19 +37,21 @@ def main() -> None:
     p.add_argument("--skip-load", action="store_true")
     p.add_argument("--skip-dbt", action="store_true")
     p.add_argument("--destination", default="duckdb", choices=["duckdb", "snowflake"])
+    p.add_argument("--warehouse", type=Path, default=DUCKDB_PATH, help="DuckDB file")
+    p.add_argument("--dlt-dir", type=Path, default=DLT_DIR, help="dlt pipeline state folder")
     args = p.parse_args()
 
     if args.fresh:
-        DUCKDB_PATH.unlink(missing_ok=True)
-        shutil.rmtree(DLT_DIR, ignore_errors=True)
-    DUCKDB_PATH.parent.mkdir(exist_ok=True)
+        args.warehouse.unlink(missing_ok=True)
+        shutil.rmtree(args.dlt_dir, ignore_errors=True)
+    args.warehouse.parent.mkdir(parents=True, exist_ok=True)
 
     if not args.skip_load:
-        counts = load(args.as_of, args.destination, str(DUCKDB_PATH), pipelines_dir=str(DLT_DIR))
+        counts = load(args.as_of, args.destination, str(args.warehouse), pipelines_dir=str(args.dlt_dir))
         print(f"loaded {sum(counts.values()):,} rows as of {args.as_of}", flush=True)
     if not args.skip_dbt:
-        _dbt("deps", as_of=args.as_of)
-        _dbt("build", as_of=args.as_of)
+        _dbt("deps", as_of=args.as_of, warehouse=args.warehouse)
+        _dbt("build", as_of=args.as_of, warehouse=args.warehouse)
 
 
 if __name__ == "__main__":
