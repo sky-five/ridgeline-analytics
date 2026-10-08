@@ -18,7 +18,8 @@ rated as (
     select
         *,
         cast(won as double) / nullif(closed, 0) as close_rate,
-        leads >= 5 and closed > 0 as is_rankable
+        leads >= 5 and closed > 0 as is_rankable,
+        leads >= 5 and median_speed_min is not null as is_speed_rankable
     from monthly
 )
 
@@ -37,7 +38,9 @@ select
             then percent_rank() over (partition by crew_size, month, is_rankable order by close_rate)
     end as close_rate_pctile,
     case
-        when is_rankable
-            then percent_rank() over (partition by crew_size, month, is_rankable order by median_speed_min desc)
+        when is_speed_rankable
+            then percent_rank() over (
+                partition by crew_size, month, is_speed_rankable order by median_speed_min desc nulls last
+            )
     end as speed_pctile
 from rated

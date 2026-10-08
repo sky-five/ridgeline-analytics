@@ -79,3 +79,28 @@ unit_tests:
         - {lead_id: l4, speed_to_lead_min: null, speed_bucket: not_contacted, outcome_group: no_response, missing_contact_ts: false}
         - {lead_id: l5, speed_to_lead_min: 4, speed_bucket: lt_5m, outcome_group: won, missing_contact_ts: false}
         - {lead_id: l6, speed_to_lead_min: null, speed_bucket: not_contacted, outcome_group: open, missing_contact_ts: false}
+
+  - name: benchmarks_no_speed_rank_without_speed_data
+    description: A contractor with no logged contact times gets no speed percentile (instead of the best one).
+    model: fct_contractor_benchmarks
+    given:
+      - input: ref('dim_accounts')
+        rows:
+          - {account_id: x, crew_size: "2-5", region: West}
+          - {account_id: y, crew_size: "2-5", region: West}
+      - input: ref('fct_contractor_leads')
+        rows:
+          - {account_id: x, created_month: "2026-05-01", outcome_group: won, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: x, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: null}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: won, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: won, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: 10}
+          - {account_id: y, created_month: "2026-05-01", outcome_group: lost, speed_to_lead_min: 10}
+    expect:
+      rows:
+        - {account_id: x, speed_pctile: null, close_rate_pctile: 0.0}
+        - {account_id: y, speed_pctile: 0.0, close_rate_pctile: 1.0}
