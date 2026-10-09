@@ -4,14 +4,14 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 > **All data is synthetic.** A deterministic simulator generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
 
-**Status:** Phase 1 of 5 is done: simulator, dlt ingestion, and dbt on DuckDB with CI. Next come Snowflake + Cortex, the MetricFlow semantic layer, Evidence dashboards and an AI analyst. See the [roadmap](#roadmap).
+**Status:** Phases 1–2 of 5 are mostly done. The same dbt project builds on **DuckDB and Snowflake** with identical results, and runs with CI and SCD2 snapshots. Next: ticket themes labelled by Claude, the MetricFlow semantic layer, Evidence dashboards and an AI analyst. See the [roadmap](#roadmap).
 
 ## Architecture
 
 ```
 simulator/ ──► dlt pipelines ──► warehouse RAW ──► dbt ──► marts + metrics ──► Evidence site (Phase 3)
- 6 fake source systems            (DuckDB now,                               └─► AI analyst API (Phase 4)
- paginated API, updated_at        Snowflake in Phase 2)
+ 6 fake source systems            (DuckDB +                                 └─► AI analyst API (Phase 4)
+ paginated API, updated_at        Snowflake)
 GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQL lint
 ```
 
@@ -73,6 +73,16 @@ These were built into the simulator so the analysis has something real to find:
 - About 8% of lead stage times are never logged.
 - Churn reasons are written in the support-ticket text.
 
+## Snowflake
+
+Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
+
+```bash
+python -m pipelines.run --destination snowflake
+cd dbt && SNOWFLAKE_PRIVATE_KEY_PATH=~/.ridgeline/rsa_key.p8 dbt build --profiles-dir . --target snowflake
+python scripts/compare_targets.py   # same numbers on both warehouses
+```
+
 ## Run it
 
 ```bash
@@ -90,7 +100,7 @@ uv pip install --python .venv/Scripts/python.exe -r requirements.txt   # macOS/L
 simulator/   accounts, lifecycle, side systems, world (as-of view), mock API
 pipelines/   dlt sources + load CLI
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
-scripts/     run_all.py
+scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
 docs/        design spec and implementation plans
 ```
@@ -98,7 +108,7 @@ docs/        design spec and implementation plans
 ## Roadmap
 
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
-2. Snowflake as a second dbt target, Cortex to classify ticket themes, snapshots
+2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), 121/121 checks pass on both, parity script, SCD2 snapshot. ⏳ Ticket churn themes: Snowflake Cortex is blocked on trial accounts, so Claude Batch labels them (a Cortex switch stays in the model for paid accounts).
 3. MetricFlow semantic layer, Evidence dashboards, nightly refresh and deploy
 4. AI analyst (Claude + the semantic layer, with spending caps), retention and contractor pages
 5. Polish: architecture diagram, demo video
