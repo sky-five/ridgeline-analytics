@@ -1,0 +1,4 @@
+name: ridgeline
+type: duckdb
+options:
+  filename: ../../../warehouse/ridgeline.duckdb
