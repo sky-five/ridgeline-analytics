@@ -2,6 +2,7 @@ version: 2
 sources:
   - name: support
     description: Support desk (simulated, Zendesk-like).
+    database: "{{ 'RIDGELINE_RAW' if target.type == 'snowflake' else target.database }}"
     schema: raw_support
     config:
       freshness:
@@ -9,6 +10,6 @@ sources:
         error_after: {count: 72, period: hour}
       # freshness = when the pipeline last loaded successfully, not business activity:
       # sparse tables (e.g. CRM deals) can go days without new rows.
-      loaded_at_query: "select max(inserted_at) from raw_support._dlt_loads where status = 0"
+      loaded_at_query: "select max(inserted_at) from {{ 'RIDGELINE_RAW' if target.type == 'snowflake' else target.database }}.raw_support._dlt_loads where status = 0"
     tables:
       - name: support_tickets

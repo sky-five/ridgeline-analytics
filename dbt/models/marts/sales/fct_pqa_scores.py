@@ -50,9 +50,12 @@ def _to_pandas(relation) -> pd.DataFrame:
 
 
 def model(dbt, session):
-    dbt.config(materialized="table", packages=["scikit-learn", "pandas", "numpy"])
+    # packages apply on Snowflake (Anaconda channel); DuckDB uses the local venv
+    dbt.config(materialized="table", packages=["pyarrow", "scikit-learn", "pandas", "numpy"])
     as_of = pd.Timestamp(dbt.config.get("as_of_date"))
-    df = _to_pandas(dbt.ref("fct_account_funnel"))
+    relation = dbt.ref("fct_account_funnel")
+    on_snowflake = hasattr(relation, "to_pandas")
+    df = _to_pandas(relation)
     df["signup_at"] = pd.to_datetime(df.signup_at)
 
     df["proposal_wk1"] = df.proposal_wk1.astype(int)
@@ -86,7 +89,9 @@ def model(dbt, session):
     days_since = (as_of - df.signup_at.dt.normalize()).dt.days
     df["call_list_eligible"] = (df.first_paid_at.isna() | (df.first_paid_at > as_of)) & days_since.between(14, 45)
 
-    return df[[
+    out = df[[
         "account_id", "signup_at", "channel", "crew_size", "score_model", "score_points", "decile",
         "top_reasons", "split", "is_paid_60d", "call_list_eligible", "proposal_wk1", *COUNTS,
     ]]
+    # Snowflake stores unquoted identifiers in upper case; lower-case pandas names would need quoting
+    return out.rename(columns=str.upper) if on_snowflake else out

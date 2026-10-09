@@ -2,6 +2,7 @@ version: 2
 sources:
   - name: app_db
     description: Ridgeline's production app database (simulated), loaded by dlt.
+    database: "{{ 'RIDGELINE_RAW' if target.type == 'snowflake' else target.database }}"
     schema: raw_app_db
     config:
       freshness:
@@ -9,7 +10,7 @@ sources:
         error_after: {count: 72, period: hour}
       # freshness = when the pipeline last loaded successfully, not business activity:
       # sparse tables (e.g. CRM deals) can go days without new rows.
-      loaded_at_query: "select max(inserted_at) from raw_app_db._dlt_loads where status = 0"
+      loaded_at_query: "select max(inserted_at) from {{ 'RIDGELINE_RAW' if target.type == 'snowflake' else target.database }}.raw_app_db._dlt_loads where status = 0"
     tables:
       - name: accounts
       - name: subscriptions
