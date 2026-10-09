@@ -10,3 +10,4 @@ __pycache__/
 .superpowers/
 .user.yml
 .dlt_pipelines/
+infra/snowflake/*.local.sql
