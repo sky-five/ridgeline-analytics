@@ -1,0 +1,32 @@
+version: 2
+
+seeds:
+  - name: ticket_theme_labels
+    description: 300 support tickets labelled by theme by Claude Code, reading only the ticket text.
+    columns:
+      - name: ticket_id
+        data_tests: [unique, not_null]
+      - name: theme
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [measurement_accuracy, billing_price, missing_feature, how_to, bug_outage, integration]
+
+models:
+  - name: fct_ticket_themes
+    description: >
+      Theme for every support ticket. A TF-IDF + logistic regression classifier is trained on 80% of the
+      hand-labelled sample and checked on the other 20% (split = holdout). Labelled tickets keep their label.
+      Snowflake Cortex AI_CLASSIFY would do this in SQL, but it's blocked on trial accounts (see fct_ticket_themes_cortex).
+    columns:
+      - name: ticket_id
+        data_tests: [unique, not_null]
+      - name: churn_theme
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [measurement_accuracy, billing_price, missing_feature, how_to, bug_outage, integration]
+      - name: split
+        data_tests:
+          - accepted_values: {arguments: {values: [train, holdout, unlabelled]}}

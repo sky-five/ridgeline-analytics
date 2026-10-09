@@ -25,6 +25,8 @@ select
     t.subject,
     t.body,
     t.status,
-    p.is_paying_at_creation
+    p.is_paying_at_creation,
+    th.churn_theme
 from tickets as t
 inner join paying as p on t.ticket_id = p.ticket_id
+left join {{ ref('fct_ticket_themes') }} as th on t.ticket_id = th.ticket_id
