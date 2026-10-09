@@ -11,3 +11,6 @@ __pycache__/
 .user.yml
 .dlt_pipelines/
 infra/snowflake/*.local.sql
+reports/node_modules/
+reports/.evidence/
+reports/build/

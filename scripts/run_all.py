@@ -52,6 +52,9 @@ def main() -> None:
     if not args.skip_dbt:
         _dbt("deps", as_of=args.as_of, warehouse=args.warehouse)
         _dbt("build", as_of=args.as_of, warehouse=args.warehouse)
+        from scripts.export_reporting import export  # dashboard tables from the governed metrics
+
+        export(args.warehouse)
 
 
 if __name__ == "__main__":

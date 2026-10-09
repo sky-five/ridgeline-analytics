@@ -51,3 +51,16 @@ def test_net_new_mrr_sums_movements(tmp_path):
     got = sum(float(r["net_new_mrr"]) for r in rows)
     want = sql("select sum(mrr_delta) from fct_mrr_movements")[0][0]
     assert got == pytest.approx(float(want))
+
+
+def test_reporting_export_uses_governed_metrics():
+    # Dashboards read reporting.* tables; they must hold the semantic layer's numbers, not re-derived ones.
+    from scripts.export_reporting import export
+
+    export(DB)
+    got = dict(sql("select strftime(month, '%Y-%m-%d'), mrr from reporting.kpi_monthly"))
+    want = dict(sql("select strftime(date_trunc('month', date_day), '%Y-%m-%d'), "
+                    "arg_max(mrr, date_day)::double from fct_mrr_daily group by 1"))
+    assert got and got == pytest.approx(want)
+    names = {r[0] for r in sql("select name from reporting.metric_catalog")}
+    assert {"mrr", "free_to_paid_60d", "lead_close_rate", "nrr_12m"} <= names
