@@ -50,3 +50,16 @@ def test_next_day_updates_merge(target):
         loaded = dict(c.sql("select subscription_id, status from raw_app_db.subscriptions").fetchall())
     expected = dict(zip(w["subscriptions"].subscription_id, w["subscriptions"].status, strict=True))
     assert loaded == expected
+
+
+def test_reload_after_lost_state_does_not_duplicate(tmp_path):
+    # If dlt's incremental state is lost (renamed pipeline, wiped state), a full reload must not
+    # duplicate rows in log tables.
+    db = str(tmp_path / "wh.duckdb")
+    load(D, duckdb_path=db, pipelines_dir=str(tmp_path / "a"))
+    before = _count(db, "events", "product_events")
+    with duckdb.connect(db) as c:
+        for schema in ("raw_product_events", "raw_app_db", "raw_crm", "raw_support", "raw_ads", "raw_contractor_ops"):
+            c.sql(f"delete from {schema}._dlt_pipeline_state")
+    load(D, duckdb_path=db, pipelines_dir=str(tmp_path / "b"))
+    assert _count(db, "events", "product_events") == before

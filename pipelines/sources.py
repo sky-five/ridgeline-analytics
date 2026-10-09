@@ -17,7 +17,9 @@ def _table_resource(api: MockApi, table: str) -> DltResource:
     @dlt.resource(
         name=table,
         primary_key=spec.primary_key,
-        write_disposition="merge" if spec.mutable else "append",
+        # merge on the primary key for every table, logs included: a reload after lost state
+        # (renamed pipeline, wiped state) then overwrites instead of duplicating
+        write_disposition="merge",
         schema_contract=SCHEMA_CONTRACT,
     )
     def rows(updated_at=dlt.sources.incremental("updated_at", initial_value=EPOCH)):  # noqa: B008 (dlt idiom)
