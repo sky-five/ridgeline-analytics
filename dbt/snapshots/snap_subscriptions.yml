@@ -1,0 +1,16 @@
+snapshots:
+  - name: snap_subscriptions
+    description: >
+      SCD2 history of each subscription's plan, add-ons, MRR and status, captured on every pipeline run.
+      The app database only keeps the current state; this snapshot keeps every version from the day it
+      started running (the change log in fct_mrr_movements covers earlier history).
+    relation: ref('stg_app_db__subscriptions')
+    config:
+      schema: snapshots
+      unique_key: subscription_id
+      strategy: timestamp
+      updated_at: updated_at
+      hard_deletes: invalidate
+    columns:
+      - name: dbt_scd_id
+        data_tests: [unique, not_null]
