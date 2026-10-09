@@ -28,7 +28,7 @@ def load(as_of: date, destination: str = "duckdb", duckdb_path: str = DEFAULT_DU
     counts: dict[str, int] = {}
     for system in SYSTEMS:
         pipeline = dlt.pipeline(
-            pipeline_name=f"ridgeline_{system}",
+            pipeline_name=f"ridgeline_{system}_{destination}",  # separate incremental state per warehouse
             destination=_destination(destination, duckdb_path),
             dataset_name=f"raw_{system}",
             pipelines_dir=pipelines_dir,

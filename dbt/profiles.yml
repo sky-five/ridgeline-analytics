@@ -5,3 +5,13 @@ ridgeline:
       type: duckdb
       path: "{{ env_var('RIDGELINE_DUCKDB_PATH', '../warehouse/ridgeline.duckdb') }}"
       threads: 4
+    snowflake:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'EOBKTCR-QDB70541') }}"
+      user: RIDGELINE_SVC
+      private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+      role: RIDGELINE_TRANSFORMER
+      warehouse: RIDGELINE_WH
+      database: RIDGELINE_ANALYTICS
+      schema: analytics
+      threads: 8
