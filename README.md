@@ -4,7 +4,7 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 > **All data is synthetic.** A deterministic simulator generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
 
-**Status:** Phases 1–2 of 5 are mostly done. The same dbt project builds on **DuckDB and Snowflake** with identical results, and runs with CI and SCD2 snapshots. Next: ticket themes labelled by Claude, the MetricFlow semantic layer, Evidence dashboards and an AI analyst. See the [roadmap](#roadmap).
+**Status:** Phases 1–2 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (132/132 checks each, identical numbers), tested in CI on both. Next: the MetricFlow semantic layer, Evidence dashboards and an AI analyst. See the [roadmap](#roadmap).
 
 ## Architecture
 
@@ -33,7 +33,8 @@ GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQ
 | growth | `fct_cohort_retention` | cohort × month | Logo retention, NRR, GRR |
 | sales | `fct_pqa_scores` | account | Likelihood to pay (dbt **Python** model, scikit-learn), with reasons |
 | sales | `fct_rep_followups` | top-decile account | Did a rep call within 3 days? |
-| customer_success | `fct_support_tickets` | ticket | Reply and resolution times |
+| customer_success | `fct_support_tickets` | ticket | Reply and resolution times, churn theme |
+| customer_success | `fct_ticket_themes` | ticket | Theme from hand labels + classifier (dbt **Python** model) |
 | customer_success | `fct_account_health` | paying account | Rule-based health score and risk band |
 | contractor_outcomes | `fct_contractor_leads` | homeowner lead | Speed to lead in minutes, outcomes that don't overlap |
 | contractor_outcomes | `fct_contractor_benchmarks` | contractor × month | Close rate and speed vs crew-size peers |
@@ -108,7 +109,7 @@ docs/        design spec and implementation plans
 ## Roadmap
 
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
-2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), 121/121 checks pass on both, parity script, SCD2 snapshot. ⏳ Ticket churn themes: Snowflake Cortex is blocked on trial accounts, so Claude Batch labels them (a Cortex switch stays in the model for paid accounts).
+2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), with its own CI job and a DuckDB parity check. SCD2 snapshot of subscriptions. Support-ticket churn themes come from 300 tickets labelled by Claude Code plus a TF-IDF classifier (100% on held-out labels). Snowflake Cortex `AI_CLASSIFY` is blocked on trial accounts, so it sits behind a `use_cortex` flag for paid accounts.
 3. MetricFlow semantic layer, Evidence dashboards, nightly refresh and deploy
 4. AI analyst (Claude + the semantic layer, with spending caps), retention and contractor pages
 5. Polish: architecture diagram, demo video
