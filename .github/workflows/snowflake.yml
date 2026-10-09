@@ -1,0 +1,78 @@
+name: snowflake
+
+# Builds the same dbt project on Snowflake and checks it matches DuckDB.
+# Runs on main and on demand; skipped when the Snowflake secrets aren't set (e.g. forks).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: snowflake
+  cancel-in-progress: false
+
+jobs:
+  snowflake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+    steps:
+      - name: Check secrets
+        id: secrets
+        run: echo "ok=${{ secrets.SNOWFLAKE_PRIVATE_KEY != '' }}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.secrets.outputs.ok == 'true'
+
+      - uses: astral-sh/setup-uv@v6
+        if: steps.secrets.outputs.ok == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Install and write key
+        if: steps.secrets.outputs.ok == 'true'
+        env:
+          KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/snowflake_key.p8"
+          chmod 600 "$RUNNER_TEMP/snowflake_key.p8"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=$RUNNER_TEMP/snowflake_key.p8" >> "$GITHUB_ENV"
+          echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
+
+      - name: Cache simulated history
+        if: steps.secrets.outputs.ok == 'true'
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('simulator/**') }}
+
+      - name: Load into Snowflake (incremental)
+        if: steps.secrets.outputs.ok == 'true'
+        env:
+          DESTINATION__SNOWFLAKE__CREDENTIALS__DATABASE: RIDGELINE_RAW
+          DESTINATION__SNOWFLAKE__CREDENTIALS__USERNAME: RIDGELINE_SVC
+          DESTINATION__SNOWFLAKE__CREDENTIALS__HOST: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DESTINATION__SNOWFLAKE__CREDENTIALS__WAREHOUSE: RIDGELINE_WH
+          DESTINATION__SNOWFLAKE__CREDENTIALS__ROLE: RIDGELINE_LOADER
+        run: |
+          export DESTINATION__SNOWFLAKE__CREDENTIALS__PRIVATE_KEY_PATH="$SNOWFLAKE_PRIVATE_KEY_PATH"
+          python -m pipelines.run --as-of "$AS_OF" --destination snowflake
+
+      - name: dbt build on Snowflake
+        if: steps.secrets.outputs.ok == 'true'
+        working-directory: dbt
+        run: |
+          dbt deps --profiles-dir .
+          dbt build --profiles-dir . --target snowflake --vars "{as_of_date: '$AS_OF'}"
+          dbt source freshness --profiles-dir . --target snowflake
+
+      - name: Same numbers as DuckDB
+        if: steps.secrets.outputs.ok == 'true'
+        run: |
+          python scripts/run_all.py --fresh --as-of "$AS_OF"
+          python scripts/compare_targets.py
