@@ -1,0 +1,149 @@
+version: 2
+
+# The semantic layer: entities, dimensions and measures over the marts.
+# Metrics are defined once in _metrics.yml; dashboards and the AI analyst only query these.
+
+models:
+  - name: metricflow_time_spine
+    description: Daily calendar for MetricFlow.
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        granularity: day
+
+semantic_models:
+  - name: mrr_daily
+    description: Company MRR each day.
+    model: ref('fct_mrr_daily')
+    defaults: {agg_time_dimension: date_day}
+    entities:
+      - {name: mrr_day, type: primary, expr: date_day}
+    dimensions:
+      - {name: date_day, type: time, type_params: {time_granularity: day}}
+    measures:
+      - name: mrr_level
+        description: MRR at the end of the period (last day), not a sum of days.
+        agg: sum
+        expr: mrr
+        non_additive_dimension: {name: date_day, window_choice: max}
+      - name: paying_accounts_level
+        agg: sum
+        expr: paying_accounts
+        non_additive_dimension: {name: date_day, window_choice: max}
+      - {name: new_mrr_amount, agg: sum, expr: new_mrr}
+      - {name: expansion_mrr_amount, agg: sum, expr: expansion_mrr}
+      - {name: contraction_mrr_amount, agg: sum, expr: contraction_mrr}
+      - {name: churned_mrr_amount, agg: sum, expr: churned_mrr}
+
+  - name: mrr_movements
+    description: Every change that moved MRR.
+    model: ref('fct_mrr_movements')
+    defaults: {agg_time_dimension: changed_at}
+    entities:
+      - {name: movement, type: primary, expr: change_id}
+      - {name: account, type: foreign, expr: account_id}
+    dimensions:
+      - {name: changed_at, type: time, type_params: {time_granularity: day}}
+      - {name: movement_type, type: categorical}
+    measures:
+      - {name: mrr_delta, agg: sum}
+
+  - name: accounts
+    description: Contractor accounts and their early funnel.
+    model: ref('fct_account_funnel')
+    defaults: {agg_time_dimension: signup_at}
+    entities:
+      - {name: account, type: primary, expr: account_id}
+    dimensions:
+      - {name: signup_at, type: time, type_params: {time_granularity: day}}
+      - {name: channel, type: categorical}
+      - {name: region, type: categorical}
+      - {name: crew_size, type: categorical}
+      - {name: is_activated, type: categorical}
+      - {name: is_mature, type: categorical}
+    measures:
+      - {name: signup_count, agg: count, expr: account_id}
+      - {name: activated_count, agg: sum, expr: "case when is_activated then 1 else 0 end"}
+      - name: mature_signup_count
+        description: Signups old enough (60+ days) for their 60-day outcome to be known.
+        agg: sum
+        expr: "case when is_mature then 1 else 0 end"
+      - {name: mature_paid_60d_count, agg: sum, expr: "case when is_mature and is_paid_60d then 1 else 0 end"}
+
+  - name: marketing
+    description: Spend and paid conversions per channel per day.
+    model: ref('fct_marketing_channel_daily')
+    defaults: {agg_time_dimension: spend_day}
+    entities:
+      - {name: channel_day, type: primary, expr: "channel || '-' || cast(date_day as varchar)"}
+    dimensions:
+      - {name: spend_day, type: time, expr: date_day, type_params: {time_granularity: day}}
+      - {name: marketing_channel, type: categorical, expr: channel}
+    measures:
+      - {name: spend_amount, agg: sum, expr: spend_usd}
+      - {name: paid_conversions, agg: sum, expr: paid_60d_from_cohort}
+
+  - name: cohorts
+    description: Paid cohorts by first paid month, N months later.
+    model: ref('fct_cohort_retention')
+    defaults: {agg_time_dimension: cohort_month}
+    entities:
+      - {name: cohort_period, type: primary, expr: "cast(cohort_month as varchar) || '-' || cast(months_since_start as varchar)"}
+    dimensions:
+      - {name: cohort_month, type: time, type_params: {time_granularity: month}}
+      - {name: months_since_start, type: categorical}
+    measures:
+      - {name: cohort_start_mrr_amount, agg: sum, expr: cohort_start_mrr}
+      - {name: retained_mrr_amount, agg: sum, expr: retained_mrr}
+
+  - name: contractor_leads
+    description: Contractors' homeowner leads.
+    model: ref('fct_contractor_leads')
+    defaults: {agg_time_dimension: created_at}
+    entities:
+      - {name: lead, type: primary, expr: lead_id}
+      - {name: account, type: foreign, expr: account_id}
+    dimensions:
+      - {name: created_at, type: time, type_params: {time_granularity: day}}
+      - {name: lead_source, type: categorical}
+      - {name: speed_bucket, type: categorical}
+      - {name: outcome_group, type: categorical}
+    measures:
+      - {name: lead_count, agg: count, expr: lead_id}
+      - {name: won_count, agg: sum, expr: "case when outcome_group = 'won' then 1 else 0 end"}
+      - {name: closed_count, agg: sum, expr: "case when outcome_group <> 'open' then 1 else 0 end"}
+      - name: speed_to_lead_p50
+        agg: percentile
+        expr: speed_to_lead_min
+        agg_params: {percentile: 0.5, use_discrete_percentile: false}
+
+  - name: support_tickets
+    description: Support tickets with their theme.
+    model: ref('fct_support_tickets')
+    defaults: {agg_time_dimension: ticket_created_at}
+    entities:
+      - {name: ticket, type: primary, expr: ticket_id}
+      - {name: account, type: foreign, expr: account_id}
+    dimensions:
+      - {name: ticket_created_at, type: time, expr: created_at, type_params: {time_granularity: day}}
+      - {name: churn_theme, type: categorical}
+      - {name: priority, type: categorical}
+    measures:
+      - {name: ticket_count, agg: count, expr: ticket_id}
+
+  - name: measurement_orders
+    description: Measurement report orders and redos.
+    model: ref('fct_measurement_quality')
+    defaults: {agg_time_dimension: ordered_at}
+    entities:
+      - {name: measurement_order, type: primary, expr: order_id}
+      - {name: account, type: foreign, expr: account_id}
+    dimensions:
+      - {name: ordered_at, type: time, type_params: {time_granularity: day}}
+      - {name: roof_type, type: categorical}
+      - {name: tier, type: categorical}
+      - {name: order_region, type: categorical, expr: region}
+    measures:
+      - {name: order_count, agg: count, expr: order_id}
+      - {name: redo_count, agg: sum, expr: "case when is_redo then 1 else 0 end"}

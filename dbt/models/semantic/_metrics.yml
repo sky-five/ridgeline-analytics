@@ -1,0 +1,139 @@
+version: 2
+
+# Governed metrics: one definition each, used by the dashboards and the AI analyst.
+
+metrics:
+  # --- revenue
+  - name: mrr
+    label: MRR
+    description: Monthly recurring revenue at the end of the period.
+    type: simple
+    type_params: {measure: mrr_level}
+  - name: paying_accounts
+    label: Paying accounts
+    description: Accounts on a paid plan at the end of the period.
+    type: simple
+    type_params: {measure: paying_accounts_level}
+  - name: new_mrr
+    label: New MRR
+    type: simple
+    type_params: {measure: new_mrr_amount}
+  - name: expansion_mrr
+    label: Expansion MRR
+    type: simple
+    type_params: {measure: expansion_mrr_amount}
+  - name: churned_mrr
+    label: Churned MRR
+    description: MRR lost to cancellations (negative).
+    type: simple
+    type_params: {measure: churned_mrr_amount}
+  - name: net_new_mrr
+    label: Net new MRR
+    description: New + expansion + reactivation - contraction - churn.
+    type: simple
+    type_params: {measure: mrr_delta}
+  - name: nrr_12m
+    label: 12-month NRR
+    description: MRR a paid cohort keeps 12 months after starting, incl. expansion, as a share of its starting MRR.
+    type: ratio
+    type_params:
+      numerator:
+        name: retained_mrr
+        filter: "{{ Dimension('cohort_period__months_since_start') }} = 12"
+      denominator:
+        name: cohort_start_mrr
+        filter: "{{ Dimension('cohort_period__months_since_start') }} = 12"
+
+  # --- growth
+  - name: signups
+    label: Signups
+    type: simple
+    type_params: {measure: signup_count}
+  - name: activation_rate
+    label: Activation rate
+    description: Share of signups that sent a proposal within 14 days.
+    type: ratio
+    type_params: {numerator: activated_signups, denominator: signups}
+  - name: free_to_paid_60d
+    label: Free to paid (60 days)
+    description: Share of signups old enough to judge that paid within 60 days.
+    type: ratio
+    type_params: {numerator: mature_paid_60d, denominator: mature_signups}
+  - name: ad_spend
+    label: Ad spend
+    type: simple
+    type_params: {measure: spend_amount}
+  - name: cac
+    label: CAC
+    description: Spend per paid conversion, by the signup date of the conversions.
+    type: ratio
+    type_params: {numerator: ad_spend, denominator: paid_conversions}
+
+  # --- contractor outcomes
+  - name: leads
+    label: Homeowner leads
+    type: simple
+    type_params: {measure: lead_count}
+  - name: lead_close_rate
+    label: Lead close rate
+    description: Won leads / closed leads (open leads excluded).
+    type: ratio
+    type_params: {numerator: won_leads, denominator: closed_leads}
+  - name: speed_to_lead_median_min
+    label: Median speed to lead (minutes)
+    description: Median minutes to first contact; leads with no logged contact time are excluded.
+    type: simple
+    type_params: {measure: speed_to_lead_p50}
+
+  # --- customer experience
+  - name: tickets
+    label: Support tickets
+    type: simple
+    type_params: {measure: ticket_count}
+  - name: measurement_orders
+    label: Measurement orders
+    type: simple
+    type_params: {measure: order_count}
+  - name: measurement_redo_rate
+    label: Measurement redo rate
+    description: Share of measurement reports the contractor asked to redo.
+    type: ratio
+    type_params: {numerator: redo_orders, denominator: measurement_orders}
+
+  # --- building blocks for the ratios above
+  - name: activated_signups
+    label: Activated signups
+    type: simple
+    type_params: {measure: activated_count}
+  - name: mature_signups
+    label: Mature signups
+    type: simple
+    type_params: {measure: mature_signup_count}
+  - name: mature_paid_60d
+    label: Mature signups paid within 60 days
+    type: simple
+    type_params: {measure: mature_paid_60d_count}
+  - name: paid_conversions
+    label: Paid conversions
+    type: simple
+    type_params: {measure: paid_conversions}
+  - name: won_leads
+    label: Won leads
+    type: simple
+    type_params: {measure: won_count}
+  - name: closed_leads
+    label: Closed leads
+    type: simple
+    type_params: {measure: closed_count}
+  - name: redo_orders
+    label: Redo requests
+    type: simple
+    type_params: {measure: redo_count}
+  - name: retained_mrr
+    label: Retained cohort MRR
+    type: simple
+    type_params: {measure: retained_mrr_amount}
+  - name: cohort_start_mrr
+    label: Cohort starting MRR
+    type: simple
+    type_params: {measure: cohort_start_mrr_amount}

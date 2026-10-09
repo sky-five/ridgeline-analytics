@@ -46,6 +46,9 @@ jobs:
       - name: Load + dbt build
         run: python scripts/run_all.py --fresh --as-of "$AS_OF"
 
+      - name: Governed metrics agree with the marts
+        run: pytest -m warehouse -q
+
       - name: Source freshness
         working-directory: dbt
         run: |
