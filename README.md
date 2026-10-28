@@ -116,4 +116,4 @@ docs/        design spec and implementation plans
 
 ## Notes
 
-Built by Shubham (Sky) Yadav with Claude Code as a pair programmer. I set the design, metrics and checks, and reviewed every number.
+Built by Shubham Yadav with Claude Code as a pair programmer. I set the design, metrics and checks, and reviewed every number.
