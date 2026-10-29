@@ -19,7 +19,7 @@ GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQ
 |---|---|
 | `simulator/` | Deterministic history of six systems: app DB, product events, CRM, support desk, ad spend, and contractors' own homeowner leads. Served "as of" any date through a paginated mock API with `updated_at` cursors. |
 | `pipelines/` | One dlt source per system. Incremental on `updated_at`, merge for mutable tables, append for logs, schema contracts that freeze data types. Loads about 1.2M rows in ~30s. |
-| `dbt/` | Staging → intermediate → six domain mart folders. 28 models, 12 with enforced contracts, 88 tests. |
+| `dbt/` | Staging → intermediate → six domain mart folders. 31 models (29 SQL, 2 Python), 12 with enforced contracts, 94 tests. |
 
 ## Data model (marts)
 
@@ -44,9 +44,9 @@ GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQ
 
 | Kind | Count | Examples |
 |---|---|---|
-| dbt generic tests | 76 | Keys, accepted values, relationships, `dbt_utils` range and combination checks |
+| dbt generic tests | 80 | Keys, accepted values, relationships, `dbt_utils` range and combination checks |
 | dbt unit tests | 9 | MRR movement types and month boundaries, the 60-day paid cutoff, early signals stopping at first payment (no leakage), CAC using only cohorts with a known outcome, rep follow-ups, health-score rules, speed-to-lead buckets, peer ranks |
-| dbt singular tests | 3 | Every subscription invoice equals the MRR log at issue time. Last-day MRR ties to the sum of accounts. The score's top decile beats average by ≥2.5× on held-out data. |
+| dbt singular tests | 5 | Every subscription invoice equals the MRR log at issue time. Last-day MRR ties to the sum of accounts. The score's top decile beats average by ≥2.5× on held-out data. One current snapshot row per subscription. Ticket-theme classifier holds its accuracy on held-out labels. |
 | Model contracts | 12 marts | Column names and types are enforced at build time |
 | Source freshness | 11 tables | Time since the last successful pipeline load: warn after 36h, error after 72h |
 | pytest | 41 | Simulator determinism, history stable across dates, planted patterns present, API paging, dlt idempotency and merge behaviour |
