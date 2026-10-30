@@ -1,0 +1,136 @@
+# 20 questions for the AI analyst. Each answer is computed live from the marts (truth_sql) or the
+# manifest (truth_lineage_sources), so the eval stays right for any as-of date.
+#   type: number (within 0.5%) | ratio (within 0.5 points; 0.42 or 42 both accepted) | text | set | unanswerable
+#   models: the agent passes "grounded" if it cites at least one of these.
+
+- id: mrr_sep_2026
+  question: What was Ridgeline's MRR at the end of September 2026?
+  type: number
+  truth_sql: select mrr from fct_mrr_daily where date_day = date '2026-09-30'
+  models: [fct_mrr_daily]
+
+- id: paying_accounts_latest
+  question: How many paying accounts did Ridgeline have on the latest day in the data?
+  type: number
+  truth_sql: select paying_accounts from fct_mrr_daily order by date_day desc limit 1
+  models: [fct_mrr_daily]
+
+- id: net_new_mrr_2025
+  question: What was net new MRR for calendar year 2025?
+  type: number
+  truth_sql: select sum(net_new_mrr) from fct_mrr_daily where year(date_day) = 2025
+  models: [fct_mrr_daily, fct_mrr_movements]
+
+- id: churned_mrr_q2_2026
+  question: How much MRR was lost to cancellations in Q2 2026 (April to June)? Give the amount as a positive number.
+  type: number
+  truth_sql: select abs(sum(churned_mrr)) from fct_mrr_daily where date_day between date '2026-04-01' and date '2026-06-30'
+  models: [fct_mrr_daily, fct_mrr_movements]
+
+- id: activation_rate
+  question: What share of all signups sent a proposal within their first 14 days?
+  type: ratio
+  truth_sql: select avg(case when is_activated then 1.0 else 0 end) from fct_account_funnel
+  models: [fct_account_funnel]
+
+- id: free_to_paid_60d
+  question: Of the signups old enough to judge, what share paid within 60 days of signing up?
+  type: ratio
+  truth_sql: select avg(case when is_paid_60d then 1.0 else 0 end) from fct_account_funnel where is_mature
+  models: [fct_account_funnel]
+
+- id: best_channel
+  question: Which acquisition channel has the highest 60-day free-to-paid rate, counting only signups old enough to judge?
+  type: text
+  truth_sql: |
+    select channel from fct_account_funnel where is_mature
+    group by 1 order by avg(case when is_paid_60d then 1.0 else 0 end) desc limit 1
+  models: [fct_account_funnel]
+
+- id: worst_channel
+  question: Which acquisition channel has the lowest 60-day free-to-paid rate, counting only signups old enough to judge?
+  type: text
+  truth_sql: |
+    select channel from fct_account_funnel where is_mature
+    group by 1 order by avg(case when is_paid_60d then 1.0 else 0 end) asc limit 1
+  models: [fct_account_funnel]
+
+- id: ad_spend_2025
+  question: How much did Ridgeline spend on ads in 2025?
+  type: number
+  truth_sql: select sum(spend_usd) from fct_marketing_channel_daily where year(date_day) = 2025
+  models: [fct_marketing_channel_daily]
+
+- id: cac_google_2025
+  question: What was CAC for the google_ads channel in 2025, as ad spend per paid conversion by signup date?
+  type: number
+  truth_sql: |
+    select sum(spend_usd) / sum(paid_60d_from_cohort) from fct_marketing_channel_daily
+    where channel = 'google_ads' and year(date_day) = 2025
+  models: [fct_marketing_channel_daily]
+
+- id: nrr_12m
+  question: What is 12-month net revenue retention, pooled across every paid cohort that has reached month 12?
+  type: ratio
+  truth_sql: select sum(retained_mrr) / sum(cohort_start_mrr) from fct_cohort_retention where months_since_start = 12
+  models: [fct_cohort_retention]
+
+- id: lead_close_rate
+  question: What share of homeowner leads are won, counting only leads that are no longer open?
+  type: ratio
+  truth_sql: |
+    select sum(case when outcome_group = 'won' then 1.0 else 0 end) / sum(case when outcome_group <> 'open' then 1 else 0 end)
+    from fct_contractor_leads
+  models: [fct_contractor_leads]
+
+- id: close_rate_under_5m
+  question: For leads first contacted in under 5 minutes, what share are won, counting only leads that are no longer open?
+  type: ratio
+  truth_sql: |
+    select sum(case when outcome_group = 'won' then 1.0 else 0 end) / sum(case when outcome_group <> 'open' then 1 else 0 end)
+    from fct_contractor_leads where speed_bucket = 'lt_5m'
+  models: [fct_contractor_leads]
+
+- id: median_speed_to_lead
+  question: What is the median speed to lead in minutes, leaving out leads with no logged contact time?
+  type: number
+  truth_metric: speed_to_lead_median_min
+  tolerance: 0.02
+  models: [fct_contractor_leads]
+
+- id: missing_contact_share
+  question: What share of all homeowner leads have no first-contact time logged even though they were worked?
+  type: ratio
+  truth_sql: select avg(case when missing_contact_ts then 1.0 else 0 end) from fct_contractor_leads
+  models: [fct_contractor_leads]
+
+- id: worst_roof_type
+  question: Which roof type has the highest measurement-report redo rate?
+  type: text
+  truth_sql: |
+    select roof_type from fct_measurement_quality group by 1
+    order by avg(case when is_redo then 1.0 else 0 end) desc limit 1
+  models: [fct_measurement_quality]
+
+- id: at_risk_accounts
+  question: How many paying accounts are currently in the at-risk health band?
+  type: number
+  truth_sql: select count(*) from fct_account_health where risk_band = 'at_risk'
+  models: [fct_account_health]
+
+- id: rep_followup_rate
+  question: Of the top-decile likely-to-pay accounts, what share got a sales rep call within 3 days of becoming eligible?
+  type: ratio
+  truth_sql: select avg(case when called_within_3d then 1.0 else 0 end) from fct_rep_followups
+  models: [fct_rep_followups]
+
+- id: mrr_sources
+  question: Which raw source tables does fct_mrr_daily ultimately depend on? List them as source_name.table_name.
+  type: set
+  truth_lineage_sources: fct_mrr_daily
+  models: [fct_mrr_daily]
+
+- id: nps
+  question: What is Ridgeline's Net Promoter Score?
+  type: unanswerable
+  models: []

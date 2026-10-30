@@ -4,6 +4,7 @@ dbt-duckdb==1.11.0
 dbt-snowflake==1.12.1
 dbt-metricflow==0.15.0
 dlt[duckdb,snowflake]==1.31.0
+mcp==2.3.0
 duckdb==1.5.6
 numpy==2.5.3
 pandas==3.0.6

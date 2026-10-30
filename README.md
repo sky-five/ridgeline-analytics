@@ -74,6 +74,27 @@ These were built into the simulator so the analysis has something real to find:
 - About 8% of lead stage times are never logged.
 - Churn reasons are written in the support-ticket text.
 
+## AI analyst (Phase 4)
+
+An agent that answers business questions from the warehouse the way an analytics engineer would: find the right mart, read its definition, prefer the governed metric, run read-only SQL, and cite where the number came from. `analyst/` holds it.
+
+| Piece | What it does |
+|---|---|
+| `catalog.py` | Reads dbt's `manifest.json` and `semantic_manifest.json`: search, columns, tests, contracts, lineage back to the raw sources, and the mart each metric is built on |
+| `sql_guard.py` | Read-only at three levels: the DuckDB file opens `read_only`, the session turns off file and network access and locks its settings, and every statement must parse as a single `SELECT`. Rows and run time are capped |
+| `tools.py` | Six tools: `search_catalog`, `describe_model`, `get_lineage`, `list_metrics`, `query_metric`, `run_sql`. Metric queries are compiled by MetricFlow and run through the same guard, so the agent's numbers match the dashboards |
+| `server.py` | MCP server over stdio, so Claude Code, Claude Desktop or any MCP client can use the tools |
+| `agent.py` | The same tools as a Claude API agent (`claude-opus-5-5`), capped at 12 model calls and 300k tokens per question |
+| `evals/` | 20 questions with answers computed from the marts at run time, scored for correctness (0.5% or half a point) and grounding (did it cite the right mart) |
+
+```bash
+claude mcp add ridgeline -- .venv/Scripts/python -m analyst.server     # use it from Claude Code
+.venv/Scripts/python -m analyst.agent "What was MRR at the end of September 2026?"
+.venv/Scripts/python -m analyst.evals.run --backend claude-code        # or --backend api
+```
+
+The eval questions cover governed metrics, ad hoc SQL with the right filters (mature signups only, open leads excluded), lineage, and one question the warehouse can't answer, where the right reply is "no data" rather than a guess.
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -111,7 +132,7 @@ docs/        design spec and implementation plans
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
 2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), with its own CI job and a DuckDB parity check. SCD2 snapshot of subscriptions. Support-ticket churn themes come from 300 tickets labelled by Claude Code plus a TF-IDF classifier (100% on held-out labels). Snowflake Cortex `AI_CLASSIFY` is blocked on trial accounts, so it sits behind a `use_cortex` flag for paid accounts.
 3. MetricFlow semantic layer, Evidence dashboards, nightly refresh and deploy
-4. AI analyst (Claude + the semantic layer, with spending caps), retention and contractor pages
+4. 🚧 AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval. Next: retention and contractor pages
 5. Polish: architecture diagram, demo video
 
 ## Notes
