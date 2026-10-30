@@ -62,7 +62,8 @@ def ask_claude_code(question: str, model: str | None, timeout: int = 600) -> dic
     with tempfile.TemporaryDirectory() as tmp:
         cfg = Path(tmp) / "mcp.json"
         cfg.write_text(json.dumps({"mcpServers": {"ridgeline": {
-            "command": sys.executable, "args": ["-m", "analyst.server"], "cwd": str(ROOT)}}}), encoding="utf-8")
+            "command": sys.executable, "args": ["-m", "analyst.server"], "cwd": str(ROOT),
+            "env": {"PYTHONPATH": str(ROOT)}}}}), encoding="utf-8")
         cmd = [exe, "-p", question, "--output-format", "stream-json", "--verbose",
                "--mcp-config", str(cfg), "--strict-mcp-config", "--tools", "",
                "--allowedTools", ",".join(f"mcp__ridgeline__{t}" for t in TOOL_NAMES),
@@ -81,6 +82,10 @@ def ask_claude_code(question: str, model: str | None, timeout: int = 600) -> dic
             ev = json.loads(line)
         except json.JSONDecodeError:
             continue
+        if ev.get("type") == "system" and ev.get("subtype") == "init":
+            down = [m for m in ev.get("mcp_servers", []) if m.get("status") != "connected"]
+            if down:
+                raise SystemExit(f"MCP server did not start: {down}")
         if ev.get("type") == "assistant":
             calls += [b["name"].removeprefix("mcp__ridgeline__") for b in ev["message"].get("content", [])
                       if b.get("type") == "tool_use"]
