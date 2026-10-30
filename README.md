@@ -95,6 +95,18 @@ claude mcp add ridgeline -- .venv/Scripts/python -m analyst.server     # use it 
 
 The eval questions cover governed metrics, ad hoc SQL with the right filters (mature signups only, open leads excluded), lineage, and one question the warehouse can't answer, where the right reply is "no data" rather than a guess.
 
+**First run (2026-10-30, data as of 2026-10-29, Claude Code headless with the MCP server):**
+
+| Result | Number |
+|---|---|
+| Correct answers | 20 / 20 |
+| Cited the right mart | 20 / 20 |
+| Answered through a governed metric | 15 / 20 |
+| Median time / tool calls per question | 28 s / 5 |
+| Cost at API rates, all 20 questions | $3.66 |
+
+For the NPS question it searched every table and column for survey data, found none and returned no number. Full transcripts: `analyst/evals/results/`. These questions state their definitions; the next eval adds vaguer questions ("how are we doing on retention?") where choosing the definition is the hard part.
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:

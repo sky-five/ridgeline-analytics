@@ -1,0 +1,541 @@
+{
+ "backend": "claude-code",
+ "model": "default",
+ "ran_at": "2026-10-30T10:04:40",
+ "as_of": "2026-10-29",
+ "correct": 20,
+ "grounded": 20,
+ "total": 20,
+ "results": [
+  {
+   "id": "mrr_sep_2026",
+   "question": "What was Ridgeline's MRR at the end of September 2026?",
+   "type": "number",
+   "truth": 243419.0,
+   "answer": 243419,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_mrr_daily"
+   ],
+   "metric": "mrr",
+   "sql": null,
+   "note": "Governed mrr metric: MRR snapshot from fct_mrr_daily on the last day of September 2026 (2026-09-30).",
+   "text": "Ridgeline's MRR at the end of September 2026 was **$243,419**.\n\nThis comes from the governed `mrr` metric, which takes the company MRR snapshot from `fct_mrr_daily` on the last day of the period (2026-09-30), so it matches what the dashboards show.\n\n```json\n{\"answer\": 243419,\n \"unit\": \"usd\",\n \"models\": [\"fct_mrr_daily\"],\n \"metric\": \"mrr\",\n \"sql\": null,\n \"note\": \"Governed mrr metric: MRR snapshot from fct_mrr_daily on the last day of September 2026 (2026-09-30).\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric"
+   ],
+   "seconds": 30.3,
+   "cost_usd": 0.14471075
+  },
+  {
+   "id": "paying_accounts_latest",
+   "question": "How many paying accounts did Ridgeline have on the latest day in the data?",
+   "type": "number",
+   "truth": 787,
+   "answer": 787,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_mrr_daily"
+   ],
+   "metric": "paying_accounts",
+   "sql": null,
+   "note": "Governed paying_accounts metric (accounts on a paid plan at end of day) on the latest date in fct_mrr_daily, 2026-10-29.",
+   "text": "Ridgeline had **787 paying accounts** on the latest day in the data, **2026-10-29**, per the governed `paying_accounts` metric (accounts on a paid plan at end of day, from `fct_mrr_daily`). For context, the count was 785 the day before and 783 on 2026-10-27, so it's been ticking up.\n\n```json\n{\"answer\": 787,\n \"unit\": \"count\",\n \"models\": [\"fct_mrr_daily\"],\n \"metric\": \"paying_accounts\",\n \"sql\": null,\n \"note\": \"Governed paying_accounts metric (accounts on a paid plan at end of day) on the latest date in fct_mrr_daily, 2026-10-29.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric",
+    "describe_model"
+   ],
+   "seconds": 20.9,
+   "cost_usd": 0.158139
+  },
+  {
+   "id": "net_new_mrr_2025",
+   "question": "What was net new MRR for calendar year 2025?",
+   "type": "number",
+   "truth": 85939.0,
+   "answer": 85939,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_mrr_movements"
+   ],
+   "metric": "net_new_mrr",
+   "sql": "SELECT SUM(net_new_mrr) AS net_new_mrr FROM (SELECT DATE_TRUNC('day', changed_at) AS metric_time__day, mrr_delta AS net_new_mrr FROM \"ridgeline\".\"main\".\"fct_mrr_movements\") subq_2 WHERE metric_time__day >= '2025-01-01' AND metric_time__day < '2026-01-01'",
+   "note": "Sum of mrr_delta across all movements (new + expansion + reactivation - contraction - churn) with changed_at in calendar 2025.",
+   "text": "Net new MRR for calendar year 2025 was **$85,939**, using the governed `net_new_mrr` metric (new + expansion + reactivation \u2212 contraction \u2212 churn, summed over all MRR movements dated 2025-01-01 through 2025-12-31).\n\n```json\n{\"answer\": 85939,\n \"unit\": \"usd\",\n \"models\": [\"fct_mrr_movements\"],\n \"metric\": \"net_new_mrr\",\n \"sql\": \"SELECT SUM(net_new_mrr) AS net_new_mrr FROM (SELECT DATE_TRUNC('day', changed_at) AS metric_time__day, mrr_delta AS net_new_mrr FROM \\\"ridgeline\\\".\\\"main\\\".\\\"fct_mrr_movements\\\") subq_2 WHERE metric_time__day >= '2025-01-01' AND metric_time__day < '2026-01-01'\",\n \"note\": \"Sum of mrr_delta across all movements (new + expansion + reactivation - contraction - churn) with changed_at in calendar 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric"
+   ],
+   "seconds": 28.7,
+   "cost_usd": 0.12892350000000002
+  },
+  {
+   "id": "churned_mrr_q2_2026",
+   "question": "How much MRR was lost to cancellations in Q2 2026 (April to June)? Give the amount as a positive number.",
+   "type": "number",
+   "truth": 37384.0,
+   "answer": 37384,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_mrr_daily"
+   ],
+   "metric": "churned_mrr",
+   "sql": "SELECT SUM(churned_mrr) AS churned_mrr FROM (SELECT DATE_TRUNC('day', date_day) AS metric_time__day, churned_mrr FROM \"ridgeline\".\"main\".\"fct_mrr_daily\") subq_2 WHERE metric_time__day >= '2026-04-01' AND metric_time__day < '2026-07-01'",
+   "note": "Governed churned_mrr metric for 2026-04-01 to 2026-06-30 is -37,384 (stored negative); reported as a positive amount, excludes contraction/downgrades.",
+   "text": "Ridgeline lost **$37,384 of MRR to cancellations in Q2 2026** (April\u2013June).\n\nThis comes from the governed `churned_mrr` metric (built on `fct_mrr_daily`), which stores churn as a negative number (\u221237,384); I've flipped the sign as you asked. Monthly breakdown, for context:\n\n| Month | Churned MRR |\n|---|---|\n| April 2026 | $13,141 |\n| May 2026 | $14,535 |\n| June 2026 | $9,708 |\n| **Q2 total** | **$37,384** |\n\nNote this is churn only (full cancellations); downgrades are tracked separately as `contraction_mrr` and are not included here.\n\n```json\n{\"answer\": 37384,\n \"unit\": \"usd\",\n \"models\": [\"fct_mrr_daily\"],\n \"metric\": \"churned_mrr\",\n \"sql\": \"SELECT SUM(churned_mrr) AS churned_mrr FROM (SELECT DATE_TRUNC('day', date_day) AS metric_time__day, churned_mrr FROM \\\"ridgeline\\\".\\\"main\\\".\\\"fct_mrr_daily\\\") subq_2 WHERE metric_time__day >= '2026-04-01' AND metric_time__day < '2026-07-01'\",\n \"note\": \"Governed churned_mrr metric for 2026-04-01 to 2026-06-30 is -37,384 (stored negative); reported as a positive amount, excludes contraction/downgrades.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric",
+    "query_metric",
+    "describe_model"
+   ],
+   "seconds": 34.2,
+   "cost_usd": 0.19404675000000002
+  },
+  {
+   "id": "activation_rate",
+   "question": "What share of all signups sent a proposal within their first 14 days?",
+   "type": "ratio",
+   "truth": 0.3121094210588374,
+   "answer": 0.3121,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_account_funnel"
+   ],
+   "metric": "activation_rate",
+   "sql": "SELECT SUM(CASE WHEN is_activated THEN 1 ELSE 0 END) AS activated_signups, COUNT(account_id) AS signups, CAST(SUM(CASE WHEN is_activated THEN 1 ELSE 0 END) AS DOUBLE) / NULLIF(COUNT(account_id), 0) AS activation_rate FROM main.fct_account_funnel",
+   "note": "Governed activation_rate: 2,647 of 8,481 signups sent a proposal within 14 days; denominator includes signups younger than 14 days.",
+   "text": "**31.2%** of all signups sent a proposal within their first 14 days \u2014 2,647 activated out of 8,481 total signups.\n\nThis is the governed `activation_rate` metric (activated signups \u00f7 all signups, built on `fct_account_funnel`), so it matches the dashboards. Note it uses *all* signups as the denominator, including accounts signed up fewer than 14 days ago who still have time to activate; that slightly understates the rate for the most recent cohort.\n\n```json\n{\"answer\": 0.3121,\n \"unit\": \"ratio\",\n \"models\": [\"fct_account_funnel\"],\n \"metric\": \"activation_rate\",\n \"sql\": \"SELECT SUM(CASE WHEN is_activated THEN 1 ELSE 0 END) AS activated_signups, COUNT(account_id) AS signups, CAST(SUM(CASE WHEN is_activated THEN 1 ELSE 0 END) AS DOUBLE) / NULLIF(COUNT(account_id), 0) AS activation_rate FROM main.fct_account_funnel\",\n \"note\": \"Governed activation_rate: 2,647 of 8,481 signups sent a proposal within 14 days; denominator includes signups younger than 14 days.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric"
+   ],
+   "seconds": 22.0,
+   "cost_usd": 0.141442
+  },
+  {
+   "id": "free_to_paid_60d",
+   "question": "Of the signups old enough to judge, what share paid within 60 days of signing up?",
+   "type": "ratio",
+   "truth": 0.1563832455480311,
+   "answer": 0.1564,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_account_funnel"
+   ],
+   "metric": "free_to_paid_60d",
+   "sql": "SELECT CAST(SUM(case when is_mature and is_paid_60d then 1 else 0 end) AS DOUBLE) / CAST(NULLIF(SUM(case when is_mature then 1 else 0 end), 0) AS DOUBLE) AS free_to_paid_60d FROM \"ridgeline\".\"main\".\"fct_account_funnel\"",
+   "note": "Denominator is mature signups only (signed up at least 60 days before the as-of date); 1,247 of 7,974 paid within 60 days.",
+   "text": "**15.6%** of mature signups paid within 60 days.\n\n- Mature signups (signed up \u226560 days before the as-of date, so the 60-day outcome is known): **7,974**\n- Of those, paid within 60 days: **1,247**\n- Free-to-paid (60d) = 1,247 / 7,974 = **0.1564**\n\nThis comes from the governed `free_to_paid_60d` metric on `fct_account_funnel`, so it matches the dashboards.\n\n```json\n{\"answer\": 0.1564,\n \"unit\": \"ratio\",\n \"models\": [\"fct_account_funnel\"],\n \"metric\": \"free_to_paid_60d\",\n \"sql\": \"SELECT CAST(SUM(case when is_mature and is_paid_60d then 1 else 0 end) AS DOUBLE) / CAST(NULLIF(SUM(case when is_mature then 1 else 0 end), 0) AS DOUBLE) AS free_to_paid_60d FROM \\\"ridgeline\\\".\\\"main\\\".\\\"fct_account_funnel\\\"\",\n \"note\": \"Denominator is mature signups only (signed up at least 60 days before the as-of date); 1,247 of 7,974 paid within 60 days.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric",
+    "query_metric"
+   ],
+   "seconds": 25.7,
+   "cost_usd": 0.1472615
+  },
+  {
+   "id": "best_channel",
+   "question": "Which acquisition channel has the highest 60-day free-to-paid rate, counting only signups old enough to judge?",
+   "type": "text",
+   "truth": "referral",
+   "answer": "referral",
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_account_funnel"
+   ],
+   "metric": "free_to_paid_60d",
+   "sql": null,
+   "note": "Referral converts 0.252 (252/999) among mature signups (signed up >=60 days before as-of date); first paid <60 days after signup counts as converted.",
+   "text": "**Referral** has the highest 60-day free-to-paid rate at **25.2%** (252 of 999 mature signups paid within 60 days), using the governed `free_to_paid_60d` metric from `fct_account_funnel`.\n\nFull ranking (mature signups only \u2014 accounts that signed up \u226560 days before the as-of date):\n\n| Channel | Free\u2192paid 60d | Mature signups | Paid within 60d |\n|---|---|---|---|\n| referral | 0.252 | 999 | 252 |\n| supplier_partner | 0.174 | 904 | 157 |\n| trade_show | 0.172 | 594 | 102 |\n| organic | 0.166 | 1,601 | 265 |\n| google_ads | 0.135 | 2,429 | 329 |\n| facebook | 0.098 | 1,447 | 142 |\n\nReferral leads by a wide margin (~8 points over the next channel), while facebook converts worst despite being the third-largest source of signups.\n\n```json\n{\"answer\": \"referral\",\n \"unit\": \"text\",\n \"models\": [\"fct_account_funnel\"],\n \"metric\": \"free_to_paid_60d\",\n \"sql\": null,\n \"note\": \"Referral converts 0.252 (252/999) among mature signups (signed up >=60 days before as-of date); first paid <60 days after signup counts as converted.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "query_metric",
+    "query_metric"
+   ],
+   "seconds": 26.7,
+   "cost_usd": 0.22941874999999998
+  },
+  {
+   "id": "worst_channel",
+   "question": "Which acquisition channel has the lowest 60-day free-to-paid rate, counting only signups old enough to judge?",
+   "type": "text",
+   "truth": "facebook",
+   "answer": "facebook",
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_account_funnel"
+   ],
+   "metric": "free_to_paid_60d",
+   "sql": "SELECT channel, COUNT(*) AS mature_signups, SUM(CASE WHEN is_paid_60d THEN 1 ELSE 0 END) AS mature_paid_60d, SUM(CASE WHEN is_paid_60d THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS free_to_paid_60d FROM fct_account_funnel WHERE is_mature GROUP BY channel ORDER BY free_to_paid_60d",
+   "note": "Facebook has the lowest rate at 0.098 (142/1447), counting only mature accounts (signed up >=60 days before the as-of date) with first paid within 60 days of signup.",
+   "text": "**Facebook** has the lowest 60-day free-to-paid rate: **9.8%** (142 of 1,447 mature signups paid within 60 days).\n\nFull ranking by channel (governed metric `free_to_paid_60d`, mature signups only \u2014 i.e. signed up \u226560 days before the as-of date):\n\n| Channel | Mature signups | Paid in 60d | Free\u2192paid 60d |\n|---|---|---|---|\n| facebook | 1,447 | 142 | 0.098 |\n| google_ads | 2,429 | 329 | 0.135 |\n| organic | 1,601 | 265 | 0.166 |\n| trade_show | 594 | 102 | 0.172 |\n| supplier_partner | 904 | 157 | 0.174 |\n| referral | 999 | 252 | 0.252 |\n\nFacebook converts at roughly 40% the rate of referral, and well below google_ads, the other big paid channel. A direct SQL check on `fct_account_funnel` matches the metric exactly.\n\n```json\n{\"answer\": \"facebook\",\n \"unit\": \"text\",\n \"models\": [\"fct_account_funnel\"],\n \"metric\": \"free_to_paid_60d\",\n \"sql\": \"SELECT channel, COUNT(*) AS mature_signups, SUM(CASE WHEN is_paid_60d THEN 1 ELSE 0 END) AS mature_paid_60d, SUM(CASE WHEN is_paid_60d THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS free_to_paid_60d FROM fct_account_funnel WHERE is_mature GROUP BY channel ORDER BY free_to_paid_60d\",\n \"note\": \"Facebook has the lowest rate at 0.098 (142/1447), counting only mature accounts (signed up >=60 days before the as-of date) with first paid within 60 days of signup.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "query_metric",
+    "run_sql"
+   ],
+   "seconds": 27.2,
+   "cost_usd": 0.22070149999999997
+  },
+  {
+   "id": "ad_spend_2025",
+   "question": "How much did Ridgeline spend on ads in 2025?",
+   "type": "number",
+   "truth": 429930.05,
+   "answer": 429930.05,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_marketing_channel_daily"
+   ],
+   "metric": "ad_spend",
+   "sql": "SELECT DATE_TRUNC('year', date_day) AS metric_time__year, SUM(spend_usd) AS ad_spend FROM \"ridgeline\".\"main\".\"fct_marketing_channel_daily\" WHERE date_day >= '2025-01-01' AND date_day < '2026-01-01' GROUP BY 1",
+   "note": "Governed ad_spend metric summed across all channels for calendar 2025.",
+   "text": "Ridgeline spent **$429,930.05** on ads in calendar year 2025, per the governed `ad_spend` metric (sum of `spend_usd` in `fct_marketing_channel_daily` for 2025\u201101\u201101 through 2025\u201112\u201131, all channels).\n\n```json\n{\"answer\": 429930.05,\n \"unit\": \"usd\",\n \"models\": [\"fct_marketing_channel_daily\"],\n \"metric\": \"ad_spend\",\n \"sql\": \"SELECT DATE_TRUNC('year', date_day) AS metric_time__year, SUM(spend_usd) AS ad_spend FROM \\\"ridgeline\\\".\\\"main\\\".\\\"fct_marketing_channel_daily\\\" WHERE date_day >= '2025-01-01' AND date_day < '2026-01-01' GROUP BY 1\",\n \"note\": \"Governed ad_spend metric summed across all channels for calendar 2025.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric",
+    "describe_model"
+   ],
+   "seconds": 30.8,
+   "cost_usd": 0.14941175
+  },
+  {
+   "id": "cac_google_2025",
+   "question": "What was CAC for the google_ads channel in 2025, as ad spend per paid conversion by signup date?",
+   "type": "number",
+   "truth": 822.2900000000001,
+   "answer": 822.29,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_marketing_channel_daily"
+   ],
+   "metric": "cac",
+   "sql": "select channel, sum(spend_usd) as spend_usd, sum(paid_60d_from_cohort) as paid_conversions, sum(spend_usd) / nullif(sum(paid_60d_from_cohort), 0) as cac_usd from fct_marketing_channel_daily where channel = 'google_ads' and date_day between '2025-01-01' and '2025-12-31' group by 1",
+   "note": "Governed cac metric: 2025 google_ads spend $98,674.80 / 120 paid conversions attributed by signup date (60-day conversion window).",
+   "text": "Nothing further needed \u2014 the governed metric and the direct mart query agree, so I have everything required to answer.\n\n**CAC for google_ads in 2025: $822.29**\n\n- Ad spend (2025, google_ads): $98,674.80\n- Paid conversions (signups dated 2025 that converted within 60 days): 120\n- CAC = $98,674.80 / 120 = **$822.29**\n\nDefinition: the governed `cac` metric from `fct_marketing_channel_daily` \u2014 spend divided by paid conversions, where conversions are attributed to the signup date (via `paid_60d_from_cohort`) and both are summed over 1 Jan\u201331 Dec 2025. The direct SQL cross-check against the mart gave the identical result.\n\nOne caveat: this is the calendar-year ratio of summed spend to summed conversions. The mart also carries a daily `cac_usd` column that uses a trailing-90-day window restricted to cohorts old enough to have a known 60-day outcome; that is a different (rolling) figure and was not used here. Also, signups from late 2025 (roughly November onward) had not fully matured 60 days as of the data snapshot, so their conversions may be slightly undercounted, nudging this CAC marginally upward.\n\n```json\n{\"answer\": 822.29,\n \"unit\": \"usd\",\n \"models\": [\"fct_marketing_channel_daily\"],\n \"metric\": \"cac\",\n \"sql\": \"select channel, sum(spend_usd) as spend_usd, sum(paid_60d_from_cohort) as paid_conversions, sum(spend_usd) / nullif(sum(paid_60d_from_cohort), 0) as cac_usd from fct_marketing_channel_daily where channel = 'google_ads' and date_day between '2025-01-01' and '2025-12-31' group by 1\",\n \"note\": \"Governed cac metric: 2025 google_ads spend $98,674.80 / 120 paid conversions attributed by signup date (60-day conversion window).\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "query_metric",
+    "run_sql",
+    "query_metric"
+   ],
+   "seconds": 34.1,
+   "cost_usd": 0.32893275
+  },
+  {
+   "id": "nrr_12m",
+   "question": "What is 12-month net revenue retention, pooled across every paid cohort that has reached month 12?",
+   "type": "ratio",
+   "truth": 0.61276122455937,
+   "answer": 0.6128,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_cohort_retention"
+   ],
+   "metric": "nrr_12m",
+   "sql": "SELECT sum(retained_mrr) / sum(cohort_start_mrr) AS pooled_nrr_12m FROM fct_cohort_retention WHERE months_since_start = 12",
+   "note": "MRR-weighted pool of the 22 paid cohorts (Jan 2024\u2013Oct 2025) with a month-12 row: $143,793 retained incl. expansion / $234,664 starting MRR; matches governed nrr_12m.",
+   "text": "Nothing further is needed \u2014 the verification confirms the metric is clean, so I can answer.\n\n**12-month NRR, pooled across all mature paid cohorts: 0.6128 (\u224861.3%)**\n\nHow that's built:\n- **Source:** `fct_cohort_retention` (grain: paid cohort by first-paid month \u00d7 months since start), via the governed metric `nrr_12m`.\n- **Definition:** `SUM(retained_mrr) / SUM(cohort_start_mrr)` at `months_since_start = 12`, i.e. MRR-weighted (not an average of per-cohort rates), including expansion.\n- **Cohorts included:** 22 cohorts, Jan 2024 through Oct 2025. The Oct 2025 cohort's month 12 is Oct 2026, which is the latest observed month in the mart, so every cohort that has reached month 12 is in \u2014 and no immature cohort is padded in with zeros (0 null/zero month-12 rows).\n- **Numbers:** $143,793 retained at month 12 out of $234,664 starting MRR.\n\nOne caveat: the Oct 2025 cohort's month-12 reading is the current, in-progress month (Oct 2026), so that single cohort's contribution could still shift slightly before month-end. The other 21 are fully settled.\n\n```json\n{\"answer\": 0.6128,\n \"unit\": \"ratio\",\n \"models\": [\"fct_cohort_retention\"],\n \"metric\": \"nrr_12m\",\n \"sql\": \"SELECT sum(retained_mrr) / sum(cohort_start_mrr) AS pooled_nrr_12m FROM fct_cohort_retention WHERE months_since_start = 12\",\n \"note\": \"MRR-weighted pool of the 22 paid cohorts (Jan 2024\u2013Oct 2025) with a month-12 row: $143,793 retained incl. expansion / $234,664 starting MRR; matches governed nrr_12m.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "query_metric",
+    "run_sql"
+   ],
+   "seconds": 41.4,
+   "cost_usd": 0.25275225
+  },
+  {
+   "id": "lead_close_rate",
+   "question": "What share of homeowner leads are won, counting only leads that are no longer open?",
+   "type": "ratio",
+   "truth": 0.22881417789521322,
+   "answer": 0.2288,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_contractor_leads"
+   ],
+   "metric": "lead_close_rate",
+   "sql": "SELECT SUM(case when outcome_group = 'won' then 1 else 0 end) AS won_leads, SUM(case when outcome_group <> 'open' then 1 else 0 end) AS closed_leads, CAST(won_leads AS DOUBLE) / NULLIF(closed_leads, 0) AS lead_close_rate FROM main.fct_contractor_leads",
+   "note": "Won leads / closed leads (outcome_group <> 'open'), all time: 47,022 / 205,503.",
+   "text": "**22.9%** of closed homeowner leads are won.\n\nAcross all time in `fct_contractor_leads`, 47,022 leads have the outcome \"won\" out of 205,503 leads that are no longer open (any outcome other than `open`), giving a close rate of 0.2288. This is the governed `lead_close_rate` metric, so it matches the dashboards.\n\n```json\n{\"answer\": 0.2288,\n \"unit\": \"ratio\",\n \"models\": [\"fct_contractor_leads\"],\n \"metric\": \"lead_close_rate\",\n \"sql\": \"SELECT SUM(case when outcome_group = 'won' then 1 else 0 end) AS won_leads, SUM(case when outcome_group <> 'open' then 1 else 0 end) AS closed_leads, CAST(won_leads AS DOUBLE) / NULLIF(closed_leads, 0) AS lead_close_rate FROM main.fct_contractor_leads\",\n \"note\": \"Won leads / closed leads (outcome_group <> 'open'), all time: 47,022 / 205,503.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric"
+   ],
+   "seconds": 28.8,
+   "cost_usd": 0.1363605
+  },
+  {
+   "id": "close_rate_under_5m",
+   "question": "For leads first contacted in under 5 minutes, what share are won, counting only leads that are no longer open?",
+   "type": "ratio",
+   "truth": 0.39216141001855287,
+   "answer": 0.39216141001855287,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_contractor_leads"
+   ],
+   "metric": "lead_close_rate",
+   "sql": "select speed_bucket, min(speed_to_lead_min) as min_min, max(speed_to_lead_min) as max_min, count(*) as leads from fct_contractor_leads group by 1 order by 2 nulls last",
+   "note": "Won leads / closed leads (outcome_group <> 'open') for speed_bucket = 'lt_5m' (0-4 min); 18,601 of 47,432 closed leads, 711 open leads excluded.",
+   "text": "**Leads first contacted in under 5 minutes close at a 39.2% rate** (18,601 won out of 47,432 closed).\n\nThis is the governed `lead_close_rate` metric (won leads \u00f7 closed leads, where \"closed\" means `outcome_group <> 'open'`) filtered to the `lt_5m` speed bucket. I verified the bucket boundaries against `speed_to_lead_min`: `lt_5m` covers 0\u20134 minutes, so it matches \"under 5 minutes\" exactly. The bucket holds 48,143 leads in total; 711 are still open and were excluded.\n\nFor context, that's roughly double the rate for the next-fastest bucket (5\u201360 min: 20.4%), and the 14,968 leads with a missing contact timestamp are not in this figure.\n\n```json\n{\"answer\": 0.39216141001855287,\n \"unit\": \"ratio\",\n \"models\": [\"fct_contractor_leads\"],\n \"metric\": \"lead_close_rate\",\n \"sql\": \"select speed_bucket, min(speed_to_lead_min) as min_min, max(speed_to_lead_min) as max_min, count(*) as leads from fct_contractor_leads group by 1 order by 2 nulls last\",\n \"note\": \"Won leads / closed leads (outcome_group <> 'open') for speed_bucket = 'lt_5m' (0-4 min); 18,601 of 47,432 closed leads, 711 open leads excluded.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "run_sql",
+    "query_metric"
+   ],
+   "seconds": 31.2,
+   "cost_usd": 0.21042375
+  },
+  {
+   "id": "median_speed_to_lead",
+   "question": "What is the median speed to lead in minutes, leaving out leads with no logged contact time?",
+   "type": "number",
+   "truth": 18.0,
+   "answer": 18.0,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_contractor_leads"
+   ],
+   "metric": "speed_to_lead_median_min",
+   "sql": "SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY (speed_to_lead_min)) AS speed_to_lead_median_min FROM \"ridgeline\".\"main\".\"fct_contractor_leads\" contractor_leads_src_10000",
+   "note": "Median of speed_to_lead_min across all leads, all time; leads with null speed to lead (no logged first-contact time) are excluded.",
+   "text": "The governed metric answers this directly, so no further lookups are needed.\n\n**Median speed to lead: 18 minutes.**\n\nThis comes from the governed metric `speed_to_lead_median_min` on `fct_contractor_leads`. In that mart, `speed_to_lead_min` is null whenever a lead has no logged first-contact time (e.g. the \"not_contacted\" bucket), and `PERCENTILE_CONT` skips nulls, so those leads are left out of the median exactly as you asked. The figure is across all leads for all time; let me know if you'd like it broken out by month or by contractor.\n\n```json\n{\"answer\": 18.0,\n \"unit\": \"minutes\",\n \"models\": [\"fct_contractor_leads\"],\n \"metric\": \"speed_to_lead_median_min\",\n \"sql\": \"SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY (speed_to_lead_min)) AS speed_to_lead_median_min FROM \\\"ridgeline\\\".\\\"main\\\".\\\"fct_contractor_leads\\\" contractor_leads_src_10000\",\n \"note\": \"Median of speed_to_lead_min across all leads, all time; leads with null speed to lead (no logged first-contact time) are excluded.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "query_metric"
+   ],
+   "seconds": 24.0,
+   "cost_usd": 0.143428
+  },
+  {
+   "id": "missing_contact_share",
+   "question": "What share of all homeowner leads have no first-contact time logged even though they were worked?",
+   "type": "ratio",
+   "truth": 0.0718585872163919,
+   "answer": 0.0719,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_contractor_leads"
+   ],
+   "metric": null,
+   "sql": "select speed_bucket, missing_contact_ts, count(*) as leads, sum(count(*)) over () as total_leads, count(*) * 1.0 / sum(count(*)) over () as share from \"ridgeline\".\"main\".\"fct_contractor_leads\" group by 1, 2 order by 1, 2",
+   "note": "Share = leads with speed_bucket = 'missing' (worked, but first-contact time not logged) / all leads; 14,968 of 208,298. Never-contacted leads (10.1%) are excluded from the numerator.",
+   "text": "Of the 208,298 homeowner leads in `fct_contractor_leads`, **14,968 (about 7.2%)** were worked but have no first-contact timestamp logged \u2014 these are the leads in the `missing` speed bucket (`missing_contact_ts = true`). This is distinct from the 21,004 leads (10.1%) that were simply never contacted (`not_contacted`), which the mart separates out.\n\n```json\n{\"answer\": 0.0719,\n \"unit\": \"ratio\",\n \"models\": [\"fct_contractor_leads\"],\n \"metric\": null,\n \"sql\": \"select speed_bucket, missing_contact_ts, count(*) as leads, sum(count(*)) over () as total_leads, count(*) * 1.0 / sum(count(*)) over () as share from \\\"ridgeline\\\".\\\"main\\\".\\\"fct_contractor_leads\\\" group by 1, 2 order by 1, 2\",\n \"note\": \"Share = leads with speed_bucket = 'missing' (worked, but first-contact time not logged) / all leads; 14,968 of 208,298. Never-contacted leads (10.1%) are excluded from the numerator.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "search_catalog",
+    "describe_model",
+    "run_sql"
+   ],
+   "seconds": 21.2,
+   "cost_usd": 0.11130224999999999
+  },
+  {
+   "id": "worst_roof_type",
+   "question": "Which roof type has the highest measurement-report redo rate?",
+   "type": "text",
+   "truth": "complex",
+   "answer": "complex",
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_measurement_quality"
+   ],
+   "metric": "measurement_redo_rate",
+   "sql": "select roof_type, count(*) as orders, sum(case when is_redo then 1 else 0 end) as redos, sum(case when is_redo then 1 else 0 end) * 1.0 / count(*) as redo_rate from fct_measurement_quality group by roof_type order by redo_rate desc",
+   "note": "Redo rate = redo orders / all measurement orders, all time, grouped by measurement_order__roof_type; complex = 0.1049 vs 0.043-0.045 for flat, gable and hip.",
+   "text": "**Complex roofs** have the highest measurement-report redo rate, and by a wide margin \u2014 about **10.5%** of complex-roof reports get a redo request, roughly 2.4\u00d7 the rate of any other roof type.\n\nFull breakdown (governed `measurement_redo_rate` metric, all time, over `fct_measurement_quality`):\n\n| Roof type | Orders | Redos | Redo rate |\n|---|---:|---:|---:|\n| **complex** | 35,255 | 3,698 | **0.1049** |\n| flat | 17,365 | 780 | 0.0449 |\n| gable | 70,116 | 3,016 | 0.0430 |\n| hip | 52,176 | 2,240 | 0.0429 |\n\nFlat, gable and hip are all clustered around 4.3\u20134.5%, so complex is the clear outlier. The direct SQL on the mart matched the governed metric exactly.\n\n```json\n{\"answer\": \"complex\",\n \"unit\": \"text\",\n \"models\": [\"fct_measurement_quality\"],\n \"metric\": \"measurement_redo_rate\",\n \"sql\": \"select roof_type, count(*) as orders, sum(case when is_redo then 1 else 0 end) as redos, sum(case when is_redo then 1 else 0 end) * 1.0 / count(*) as redo_rate from fct_measurement_quality group by roof_type order by redo_rate desc\",\n \"note\": \"Redo rate = redo orders / all measurement orders, all time, grouped by measurement_order__roof_type; complex = 0.1049 vs 0.043-0.045 for flat, gable and hip.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "query_metric",
+    "run_sql",
+    "query_metric"
+   ],
+   "seconds": 33.9,
+   "cost_usd": 0.26111249999999997
+  },
+  {
+   "id": "at_risk_accounts",
+   "question": "How many paying accounts are currently in the at-risk health band?",
+   "type": "number",
+   "truth": 4,
+   "answer": 4,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_account_health"
+   ],
+   "metric": null,
+   "sql": "select risk_band, count(*) as accounts, min(health_score) as min_score, max(health_score) as max_score from fct_account_health group by risk_band order by min_score",
+   "note": "At-risk = health_score below 40 in fct_account_health, which covers paying accounts only; 4 of 787 accounts.",
+   "text": "**4 paying accounts** are currently in the at-risk health band.\n\nContext from `fct_account_health` (which only contains paying accounts, one row each): the mart scores accounts 0\u2013100 and labels anything below 40 as `at_risk`, 40\u201369 as `watch`, and 70+ as `healthy`. The current distribution is:\n\n| Band | Accounts | Score range |\n|---|---|---|\n| at_risk | **4** | 20\u201330 |\n| watch | 124 | 40\u201360 |\n| healthy | 659 | 70\u2013100 |\n\nSo at-risk accounts are about 0.5% of the 787 paying accounts in the mart. There is no governed metric for health bands, so this comes from a direct query on the mart.\n\n```json\n{\"answer\": 4,\n \"unit\": \"count\",\n \"models\": [\"fct_account_health\"],\n \"metric\": null,\n \"sql\": \"select risk_band, count(*) as accounts, min(health_score) as min_score, max(health_score) as max_score from fct_account_health group by risk_band order by min_score\",\n \"note\": \"At-risk = health_score below 40 in fct_account_health, which covers paying accounts only; 4 of 787 accounts.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "run_sql"
+   ],
+   "seconds": 22.1,
+   "cost_usd": 0.15187125
+  },
+  {
+   "id": "rep_followup_rate",
+   "question": "Of the top-decile likely-to-pay accounts, what share got a sales rep call within 3 days of becoming eligible?",
+   "type": "ratio",
+   "truth": 0.028938906752411574,
+   "answer": 0.03,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_rep_followups"
+   ],
+   "metric": null,
+   "sql": "SELECT CASE WHEN became_eligible_at > DATE '2026-10-30' THEN 'future_eligibility' WHEN became_eligible_at > DATE '2026-10-30' - INTERVAL 3 DAY THEN 'window_not_elapsed' ELSE 'mature' END AS bucket, COUNT(*) AS accounts, SUM(CASE WHEN called_within_3d THEN 1 ELSE 0 END) AS called_within_3d, SUM(CASE WHEN first_call_at IS NOT NULL THEN 1 ELSE 0 END) AS any_call, ROUND(AVG(CASE WHEN called_within_3d THEN 1.0 ELSE 0.0 END), 4) AS share_called_within_3d FROM fct_rep_followups GROUP BY 1 ORDER BY 1",
+   "note": "9 of 300 top-decile accounts whose 3-day window had elapsed as of 2026-10-30 were called within 3 days of eligibility; 11 not-yet-mature rows excluded (unfiltered mart gives 9/311 = 0.029).",
+   "text": "I have what I need \u2014 no further queries required.\n\n**Answer: about 3% \u2014 9 of 300 top-decile accounts got a rep call within 3 days of becoming call-eligible.**\n\nHow I got there:\n\n- `fct_rep_followups` is the governed mart built exactly for this question: one row per top-decile PQA account (from `fct_pqa_scores`) once it becomes call-eligible (14 days after signup), with a precomputed `called_within_3d` flag that only counts calls after eligibility. No governed metric covers it, so I queried the mart directly.\n- The raw mart has 311 rows and 9 calls within 3 days (0.0289). But 11 of those rows can't legitimately count yet: 7 have an eligibility timestamp in the future (they signed up fewer than 14 days ago, so they're not yet eligible), and 4 became eligible within the last 3 days, so their call window hasn't closed. None of the 11 have any call logged, so they'd only deflate the denominator.\n- Excluding them leaves 300 accounts with a full window: **9 called within 3 days \u2192 0.03**. For context, 41 of the 300 (\u224814%) were called at all after eligibility, so most rep outreach to these accounts is happening late, not never.\n\nCaveat: the mart's eligibility dates run through 2026-11-08, past today's date, so the warehouse appears to have been built with a later as-of date than 2026-10-30. The headline barely moves either way (0.029 unfiltered vs. 0.030 mature-only).\n\n```json\n{\"answer\": 0.03,\n \"unit\": \"ratio\",\n \"models\": [\"fct_rep_followups\"],\n \"metric\": null,\n \"sql\": \"SELECT CASE WHEN became_eligible_at > DATE '2026-10-30' THEN 'future_eligibility' WHEN became_eligible_at > DATE '2026-10-30' - INTERVAL 3 DAY THEN 'window_not_elapsed' ELSE 'mature' END AS bucket, COUNT(*) AS accounts, SUM(CASE WHEN called_within_3d THEN 1 ELSE 0 END) AS called_within_3d, SUM(CASE WHEN first_call_at IS NOT NULL THEN 1 ELSE 0 END) AS any_call, ROUND(AVG(CASE WHEN called_within_3d THEN 1.0 ELSE 0.0 END), 4) AS share_called_within_3d FROM fct_rep_followups GROUP BY 1 ORDER BY 1\",\n \"note\": \"9 of 300 top-decile accounts whose 3-day window had elapsed as of 2026-10-30 were called within 3 days of eligibility; 11 not-yet-mature rows excluded (unfiltered mart gives 9/311 = 0.029).\"}\n```",
+   "turns": 8,
+   "tool_calls": [
+    "search_catalog",
+    "search_catalog",
+    "list_metrics",
+    "describe_model",
+    "run_sql",
+    "describe_model",
+    "run_sql"
+   ],
+   "seconds": 41.3,
+   "cost_usd": 0.3079355
+  },
+  {
+   "id": "mrr_sources",
+   "question": "Which raw source tables does fct_mrr_daily ultimately depend on? List them as source_name.table_name.",
+   "type": "set",
+   "truth": [
+    "app_db.subscription_changes"
+   ],
+   "answer": [
+    "app_db.subscription_changes"
+   ],
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [
+    "fct_mrr_daily",
+    "fct_mrr_movements",
+    "int_mrr_movements",
+    "stg_app_db__subscription_changes"
+   ],
+   "metric": null,
+   "sql": null,
+   "note": "Upstream lineage of fct_mrr_daily resolves to one raw source table via fct_mrr_movements, int_mrr_movements and stg_app_db__subscription_changes.",
+   "text": "`fct_mrr_daily` ultimately depends on a single raw source table:\n\n- **app_db.subscription_changes**\n\nFull upstream path: `app_db.subscription_changes` \u2192 `stg_app_db__subscription_changes` \u2192 `int_mrr_movements` \u2192 `fct_mrr_movements` \u2192 `fct_mrr_daily`.\n\n```json\n{\"answer\": [\"app_db.subscription_changes\"],\n \"unit\": \"list\",\n \"models\": [\"fct_mrr_daily\", \"fct_mrr_movements\", \"int_mrr_movements\", \"stg_app_db__subscription_changes\"],\n \"metric\": null,\n \"sql\": null,\n \"note\": \"Upstream lineage of fct_mrr_daily resolves to one raw source table via fct_mrr_movements, int_mrr_movements and stg_app_db__subscription_changes.\"}\n```",
+   "turns": 2,
+   "tool_calls": [
+    "get_lineage"
+   ],
+   "seconds": 14.9,
+   "cost_usd": 0.05354525
+  },
+  {
+   "id": "nps",
+   "question": "What is Ridgeline's Net Promoter Score?",
+   "type": "unanswerable",
+   "truth": null,
+   "answer": null,
+   "parsed": true,
+   "correct": true,
+   "grounded": true,
+   "cited_models": [],
+   "metric": null,
+   "sql": "SELECT table_schema, table_name, column_name FROM information_schema.columns WHERE lower(column_name) LIKE '%nps%' OR lower(column_name) LIKE '%promoter%' OR lower(column_name) LIKE '%survey%' OR lower(column_name) LIKE '%csat%' OR lower(column_name) LIKE '%satisfaction%' OR lower(table_name) LIKE '%survey%' OR lower(table_name) LIKE '%nps%'",
+   "note": "No NPS/survey data exists in the warehouse (no metric, model, table or column), so Net Promoter Score cannot be reported.",
+   "text": "The warehouse can't answer this one. I checked for NPS from every angle I could:\n\n- **Governed metrics:** none of the 27 metrics is an NPS, CSAT, or survey-based measure.\n- **Catalog search:** \"Net Promoter Score / NPS\", \"survey / promoter / detractor\", and \"CSAT / satisfaction / feedback\" return no relevant models. The nearest hits (`fct_account_health`, `fct_pqa_scores`, `fct_support_tickets`) are usage-based health, conversion-propensity, and ticket-timing models, not survey data.\n- **Schema scan:** no table or column anywhere in the warehouse has a name containing `nps`, `promoter`, `survey`, `csat`, or `satisfaction`.\n\nSo there's no survey source loaded into the dbt project, and I won't derive a stand-in from health scores or ticket volume, since those aren't the 0\u201310 \"how likely are you to recommend\" question that NPS is defined on. If Ridgeline runs NPS surveys in a tool like Delighted or Qualtrics, that source would need to be added to the warehouse before this can be reported.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"models\": [],\n \"metric\": null,\n \"sql\": \"SELECT table_schema, table_name, column_name FROM information_schema.columns WHERE lower(column_name) LIKE '%nps%' OR lower(column_name) LIKE '%promoter%' OR lower(column_name) LIKE '%survey%' OR lower(column_name) LIKE '%csat%' OR lower(column_name) LIKE '%satisfaction%' OR lower(table_name) LIKE '%survey%' OR lower(table_name) LIKE '%nps%'\",\n \"note\": \"No NPS/survey data exists in the warehouse (no metric, model, table or column), so Net Promoter Score cannot be reported.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "search_catalog",
+    "list_metrics",
+    "search_catalog",
+    "search_catalog",
+    "describe_model",
+    "run_sql"
+   ],
+   "seconds": 26.5,
+   "cost_usd": 0.18505850000000001
+  }
+ ]
+}
