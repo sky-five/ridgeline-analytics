@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_DB = Path(os.environ.get("RIDGELINE_DUCKDB_PATH", ROOT / "warehouse" / "ridgeline.duckdb"))
 MAX_ROWS = 200
 TIMEOUT_S = 20.0
+SESSION_CONFIG = {"enable_external_access": False, "autoload_known_extensions": False, "lock_configuration": True}
 
 
 class UnsafeSQL(ValueError):
@@ -55,11 +56,9 @@ def check_sql(sql: str) -> str:
 def connect(db_path: Path | str = DEFAULT_DB) -> duckdb.DuckDBPyConnection:
     if not Path(db_path).exists():
         raise FileNotFoundError(f"warehouse not found: {db_path} (run scripts/run_all.py first)")
-    con = duckdb.connect(str(db_path), read_only=True)
-    con.execute("SET enable_external_access = false")
-    con.execute("SET autoload_known_extensions = false")
-    con.execute("SET lock_configuration = true")
-    return con
+    # Settings go in at open time: DuckDB shares one database per file within a process, and once
+    # locked they can't be set again, so a second connection would fail if it tried.
+    return duckdb.connect(str(db_path), read_only=True, config=SESSION_CONFIG)
 
 
 def run_sql(con: duckdb.DuckDBPyConnection, sql: str, max_rows: int = MAX_ROWS,

@@ -48,6 +48,14 @@ def test_session_blocks_files_and_settings(db, tmp_path):
         con.execute("SET enable_external_access = true")
 
 
+def test_two_open_connections_to_one_file(db):
+    # DuckDB shares one database per file in a process; the second connection must not re-apply settings
+    a, b = connect(db), connect(db)
+    assert run_sql(a, "select count(*) from t").rows == run_sql(b, "select count(*) from t").rows == [[500]]
+    with pytest.raises(duckdb.Error):
+        b.execute("SET enable_external_access = true")
+
+
 def test_rows_are_capped(db):
     res = run_sql(connect(db), "select i from t order by i", max_rows=10)
     assert res.rows == [[i] for i in range(10)] and res.truncated
