@@ -104,6 +104,14 @@ The eval questions cover governed metrics, ad hoc SQL with the right filters (ma
 
 For the NPS question it searched every table and column for survey data, found none and returned no number. Full transcripts: `analyst/evals/results/`. These questions state their definitions; the next eval adds vaguer questions ("how are we doing on retention?") where choosing the definition is the hard part.
 
+## ARR and revenue recognition
+
+`revrec/` is a separate module on its own synthetic Stripe-shaped billing data: monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. Details: [revrec/README.md](revrec/README.md).
+
+```bash
+.venv/Scripts/python -m revrec
+```
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -131,6 +139,7 @@ uv pip install --python .venv/Scripts/python.exe -r requirements.txt   # macOS/L
 simulator/   accounts, lifecycle, side systems, world (as-of view), mock API
 pipelines/   dlt sources + load CLI
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
+revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
 docs/        design spec and implementation plans

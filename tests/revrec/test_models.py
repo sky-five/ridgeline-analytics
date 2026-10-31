@@ -107,3 +107,12 @@ def test_bridge_and_rollforward_identities_on_generated_data():
     assert bad_bridge == 0
     assert bad_deferred == 0
     assert total_billed == total_recognized
+
+
+def test_closing_deferred_equals_revenue_scheduled_after_as_of():
+    con = build(generate())
+    closing, future = con.execute(
+        "select (select closing_cents from fct_deferred_revenue order by month_start desc limit 1), "
+        "(select sum(recognized_cents) from fct_revenue_monthly where is_future)"
+    ).fetchone()
+    assert closing == future
