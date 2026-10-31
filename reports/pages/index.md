@@ -73,3 +73,11 @@ select * from ridgeline.headline
 - **Retention is the biggest lever.** A paid cohort keeps <Value data={headline} column=nrr_12m fmt=pct0/> of its MRR after 12 months. Churn is high for small crews, and measurement redos (<Value data={headline} column=measurement_redo_rate fmt=pct1/> of reports) push it up.
 - **Activation predicts revenue.** Free accounts that send a proposal in their first 14 days convert about 8× as often. See [Acquisition](/acquisition).
 - **Sales has a ranked call list** of free accounts most likely to pay. See [Ready for sales](/sales).
+
+## How this site is built
+
+Synthetic source systems are loaded with dlt, modelled in dbt on DuckDB and Snowflake, and defined once as
+governed metrics in MetricFlow. This site and the AI analyst both read those definitions. GitHub Actions rebuilds
+everything every night. The code is on [GitHub](https://github.com/sky-five/ridgeline-analytics).
+
+<img src="architecture.svg" alt="Ridgeline Analytics architecture: simulator, dlt, DuckDB and Snowflake, dbt, MetricFlow, the AI analyst and this site, run by GitHub Actions" style="width:100%; border-radius:8px;"/>

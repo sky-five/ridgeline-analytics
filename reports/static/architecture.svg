@@ -1,0 +1,207 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 600" width="1280" height="600" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Ridgeline Analytics architecture</title>
+  <desc id="d">Simulator, dlt, DuckDB and Snowflake, dbt, MetricFlow, then the AI analyst and the Evidence site, all run by GitHub Actions.</desc>
+  <style>
+    .bg { fill: #ffffff; }
+    .box { fill: #fafaf9; stroke: #d6d3d1; stroke-width: 1.2; }
+    .key { fill: #fff7ed; stroke: #c2410c; stroke-width: 1.5; }
+    .pill { fill: #ffffff; stroke: #d6d3d1; }
+    .band { fill: #f5f5f4; stroke: #d6d3d1; }
+    .h { fill: #78716c; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; }
+    .ttl { fill: #1c1917; font-size: 15px; font-weight: 700; }
+    .txt { fill: #44403c; font-size: 12px; }
+    .sm { fill: #78716c; font-size: 11px; }
+    .acc { fill: #c2410c; font-size: 12px; font-weight: 600; }
+    .ln { stroke: #a8a29e; stroke-width: 1.5; fill: none; }
+    .dash { stroke: #c2410c; stroke-width: 1.5; fill: none; stroke-dasharray: 4 3; }
+    .ah { fill: #a8a29e; }
+    .ahc { fill: #c2410c; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0d1117; }
+      .box { fill: #161b22; stroke: #3d444d; }
+      .key { fill: #2a1a10; stroke: #f97316; }
+      .pill { fill: #0d1117; stroke: #3d444d; }
+      .band { fill: #161b22; stroke: #3d444d; }
+      .h { fill: #9198a1; }
+      .ttl { fill: #f0f6fc; }
+      .txt { fill: #d1d7e0; }
+      .sm { fill: #9198a1; }
+      .acc { fill: #fb923c; }
+      .ln { stroke: #656c76; }
+      .dash { stroke: #fb923c; }
+      .ah { fill: #656c76; }
+      .ahc { fill: #fb923c; }
+    }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ah"/></marker>
+    <marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" class="ahc"/></marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="600"/>
+
+  <!-- column headings -->
+  <text class="h" x="24" y="40">SOURCES</text>
+  <text class="h" x="236" y="40">INGEST</text>
+  <text class="h" x="448" y="40">WAREHOUSE</text>
+  <text class="h" x="660" y="40">TRANSFORM</text>
+  <text class="h" x="872" y="40">SEMANTIC LAYER</text>
+  <text class="h" x="1084" y="40">CONSUMERS</text>
+
+  <!-- simulator -->
+  <rect class="box" x="24" y="56" width="180" height="392" rx="10"/>
+  <text class="ttl" x="40" y="84">Simulator</text>
+  <text class="sm" x="40" y="102">deterministic, fixed seed</text>
+  <g class="txt">
+    <rect class="pill" x="40" y="118" width="148" height="28" rx="6"/><text x="52" y="137">App DB</text>
+    <rect class="pill" x="40" y="152" width="148" height="28" rx="6"/><text x="52" y="171">Product events</text>
+    <rect class="pill" x="40" y="186" width="148" height="28" rx="6"/><text x="52" y="205">CRM</text>
+    <rect class="pill" x="40" y="220" width="148" height="28" rx="6"/><text x="52" y="239">Support desk</text>
+    <rect class="pill" x="40" y="254" width="148" height="28" rx="6"/><text x="52" y="273">Ad spend</text>
+    <rect class="pill" x="40" y="288" width="148" height="28" rx="6"/><text x="52" y="307">Contractor leads</text>
+  </g>
+  <text class="sm" x="40" y="346">Mock API per system:</text>
+  <text class="sm" x="40" y="362">paginated, updated_at</text>
+  <text class="sm" x="40" y="378">cursors, served "as of"</text>
+  <text class="sm" x="40" y="394">any date</text>
+  <text class="acc" x="40" y="428">8 planted patterns</text>
+
+  <!-- dlt -->
+  <rect class="box" x="236" y="56" width="180" height="392" rx="10"/>
+  <text class="ttl" x="252" y="84">dlt pipelines</text>
+  <text class="sm" x="252" y="102">one source per system</text>
+  <g class="txt">
+    <text x="252" y="136">Incremental on updated_at</text>
+    <text x="252" y="160">Merge for mutable tables,</text>
+    <text x="252" y="176">append for event logs</text>
+    <text x="252" y="200">Schema contracts: a type</text>
+    <text x="252" y="216">change fails the load</text>
+  </g>
+  <text class="acc" x="252" y="428">~1.2M rows in ~30 s</text>
+
+  <!-- warehouses -->
+  <rect class="key" x="448" y="56" width="180" height="170" rx="10"/>
+  <text class="ttl" x="464" y="84">DuckDB</text>
+  <text class="sm" x="464" y="102">always on</text>
+  <g class="txt">
+    <text x="464" y="136">Powers the site and</text>
+    <text x="464" y="152">the AI analyst</text>
+    <text x="464" y="176">Built fresh in every CI run</text>
+  </g>
+
+  <rect class="box" x="448" y="278" width="180" height="170" rx="10"/>
+  <text class="ttl" x="464" y="306">Snowflake</text>
+  <text class="sm" x="464" y="324">second target</text>
+  <g class="txt">
+    <text x="464" y="358">Key-pair service user</text>
+    <text x="464" y="378">Least-privilege roles</text>
+    <text x="464" y="398">Credit-capped warehouse</text>
+  </g>
+
+  <path class="ln" d="M538 232 L538 272" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text class="sm" x="548" y="256">parity check:</text>
+  <text class="sm" x="548" y="270">same numbers</text>
+
+  <!-- dbt -->
+  <rect class="box" x="660" y="56" width="180" height="392" rx="10"/>
+  <text class="ttl" x="676" y="84">dbt</text>
+  <text class="sm" x="676" y="102">same project, both targets</text>
+  <g class="txt">
+    <rect class="pill" x="676" y="118" width="148" height="28" rx="6"/><text x="688" y="137">staging</text>
+    <rect class="pill" x="676" y="160" width="148" height="28" rx="6"/><text x="688" y="179">intermediate</text>
+    <rect class="pill" x="676" y="202" width="148" height="28" rx="6"/><text x="688" y="221">marts · 6 domains</text>
+  </g>
+  <path class="ln" d="M750 146 L750 158" marker-end="url(#a)"/>
+  <path class="ln" d="M750 188 L750 200" marker-end="url(#a)"/>
+  <g class="txt">
+    <text x="676" y="260">SCD2 subscription snapshot</text>
+    <text x="676" y="284">2 Python models</text>
+    <text x="676" y="300">(scikit-learn): likely-to-pay</text>
+    <text x="676" y="316">score, ticket themes</text>
+    <text x="676" y="340">Unit, generic, singular</text>
+    <text x="676" y="356">tests and source freshness</text>
+  </g>
+  <text class="acc" x="676" y="412">31 models · 94 tests</text>
+  <text class="acc" x="676" y="428">12 enforced contracts</text>
+
+  <!-- semantic layer -->
+  <rect class="key" x="872" y="56" width="180" height="170" rx="10"/>
+  <text class="ttl" x="888" y="84">MetricFlow</text>
+  <text class="sm" x="888" y="102">governed definitions</text>
+  <g class="txt">
+    <text x="888" y="136">MRR, NRR, CAC, activation,</text>
+    <text x="888" y="152">close rate, redo rate …</text>
+    <text x="888" y="176">One definition shared by</text>
+    <text x="888" y="192">the site and the analyst</text>
+  </g>
+  <text class="acc" x="888" y="214">27 metrics</text>
+
+  <rect class="box" x="872" y="278" width="180" height="170" rx="10"/>
+  <text class="ttl" x="888" y="306">Reporting tables</text>
+  <text class="sm" x="888" y="324">export_reporting.py</text>
+  <g class="txt">
+    <text x="888" y="358">KPIs queried through the</text>
+    <text x="888" y="374">metrics, plus row-level</text>
+    <text x="888" y="390">lists and dbt run results</text>
+  </g>
+
+  <path class="ln" d="M962 226 L962 274" marker-end="url(#a)"/>
+
+  <!-- consumers -->
+  <rect class="key" x="1084" y="56" width="172" height="170" rx="10"/>
+  <text class="ttl" x="1100" y="84">AI analyst</text>
+  <text class="sm" x="1100" y="102">Claude + 6 read-only tools</text>
+  <g class="txt">
+    <text x="1100" y="132">Catalog, lineage, metrics,</text>
+    <text x="1100" y="148">guarded SELECT only</text>
+    <text x="1100" y="172">MCP server or Claude</text>
+    <text x="1100" y="188">API agent (capped)</text>
+  </g>
+  <text class="acc" x="1100" y="214">Eval: 20 / 20 correct</text>
+
+  <rect class="box" x="1084" y="278" width="172" height="170" rx="10"/>
+  <text class="ttl" x="1100" y="306">Evidence site</text>
+  <text class="sm" x="1100" y="324">static, GitHub Pages</text>
+  <g class="txt">
+    <text x="1100" y="354">Scorecard · Acquisition</text>
+    <text x="1100" y="370">Ready for sales · Retention</text>
+    <text x="1100" y="386">Contractors · Data health</text>
+    <text x="1100" y="402">Metrics · Ask the data</text>
+  </g>
+  <text class="acc" x="1100" y="430">8 pages</text>
+
+  <path class="dash" d="M1170 226 L1170 274" marker-end="url(#ac)"/>
+  <text class="sm" x="1180" y="256">recorded</text>
+  <text class="sm" x="1180" y="270">eval run</text>
+
+  <!-- flows -->
+  <path class="ln" d="M204 252 L232 252" marker-end="url(#a)"/>
+  <path class="ln" d="M416 141 L444 141" marker-end="url(#a)"/>
+  <path class="ln" d="M416 363 L444 363" marker-end="url(#a)"/>
+  <path class="ln" d="M628 141 L656 141" marker-end="url(#a)"/>
+  <path class="ln" d="M628 363 L656 363" marker-end="url(#a)"/>
+  <path class="ln" d="M840 141 L868 141" marker-end="url(#a)"/>
+  <path class="ln" d="M840 363 L868 363" marker-end="url(#a)"/>
+  <path class="ln" d="M1052 141 L1080 141" marker-end="url(#a)"/>
+  <path class="ln" d="M1052 363 L1080 363" marker-end="url(#a)"/>
+
+  <!-- orchestration -->
+  <rect class="band" x="24" y="476" width="1232" height="104" rx="10"/>
+  <text class="ttl" x="40" y="504">GitHub Actions</text>
+  <text class="sm" x="40" y="522">runs everything, no Airflow</text>
+
+  <rect class="pill" x="236" y="490" width="328" height="76" rx="8"/>
+  <text class="acc" x="252" y="512">ci · every push and PR</text>
+  <text class="txt" x="252" y="532">ruff, pytest, fresh load, dbt build,</text>
+  <text class="txt" x="252" y="550">metric checks, freshness, sqlfluff</text>
+
+  <rect class="pill" x="580" y="490" width="300" height="76" rx="8"/>
+  <text class="acc" x="596" y="512">snowflake · main</text>
+  <text class="txt" x="596" y="532">incremental load, dbt build,</text>
+  <text class="txt" x="596" y="550">parity check against DuckDB</text>
+
+  <rect class="pill" x="896" y="490" width="344" height="76" rx="8"/>
+  <text class="acc" x="912" y="512">nightly · 09:00 UTC</text>
+  <text class="txt" x="912" y="532">simulate the new day → load → build →</text>
+  <text class="txt" x="912" y="550">Evidence → GitHub Pages → smoke test</text>
+</svg>

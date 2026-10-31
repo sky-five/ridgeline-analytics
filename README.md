@@ -10,12 +10,7 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 ## Architecture
 
-```
-simulator/ ──► dlt pipelines ──► warehouse RAW ──► dbt ──► marts + metrics ──► Evidence site (GitHub Pages, nightly)
- 6 fake source systems            (DuckDB +                                 └─► AI analyst API (Phase 4)
- paginated API, updated_at        Snowflake)
-GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQL lint
-```
+![Ridgeline Analytics architecture](reports/static/architecture.svg)
 
 | Layer | What it does |
 |---|---|
