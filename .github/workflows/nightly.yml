@@ -49,7 +49,8 @@ jobs:
 
       - name: Source freshness
         working-directory: dbt
-        run: dbt source freshness --profiles-dir . --vars "{as_of_date: '$AS_OF'}"
+        run: |
+          dbt source freshness --profiles-dir . --vars "{as_of_date: '$AS_OF'}"
 
       - uses: actions/setup-node@v4
         with:
