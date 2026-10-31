@@ -8,6 +8,7 @@ site comes from the same MetricFlow definition the AI analyst uses.
 import argparse
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -26,6 +27,12 @@ def _rename_time(df: pd.DataFrame, grain: str, to: str) -> pd.DataFrame:
     df = df.rename(columns={f"metric_time__{grain}": to})
     df[to] = pd.to_datetime(df[to]).dt.date
     return df
+
+
+def _plain(text: str) -> str:
+    """The agent's reply as plain text: drop the trailing JSON block and markdown emphasis."""
+    text = re.sub(r"```json.*?```", "", text, flags=re.S)
+    return re.sub(r"\*\*|`", "", text).strip()
 
 
 def export(warehouse: Path) -> dict[str, int]:
@@ -62,6 +69,21 @@ def export(warehouse: Path) -> dict[str, int]:
              "execution_time_s": round(r["execution_time"], 2),
              "generated_at": results["metadata"]["generated_at"]}
             for r in results["results"]])
+
+    # the AI analyst's latest recorded eval run, shown on the "Ask the data" page (no live LLM calls)
+    evals = sorted((ROOT / "analyst" / "evals" / "results").glob("*.json"))
+    if evals:
+        run = json.loads(evals[-1].read_text(encoding="utf-8"))
+        tables["analyst_run"] = pd.DataFrame([{k: run[k] for k in
+                                               ("backend", "ran_at", "as_of", "correct", "grounded", "total")}])
+        tables["analyst_answers"] = pd.DataFrame([
+            {"n": i + 1, "id": r["id"], "question": r["question"], "type": r["type"],
+             "reply": _plain(r["text"]), "truth": str(r["truth"]), "answer": str(r["answer"]),
+             "correct": r["correct"], "grounded": r["grounded"], "models": ", ".join(r["cited_models"]),
+             "metric": r.get("metric") or "", "sql": r.get("sql") or "",
+             "tool_calls": " → ".join(r["tool_calls"]), "n_tool_calls": len(r["tool_calls"]),
+             "seconds": r["seconds"], "cost_usd": r.get("cost_usd")}
+            for i, r in enumerate(run["results"])])
 
     with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
         con.sql("create schema if not exists reporting")
