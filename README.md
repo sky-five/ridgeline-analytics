@@ -4,12 +4,14 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 > **All data is synthetic.** A deterministic simulator generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
 
-**Status:** Phases 1–2 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (132/132 checks each, identical numbers), tested in CI on both. Next: the MetricFlow semantic layer, Evidence dashboards and an AI analyst. See the [roadmap](#roadmap).
+**Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night from a fresh simulated day)
+
+**Status:** Phases 1–3 of 5 are done and Phase 4 is under way. The same dbt project builds on **DuckDB and Snowflake** (identical numbers), tested in CI on both. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics. See the [roadmap](#roadmap).
 
 ## Architecture
 
 ```
-simulator/ ──► dlt pipelines ──► warehouse RAW ──► dbt ──► marts + metrics ──► Evidence site (Phase 3)
+simulator/ ──► dlt pipelines ──► warehouse RAW ──► dbt ──► marts + metrics ──► Evidence site (GitHub Pages, nightly)
  6 fake source systems            (DuckDB +                                 └─► AI analyst API (Phase 4)
  paginated API, updated_at        Snowflake)
 GitHub Actions: lint · unit tests · fresh load · dbt build · freshness · SQL lint
@@ -143,7 +145,7 @@ docs/        design spec and implementation plans
 
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
 2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), with its own CI job and a DuckDB parity check. SCD2 snapshot of subscriptions. Support-ticket churn themes come from 300 tickets labelled by Claude Code plus a TF-IDF classifier (100% on held-out labels). Snowflake Cortex `AI_CLASSIFY` is blocked on trial accounts, so it sits behind a `use_cortex` flag for paid accounts.
-3. MetricFlow semantic layer, Evidence dashboards, nightly refresh and deploy
+3. ✅ MetricFlow semantic layer (27 governed metrics), Evidence site (scorecard, acquisition, ready for sales, data health, metric definitions), nightly simulate → load → build → deploy to GitHub Pages with a smoke test
 4. 🚧 AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval. Next: retention and contractor pages
 5. Polish: architecture diagram, demo video
 
