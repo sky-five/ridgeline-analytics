@@ -41,6 +41,13 @@ def export(warehouse: Path) -> dict[str, int]:
             query(["ad_spend", "paid_conversions", "cac"], ["metric_time__month", "channel_day__marketing_channel"]),
             "month", "month").rename(columns={"channel_day__marketing_channel": "channel"}),
         "headline": query(["nrr_12m", "measurement_redo_rate", "lead_close_rate", "free_to_paid_60d"]),
+        "lead_speed": query(["leads", "lead_close_rate"], ["lead__speed_bucket"])
+        .rename(columns={"lead__speed_bucket": "speed_bucket"}),
+        "lead_sources": query(["leads", "lead_close_rate", "speed_to_lead_median_min"], ["lead__lead_source"])
+        .rename(columns={"lead__lead_source": "lead_source"}),
+        "redo_rates": query(["measurement_redo_rate"],
+                            ["measurement_order__order_region", "measurement_order__roof_type"])
+        .rename(columns={"measurement_order__order_region": "region", "measurement_order__roof_type": "roof_type"}),
         "metric_catalog": pd.DataFrame(
             [{"name": m.name, "label": m.label, "description": m.description,
               "dimensions": ", ".join(d for d in m.dimensions if not d.startswith("metric_time"))}
