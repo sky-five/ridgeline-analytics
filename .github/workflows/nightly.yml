@@ -1,0 +1,87 @@
+name: nightly
+
+# Simulates the new day, rebuilds the warehouse and publishes the Evidence site to GitHub Pages.
+# If any step fails, Pages keeps serving the last good build.
+on:
+  schedule:
+    - cron: "0 9 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+          echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('simulator/**') }}
+
+      - name: Load + dbt build
+        run: python scripts/run_all.py --fresh --as-of "$AS_OF"
+
+      - name: Source freshness
+        working-directory: dbt
+        run: dbt source freshness --profiles-dir . --vars "{as_of_date: '$AS_OF'}"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: reports/package-lock.json
+
+      - name: Build Evidence site
+        working-directory: reports
+        run: |
+          sed -i "s#basePath: ''#basePath: '/${{ github.event.repository.name }}'#" evidence.config.yaml
+          npm ci
+          npm run sources
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: reports/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Smoke test
+        run: |
+          base="${{ steps.deployment.outputs.page_url }}"
+          for page in "" acquisition/ sales/ data-health/ metrics/; do
+            curl -fsS -o /dev/null "${base}${page}" && echo "ok ${base}${page}"
+          done
