@@ -146,7 +146,7 @@ docs/        design spec and implementation plans
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
 2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), with its own CI job and a DuckDB parity check. SCD2 snapshot of subscriptions. Support-ticket churn themes come from 300 tickets labelled by Claude Code plus a TF-IDF classifier (100% on held-out labels). Snowflake Cortex `AI_CLASSIFY` is blocked on trial accounts, so it sits behind a `use_cortex` flag for paid accounts.
 3. ✅ MetricFlow semantic layer (27 governed metrics), Evidence site (scorecard, acquisition, ready for sales, data health, metric definitions), nightly simulate → load → build → deploy to GitHub Pages with a smoke test
-4. 🚧 AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval. Next: retention and contractor pages
+4. 🚧 AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval. Retention and contractor outcome pages are live. Next: a hosted "Ask the data" page
 5. Polish: architecture diagram, demo video
 
 ## Notes
