@@ -6,7 +6,7 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 **Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night from a fresh simulated day)
 
-**Status:** Phases 1–3 of 5 are done and Phase 4 is under way. The same dbt project builds on **DuckDB and Snowflake** (identical numbers), tested in CI on both. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics. See the [roadmap](#roadmap).
+**Status:** Phases 1–4 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (identical numbers), tested in CI on both. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics; its recorded eval is on the site's Ask the data page. See the [roadmap](#roadmap).
 
 ## Architecture
 
@@ -146,7 +146,7 @@ docs/        design spec and implementation plans
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
 2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), with its own CI job and a DuckDB parity check. SCD2 snapshot of subscriptions. Support-ticket churn themes come from 300 tickets labelled by Claude Code plus a TF-IDF classifier (100% on held-out labels). Snowflake Cortex `AI_CLASSIFY` is blocked on trial accounts, so it sits behind a `use_cortex` flag for paid accounts.
 3. ✅ MetricFlow semantic layer (27 governed metrics), Evidence site (scorecard, acquisition, ready for sales, data health, metric definitions), nightly simulate → load → build → deploy to GitHub Pages with a smoke test
-4. 🚧 AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval. Retention and contractor outcome pages are live. Next: a hosted "Ask the data" page
+4. ✅ AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval, shown on the site's "Ask the data" page as a recorded run (no live LLM calls). Retention and contractor outcome pages
 5. Polish: architecture diagram, demo video
 
 ## Notes
