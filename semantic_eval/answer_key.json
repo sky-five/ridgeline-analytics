@@ -1,0 +1,31 @@
+{
+ "as_of": "2026-10-29",
+ "built_on": "2026-11-02",
+ "answers": {
+  "mrr_end_sep_2026": 243419.0,
+  "paying_accounts_end_2025": 552.0,
+  "net_new_mrr_2025": 85939.0,
+  "new_mrr_q1_2026": 36374.0,
+  "churned_mrr_2025": 110899.0,
+  "best_net_new_month_2026": "2026-06",
+  "net_new_mrr_top_channel_2025": "google_ads",
+  "nrr_12m_all": 0.61276122455937,
+  "nrr_12m_2024_cohorts": 0.6282498847308348,
+  "signups_2025": 3050.0,
+  "activation_rate_2025": 0.31311475409836065,
+  "free_to_paid_all": 0.1563832455480311,
+  "free_to_paid_best_channel": "referral",
+  "free_to_paid_worst_channel": "facebook",
+  "free_to_paid_activated": 0.38882235528942116,
+  "free_to_paid_best_crew_size": "16+",
+  "ad_spend_2025": 429930.05,
+  "cac_2025": 882.8132443531828,
+  "cac_highest_channel_2025": "trade_show",
+  "leads_2025": 77895.0,
+  "lead_close_rate_all": 0.22881417789521322,
+  "speed_to_lead_2025": 18.0,
+  "best_speed_bucket": "lt_5m",
+  "redo_rate_2025": 0.05593968862916537,
+  "top_ticket_theme_2025": "measurement_accuracy"
+ }
+}
