@@ -1,0 +1,266 @@
+# 25 business questions with answers computed from the governed metrics (MetricFlow), not from raw tables.
+# They are worded the way a stakeholder would ask, so choosing the right definition is part of the task.
+#
+#   metric / group_by / where   the MetricFlow query that holds the answer
+#   pick                        keep the rows whose group-by value starts with this text (e.g. a year)
+#   answer                      value (the one row left) | top / bottom (the `by` value with the highest / lowest metric)
+#   type                        number | ratio | text, scored as in analyst/evals/score.py
+#   period_end                  last day the answer depends on; answers for closed periods must not move
+#   trap                        what a query on the raw tables tends to get wrong
+
+# ---- revenue
+- id: mrr_end_sep_2026
+  question: What was our MRR at the end of September 2026?
+  category: revenue
+  metric: mrr
+  group_by: [metric_time__month]
+  pick: {metric_time__month: "2026-09"}
+  type: number
+  period_end: 2026-09-30
+  trap: MRR is a balance on a day. Summing daily MRR over the month gives about 30 times the real number.
+
+- id: paying_accounts_end_2025
+  question: How many paying customers did we have going into 2026?
+  category: revenue
+  metric: paying_accounts
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  period_end: 2025-12-31
+  trap: Counting accounts that ever paid, or accounts with a paid plan today, instead of those paying on 2025-12-31.
+
+- id: net_new_mrr_2025
+  question: How much MRR did we add in 2025, net of losses?
+  category: revenue
+  metric: net_new_mrr
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  period_end: 2025-12-31
+  trap: Leaving out reactivations, or adding contraction and churn as positives because of their sign.
+
+- id: new_mrr_q1_2026
+  question: How much MRR came from brand-new customers in Q1 2026?
+  category: revenue
+  metric: new_mrr
+  group_by: [metric_time__quarter]
+  pick: {metric_time__quarter: "2026-01"}
+  type: number
+  period_end: 2026-03-31
+  trap: Counting upgrades or returning customers as new, or using signup date instead of first-payment date.
+
+- id: churned_mrr_2025
+  question: How much recurring revenue did we lose to cancellations in 2025?
+  category: revenue
+  metric: churned_mrr
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  absolute: true
+  period_end: 2025-12-31
+  trap: Mixing in downgrades (contraction), which are not cancellations. Churned MRR is stored as a negative.
+
+- id: best_net_new_month_2026
+  question: Which month from January to September 2026 had the biggest net MRR gain?
+  category: revenue
+  metric: net_new_mrr
+  group_by: [metric_time__month]
+  pick: {metric_time__month: "2026"}
+  where: ["{{ TimeDimension('metric_time', 'month') }} < '2026-10-01'"]
+  answer: top
+  by: metric_time__month
+  type: text
+  period_end: 2026-09-30
+  trap: Comparing month-end MRR balances instead of the month's movements.
+
+- id: net_new_mrr_top_channel_2025
+  question: Customers from which acquisition channel added the most net MRR in 2025?
+  category: revenue
+  metric: net_new_mrr
+  group_by: [account__channel, metric_time__year]
+  pick: {metric_time__year: "2025"}
+  answer: top
+  by: account__channel
+  type: text
+  period_end: 2025-12-31
+  trap: Using the ad-spend channel table, which has no revenue, or attributing by the marketing channel of the day of payment.
+
+# ---- retention
+- id: nrr_12m_all
+  question: What is our net revenue retention?
+  category: retention
+  metric: nrr_12m
+  type: ratio
+  trap: Comparing total MRR a year apart (that mixes in new customers), or dropping expansion so it becomes GRR.
+
+- id: nrr_12m_2024_cohorts
+  question: What was 12-month net revenue retention for customers who started paying in 2024?
+  category: retention
+  metric: nrr_12m
+  group_by: [cohort_period__cohort_month__year]
+  pick: {cohort_period__cohort_month__year: "2024"}
+  type: ratio
+  period_end: 2025-12-31
+  trap: Averaging the monthly cohorts' NRR instead of weighting by starting MRR.
+
+# ---- funnel
+- id: signups_2025
+  question: How many accounts signed up in 2025?
+  category: funnel
+  metric: signups
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  period_end: 2025-12-31
+  trap: Filtering on when the raw row was last updated (rows are merged on updated_at) instead of the signup date.
+
+- id: activation_rate_2025
+  question: What share of 2025 signups got activated?
+  category: funnel
+  metric: activation_rate
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: ratio
+  period_end: 2026-01-14
+  trap: Activation means sending a proposal within 14 days of signup. Any proposal ever, or any login, is not activation.
+
+- id: free_to_paid_all
+  question: What's our trial-to-paid conversion rate?
+  category: funnel
+  metric: free_to_paid_60d
+  type: ratio
+  trap: Including signups younger than 60 days (they have not had time to pay), or counting payments after day 60.
+
+- id: free_to_paid_best_channel
+  question: Which acquisition channel converts to paid best?
+  category: funnel
+  metric: free_to_paid_60d
+  group_by: [account__channel]
+  answer: top
+  by: account__channel
+  type: text
+  trap: Ranking channels by number of paid accounts rather than by rate, or including immature signups.
+
+- id: free_to_paid_worst_channel
+  question: Which acquisition channel converts to paid worst?
+  category: funnel
+  metric: free_to_paid_60d
+  group_by: [account__channel]
+  answer: bottom
+  by: account__channel
+  type: text
+  trap: Same as the best channel; small or young channels look worst if immature signups are left in.
+
+- id: free_to_paid_activated
+  question: Of the accounts that activated, what share became paying customers?
+  category: funnel
+  metric: free_to_paid_60d
+  where: ["{{ Dimension('account__is_activated') }}"]
+  type: ratio
+  trap: Including signups younger than 60 days, or counting any later payment instead of payment within 60 days.
+
+- id: free_to_paid_best_crew_size
+  question: Which crew size converts to paid best?
+  category: funnel
+  metric: free_to_paid_60d
+  group_by: [account__crew_size]
+  answer: top
+  by: account__crew_size
+  type: text
+  trap: Ranking by the number of paid accounts. The 2-5 crew group is the biggest, so it wins on volume, not on rate.
+
+# ---- acquisition
+- id: ad_spend_2025
+  question: What did we spend on advertising in 2025?
+  category: acquisition
+  metric: ad_spend
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  period_end: 2025-12-31
+  trap: Summing the ad platforms' daily rows after joining them to signups, which repeats each day's spend.
+
+- id: cac_2025
+  question: What was our customer acquisition cost in 2025?
+  category: acquisition
+  metric: cac
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  period_end: 2026-03-01
+  trap: Dividing spend by conversions counted on payment date. Governed CAC credits each conversion to its signup date.
+
+- id: cac_highest_channel_2025
+  question: Which paid channel had the most expensive customers in 2025?
+  category: acquisition
+  metric: cac
+  group_by: [channel_day__marketing_channel, metric_time__year]
+  pick: {metric_time__year: "2025"}
+  answer: top
+  by: channel_day__marketing_channel
+  type: text
+  period_end: 2026-03-01
+  trap: Ranking by total spend rather than spend per conversion.
+
+# ---- contractor outcomes
+- id: leads_2025
+  question: How many homeowner leads did our contractors get in 2025?
+  category: contractor_outcomes
+  metric: leads
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  period_end: 2025-12-31
+  trap: Filtering on when the raw row was last updated instead of when the lead came in.
+
+- id: lead_close_rate_all
+  question: What share of homeowner leads do our contractors win?
+  category: contractor_outcomes
+  metric: lead_close_rate
+  type: ratio
+  trap: Dividing by all leads. Open leads have no outcome yet and are left out of the governed rate.
+
+- id: speed_to_lead_2025
+  question: How fast did contractors typically get back to new leads in 2025, in minutes?
+  category: contractor_outcomes
+  metric: speed_to_lead_median_min
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: number
+  tolerance: 0.02
+  period_end: 2025-12-31
+  trap: Using the mean (a few multi-day replies drag it up), or treating leads with no logged contact time as zero.
+
+- id: best_speed_bucket
+  question: Which response-time bucket has the highest lead close rate?
+  category: contractor_outcomes
+  metric: lead_close_rate
+  group_by: [lead__speed_bucket]
+  where: ["{{ Dimension('lead__speed_bucket') }} in ('lt_5m', '5_60m', '1_24h', 'gt_1d')"]
+  answer: top
+  by: lead__speed_bucket
+  type: text
+  trap: Letting the "missing" bucket in. Those leads were worked but never got a contact time, so they are not a speed.
+
+# ---- operations
+- id: redo_rate_2025
+  question: How often did contractors ask us to redo a roof measurement in 2025?
+  category: operations
+  metric: measurement_redo_rate
+  group_by: [metric_time__year]
+  pick: {metric_time__year: "2025"}
+  type: ratio
+  period_end: 2025-12-31
+  trap: Counting redo orders as extra orders in the denominator, which lowers the rate.
+
+- id: top_ticket_theme_2025
+  question: What did customers contact support about most in 2025?
+  category: operations
+  metric: tickets
+  group_by: [ticket__churn_theme, metric_time__year]
+  pick: {metric_time__year: "2025"}
+  answer: top
+  by: ticket__churn_theme
+  type: text
+  period_end: 2025-12-31
+  trap: Raw tickets have no theme. Keyword-matching the text is what the governed theme (hand labels plus a tested classifier) replaced.
