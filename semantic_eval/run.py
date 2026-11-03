@@ -73,13 +73,31 @@ def replay(path: Path) -> dict:
     return report
 
 
+def truth(q: dict) -> float | str:
+    """The answer key's answer, through the read-only path (MetricFlow compiles, the SQL guard runs it).
+
+    semantic.query would hold a write lock on the warehouse for the whole run and lock out the arms' servers.
+    """
+    from semantic_eval import arms as arm_tools
+    from semantic_eval.answer_key import pick_answer
+
+    res = arm_tools.query_governed_metric([q["metric"]], q.get("group_by"), q.get("where"))
+    if "error" in res:
+        raise RuntimeError(f"{q['id']}: {res['error']}")
+    rows = [dict(zip(res["columns"], row, strict=True)) for row in res["rows"]]
+    for row in rows:
+        for col in q.get("group_by") or []:
+            if col.startswith("metric_time") or "cohort_month" in col:
+                row[col] = datetime.fromisoformat(str(row[col]))
+    return pick_answer(q, rows)
+
+
 def run(arms: list[str], only: list[str] | None, model: str | None, workers: int) -> dict:
     from analyst.evals.run import ask_claude_code
     from semantic_eval import arms as arm_tools
-    from semantic_eval.answer_key import compute
 
     questions = [q for q in load_questions() if not only or q["id"] in only]
-    truths = {q["id"]: compute(q) for q in questions}
+    truths = {q["id"]: truth(q) for q in questions}
     warehouse = Path(os.environ.get("RIDGELINE_DUCKDB_PATH", HERE.parent / "warehouse" / "ridgeline.duckdb"))
     as_of = arm_tools.query_governed_metric(["mrr"], ["metric_time__day"], None, ["-metric_time__day"], 1)
     as_of = str(as_of["rows"][0][0])[:10]

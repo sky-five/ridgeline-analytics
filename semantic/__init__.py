@@ -62,7 +62,9 @@ def _compile_config():
 
 
 def list_metrics() -> list[MetricInfo]:
-    mf = _config().mf
+    """Metric names, definitions and dimensions. Read from the manifest on the stub engine, so listing
+    never opens (and write-locks) the warehouse while other processes are reading it."""
+    mf = _compile_config().mf
     out = []
     for m in mf.list_metrics():
         dims = tuple(sorted(d.dunder_name for d in m.dimensions))
