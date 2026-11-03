@@ -43,7 +43,7 @@ The analyst answers every question twice, each time with one set of tools and no
 
 Each arm is its own MCP server (`server.py`); Claude Code runs headless with only that server's tools. Truth is the answer key's governed query on the same warehouse.
 
-**Recorded run (2026-11-03, data as of 2026-11-02, Claude Code headless, default model):**
+**Recorded run (2026-11-03, data as of 2026-11-02, Claude Code headless, model claude-sonnet-5-5 via Anthropic; other models will score differently):**
 
 | | Raw tables | Governed metrics |
 |---|---|---|
