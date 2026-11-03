@@ -1,0 +1,2077 @@
+{
+ "ran_at": "2026-11-03T04:34:02",
+ "as_of": "2026-11-02",
+ "backend": "claude-code",
+ "model": "claude-sonnet-5-5",
+ "summary": {
+  "arms": {
+   "raw": {
+    "correct": 17,
+    "total": 25,
+    "by_category": {
+     "acquisition": [
+      2,
+      3
+     ],
+     "contractor_outcomes": [
+      2,
+      4
+     ],
+     "funnel": [
+      4,
+      7
+     ],
+     "operations": [
+      1,
+      2
+     ],
+     "retention": [
+      1,
+      2
+     ],
+     "revenue": [
+      7,
+      7
+     ]
+    },
+    "errors": 0,
+    "cost_usd": 0.82,
+    "median_seconds": 11.8,
+    "median_tool_calls": 4.0
+   },
+   "governed": {
+    "correct": 25,
+    "total": 25,
+    "by_category": {
+     "acquisition": [
+      3,
+      3
+     ],
+     "contractor_outcomes": [
+      4,
+      4
+     ],
+     "funnel": [
+      7,
+      7
+     ],
+     "operations": [
+      2,
+      2
+     ],
+     "retention": [
+      2,
+      2
+     ],
+     "revenue": [
+      7,
+      7
+     ]
+    },
+    "errors": 0,
+    "cost_usd": 0.66,
+    "median_seconds": 11.0,
+    "median_tool_calls": 2.0
+   }
+  },
+  "only_governed_right": [
+   "activation_rate_2025",
+   "best_speed_bucket",
+   "cac_2025",
+   "free_to_paid_activated",
+   "free_to_paid_all",
+   "lead_close_rate_all",
+   "nrr_12m_all",
+   "top_ticket_theme_2025"
+  ],
+  "only_raw_right": []
+ },
+ "results": [
+  {
+   "id": "mrr_end_sep_2026",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "What was our MRR at the end of September 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 243419.0,
+   "answer": 243419,
+   "unit": "usd",
+   "definition": "Sum of each subscription's mrr_after from its latest subscription_changes row on or before 2026-09-30 (canceled = 0), the same method that reproduces current active MRR of $248,436.",
+   "parsed": true,
+   "trap": "MRR is a balance on a day. Summing daily MRR over the month gives about 30 times the real number.",
+   "text": "MRR at the end of September 2026 was **$243,419**, from 778 subscriptions that were paying at that point.\n\nI rebuilt it from the subscription change log (`subscription_changes`). For each subscription I took its last change on or before 30 Sept 2026 and used the MRR after that change. Canceled subscriptions count as $0. I ran the same method on today's data to check it. It gives $248,436, which matches the current active subscriptions exactly.\n\n```json\n{\"answer\": 243419, \"unit\": \"usd\", \"definition\": \"Sum of each subscription's mrr_after from its latest subscription_changes row on or before 2026-09-30 (canceled = 0), the same method that reproduces current active MRR of $248,436.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select status, count(*), count(distinct subscription_id), sum(mrr_usd), min(started_at), max(started_at), max(canceled_at) from raw_app_db.subscriptions group by 1;\nselect change_type, count(*), count(distinct change_id), min(changed_at), max(changed_at) from raw_app_db.subscription_changes group by 1;"
+    },
+    {
+     "sql": "select status, count(*), count(distinct subscription_id), sum(mrr_usd), min(started_at), max(started_at), max(canceled_at) from raw_app_db.subscriptions group by 1"
+    },
+    {
+     "sql": "select change_type, count(*), count(distinct change_id), min(changed_at), max(changed_at) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "with l as (select *, row_number() over (partition by subscription_id order by changed_at desc, change_id desc) rn from raw_app_db.subscription_changes where changed_at < timestamp '2026-10-01 00:00:00+00') select sum(mrr_after), count(*), sum(case when mrr_after>0 then 1 else 0 end), sum(case when change_type='cancel' then 1 else 0 end) from l where rn=1"
+    },
+    {
+     "sql": "with l as (select *, row_number() over (partition by subscription_id order by changed_at desc, change_id desc) rn from raw_app_db.subscription_changes) select sum(mrr_after), count(*) from l where rn=1 and change_type<>'cancel'"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 13.5,
+   "cost_usd": 0.0354217,
+   "correct": true
+  },
+  {
+   "id": "mrr_end_sep_2026",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "What was our MRR at the end of September 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 243419.0,
+   "answer": 243419,
+   "unit": "usd",
+   "definition": "Governed MRR metric (end-of-day monthly recurring revenue) on 2026-09-30.",
+   "parsed": true,
+   "trap": "MRR is a balance on a day. Summing daily MRR over the month gives about 30 times the real number.",
+   "text": "Your MRR at the end of September 2026 (30 Sep) was **$243,419**. I took this from the governed MRR metric, which reports MRR at the end of each period.\n\n```json\n{\"answer\": 243419, \"unit\": \"usd\", \"definition\": \"Governed MRR metric (end-of-day monthly recurring revenue) on 2026-09-30.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "mrr"
+     ],
+     "group_by": [
+      "metric_time__day"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2026-09-28' and {{ TimeDimension('metric_time', 'day') }} <= '2026-10-02'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.7,
+   "cost_usd": 0.0242527,
+   "correct": true
+  },
+  {
+   "id": "paying_accounts_end_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How many paying customers did we have going into 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 552.0,
+   "answer": 552,
+   "unit": "count",
+   "definition": "Accounts whose latest subscription change before 2026-01-01 left MRR above zero (not canceled), reconstructed from subscription_changes.",
+   "parsed": true,
+   "trap": "Counting accounts that ever paid, or accounts with a paid plan today, instead of those paying on 2025-12-31.",
+   "text": "We had 552 paying customers going into 2026, counted as of the end of 2025-12-31.\n\nI rebuilt each account's subscription state from the subscription change log. For each account, I took its last change before 2026-01-01. I counted the account as paying if that change left it with MRR above zero, which excludes accounts whose last change was a cancellation. That gave 552 paying accounts and 382 accounts that had already canceled.\n\nI used the change log instead of the subscriptions table because that table only shows current status. It would miss accounts that were active at year-end and have since canceled, and accounts that canceled and later reactivated.\n\n```json\n{\"answer\": 552, \"unit\": \"count\", \"definition\": \"Accounts whose latest subscription change before 2026-01-01 left MRR above zero (not canceled), reconstructed from subscription_changes.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select status, count(*), count(distinct subscription_id), min(started_at), max(started_at), min(mrr_usd), count(distinct account_id) from raw_app_db.subscriptions group by 1"
+    },
+    {
+     "sql": "select change_type, count(*), min(changed_at), max(changed_at) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "with c as (select *, row_number() over (partition by account_id order by changed_at desc, updated_at desc) rn from raw_app_db.subscription_changes where changed_at < timestamp '2026-01-01 00:00:00+00')\nselect change_type, mrr_after>0 paying, count(*), count(distinct account_id) from c where rn=1 group by 1,2;\n"
+    },
+    {
+     "sql": "select count(*), count(distinct change_id) from raw_app_db.subscription_changes"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.8,
+   "cost_usd": 0.0317846,
+   "correct": true
+  },
+  {
+   "id": "paying_accounts_end_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How many paying customers did we have going into 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 552.0,
+   "answer": 552,
+   "unit": "count",
+   "definition": "Paying accounts (on a paid plan) at end of day 2025-12-31, the last day before 2026.",
+   "parsed": true,
+   "trap": "Counting accounts that ever paid, or accounts with a paid plan today, instead of those paying on 2025-12-31.",
+   "text": "We had 552 paying accounts at the end of 2025-12-31, going into 2026. The count was 551 on 2026-01-01.\n\n```json\n{\"answer\": 552, \"unit\": \"count\", \"definition\": \"Paying accounts (on a paid plan) at end of day 2025-12-31, the last day before 2026.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "paying_accounts"
+     ],
+     "group_by": [
+      "metric_time__day"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-12-30' and {{ TimeDimension('metric_time', 'day') }} <= '2026-01-02'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.4,
+   "cost_usd": 0.024319300000000002,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How much MRR did we add in 2025, net of losses?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 85939.0,
+   "answer": 85939,
+   "unit": "usd",
+   "definition": "Sum of (mrr_after - mrr_before) across all subscription_changes events (new, reactivate, upgrade, addon_added, downgrade, addon_removed, cancel) with changed_at in calendar 2025.",
+   "parsed": true,
+   "trap": "Leaving out reactivations, or adding contraction and churn as positives because of their sign.",
+   "text": "Net new MRR added in 2025 was **$85,939**. That is the sum of the MRR change on every subscription event dated in 2025.\n\n| Change type | MRR change (USD) |\n|---|---|\n| New subscriptions (549) | +156,001 |\n| Reactivations (82) | +22,918 |\n| Add-ons added (193) | +19,307 |\n| Upgrades (56) | +5,600 |\n| Downgrades (57) | \u22125,700 |\n| Add-ons removed (12) | \u22121,288 |\n| Cancellations (362) | \u2212110,899 |\n\nGross additions (new, reactivations, add-ons and upgrades) come to $203,826. Losses (cancellations, downgrades and removed add-ons) come to $117,887. I did not check that each event's before and after MRR values are consistent with the previous event on the same subscription.\n\n```json\n{\"answer\": 85939, \"unit\": \"usd\", \"definition\": \"Sum of (mrr_after - mrr_before) across all subscription_changes events (new, reactivate, upgrade, addon_added, downgrade, addon_removed, cancel) with changed_at in calendar 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), count(distinct change_id), sum(mrr_after-mrr_before), min(changed_at), max(changed_at) from raw_app_db.subscription_changes where changed_at>='2025-01-01' and changed_at<'2026-01-01' group by 1"
+    },
+    {
+     "sql": "select count(*), count(distinct change_id), max(changed_at) from raw_app_db.subscription_changes"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.5,
+   "cost_usd": 0.0259168,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How much MRR did we add in 2025, net of losses?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 85939.0,
+   "answer": 85939,
+   "unit": "usd",
+   "definition": "Net new MRR for 2025-01-01 to 2025-12-31: new + expansion + reactivation \u2212 contraction \u2212 churn.",
+   "parsed": true,
+   "trap": "Leaving out reactivations, or adding contraction and churn as positives because of their sign.",
+   "text": "Net new MRR for 2025 (Jan 1 to Dec 31) was **$85,939**.\n\n| Movement | MRR (USD) |\n|---|---|\n| New | +156,001 |\n| Expansion | +24,907 |\n| Reactivation | +22,918 |\n| Contraction | \u22126,988 |\n| Churn | \u2212110,899 |\n| **Net** | **+85,939** |\n\nThe components add up to the total.\n\n```json\n{\"answer\": 85939, \"unit\": \"usd\", \"definition\": \"Net new MRR for 2025-01-01 to 2025-12-31: new + expansion + reactivation \u2212 contraction \u2212 churn.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    },
+    {
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "group_by": [
+      "movement__movement_type"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.4,
+   "cost_usd": 0.0281292,
+   "correct": true
+  },
+  {
+   "id": "new_mrr_q1_2026",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How much MRR came from brand-new customers in Q1 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 36374.0,
+   "answer": 36374,
+   "unit": "usd",
+   "definition": "Sum of initial MRR (mrr_after) on 'new' subscription_changes events dated 2026-01-01 to 2026-03-31 (126 new customers, one subscription each).",
+   "parsed": true,
+   "trap": "Counting upgrades or returning customers as new, or using signup date instead of first-payment date.",
+   "text": "In Q1 2026, brand-new customers brought in **$36,374** of MRR.\n\n- **Definition:** I summed the starting MRR (`mrr_after`) on every `new` subscription event dated 1 Jan to 31 Mar 2026. That gives 126 new customers, each with exactly one new subscription, and none with zero MRR.\n- **Why not current MRR:** The `subscriptions` table shows current MRR, which includes later upgrades, downgrades, add-ons and cancellations. Summed for the same 126 subscriptions, it comes to $24,751. That figure measures something different, because it isn't the MRR those customers started with.\n\n```json\n{\"answer\": 36374, \"unit\": \"usd\", \"definition\": \"Sum of initial MRR (mrr_after) on 'new' subscription_changes events dated 2026-01-01 to 2026-03-31 (126 new customers, one subscription each).\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), min(changed_at), max(changed_at), count(distinct change_id) from raw_app_db.subscription_changes group by 1;\nselect status, count(*), count(distinct subscription_id), count(distinct account_id), min(started_at), max(started_at) from raw_app_db.subscriptions group by 1;"
+    },
+    {
+     "sql": "select change_type, count(*), min(changed_at), max(changed_at), count(distinct change_id) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "select status, count(*), count(distinct subscription_id), count(distinct account_id), min(started_at), max(started_at) from raw_app_db.subscriptions group by 1"
+    },
+    {
+     "sql": "select count(*), count(distinct c.account_id), sum(c.mrr_after), sum(s.mrr_usd), sum(case when c.mrr_after<>s.mrr_usd then 1 else 0 end), sum(case when c.mrr_after is null or c.mrr_after=0 then 1 else 0 end) from raw_app_db.subscription_changes c left join raw_app_db.subscriptions s using(subscription_id) where c.change_type='new' and c.changed_at>=timestamp '2026-01-01' and c.changed_at<timestamp '2026-04-01'"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 12.5,
+   "cost_usd": 0.0339711,
+   "correct": true
+  },
+  {
+   "id": "new_mrr_q1_2026",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How much MRR came from brand-new customers in Q1 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 36374.0,
+   "answer": 36374,
+   "unit": "usd",
+   "definition": "Sum of the governed new_mrr metric (MRR from newly acquired customers) for 2026-01-01 through 2026-03-31, excluding expansion and reactivation.",
+   "parsed": true,
+   "trap": "Counting upgrades or returning customers as new, or using signup date instead of first-payment date.",
+   "text": "New MRR from brand-new customers in Q1 2026 (Jan 1 to Mar 31) was **$36,374**.\n\n```json\n{\"answer\": 36374, \"unit\": \"usd\", \"definition\": \"Sum of the governed new_mrr metric (MRR from newly acquired customers) for 2026-01-01 through 2026-03-31, excluding expansion and reactivation.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "new_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2026-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2026-03-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.7,
+   "cost_usd": 0.0233801,
+   "correct": true
+  },
+  {
+   "id": "churned_mrr_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How much recurring revenue did we lose to cancellations in 2025?",
+   "type": "number",
+   "absolute": true,
+   "tolerance": null,
+   "truth": 110899.0,
+   "answer": 110899,
+   "unit": "usd",
+   "definition": "Sum of mrr_before on 'cancel' events in subscription_changes with changed_at in calendar 2025 (362 events, 348 subscriptions), counting each cancellation and not netting reactivations.",
+   "parsed": true,
+   "trap": "Mixing in downgrades (contraction), which are not cancellations. Churned MRR is stored as a negative.",
+   "text": "In 2025 we lost **$110,899 of monthly recurring revenue (MRR)** to cancellations.\n\nI summed the MRR the subscription had before each cancel event in `subscription_changes` with a change date in 2025. That came to 362 cancellations across 348 subscriptions. Every one of them dropped MRR to $0. Downgrades and removed add-ons aren't included.\n\nSome subscriptions canceled, reactivated and canceled again within the year. I counted each cancellation separately, which is why there are more events than subscriptions. I did not net out reactivations, so MRR won back later is not subtracted.\n\n```json\n{\"answer\": 110899, \"unit\": \"usd\", \"definition\": \"Sum of mrr_before on 'cancel' events in subscription_changes with changed_at in calendar 2025 (362 events, 348 subscriptions), counting each cancellation and not netting reactivations.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), count(distinct change_id), min(changed_at), max(changed_at), sum(mrr_before), sum(mrr_after) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "select status, count(*), count(distinct subscription_id), min(canceled_at), max(canceled_at), sum(mrr_usd) from raw_app_db.subscriptions group by 1"
+    },
+    {
+     "sql": "select count(*), sum(mrr_before), count(distinct subscription_id), min(mrr_before), max(mrr_before), sum(case when mrr_after<>0 then 1 else 0 end) from raw_app_db.subscription_changes where change_type='cancel' and changed_at>='2025-01-01' and changed_at<'2026-01-01'"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.2,
+   "cost_usd": 0.0295676,
+   "correct": true
+  },
+  {
+   "id": "churned_mrr_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How much recurring revenue did we lose to cancellations in 2025?",
+   "type": "number",
+   "absolute": true,
+   "tolerance": null,
+   "truth": 110899.0,
+   "answer": 110899,
+   "unit": "usd",
+   "definition": "Sum of the governed churned_mrr metric (MRR lost to cancellations) for 2025-01-01 through 2025-12-31, shown as a positive amount.",
+   "parsed": true,
+   "trap": "Mixing in downgrades (contraction), which are not cancellations. Churned MRR is stored as a negative.",
+   "text": "We lost $110,899 of MRR to cancellations in 2025. The churned MRR metric reports this as a negative number (\u2212110,899), and I've given it as a positive loss. I summed it over 2025-01-01 to 2025-12-31.\n\n```json\n{\"answer\": 110899, \"unit\": \"usd\", \"definition\": \"Sum of the governed churned_mrr metric (MRR lost to cancellations) for 2025-01-01 through 2025-12-31, shown as a positive amount.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "churned_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' AND {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.2,
+   "cost_usd": 0.023773199999999998,
+   "correct": true
+  },
+  {
+   "id": "best_net_new_month_2026",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "Which month from January to September 2026 had the biggest net MRR gain?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "2026-06",
+   "answer": "2026-06",
+   "unit": "text",
+   "definition": "Month (Jan-Sep 2026) with the largest sum of (mrr_after - mrr_before) across all subscription_changes events; June = +$16,728.",
+   "parsed": true,
+   "trap": "Comparing month-end MRR balances instead of the month's movements.",
+   "text": "**June 2026** had the biggest net MRR gain, at **+$16,728**.\n\nI summed `mrr_after \u2212 mrr_before` across all subscription changes in each month. That covers new, upgrade, downgrade, add-on, cancel and reactivate events. I did not cross-check these totals against the subscriptions or invoices tables.\n\n| Month | Net MRR change (USD) |\n|---|---|\n| Jan | 3,387 |\n| Feb | 4,129 |\n| Mar | 249 |\n| Apr | 9,720 |\n| May | 7,080 |\n| **Jun** | **16,728** |\n| Jul | 13,646 |\n| Aug | 5,475 |\n| Sep | 9,555 |\n\n```json\n{\"answer\": \"2026-06\", \"unit\": \"text\", \"definition\": \"Month (Jan-Sep 2026) with the largest sum of (mrr_after - mrr_before) across all subscription_changes events; June = +$16,728.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), count(distinct change_id), sum(mrr_after-mrr_before), min(changed_at), max(changed_at) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "select strftime(changed_at,'%Y-%m') m, count(*), sum(mrr_after-mrr_before) net from (select distinct * from raw_app_db.subscription_changes) where changed_at>='2026-01-01' and changed_at<'2026-10-01' group by 1 order by 1"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 8.7,
+   "cost_usd": 0.0260457,
+   "correct": true
+  },
+  {
+   "id": "best_net_new_month_2026",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "Which month from January to September 2026 had the biggest net MRR gain?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "2026-06",
+   "answer": "June 2026",
+   "unit": "text",
+   "definition": "Month from Jan\u2013Sep 2026 with the highest net new MRR (new + expansion + reactivation \u2212 contraction \u2212 churn); June = $16,728.",
+   "parsed": true,
+   "trap": "Comparing month-end MRR balances instead of the month's movements.",
+   "text": "June 2026 had the biggest net MRR gain, at $16,728. July was next at $13,646.\n\nI used the governed net new MRR metric, which is new + expansion + reactivation \u2212 contraction \u2212 churn. I summed it for each month from January through September 2026.\n\n| Month | Net new MRR (USD) |\n|---|---|\n| Jan | 3,387 |\n| Feb | 4,129 |\n| Mar | 249 |\n| Apr | 9,720 |\n| May | 7,080 |\n| **Jun** | **16,728** |\n| Jul | 13,646 |\n| Aug | 5,475 |\n| Sep | 9,555 |\n\n```json\n{\"answer\": \"June 2026\", \"unit\": \"text\", \"definition\": \"Month from Jan\u2013Sep 2026 with the highest net new MRR (new + expansion + reactivation \u2212 contraction \u2212 churn); June = $16,728.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "group_by": [
+      "metric_time__month"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2026-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2026-09-30'"
+     ],
+     "order_by": [
+      "metric_time__month"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.8,
+   "cost_usd": 0.026926899999999997,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_top_channel_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "Customers from which acquisition channel added the most net MRR in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "google_ads",
+   "answer": "google_ads",
+   "unit": "text",
+   "definition": "Acquisition channel (from accounts) with the highest sum of (mrr_after - mrr_before) across all 2025 subscription changes (new, upgrades, downgrades, add-ons, cancels, reactivations): google_ads at $22,004.",
+   "parsed": true,
+   "trap": "Using the ad-spend channel table, which has no revenue, or attributing by the marketing channel of the day of payment.",
+   "text": "**Google Ads** added the most net MRR in 2025, at $22,004. Referral was second at $18,320.\n\nI took each account's acquisition channel from the accounts table. I then summed (MRR after \u2212 MRR before) across all 2025 subscription changes: new, upgrade, downgrade, add-on added or removed, cancel and reactivate. Google Ads also led on new-subscription MRR alone, at $39,462.\n\n```json\n{\"answer\": \"google_ads\", \"unit\": \"text\", \"definition\": \"Acquisition channel (from accounts) with the highest sum of (mrr_after - mrr_before) across all 2025 subscription changes (new, upgrades, downgrades, add-ons, cancels, reactivations): google_ads at $22,004.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), sum(mrr_after-mrr_before), min(changed_at), max(changed_at), count(distinct change_id) from raw_app_db.subscription_changes group by 1;\nselect channel, count(*), count(distinct account_id) from raw_app_db.accounts group by 1;"
+    },
+    {
+     "sql": "select change_type, count(*), sum(mrr_after-mrr_before), min(changed_at), max(changed_at), count(distinct change_id) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "select channel, count(*), count(distinct account_id) from raw_app_db.accounts group by 1"
+    },
+    {
+     "sql": "select a.channel, sum(c.mrr_after-c.mrr_before) net, sum(case when change_type='new' then mrr_after-mrr_before end) new_mrr, count(*) from raw_app_db.subscription_changes c left join raw_app_db.accounts a using(account_id) where c.changed_at>='2025-01-01' and c.changed_at<'2026-01-01' group by 1 order by 2 desc"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.2,
+   "cost_usd": 0.0312341,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_top_channel_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "Customers from which acquisition channel added the most net MRR in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "google_ads",
+   "answer": "google_ads",
+   "unit": "text",
+   "definition": "Acquisition channel with the highest net new MRR (new + expansion + reactivation - contraction - churn) from movements dated 2025-01-01 to 2025-12-31, grouped by account channel; google_ads had $22,004.",
+   "parsed": true,
+   "trap": "Using the ad-spend channel table, which has no revenue, or attributing by the marketing channel of the day of payment.",
+   "text": "Google Ads added the most net new MRR in 2025, at $22,004. Referral was second at $18,320.\n\nNet new MRR here is new + expansion + reactivation \u2212 contraction \u2212 churn. I grouped it by each account's acquisition channel and limited it to movements dated 2025-01-01 through 2025-12-31.\n\n| Channel | Net new MRR (USD) |\n|---|---|\n| google_ads | 22,004 |\n| referral | 18,320 |\n| organic | 13,949 |\n| supplier_partner | 13,342 |\n| facebook | 12,249 |\n| trade_show | 6,075 |\n\n```json\n{\"answer\": \"google_ads\", \"unit\": \"text\", \"definition\": \"Acquisition channel with the highest net new MRR (new + expansion + reactivation - contraction - churn) from movements dated 2025-01-01 to 2025-12-31, grouped by account channel; google_ads had $22,004.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "group_by": [
+      "account__channel"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "order_by": [
+      "-net_new_mrr"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.4,
+   "cost_usd": 0.0265733,
+   "correct": true
+  },
+  {
+   "id": "nrr_12m_all",
+   "arm": "raw",
+   "category": "retention",
+   "question": "What is our net revenue retention?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6172734798558582,
+   "answer": 0.56,
+   "unit": "ratio",
+   "definition": "MRR today from accounts that had MRR on 2025-11-03 (including expansion, contraction, churn and reactivation, excluding new accounts), divided by their MRR on that date: $94,338 / $168,372.",
+   "parsed": true,
+   "trap": "Comparing total MRR a year apart (that mixes in new customers), or dropping expansion so it becomes GRR.",
+   "text": "Net revenue retention (NRR) over the last 12 months is about **56.0%**.\n\n- **Cohort:** the 536 accounts with MRR above 0 on 2025-11-03 had $168,372 of MRR then.\n- **Today:** the same accounts have $94,338 of MRR. That figure includes expansion, downgrades, cancellations and reactivations, and excludes accounts that signed up after the cohort date.\n- **Ratio:** $94,338 \u00f7 $168,372 = 0.560.\n- **Gross retention:** it is about 0.497. This version caps each account at its starting MRR, so it leaves out upgrades and add-ons.\n- **Reconciliation:** I rebuilt MRR from the subscription change log. Its current total of $248,436 matches the active subscriptions table exactly.\n\n```json\n{\"answer\": 0.56, \"unit\": \"ratio\", \"definition\": \"MRR today from accounts that had MRR on 2025-11-03 (including expansion, contraction, churn and reactivation, excluding new accounts), divided by their MRR on that date: $94,338 / $168,372.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), min(changed_at), max(changed_at), sum(mrr_after-mrr_before) from raw_app_db.subscription_changes group by 1;"
+    },
+    {
+     "sql": "select status, count(*), sum(mrr_usd), min(started_at), max(started_at), count(distinct subscription_id), count(distinct account_id) from raw_app_db.subscriptions group by 1;"
+    },
+    {
+     "sql": "with c as (select distinct on (change_id) * from raw_app_db.subscription_changes order by change_id, updated_at desc),\ns0 as (select account_id, arg_max(mrr_after, changed_at) m0 from c where changed_at < timestamp '2025-11-03' group by 1),\ns1 as (select account_id, arg_max(mrr_after, changed_at) m1 from c group by 1)\nselect count(*), sum(m0), sum(coalesce(m1,0)), sum(coalesce(m1,0))/sum(m0), sum(least(coalesce(m1,0),m0))/sum(m0) from s0 left join s1 using(account_id) where m0>0;"
+    },
+    {
+     "sql": "select count(*), count(distinct change_id) from raw_app_db.subscription_changes; select (select sum(mrr_usd) from raw_app_db.subscriptions where status='active') a, (select sum(m) from (select arg_max(mrr_after, changed_at) m from raw_app_db.subscription_changes group by account_id)) b;"
+    },
+    {
+     "sql": "select (select sum(mrr_usd) from raw_app_db.subscriptions where status='active') a, (select sum(m) from (select arg_max(mrr_after, changed_at) m from raw_app_db.subscription_changes group by account_id)) b"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 14.9,
+   "cost_usd": 0.0390818,
+   "correct": false
+  },
+  {
+   "id": "nrr_12m_all",
+   "arm": "governed",
+   "category": "retention",
+   "question": "What is our net revenue retention?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6172734798558582,
+   "answer": 0.6172734798558582,
+   "unit": "ratio",
+   "definition": "Governed 12-month NRR: MRR that paid cohorts retain 12 months after starting (incl. expansion) as a share of their starting MRR, across cohorts old enough to measure.",
+   "parsed": true,
+   "trap": "Comparing total MRR a year apart (that mixes in new customers), or dropping expansion so it becomes GRR.",
+   "text": "Our 12-month net revenue retention is about **61.7%** (0.617).\n\n- **What it measures:** the share of a paid cohort's starting MRR that the cohort still has 12 months later, expansion included. The figure comes from the governed `nrr_12m` metric.\n- **Which cohorts it covers:** only cohorts that have reached 12 months, meaning those that started in October 2025 or earlier. Later cohorts have no 12-month value yet.\n- **Spread across cohorts:** individual monthly cohorts range from about 42% (Nov 2024) to about 77% (Sep 2025 and Feb 2025).\n- **What it means:** at 12 months, cohorts keep well under their starting revenue, so churn outweighs expansion.\n\n```json\n{\"answer\": 0.6172734798558582, \"unit\": \"ratio\", \"definition\": \"Governed 12-month NRR: MRR that paid cohorts retain 12 months after starting (incl. expansion) as a share of their starting MRR, across cohorts old enough to measure.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "nrr_12m",
+      "cohort_start_mrr",
+      "retained_mrr"
+     ],
+     "group_by": [
+      "cohort_period__cohort_month"
+     ]
+    },
+    {
+     "metrics": [
+      "nrr_12m"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 14.0,
+   "cost_usd": 0.0354721,
+   "correct": true
+  },
+  {
+   "id": "nrr_12m_2024_cohorts",
+   "arm": "raw",
+   "category": "retention",
+   "question": "What was 12-month net revenue retention for customers who started paying in 2024?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6282498847308348,
+   "answer": 0.627,
+   "unit": "ratio",
+   "definition": "For subscriptions with a 'new' event in 2024, MRR 12 months after start (including upgrades, downgrades, add-ons, cancels and reactivations) divided by starting MRR: 68,810 / 109,765.",
+   "parsed": true,
+   "trap": "Averaging the monthly cohorts' NRR instead of weighting by starting MRR.",
+   "text": "12-month net revenue retention for the 2024 cohort was about **0.627**.\n\n- **Cohort:** the 385 subscriptions whose \"new\" event in `subscription_changes` falls in 2024. All of them have passed their 12-month mark, since the latest 2024 start plus 12 months is still before now.\n- **Starting MRR:** $109,765, the sum of each subscription's MRR at its \"new\" event.\n- **MRR at 12 months:** $68,810, taken from each subscription's latest MRR change within 12 months of its start. That includes upgrades, downgrades, add-ons, cancellations (MRR of 0) and reactivations. Of the 385, 177 were at $0 MRR at that point.\n- **Result:** 68,810 / 109,765 \u2248 0.627.\n\nI used the \"new\" event date as the start of paying. I didn't cross-check it against first paid invoices.\n\n```json\n{\"answer\": 0.627, \"unit\": \"ratio\", \"definition\": \"For subscriptions with a 'new' event in 2024, MRR 12 months after start (including upgrades, downgrades, add-ons, cancels and reactivations) divided by starting MRR: 68,810 / 109,765.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select change_type, count(*), min(changed_at), max(changed_at), count(distinct subscription_id) from raw_app_db.subscription_changes group by 1;"
+    },
+    {
+     "sql": "select status, count(*), count(distinct subscription_id), count(distinct account_id), min(started_at), max(started_at), max(updated_at) from raw_app_db.subscriptions group by 1;"
+    },
+    {
+     "sql": "select line_type, status, count(*), min(period_start_date), max(period_start_date), sum(amount_usd) from raw_app_db.invoices group by 1,2;"
+    },
+    {
+     "sql": "with c as (select subscription_id, changed_at s, mrr_after m0 from raw_app_db.subscription_changes where change_type='new' and changed_at>='2024-01-01' and changed_at<'2025-01-01'),\nl as (select c.subscription_id, c.m0, (select arg_max(mrr_after, changed_at) from raw_app_db.subscription_changes x where x.subscription_id=c.subscription_id and x.changed_at<=c.s+interval 12 month) m12 from c)\nselect count(*), sum(m0), sum(m12), sum(m12)/sum(m0), sum(case when m0=0 then 1 else 0 end), sum(case when m12=0 then 1 else 0 end) from l;"
+    },
+    {
+     "sql": "select change_type, count(*), sum(case when mrr_after=0 then 1 else 0 end) z, sum(case when mrr_before is null then 1 else 0 end) nb from raw_app_db.subscription_changes group by 1;"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 16.3,
+   "cost_usd": 0.041172,
+   "correct": true
+  },
+  {
+   "id": "nrr_12m_2024_cohorts",
+   "arm": "governed",
+   "category": "retention",
+   "question": "What was 12-month net revenue retention for customers who started paying in 2024?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6282498847308348,
+   "answer": 0.628,
+   "unit": "ratio",
+   "definition": "Sum of month-12 retained MRR (incl. expansion) across the Jan\u2013Dec 2024 paid cohorts ($66,766) divided by their combined starting MRR ($106,273).",
+   "parsed": true,
+   "trap": "Averaging the monthly cohorts' NRR instead of weighting by starting MRR.",
+   "text": "12-month NRR for customers who started paying in 2024 was about **0.628**. That means the combined 2024 cohorts kept roughly 63% of their starting MRR twelve months later, expansion included.\n\nI pooled all twelve monthly cohorts, from January to December 2024. Retained MRR at month 12 was $66,766 against a combined starting MRR of $106,273.\n\nMonthly cohorts ranged from 0.42 (November) to 0.74 (October). The governed metric is reported per cohort month, so the pooled figure is my own calculation. It is weighted by starting MRR. A simple average of the twelve monthly ratios would give a slightly different number.\n\n```json\n{\"answer\": 0.628, \"unit\": \"ratio\", \"definition\": \"Sum of month-12 retained MRR (incl. expansion) across the Jan\u2013Dec 2024 paid cohorts ($66,766) divided by their combined starting MRR ($106,273).\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "nrr_12m",
+      "retained_mrr",
+      "cohort_start_mrr"
+     ],
+     "group_by": [
+      "cohort_period__cohort_month",
+      "cohort_period__months_since_start"
+     ],
+     "where": [
+      "{{ Dimension('cohort_period__cohort_month') }} >= '2024-01-01'",
+      "{{ Dimension('cohort_period__cohort_month') }} <= '2024-12-31'",
+      "{{ Dimension('cohort_period__months_since_start') }} = 12"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 13.3,
+   "cost_usd": 0.032398,
+   "correct": true
+  },
+  {
+   "id": "signups_2025",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "How many accounts signed up in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 3050.0,
+   "answer": 3050,
+   "unit": "count",
+   "definition": "Distinct accounts in raw_app_db.accounts with signup_at between 2025-01-01 and 2025-12-31 (UTC).",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated (rows are merged on updated_at) instead of the signup date.",
+   "text": "3,050 accounts signed up in 2025.\n\nI counted distinct `account_id` values in `raw_app_db.accounts` with `signup_at` from 2025-01-01 up to, but not including, 2026-01-01. The date boundaries are UTC. The table has no duplicate account IDs, so the count isn't inflated.\n\n```json\n{\"answer\": 3050, \"unit\": \"count\", \"definition\": \"Distinct accounts in raw_app_db.accounts with signup_at between 2025-01-01 and 2025-12-31 (UTC).\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select count(*) rows, count(distinct account_id) d, count(distinct case when signup_at>='2025-01-01' and signup_at<'2026-01-01' then account_id end) y2025, min(signup_at), max(signup_at) from raw_app_db.accounts"
+    },
+    {
+     "sql": "select count(*) n, count(distinct account_id) d, count(distinct case when signup_at>='2025-01-01' and signup_at<'2026-01-01' then account_id end) y2025, min(signup_at) mn, max(signup_at) mx from raw_app_db.accounts"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 7.8,
+   "cost_usd": 0.0219326,
+   "correct": true
+  },
+  {
+   "id": "signups_2025",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "How many accounts signed up in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 3050.0,
+   "answer": 3050,
+   "unit": "count",
+   "definition": "Count of accounts with a signup date between 2025-01-01 and 2025-12-31, from the governed 'signups' metric.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated (rows are merged on updated_at) instead of the signup date.",
+   "text": "In 2025, 3,050 accounts signed up. I counted signups with a signup date from 2025-01-01 through 2025-12-31.\n\n```json\n{\"answer\": 3050, \"unit\": \"count\", \"definition\": \"Count of accounts with a signup date between 2025-01-01 and 2025-12-31, from the governed 'signups' metric.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "signups"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' AND {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 9.8,
+   "cost_usd": 0.0231997,
+   "correct": true
+  },
+  {
+   "id": "activation_rate_2025",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "What share of 2025 signups got activated?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.31311475409836065,
+   "answer": 0.583,
+   "unit": "ratio",
+   "definition": "Share of 2025 signups (3,050 accounts) that placed a measurement order within 14 days of signup (1,778); no official activation definition exists in the data.",
+   "parsed": true,
+   "trap": "Activation means sending a proposal within 14 days of signup. Any proposal ever, or any login, is not activation.",
+   "text": "About 58% of 2025 signups activated, using my own definition of activation. The data has no activation flag or documented definition, so I picked one.\n\nI defined activation as an account placing its first measurement order within 14 days of signup. Measurement orders are the core product action. The 14-day window gives every 2025 cohort the same time to activate.\n\nOf 3,050 accounts that signed up in 2025, 1,778 placed a measurement order within 14 days. That is 0.583.\n\nThe share changes a lot with the definition:\n\n| Definition | Accounts | Share |\n|---|---|---|\n| Measurement order at any time | 2,656 | 0.871 |\n| Proposal sent within 14 days | 965 | 0.316 |\n| Proposal signed within 14 days | 407 | 0.133 |\n\nIf Ridgeline defines activation differently, tell me which event and window and I'll rerun it.\n\n```json\n{\"answer\": 0.583, \"unit\": \"ratio\", \"definition\": \"Share of 2025 signups (3,050 accounts) that placed a measurement order within 14 days of signup (1,778); no official activation definition exists in the data.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select event_type, count(*), count(distinct account_id), min(occurred_at), max(occurred_at) from raw_product_events.events group by 1 order by 2 desc"
+    },
+    {
+     "sql": "select count(*), count(distinct account_id), min(signup_at), max(signup_at), sum(case when year(signup_at)=2025 then 1 else 0 end) from raw_app_db.accounts"
+    },
+    {
+     "sql": "with a as (select account_id, signup_at from raw_app_db.accounts where year(signup_at)=2025)\nselect e.event_type, count(distinct a.account_id) n_any, count(distinct case when e.occurred_at<=a.signup_at+interval 14 day then a.account_id end) n_14d, count(distinct case when e.occurred_at<a.signup_at then a.account_id end) before_signup, (select count(*) from a) total\nfrom a join raw_product_events.events e using(account_id) group by 1"
+    },
+    {
+     "sql": "select properties from raw_product_events.events where event_type in ('measurement_ordered','proposal_sent') limit 3"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 13.6,
+   "cost_usd": 0.034875199999999995,
+   "correct": false
+  },
+  {
+   "id": "activation_rate_2025",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "What share of 2025 signups got activated?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.31311475409836065,
+   "answer": 0.3131,
+   "unit": "ratio",
+   "definition": "Activated signups (sent a proposal within 14 days) divided by all signups with signup dates in calendar 2025: 955 / 3,050.",
+   "parsed": true,
+   "trap": "Activation means sending a proposal within 14 days of signup. Any proposal ever, or any login, is not activation.",
+   "text": "About 31.3% of 2025 signups activated. That is 955 activated out of 3,050 signups. Activation means the account sent a proposal within 14 days of signing up. All 2025 signups have had more than 14 days to activate, so none are cut off by the window.\n\n```json\n{\"answer\": 0.3131, \"unit\": \"ratio\", \"definition\": \"Activated signups (sent a proposal within 14 days) divided by all signups with signup dates in calendar 2025: 955 / 3,050.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "activation_rate",
+      "signups",
+      "activated_signups"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} < '2026-01-01'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.0,
+   "cost_usd": 0.024536500000000003,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_all",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "What's our trial-to-paid conversion rate?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.1565347646985395,
+   "answer": 0.185,
+   "unit": "ratio",
+   "definition": "Share of accounts that signed up at least 90 days ago (7,659) that have a subscription record (1,420); signup treated as trial start since no explicit trial data exists.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days (they have not had time to pay), or counting payments after day 60.",
+   "text": "Your trial-to-paid conversion rate is about **18.5%**. That's an approximation, because the data has no explicit trial records.\n\n- **Definition:** There is no trial table, trial status, or trial start or end date. I treated every account signup as a trial start. I counted an account as converted if it ever has a subscription record.\n- **Matured cohort:** Of 7,659 accounts that signed up at least 90 days ago, 1,420 converted, which is 0.185. I excluded newer signups because they haven't had time to convert. The median time from signup to subscription is 27 days, and the 95th percentile is 90 days.\n- **All-time:** Across all signups, 1,518 of 8,510 converted, which is 0.178. This is lower because recent signups are still inside the conversion window.\n- **Caveat:** Every subscription in the data has a paid status, and none has a $0 MRR while active. So I can't separate real trial users from accounts that signed up and never intended to trial. If Ridgeline has a formal trial flow, its records aren't in these tables.\n\n```json\n{\"answer\": 0.185, \"unit\": \"ratio\", \"definition\": \"Share of accounts that signed up at least 90 days ago (7,659) that have a subscription record (1,420); signup treated as trial start since no explicit trial data exists.\"}\n```",
+   "turns": 9,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select event_type, count(*), count(distinct account_id), min(occurred_at), max(occurred_at) from raw_product_events.events group by 1 order by 2 desc"
+    },
+    {
+     "sql": "select status, plan, count(*), count(distinct account_id), min(started_at), max(started_at), sum(mrr_usd=0) from raw_app_db.subscriptions group by 1,2"
+    },
+    {
+     "sql": "select line_type, status, count(*), sum(amount_usd=0) from raw_app_db.invoices group by 1,2"
+    },
+    {
+     "sql": "select change_type, count(*) from raw_app_db.subscription_changes group by 1"
+    },
+    {
+     "sql": "select count(*), count(distinct account_id), min(signup_at), max(signup_at), (select count(distinct account_id) from raw_app_db.subscriptions), (select count(distinct s.account_id) from raw_app_db.subscriptions s join raw_app_db.accounts a using(account_id)), (select count(distinct i.account_id) from raw_app_db.invoices i where status='paid'), (select count(*) from raw_app_db.subscriptions s join raw_app_db.accounts a using(account_id) where s.started_at<a.signup_at) from raw_app_db.accounts"
+    },
+    {
+     "sql": "select quantile_cont(date_diff('day',a.signup_at,s.started_at),[0.5,0.9,0.95,0.99]) q, max(date_diff('day',a.signup_at,s.started_at)) mx from raw_app_db.accounts a join raw_app_db.subscriptions s using(account_id)"
+    },
+    {
+     "sql": "select count(*) n, count(s.account_id) conv from raw_app_db.accounts a left join raw_app_db.subscriptions s using(account_id) where a.signup_at < timestamp '2026-11-03' - interval 90 day"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 16.6,
+   "cost_usd": 0.0456209,
+   "correct": false
+  },
+  {
+   "id": "free_to_paid_all",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "What's our trial-to-paid conversion rate?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.1565347646985395,
+   "answer": 0.1565,
+   "unit": "ratio",
+   "definition": "Share of mature signups (old enough to judge) that converted to a paid plan within 60 days: 1,254 / 8,011, from the governed free_to_paid_60d metric.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days (they have not had time to pay), or counting payments after day 60.",
+   "text": "Your free-to-paid conversion rate is about **15.7%**. This is the closest governed metric to \"trial-to-paid\". The data has no separate trial stage, so I used signups as the starting point.\n\nThe rate counts only \"mature\" signups, meaning those old enough to have had a full 60 days to convert. Of 8,011 mature signups, 1,254 paid within 60 days. Newer signups are left out so they don't pull the rate down.\n\n```json\n{\"answer\": 0.1565, \"unit\": \"ratio\", \"definition\": \"Share of mature signups (old enough to judge) that converted to a paid plan within 60 days: 1,254 / 8,011, from the governed free_to_paid_60d metric.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d",
+      "mature_paid_60d",
+      "mature_signups"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.7,
+   "cost_usd": 0.0236388,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_channel",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "referral",
+   "answer": "referral",
+   "unit": "text",
+   "definition": "Channel with the highest share of signed-up accounts that have at least one paid, nonzero subscription invoice (referral \u2248 29.0%, next supplier_partner \u2248 20.6%).",
+   "parsed": true,
+   "trap": "Ranking channels by number of paid accounts rather than by rate, or including immature signups.",
+   "text": "**Referral** converts to paid best. About 29% of referral signups became paying customers, well ahead of the next channel, supplier_partner at about 21%.\n\nI counted a signup as converted if the account has at least one paid, nonzero subscription invoice. I grouped accounts by their signup channel.\n\n| Channel | Signups | Paid | Conversion |\n|---|---|---|---|\n| referral | 1,068 | 310 | 29.0% |\n| supplier_partner | 955 | 197 | 20.6% |\n| organic | 1,707 | 329 | 19.3% |\n| trade_show | 629 | 113 | 18.0% |\n| google_ads | 2,586 | 391 | 15.1% |\n| facebook | 1,565 | 172 | 11.0% |\n\nThis is the share of all signups ever, so newer signups haven't had as long to convert. I didn't adjust for signup date. Counting accounts with any subscription record instead gives the same top channel, with referral at 312 of 1,068.\n\n```json\n{\"answer\": \"referral\", \"unit\": \"text\", \"definition\": \"Channel with the highest share of signed-up accounts that have at least one paid, nonzero subscription invoice (referral \u2248 29.0%, next supplier_partner \u2248 20.6%).\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select channel, count(*) n, count(distinct a.account_id) d, count(distinct case when s.account_id is not null then a.account_id end) paid from raw_app_db.accounts a left join (select distinct account_id from raw_app_db.subscriptions) s using(account_id) group by 1 order by 1"
+    },
+    {
+     "sql": "select status, plan, count(*), min(mrr_usd), count(distinct account_id) from raw_app_db.subscriptions group by 1,2 order by 1,2"
+    },
+    {
+     "sql": "select a.channel, count(distinct a.account_id) n, count(distinct case when i.account_id is not null then a.account_id end) paid_inv from raw_app_db.accounts a left join (select distinct account_id from raw_app_db.invoices where paid_at is not null and amount_usd>0 and line_type ilike '%sub%') i using(account_id) group by 1 order by 3*1.0/2 desc;\nselect line_type, status, count(*), sum(amount_usd) from raw_app_db.invoices group by 1,2"
+    },
+    {
+     "sql": "select line_type, status, count(*), sum(amount_usd), count(paid_at) from raw_app_db.invoices group by 1,2"
+    },
+    {
+     "sql": "select a.channel, count(distinct a.account_id) n, count(distinct i.account_id) paid, round(count(distinct i.account_id)*1.0/count(distinct a.account_id),4) rate from raw_app_db.accounts a left join (select distinct account_id from raw_app_db.invoices where paid_at is not null and amount_usd>0) i using(account_id) group by 1 order by 4 desc"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 14.1,
+   "cost_usd": 0.0368647,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_channel",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "referral",
+   "answer": "referral",
+   "unit": "text",
+   "definition": "Channel with the highest share of mature signups (old enough to judge) that paid within 60 days: referral at 0.252 (254 of 1,008).",
+   "parsed": true,
+   "trap": "Ranking channels by number of paid accounts rather than by rate, or including immature signups.",
+   "text": "**Referral** converts to paid best. 25.2% of its mature signups paid within 60 days (254 of 1,008). That is well ahead of the other channels:\n\n| Channel | Free-to-paid (60d) |\n|---|---|\n| Referral | 25.2% |\n| Supplier partner | 17.3% |\n| Trade show | 17.3% |\n| Organic | 16.6% |\n| Google Ads | 13.6% |\n| Facebook | 9.8% |\n\nFacebook is the weakest.\n\nI counted only \"mature\" signups, meaning those old enough to have had the full 60 days to convert. This keeps recent signups from dragging down the rates.\n\n```json\n{\"answer\": \"referral\", \"unit\": \"text\", \"definition\": \"Channel with the highest share of mature signups (old enough to judge) that paid within 60 days: referral at 0.252 (254 of 1,008).\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d",
+      "mature_signups",
+      "mature_paid_60d"
+     ],
+     "group_by": [
+      "account__channel"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.0,
+   "cost_usd": 0.0253605,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_worst_channel",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid worst?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "facebook",
+   "answer": "facebook",
+   "unit": "text",
+   "definition": "Channel with the lowest share of signed-up accounts that have a subscription record (173 of 1,565, about 11.1%).",
+   "parsed": true,
+   "trap": "Same as the best channel; small or young channels look worst if immature signups are left in.",
+   "text": "Facebook converts to paid worst. Only about 11% of its signups ever became paying accounts.\n\nI counted a signup as converted if the account has a subscription record. I didn't check invoices separately. Every invoice in the data is a subscription invoice, and 14,101 of the 14,186 are paid.\n\n| Channel | Signups | Paid accounts | Conversion |\n|---|---|---|---|\n| facebook | 1,565 | 173 | 11.1% |\n| google_ads | 2,586 | 393 | 15.2% |\n| trade_show | 629 | 113 | 18.0% |\n| organic | 1,707 | 330 | 19.3% |\n| supplier_partner | 955 | 197 | 20.6% |\n| referral | 1,068 | 312 | 29.2% |\n\nThis is lifetime conversion with no time window, so recent signups have had less time to convert.\n\n```json\n{\"answer\": \"facebook\", \"unit\": \"text\", \"definition\": \"Channel with the lowest share of signed-up accounts that have a subscription record (173 of 1,565, about 11.1%).\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select channel, count(*) n, count(distinct a.account_id) d, count(distinct s.account_id) paid from raw_app_db.accounts a left join (select distinct account_id from raw_app_db.subscriptions) s using(account_id) group by 1 order by 1"
+    },
+    {
+     "sql": "select status, plan, count(*), min(mrr_usd), count(distinct account_id) from raw_app_db.subscriptions group by 1,2"
+    },
+    {
+     "sql": "select a.channel, count(*) n, count(distinct case when i.account_id is not null then a.account_id end) paid, round(count(distinct case when i.account_id is not null then a.account_id end)*1.0/count(*),4) r from raw_app_db.accounts a left join (select distinct account_id from raw_app_db.invoices where paid_at is not null and line_type ilike '%sub%') i using(account_id) group by 1 order by r;\nselect line_type,status,count(*),sum(paid_at is not null) from raw_app_db.invoices group by 1,2"
+    },
+    {
+     "sql": "select line_type,status,count(*),sum((paid_at is not null)::int) from raw_app_db.invoices group by 1,2"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 13.0,
+   "cost_usd": 0.032656399999999995,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_worst_channel",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid worst?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "facebook",
+   "answer": "facebook",
+   "unit": "text",
+   "definition": "Channel with the lowest free-to-paid rate: share of mature signups (old enough to judge) that paid within 60 days; facebook is 0.0976 (142/1455).",
+   "parsed": true,
+   "trap": "Same as the best channel; small or young channels look worst if immature signups are left in.",
+   "text": "Facebook converts to paid worst. Only 9.8% of its mature signups paid within 60 days (142 of 1,455).\n\nThe other channels, from lowest to highest:\n\n| Channel | Free to paid (60 days) |\n|---|---|\n| Google Ads | 13.6% |\n| Organic | 16.6% |\n| Trade show | 17.3% |\n| Supplier partner | 17.3% |\n| Referral | 25.2% |\n\nThe rate only counts signups old enough to judge, meaning those with a full 60-day window to convert.\n\n```json\n{\"answer\": \"facebook\", \"unit\": \"text\", \"definition\": \"Channel with the lowest free-to-paid rate: share of mature signups (old enough to judge) that paid within 60 days; facebook is 0.0976 (142/1455).\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d",
+      "mature_signups",
+      "mature_paid_60d"
+     ],
+     "group_by": [
+      "account__channel"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.0,
+   "cost_usd": 0.025093400000000002,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_activated",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Of the accounts that activated, what share became paying customers?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.389352403655145,
+   "answer": 0.2055,
+   "unit": "ratio",
+   "definition": "Accounts with a paid invoice (amount > 0) divided by accounts that placed at least one measurement order (1,512 / 7,357); 'activated' is not defined in the data, so this is an assumed definition.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days, or counting any later payment instead of payment within 60 days.",
+   "text": "About 20.6% of activated accounts became paying customers. The data has no explicit \"activated\" event, so that figure rests on a definition I chose.\n\nI defined an activated account as one that ordered at least one measurement, which is the core product action. Of the 7,357 accounts that did, 1,512 have a paid invoice with an amount above $0. That gives 1,512 / 7,357 \u2248 0.2055.\n\nOther definitions would change the answer:\n- **Sent a proposal:** 1,512 of 5,507 accounts, or about 27.5%.\n- **Any product event, including logins:** 1,512 of 8,400 accounts, or about 18.0%.\n- **Created a job:** 1,507 of 1,510 accounts, or about 99.8%. I didn't use this because almost every account that creates a job is already paying, so it looks like a paid-plan feature rather than an activation step.\n\n```json\n{\"answer\": 0.2055, \"unit\": \"ratio\", \"definition\": \"Accounts with a paid invoice (amount > 0) divided by accounts that placed at least one measurement order (1,512 / 7,357); 'activated' is not defined in the data, so this is an assumed definition.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select event_type, count(*), count(distinct account_id), min(properties) from raw_product_events.events group by 1 order by 2 desc"
+    },
+    {
+     "sql": "select count(*), count(distinct account_id), (select count(distinct account_id) from raw_app_db.subscriptions), (select count(distinct account_id) from raw_app_db.invoices where paid_at is not null) from raw_app_db.accounts"
+    },
+    {
+     "sql": "with a as (select account_id from raw_app_db.accounts),\nev as (select account_id, event_type from raw_product_events.events),\npay as (select distinct account_id from raw_app_db.invoices where paid_at is not null and amount_usd>0),\nsub as (select distinct account_id from raw_app_db.subscriptions)\nselect t, count(*) act, count(p.account_id) paid, count(s.account_id) subd from (\nselect 'measure' t, account_id from ev where event_type='measurement_ordered' group by 2\nunion all select 'proposal', account_id from ev where event_type='proposal_sent' group by 2\nunion all select 'job', account_id from ev where event_type='job_created' group by 2\nunion all select 'any_event', account_id from ev group by 2) x\nleft join pay p using(account_id) left join sub s using(account_id) group by t"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 13.4,
+   "cost_usd": 0.0334067,
+   "correct": false
+  },
+  {
+   "id": "free_to_paid_activated",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Of the accounts that activated, what share became paying customers?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.389352403655145,
+   "answer": 0.3894,
+   "unit": "ratio",
+   "definition": "Share of activated signups old enough to judge (mature) that paid within 60 days: 980 / 2,517.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days, or counting any later payment instead of payment within 60 days.",
+   "text": "Among activated accounts, 38.9% became paying customers within 60 days. That is 980 of 2,517 activated signups old enough to judge (mature). For comparison, only 5.0% of non-activated signups paid.\n\nActivated means the account sent a proposal within 14 days of signup. Signups too recent to have had 60 days to convert are left out.\n\n```json\n{\"answer\": 0.3894, \"unit\": \"ratio\", \"definition\": \"Share of activated signups old enough to judge (mature) that paid within 60 days: 980 / 2,517.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d",
+      "mature_paid_60d",
+      "mature_signups"
+     ],
+     "group_by": [
+      "account__is_activated"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.6,
+   "cost_usd": 0.024416,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_crew_size",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Which crew size converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "16+",
+   "answer": "16+",
+   "unit": "text",
+   "definition": "Crew size with the highest share of signed-up accounts that have at least one paid invoice (16+: 136/547 = 24.9%; 6-15: 22.3%; 2-5: 17.8%; 1: 14.1%).",
+   "parsed": true,
+   "trap": "Ranking by the number of paid accounts. The 2-5 crew group is the biggest, so it wins on volume, not on rate.",
+   "text": "The **16+ crew size** converts to paid best. About 24.9% of those signups became paying customers.\n\nI counted an account as converted if it has a paid invoice, and I divided by all signups in each crew-size group. Counting any subscription instead gives nearly the same rates.\n\n| Crew size | Signups | Paid accounts | Conversion |\n|---|---|---|---|\n| 16+ | 547 | 136 | 24.9% |\n| 6-15 | 1,532 | 342 | 22.3% |\n| 2-5 | 3,396 | 606 | 17.8% |\n| 1 | 3,035 | 428 | 14.1% |\n\nConversion rises with crew size. The 16+ group is the smallest, with 547 signups. Its lead over 6-15 is about 2.6 points. That gap could partly be noise, but the lead over the two smaller groups is much wider.\n\n```json\n{\"answer\": \"16+\", \"unit\": \"text\", \"definition\": \"Crew size with the highest share of signed-up accounts that have at least one paid invoice (16+: 136/547 = 24.9%; 6-15: 22.3%; 2-5: 17.8%; 1: 14.1%).\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select crew_size, count(*), count(distinct account_id) from raw_app_db.accounts group by 1 order by 1"
+    },
+    {
+     "sql": "select status, plan, line_type, count(*) from (select s.status, s.plan, 'x' line_type from raw_app_db.subscriptions s) group by all order by 1,2"
+    },
+    {
+     "sql": "select line_type, status, count(*), sum(amount_usd), count(paid_at) from raw_app_db.invoices group by all"
+    },
+    {
+     "sql": "select a.crew_size, count(*) signups,\n count(distinct s.account_id) with_sub,\n count(distinct case when i.account_id is not null then a.account_id end) with_paid_inv,\n round(count(distinct s.account_id)*1.0/count(*),4) sub_rate,\n round(count(distinct case when i.account_id is not null then a.account_id end)*1.0/count(*),4) paid_rate\nfrom raw_app_db.accounts a\nleft join raw_app_db.subscriptions s on s.account_id=a.account_id\nleft join (select distinct account_id from raw_app_db.invoices where paid_at is not null) i on i.account_id=a.account_id\ngroup by 1 order by 1"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 12.3,
+   "cost_usd": 0.0321099,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_crew_size",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Which crew size converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "16+",
+   "answer": "16+",
+   "unit": "text",
+   "definition": "Crew size with the highest free-to-paid rate: mature signups (old enough to judge) that paid within 60 days, 20.7% for 16+ crews.",
+   "parsed": true,
+   "trap": "Ranking by the number of paid accounts. The 2-5 crew group is the biggest, so it wins on volume, not on rate.",
+   "text": "The 16+ crew size converts to paid best. About 20.7% of its mature signups paid within 60 days (107 of 517).\n\n| Crew size | Free to paid (60d) | Mature signups |\n|---|---|---|\n| 16+ | 20.7% | 517 |\n| 6-15 | 19.2% | 1,438 |\n| 2-5 | 15.9% | 3,199 |\n| 1 | 12.7% | 2,857 |\n\nConversion rises steadily with crew size. The 16+ group is the smallest, so its rate rests on fewer accounts. The 6-15 group is close behind and has nearly three times the sample.\n\n```json\n{\"answer\": \"16+\", \"unit\": \"text\", \"definition\": \"Crew size with the highest free-to-paid rate: mature signups (old enough to judge) that paid within 60 days, 20.7% for 16+ crews.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d",
+      "mature_signups",
+      "mature_paid_60d"
+     ],
+     "group_by": [
+      "account__crew_size"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.1,
+   "cost_usd": 0.027422500000000002,
+   "correct": true
+  },
+  {
+   "id": "ad_spend_2025",
+   "arm": "raw",
+   "category": "acquisition",
+   "question": "What did we spend on advertising in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 429930.05,
+   "answer": 429930.05,
+   "unit": "usd",
+   "definition": "Sum of spend_usd in raw_ads.ad_spend for spend_date in calendar year 2025, all channels (1,460 rows, no duplicates).",
+   "parsed": true,
+   "trap": "Summing the ad platforms' daily rows after joining them to signups, which repeats each day's spend.",
+   "text": "Ridgeline spent about $429,930 on advertising in 2025. That is the sum of daily spend across all four ad channels from 2025-01-01 through 2025-12-31.\n\nI found no duplicate rows and no negative values, so I made no adjustments to the raw figures.\n\n```json\n{\"answer\": 429930.05, \"unit\": \"usd\", \"definition\": \"Sum of spend_usd in raw_ads.ad_spend for spend_date in calendar year 2025, all channels (1,460 rows, no duplicates).\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select count(*), count(distinct spend_id), sum(spend_usd), min(spend_date), max(spend_date), count(distinct channel) from raw_ads.ad_spend where spend_date>='2025-01-01' and spend_date<'2026-01-01'"
+    },
+    {
+     "sql": "select count(*), count(distinct (spend_date, channel, campaign_id)), min(spend_usd), sum(case when spend_usd<0 then 1 end) from raw_ads.ad_spend where spend_date>='2025-01-01' and spend_date<'2026-01-01'"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 9.0,
+   "cost_usd": 0.025345299999999994,
+   "correct": true
+  },
+  {
+   "id": "ad_spend_2025",
+   "arm": "governed",
+   "category": "acquisition",
+   "question": "What did we spend on advertising in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 429930.05,
+   "answer": 429930.05,
+   "unit": "usd",
+   "definition": "Total ad_spend governed metric summed over all channels for 2025-01-01 through 2025-12-31.",
+   "parsed": true,
+   "trap": "Summing the ad platforms' daily rows after joining them to signups, which repeats each day's spend.",
+   "text": "We spent **$429,930.05** on advertising in 2025. That is the total of ad spend from Jan 1 to Dec 31, 2025.\n\n```json\n{\"answer\": 429930.05, \"unit\": \"usd\", \"definition\": \"Total ad_spend governed metric summed over all channels for 2025-01-01 through 2025-12-31.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "ad_spend"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.1,
+   "cost_usd": 0.0255599,
+   "correct": true
+  },
+  {
+   "id": "cac_2025",
+   "arm": "raw",
+   "category": "acquisition",
+   "question": "What was our customer acquisition cost in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 882.8132443531828,
+   "answer": 783.12,
+   "unit": "usd",
+   "definition": "Blended CAC: total 2025 ad spend ($429,930.05) divided by 549 accounts whose subscription started in 2025 (all channels incl. organic/referral).",
+   "parsed": true,
+   "trap": "Dividing spend by conversions counted on payment date. Governed CAC credits each conversion to its signup date.",
+   "text": "2025 customer acquisition cost was about **$783** per new paying customer.\n\n- **Spend:** Ad spend in 2025 was $429,930.05. That covers Facebook, Google Ads, supplier partner and trade show.\n- **Customers:** 549 accounts started a subscription in 2025. Each of these accounts has exactly one subscription.\n- **Result:** $429,930.05 \u00f7 549 = $783.12.\n\nThis is a blended figure. The 549 customers include organic and referral signups, which have no ad spend. Counting only customers from the four paid channels, there were 328, which gives about $1,311 per customer.\n\nThe data has no sales salaries or other marketing costs, so this covers ad spend only.\n\n```json\n{\"answer\": 783.12, \"unit\": \"usd\", \"definition\": \"Blended CAC: total 2025 ad spend ($429,930.05) divided by 549 accounts whose subscription started in 2025 (all channels incl. organic/referral).\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select 'spend' k, count(*) n, count(distinct spend_id) d, sum(spend_usd) s, min(spend_date) mn, max(spend_date) mx from raw_ads.ad_spend\nunion all select 'acc', count(*), count(distinct account_id), 0, min(signup_at), max(signup_at) from raw_app_db.accounts\nunion all select 'sub', count(*), count(distinct account_id), count(distinct subscription_id), min(started_at), max(started_at) from raw_app_db.subscriptions;\nselect channel, count(*), sum(spend_usd) from raw_ads.ad_spend where spend_date>='2025-01-01' and spend_date<'2026-01-01' group by 1;\nselect channel, count(*) from raw_app_db.accounts group by 1;"
+    },
+    {
+     "sql": "select 'spend' k, count(*) n, count(distinct spend_id) d, sum(spend_usd) s, min(spend_date) mn, max(spend_date) mx from raw_ads.ad_spend\nunion all select 'acc', count(*), count(distinct account_id), 0, min(signup_at), max(signup_at) from raw_app_db.accounts\nunion all select 'sub', count(*), count(distinct account_id), count(distinct subscription_id), min(started_at), max(started_at) from raw_app_db.subscriptions"
+    },
+    {
+     "sql": "select channel, count(*), count(distinct spend_id), sum(spend_usd) from raw_ads.ad_spend where spend_date>='2025-01-01' and spend_date<'2026-01-01' group by 1"
+    },
+    {
+     "sql": "select channel, count(*), count(distinct account_id) from raw_app_db.accounts where signup_at>='2025-01-01' and signup_at<'2026-01-01' group by 1"
+    },
+    {
+     "sql": "select count(*) subs, count(distinct s.account_id) accts, count(distinct case when a.channel not in ('organic','referral') then s.account_id end) paid_ch, sum(case when a.channel is null then 1 else 0 end) noacc, (select count(*) from raw_app_db.invoices where status='paid') p from raw_app_db.subscriptions s left join raw_app_db.accounts a using(account_id) where s.started_at>='2025-01-01' and s.started_at<'2026-01-01'"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 15.9,
+   "cost_usd": 0.0424316,
+   "correct": false
+  },
+  {
+   "id": "cac_2025",
+   "arm": "governed",
+   "category": "acquisition",
+   "question": "What was our customer acquisition cost in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 882.8132443531828,
+   "answer": 882.81,
+   "unit": "usd",
+   "definition": "Governed CAC metric for 2025: total ad spend ($429,930.05) divided by paid conversions (487), with conversions counted by signup date.",
+   "parsed": true,
+   "trap": "Dividing spend by conversions counted on payment date. Governed CAC credits each conversion to its signup date.",
+   "text": "Customer acquisition cost for 2025 was about **$882.81**. That is $429,930.05 of ad spend divided by 487 paid conversions. The conversions are counted by signup date, which is how the governed CAC metric defines them.\n\n```json\n{\"answer\": 882.81, \"unit\": \"usd\", \"definition\": \"Governed CAC metric for 2025: total ad spend ($429,930.05) divided by paid conversions (487), with conversions counted by signup date.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "cac",
+      "ad_spend",
+      "paid_conversions"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.9,
+   "cost_usd": 0.0265033,
+   "correct": true
+  },
+  {
+   "id": "cac_highest_channel_2025",
+   "arm": "raw",
+   "category": "acquisition",
+   "question": "Which paid channel had the most expensive customers in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "trade_show",
+   "answer": "trade_show",
+   "unit": "text",
+   "definition": "Highest 2025 acquisition cost per customer (2025 ad spend / 2025 signups with a subscription) among channels with ad spend: trade_show at about $3,907.",
+   "parsed": true,
+   "trap": "Ranking by total spend rather than spend per conversion.",
+   "text": "**Trade show** had the most expensive customers in 2025. Its cost per customer was about $3,907, which is nearly three times the next channel.\n\nI measured this as 2025 ad spend divided by the number of 2025 signups that went on to have a subscription. Only the four channels with ad spend count as paid. Referral and organic have no spend recorded.\n\n| Channel | 2025 spend | Customers | Cost per customer |\n|---|---|---|---|\n| Trade show | $168.0K | 43 | $3,907 |\n| Supplier partner | $108.0K | 76 | $1,421 |\n| Facebook | $55.3K | 72 | $767 |\n| Google Ads | $98.7K | 145 | $681 |\n\nTrade show also ranks first on cost per signup, at about $703.\n\n\"Most expensive customers\" could also mean customers who pay the most. I read it as acquisition cost.\n\n```json\n{\"answer\": \"trade_show\", \"unit\": \"text\", \"definition\": \"Highest 2025 acquisition cost per customer (2025 ad spend / 2025 signups with a subscription) among channels with ad spend: trade_show at about $3,907.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select channel, count(*), count(distinct account_id), min(signup_at), max(signup_at) from raw_app_db.accounts group by 1;\n"
+    },
+    {
+     "sql": "select channel, count(*), count(distinct spend_id), sum(spend_usd), min(spend_date), max(spend_date) from raw_ads.ad_spend group by 1;\n"
+    },
+    {
+     "sql": "with sp as (select channel, sum(spend_usd) s from raw_ads.ad_spend where spend_date>='2025-01-01' and spend_date<'2026-01-01' group by 1),\na as (select channel, count(*) signups, count(distinct case when exists(select 1 from raw_app_db.subscriptions s where s.account_id=a.account_id) then account_id end) cust\n from raw_app_db.accounts a where signup_at>='2025-01-01' and signup_at<'2026-01-01' group by 1)\nselect sp.channel, s, signups, cust, s/signups cac_signup, s/cust cac_cust from sp join a using(channel) order by cac_cust desc"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.3,
+   "cost_usd": 0.035144800000000004,
+   "correct": true
+  },
+  {
+   "id": "cac_highest_channel_2025",
+   "arm": "governed",
+   "category": "acquisition",
+   "question": "Which paid channel had the most expensive customers in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "trade_show",
+   "answer": "trade_show",
+   "unit": "text",
+   "definition": "Paid channel with the highest 2025 CAC (ad spend per paid conversion, by conversion signup date): trade_show at about $4,307.69; referral and organic excluded as unpaid.",
+   "parsed": true,
+   "trap": "Ranking by total spend rather than spend per conversion.",
+   "text": "Trade show had the most expensive customers among paid channels in 2025. Its CAC (ad spend per paid conversion) was about $4,308.\n\n| Channel | Ad spend | Paid conversions | CAC |\n|---|---|---|---|\n| Trade show | $167,999.77 | 39 | $4,307.69 |\n| Supplier partner | $107,999.48 | 67 | $1,611.93 |\n| Facebook | $55,256.00 | 62 | $891.23 |\n| Google Ads | $98,674.80 | 120 | $822.29 |\n\nReferral and organic had no ad spend, so I left them out as unpaid channels.\n\nI read \"most expensive customers\" as the highest cost to acquire a customer. The data can't show which customers pay the most in revenue, because MRR isn't broken out by channel.\n\n```json\n{\"answer\": \"trade_show\", \"unit\": \"text\", \"definition\": \"Paid channel with the highest 2025 CAC (ad spend per paid conversion, by conversion signup date): trade_show at about $4,307.69; referral and organic excluded as unpaid.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "cac",
+      "ad_spend",
+      "paid_conversions"
+     ],
+     "group_by": [
+      "channel_day__marketing_channel"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 12.8,
+   "cost_usd": 0.030223700000000003,
+   "correct": true
+  },
+  {
+   "id": "leads_2025",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "How many homeowner leads did our contractors get in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 77895.0,
+   "answer": 77895,
+   "unit": "count",
+   "definition": "Distinct lead_ids in raw_contractor_ops.contractor_leads with created_at in calendar year 2025 (UTC), all sources and outcomes.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated instead of when the lead came in.",
+   "text": "Contractors got 77,895 homeowner leads in 2025. That counts every lead in the contractor leads table with a creation date from 2025-01-01 to 2025-12-31 (UTC).\n\nEvery lead ID is unique, so nothing is double-counted. I included all six lead sources: Google LSA, door knocking, referral, home show, instant estimator and Facebook. I didn't filter on outcome, so the count includes leads that never closed.\n\n```json\n{\"answer\": 77895, \"unit\": \"count\", \"definition\": \"Distinct lead_ids in raw_contractor_ops.contractor_leads with created_at in calendar year 2025 (UTC), all sources and outcomes.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select count(*), count(distinct lead_id), min(created_at), max(created_at), count(distinct source) from raw_contractor_ops.contractor_leads where created_at>='2025-01-01' and created_at<'2026-01-01'"
+    },
+    {
+     "sql": "select source, count(*), count(distinct lead_id) from raw_contractor_ops.contractor_leads group by 1"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 7.5,
+   "cost_usd": 0.0240681,
+   "correct": true
+  },
+  {
+   "id": "leads_2025",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "How many homeowner leads did our contractors get in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 77895.0,
+   "answer": 77895,
+   "unit": "count",
+   "definition": "Total homeowner leads (governed 'leads' metric) with metric_time between 2025-01-01 and 2025-12-31.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated instead of when the lead came in.",
+   "text": "Contractors received **77,895 homeowner leads in 2025**. That is the `leads` metric for 1 January to 31 December 2025.\n\n```json\n{\"answer\": 77895, \"unit\": \"count\", \"definition\": \"Total homeowner leads (governed 'leads' metric) with metric_time between 2025-01-01 and 2025-12-31.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "leads"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.5,
+   "cost_usd": 0.0255627,
+   "correct": true
+  },
+  {
+   "id": "lead_close_rate_all",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "What share of homeowner leads do our contractors win?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.22883942781677366,
+   "answer": 0.378,
+   "unit": "ratio",
+   "definition": "Won leads divided by all closed qualified leads (won, lost_competitor, lost_price, lost_no_decision, no_response), excluding open and unqualified leads, across all sources and dates.",
+   "parsed": true,
+   "trap": "Dividing by all leads. Open leads have no outcome yet and are left out of the governed rate.",
+   "text": "Contractors win about 37.8% of qualified homeowner leads that have reached a final outcome.\n\nI counted 47,305 won out of 125,021 leads. That denominator is every lead with an outcome of won, lost to a competitor, lost on price, lost to no decision, or no response. It leaves out two groups:\n- **Open leads (2,792):** these are still in progress, so they have no outcome yet.\n- **Unqualified leads (81,696):** these were never real opportunities.\n\nThe answer depends on those choices. Counting unqualified leads in the denominator drops the win rate to 22.9%. Also dropping \"no response\" leads from the denominator raises it to 45.4%.\n\n```json\n{\"answer\": 0.378, \"unit\": \"ratio\", \"definition\": \"Won leads divided by all closed qualified leads (won, lost_competitor, lost_price, lost_no_decision, no_response), excluding open and unqualified leads, across all sources and dates.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select source, outcome, count(*), count(distinct lead_id), min(created_at), max(created_at), sum(closed_at is null) from raw_contractor_ops.contractor_leads group by all order by 1,2"
+    },
+    {
+     "sql": "select sum(outcome='won') w, sum(outcome not in ('open','unqualified')) qualified_closed, sum(outcome<>'open') closed_all, count(*) total, sum(outcome='won')*1.0/sum(outcome not in ('open','unqualified')) r1, sum(outcome='won')*1.0/sum(outcome<>'open') r2, sum(outcome='won')*1.0/sum(outcome not in ('open','unqualified','no_response')) r3 from raw_contractor_ops.contractor_leads"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.9,
+   "cost_usd": 0.041291,
+   "correct": false
+  },
+  {
+   "id": "lead_close_rate_all",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "What share of homeowner leads do our contractors win?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.22883942781677366,
+   "answer": 0.2288,
+   "unit": "ratio",
+   "definition": "Won leads divided by closed leads (open leads excluded), across all homeowner leads: 47,305 / 206,717.",
+   "parsed": true,
+   "trap": "Dividing by all leads. Open leads have no outcome yet and are left out of the governed rate.",
+   "text": "Contractors win about 22.9% of homeowner leads that have closed. That is 47,305 won out of 206,717 closed leads.\n\nI left out the 2,792 leads that are still open (209,509 leads in total). If you counted those as non-wins, the share would be about 22.6%. The governed definition of lead close rate excludes open leads, so I used that one.\n\n```json\n{\"answer\": 0.2288, \"unit\": \"ratio\", \"definition\": \"Won leads divided by closed leads (open leads excluded), across all homeowner leads: 47,305 / 206,717.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "lead_close_rate",
+      "won_leads",
+      "closed_leads",
+      "leads"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.0,
+   "cost_usd": 0.025534300000000003,
+   "correct": true
+  },
+  {
+   "id": "speed_to_lead_2025",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "How fast did contractors typically get back to new leads in 2025, in minutes?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": 0.02,
+   "truth": 18.0,
+   "answer": 18.0,
+   "unit": "minutes",
+   "definition": "Median minutes from lead created_at to first_contact_at for contractor leads created in 2025, excluding leads never contacted.",
+   "parsed": true,
+   "trap": "Using the mean (a few multi-day replies drag it up), or treating leads with no logged contact time as zero.",
+   "text": "Contractors typically got back to new leads in about **18 minutes** in 2025. That is the median time from lead creation to first contact.\n\n- **Scope:** I used leads created in 2025. That is 77,895 leads, and each lead appears once.\n- **Missing contact:** 64,471 of those leads have a first-contact time. The other 17% have none, so they are left out of the figure.\n- **Median vs. mean:** I used the median because a few very slow responses skew the average. The mean is about 136 minutes, and the slowest response took about 13.8 days.\n\n```json\n{\"answer\": 18.0, \"unit\": \"minutes\", \"definition\": \"Median minutes from lead created_at to first_contact_at for contractor leads created in 2025, excluding leads never contacted.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select count(*), count(distinct lead_id), count(first_contact_at), median(date_diff('second',created_at,first_contact_at)/60.0), avg(date_diff('second',created_at,first_contact_at)/60.0), min(date_diff('second',created_at,first_contact_at)), max(date_diff('second',created_at,first_contact_at)) from raw_contractor_ops.contractor_leads where created_at>='2025-01-01' and created_at<'2026-01-01'"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 8.2,
+   "cost_usd": 0.0237613,
+   "correct": true
+  },
+  {
+   "id": "speed_to_lead_2025",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "How fast did contractors typically get back to new leads in 2025, in minutes?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": 0.02,
+   "truth": 18.0,
+   "answer": 18,
+   "unit": "minutes",
+   "definition": "Median minutes to first contact across homeowner leads dated 2025, excluding leads with no logged contact time.",
+   "parsed": true,
+   "trap": "Using the mean (a few multi-day replies drag it up), or treating leads with no logged contact time as zero.",
+   "text": "The median time to first contact for leads in 2025 was 18 minutes. This excludes leads with no logged contact time. I filtered on the metric's day dimension for 2025-01-01 through 2025-12-31.\n\n```json\n{\"answer\": 18, \"unit\": \"minutes\", \"definition\": \"Median minutes to first contact across homeowner leads dated 2025, excluding leads with no logged contact time.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "speed_to_lead_median_min"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' AND {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.1,
+   "cost_usd": 0.0259169,
+   "correct": true
+  },
+  {
+   "id": "best_speed_bucket",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "Which response-time bucket has the highest lead close rate?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "lt_5m",
+   "answer": "Contacted within 5 minutes (<=5m)",
+   "unit": "text",
+   "definition": "Won leads divided by resolved (non-open) leads, bucketed by first_contact_at minus created_at; the <=5 minute bucket has the highest rate at about 0.383.",
+   "parsed": true,
+   "trap": "Letting the \"missing\" bucket in. Those leads were worked but never got a contact time, so they are not a speed.",
+   "text": "The bucket with the highest lead close rate is leads contacted within 5 minutes of creation. About 38.3% of them were won.\n\nI defined response time as `first_contact_at` minus `created_at` on `raw_contractor_ops.contractor_leads`. I excluded open leads, since they haven't resolved yet. Close rate is won leads divided by all resolved leads.\n\n| Response time | Resolved leads | Close rate |\n|---|---|---|\n| 5 minutes or less | 50,252 | 38.3% |\n| Up to 1 hour | 72,610 | 20.4% |\n| Up to 24 hours | 45,072 | 20.1% |\n| Over 24 hours | 3,040 | 14.5% |\n| Never contacted | 35,743 | 10.6% |\n\nThe ranking stays the same if I drop unqualified leads from the denominator. The 5-minute bucket is then 58.1%, ahead of 39.0% for the 1-to-24-hour buckets.\n\n```json\n{\"answer\": \"Contacted within 5 minutes (<=5m)\", \"unit\": \"text\", \"definition\": \"Won leads divided by resolved (non-open) leads, bucketed by first_contact_at minus created_at; the <=5 minute bucket has the highest rate at about 0.383.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select outcome, count(*), count(distinct lead_id), sum(first_contact_at is null), min(created_at), max(created_at), sum(first_contact_at<created_at) from raw_contractor_ops.contractor_leads group by 1"
+    },
+    {
+     "sql": "select case when first_contact_at is null then 'z_none' when date_diff('minute',created_at,first_contact_at)<=5 then 'a<=5m' when date_diff('minute',created_at,first_contact_at)<=60 then 'b<=1h' when date_diff('minute',created_at,first_contact_at)<=1440 then 'c<=24h' else 'd>24h' end b, count(*) n, avg((outcome='won')::int) rate_all, sum((outcome='won')::int)*1.0/nullif(sum((outcome not in ('unqualified'))::int),0) rate_qual from raw_contractor_ops.contractor_leads where outcome<>'open' group by 1 order by 1"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 12.2,
+   "cost_usd": 0.0328071,
+   "correct": false
+  },
+  {
+   "id": "best_speed_bucket",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "Which response-time bucket has the highest lead close rate?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "lt_5m",
+   "answer": "lt_5m",
+   "unit": "text",
+   "definition": "Speed bucket with the highest lead_close_rate (won leads / closed leads, open leads excluded): lt_5m at about 0.392.",
+   "parsed": true,
+   "trap": "Letting the \"missing\" bucket in. Those leads were worked but never got a contact time, so they are not a speed.",
+   "text": "The response-time bucket with the highest lead close rate is **lt_5m** (first contact within 5 minutes). Its close rate is about 39.2%, based on 47,708 closed leads.\n\nThe other buckets:\n\n| Bucket | Close rate |\n|---|---|\n| lt_5m | 0.392 |\n| missing | 0.253 |\n| 5_60m | 0.204 |\n| 1_24h | 0.201 |\n| gt_1d | 0.145 |\n| not_contacted | 0.000 |\n\n\"Missing\" means no contact time was logged, so it isn't a real response-time bucket. Even if you count it, it comes second.\n\n```json\n{\"answer\": \"lt_5m\", \"unit\": \"text\", \"definition\": \"Speed bucket with the highest lead_close_rate (won leads / closed leads, open leads excluded): lt_5m at about 0.392.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "lead_close_rate",
+      "closed_leads",
+      "leads"
+     ],
+     "group_by": [
+      "lead__speed_bucket"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.0,
+   "cost_usd": 0.0276213,
+   "correct": true
+  },
+  {
+   "id": "redo_rate_2025",
+   "arm": "raw",
+   "category": "operations",
+   "question": "How often did contractors ask us to redo a roof measurement in 2025?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.05593968862916537,
+   "answer": 0.0559,
+   "unit": "ratio",
+   "definition": "Share of measurement orders placed in 2025 (67,251) that have a redo request (3,762), using redo_requested_at not null.",
+   "parsed": true,
+   "trap": "Counting redo orders as extra orders in the denominator, which lowers the rate.",
+   "text": "Contractors asked for a redo on about 5.6% of the roof measurements ordered in 2025. That is 3,762 redo requests out of 67,251 orders, or roughly 1 in 18.\n\n- **Timing:** Counting by the date the redo was requested, rather than the order date, gives 3,757 redo requests in 2025. A few orders placed late in 2025 had their redo requested in 2026, which is why the two counts differ slightly.\n- **Duplicates:** Each order appears once in the table, so there is no double counting.\n- **Reasons:** The reasons are spread almost evenly across tree cover, outdated imagery, missing facets and wrong pitch.\n\n```json\n{\"answer\": 0.0559, \"unit\": \"ratio\", \"definition\": \"Share of measurement orders placed in 2025 (67,251) that have a redo request (3,762), using redo_requested_at not null.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select count(*) n, count(distinct order_id) d, count(redo_requested_at) redo, count(distinct case when redo_requested_at is not null then order_id end) dredo, min(ordered_at), max(ordered_at), sum(case when year(ordered_at)=2025 then 1 else 0 end) o25, count(distinct case when year(ordered_at)=2025 then order_id end) do25, count(distinct case when year(redo_requested_at)=2025 then order_id end) r25, count(distinct case when year(ordered_at)=2025 and redo_requested_at is not null then order_id end) r25o, count(distinct case when year(delivered_at)=2025 then order_id end) del25 from raw_app_db.measurement_orders"
+    },
+    {
+     "sql": "select redo_reason, count(*) from raw_app_db.measurement_orders group by 1"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.3,
+   "cost_usd": 0.0285491,
+   "correct": true
+  },
+  {
+   "id": "redo_rate_2025",
+   "arm": "governed",
+   "category": "operations",
+   "question": "How often did contractors ask us to redo a roof measurement in 2025?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.05593968862916537,
+   "answer": 0.0559,
+   "unit": "ratio",
+   "definition": "Redo requests divided by measurement orders, for orders dated 2025-01-01 to 2025-12-31 (3,762 / 67,251).",
+   "parsed": true,
+   "trap": "Counting redo orders as extra orders in the denominator, which lowers the rate.",
+   "text": "In 2025, contractors asked for a redo on about 5.6% of roof measurement orders. That is 3,762 redo requests out of 67,251 orders.\n\n```json\n{\"answer\": 0.0559, \"unit\": \"ratio\", \"definition\": \"Redo requests divided by measurement orders, for orders dated 2025-01-01 to 2025-12-31 (3,762 / 67,251).\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "measurement_redo_rate",
+      "redo_orders",
+      "measurement_orders"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 10.7,
+   "cost_usd": 0.026201099999999998,
+   "correct": true
+  },
+  {
+   "id": "top_ticket_theme_2025",
+   "arm": "raw",
+   "category": "operations",
+   "question": "What did customers contact support about most in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "measurement_accuracy",
+   "answer": "Measurement report accuracy problems (wrong pitch, missing facet, squares/measurement mismatches): 2,972 tickets",
+   "unit": "text",
+   "definition": "Support tickets created in 2025 grouped by subject, with 'Measurement off on <address>' merged into one subject and the four measurement-accuracy subjects counted together as one theme (2,972 tickets); the single largest individual subject is 'Pitch on report is wrong' (767).",
+   "parsed": true,
+   "trap": "Raw tickets have no theme. Keyword-matching the text is what the governed theme (hand labels plus a tested classifier) replaced.",
+   "text": "Measurement report accuracy was the top reason customers contacted support in 2025. Four ticket subjects all describe a problem with the measurement report:\n\n| Subject | Tickets |\n|---|---|\n| Pitch on report is wrong | 767 |\n| Measurement off on [address] | 747 |\n| Report missing a facet | 739 |\n| Squares don't match my tape | 719 |\n| **Total** | **2,972** |\n\nThe \"Measurement off on\u2026\" subjects each carry a different street address, so I grouped them into one subject. No other subject came close. The next largest were \"Changing my logo\" (275), \"Adding a teammate\" (255) and \"Where is the job board?\" (251).\n\nI counted tickets created from 2025-01-01 through 2025-12-31 and grouped them by subject text. I did not read ticket bodies to confirm the themes.\n\n```json\n{\"answer\": \"Measurement report accuracy problems (wrong pitch, missing facet, squares/measurement mismatches): 2,972 tickets\", \"unit\": \"text\", \"definition\": \"Support tickets created in 2025 grouped by subject, with 'Measurement off on <address>' merged into one subject and the four measurement-accuracy subjects counted together as one theme (2,972 tickets); the single largest individual subject is 'Pitch on report is wrong' (767).\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "select subject, count(*) n, count(distinct ticket_id) d from raw_support.support_tickets where created_at>='2025-01-01' and created_at<'2026-01-01' group by 1 order by 2 desc limit 30"
+    },
+    {
+     "sql": "select case when subject like 'Measurement off on%' then 'Measurement off on <addr>' else subject end s, count(*) n from raw_support.support_tickets where created_at>='2025-01-01' and created_at<'2026-01-01' group by 1 order by 2 desc limit 8"
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.2,
+   "cost_usd": 0.031501600000000005,
+   "correct": false
+  },
+  {
+   "id": "top_ticket_theme_2025",
+   "arm": "governed",
+   "category": "operations",
+   "question": "What did customers contact support about most in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "measurement_accuracy",
+   "answer": "measurement_accuracy (3,028 tickets)",
+   "unit": "text",
+   "definition": "Theme (ticket churn_theme) with the most support tickets created between 2025-01-01 and 2025-12-31.",
+   "parsed": true,
+   "trap": "Raw tickets have no theme. Keyword-matching the text is what the governed theme (hand labels plus a tested classifier) replaced.",
+   "text": "Measurement accuracy was the most common support topic in 2025, with 3,028 tickets. That is about 64% of the 4,911 tickets across the six themes below, and roughly three times the next theme.\n\n| Theme | Tickets |\n|---|---|\n| Measurement accuracy | 3,028 |\n| How-to | 1,006 |\n| Missing feature | 295 |\n| Billing/price | 250 |\n| Bug/outage | 194 |\n| Integration | 138 |\n\nI grouped by the ticket's `churn_theme` field, which is the only topic category in the governed metrics. I counted tickets by creation date from 2025-01-01 to 2025-12-31.\n\n```json\n{\"answer\": \"measurement_accuracy (3,028 tickets)\", \"unit\": \"text\", \"definition\": \"Theme (ticket churn_theme) with the most support tickets created between 2025-01-01 and 2025-12-31.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "tickets"
+     ],
+     "group_by": [
+      "ticket__churn_theme"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01' and {{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "order_by": [
+      "-tickets"
+     ]
+    }
+   ],
+   "model": "claude-sonnet-5-5",
+   "seconds": 11.6,
+   "cost_usd": 0.0289339,
+   "correct": true
+  }
+ ]
+}
