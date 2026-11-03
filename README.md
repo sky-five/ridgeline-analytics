@@ -106,10 +106,13 @@ For the NPS question it searched every table and column for survey data, found n
 
 ## Semantic eval: raw tables vs governed metrics
 
-`semantic_eval/` is a test set for one question: is an AI analyst more reliable when it can only use governed metrics? 25 business questions, worded the way a stakeholder would ask them, each with an answer computed from the MetricFlow metrics and a note on the mistake a raw-table query tends to make (summing daily MRR, counting signups too young to judge, dividing by open leads). Answers about closed periods are checked on every CI build. Next: run the analyst on each question twice, raw tables only and governed metrics only, and score both. Details: [semantic_eval/README.md](semantic_eval/README.md).
+`semantic_eval/` is a test set for one question: is an AI analyst more reliable when it can only use governed metrics? 25 business questions, worded the way a stakeholder would ask them, each with an answer computed from the MetricFlow metrics and a note on the mistake a raw-table query tends to make (summing daily MRR, counting signups too young to judge, dividing by open leads). Answers about closed periods are checked on every CI build.
+
+The analyst answered each question twice, once with only the raw loaded tables and once with only the governed metrics. **Governed metrics: 25 / 25 correct. Raw tables: 17 / 25.** Revenue questions were right either way; the raw misses were all definition questions (trial-to-paid, activation, lead close rate, CAC, NRR), where it picked its own definition and returned a confident number. The recorded run replays without an API key. Details: [semantic_eval/README.md](semantic_eval/README.md).
 
 ```bash
 .venv/Scripts/python -m semantic_eval.answer_key
+.venv/Scripts/python -m semantic_eval.run --replay semantic_eval/results/raw-vs-governed-2026-11-03.json
 ```
 
 ## ARR and revenue recognition
@@ -147,7 +150,7 @@ uv pip install --python .venv/Scripts/python.exe -r requirements.txt   # macOS/L
 simulator/   accounts, lifecycle, side systems, world (as-of view), mock API
 pipelines/   dlt sources + load CLI
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
-semantic_eval/ business questions with a governed-metric answer key (raw vs governed eval)
+semantic_eval/ business questions, governed-metric answer key, raw-vs-governed eval and its recorded run
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
