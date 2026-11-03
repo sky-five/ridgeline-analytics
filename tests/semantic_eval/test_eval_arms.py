@@ -80,6 +80,11 @@ def _rec(qid, arm, answer, truth, qtype="number", category="revenue", **kw):
     (_rec("a", "raw", "16.4%", 0.1638, qtype="ratio"), True),
     (_rec("a", "raw", "seo", "seo", qtype="text"), True),
     (_rec("a", "raw", None, 5.0), False),
+    (_rec("a", "raw", "June 2026", "2026-06", qtype="text"), True),
+    (_rec("a", "raw", "2026-06", "2026-06", qtype="text"), True),
+    (_rec("a", "raw", "July 2026", "2026-06", qtype="text"), False),
+    (_rec("a", "raw", "measurement_accuracy (3,028 tickets)", "measurement_accuracy", qtype="text"), True),
+    (_rec("a", "raw", "Measurement report accuracy problems", "measurement_accuracy", qtype="text"), False),
 ])
 def test_score(record, expected):
     assert score(record) is expected

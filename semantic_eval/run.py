@@ -10,6 +10,7 @@ recorded answers against the recorded truth and prints the same table.
 import argparse
 import json
 import os
+import re
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -24,9 +25,26 @@ HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "results"
 
 
+MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
+                                      "september", "october", "november", "december"], 1)}
+
+
+def _text_match(answer, truth) -> bool:
+    """The expected label appears in the answer as whole words ("measurement_accuracy (3,028 tickets)"), and
+    a month written out ("June 2026") equals its key form ("2026-06")."""
+    text = str(answer)
+    m = re.fullmatch(r"\s*([A-Za-z]+)\.?\s+(\d{4})\s*", text)
+    if m and m.group(1).lower() in MONTHS:
+        text = f"{m.group(2)}-{MONTHS[m.group(1).lower()]:02d}"
+    norm = lambda x: re.sub(r"[^a-z0-9.]+", "_", str(x).lower()).strip("_")  # noqa: E731
+    return f"_{norm(truth)}_" in f"_{norm(text)}_"
+
+
 def score(record: dict) -> bool:
-    """Is the recorded answer right? Same tolerances as the first analyst eval."""
+    """Is the recorded answer right? Same tolerances as the first analyst eval; text answers as _text_match."""
     answer = record.get("answer")
+    if record["type"] == "text":
+        return answer is not None and record["truth"] is not None and _text_match(answer, record["truth"])
     if record.get("absolute") and isinstance(answer, int | float) and not isinstance(answer, bool):
         answer = abs(answer)  # "how much did we lose" can fairly be answered as a negative movement
     return correct(record["type"], answer, record["truth"], record.get("tolerance"))
