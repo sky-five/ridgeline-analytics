@@ -1,5 +1,5 @@
 ridgeline:
-  target: duckdb
+  target: "{{ env_var('RIDGELINE_DBT_TARGET', 'duckdb') }}"  # --target still wins on the dbt CLI
   outputs:
     duckdb:
       type: duckdb

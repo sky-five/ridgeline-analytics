@@ -2,6 +2,8 @@
 
 Used by tests, the dashboards' data export and the AI analyst, so every number comes from one definition.
 Needs a parsed dbt project (dbt/target/semantic_manifest.json) and a built warehouse.
+The dbt target comes from RIDGELINE_DBT_TARGET (default duckdb); set it to snowflake to run the same
+metric queries on the Snowflake build. The manifest must come from a parse for that same target.
 """
 import os
 import tempfile
@@ -82,7 +84,8 @@ def query(metrics: list[str], group_by: list[str] | None = None, where: list[str
         order_by_names=order_by, limit=limit,
     )
     table = _config().mf.query(request).result_df
-    return pd.DataFrame(list(table.rows), columns=[c.column_name for c in table.column_descriptions])
+    # Snowflake returns unquoted aliases upper-case; DuckDB keeps them lower-case. Same names either way.
+    return pd.DataFrame(list(table.rows), columns=[c.column_name.lower() for c in table.column_descriptions])
 
 
 def explain(metrics: list[str], group_by: list[str] | None = None, where: list[str] | None = None,
