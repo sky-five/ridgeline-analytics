@@ -79,3 +79,22 @@ python -m semantic_eval.run --replay semantic_eval/results/raw-vs-governed-2026-
 
 Tests: the raw arm can't reach marts, staging, dlt tables or `query()`; scoring and the summary are unit-tested; the committed run replays to the same scores; both MCP servers start and answer (warehouse tests); the eval's read-only truth equals the answer key.
 
+
+## The governed side on Snowflake
+
+The same dbt project also builds on Snowflake (`.github/workflows/snowflake.yml`). That workflow now asks the 25 questions through MetricFlow on both warehouses and checks the answers match (`cross_target.py`):
+
+1. Right after the Snowflake dbt build, while the semantic manifest points at Snowflake tables, it answers every question with `RIDGELINE_DBT_TARGET=snowflake`.
+2. It builds DuckDB from the same simulated day and answers them again there.
+3. It compares the pairs: text answers must be equal, numbers equal to within 1e-6, and both sides must be on the same as-of date. Any difference fails the job. The table goes to the job summary and the JSON to an artifact.
+
+**Recorded run (2026-11-03, data as of 2026-11-02, [workflow run](https://github.com/sky-five/ridgeline-analytics/actions/runs/41635695859)):** 25 / 25 governed answers match, largest numeric difference 0. The report is `results/governed-snowflake-vs-duckdb-2026-11-03.json`.
+
+This covers the governed arm only: the metric definitions give the same answers on either engine. The raw-table arm and the AI analyst ran on DuckDB. The Snowflake account is a trial, so this check runs only while the trial lasts; the recorded report stays.
+
+```bash
+RIDGELINE_DBT_TARGET=snowflake python -m semantic_eval.cross_target snapshot --out sf.json   # after dbt build --target snowflake
+python -m semantic_eval.cross_target compare sf.json                                        # after the DuckDB build
+```
+
+Tests: tolerance (fixed-point rounding passes, real differences fail), text compared exactly, a question missing on one side or a different as-of date fails, the CLI exit code, and the committed Snowflake report reads 25 / 25.
