@@ -55,19 +55,23 @@ def truth_for(q: dict):
 
 # ---- backends: each returns {"text", "turns", "tool_calls", "seconds", "cost_usd"?, "error"?}
 
-def ask_claude_code(question: str, model: str | None, timeout: int = 600) -> dict:
+def ask_claude_code(question: str, model: str | None, timeout: int = 600, server: list[str] | None = None,
+                    tool_names: list[str] | None = None, system: str = SYSTEM, env: dict | None = None) -> dict:
+    """One headless Claude Code run whose only tools come from an MCP server (default: the analyst's)."""
+    server = server or ["-m", "analyst.server"]
+    tool_names = tool_names or TOOL_NAMES
     exe = os.environ.get("CLAUDE_BIN") or shutil.which("claude")
     if not exe:
         raise SystemExit("Claude Code not found: put `claude` on PATH or set CLAUDE_BIN")
     with tempfile.TemporaryDirectory() as tmp:
         cfg = Path(tmp) / "mcp.json"
         cfg.write_text(json.dumps({"mcpServers": {"ridgeline": {
-            "command": sys.executable, "args": ["-m", "analyst.server"], "cwd": str(ROOT),
-            "env": {"PYTHONPATH": str(ROOT)}}}}), encoding="utf-8")
+            "command": sys.executable, "args": server, "cwd": str(ROOT),
+            "env": {"PYTHONPATH": str(ROOT), **(env or {})}}}}), encoding="utf-8")
         cmd = [exe, "-p", question, "--output-format", "stream-json", "--verbose",
                "--mcp-config", str(cfg), "--strict-mcp-config", "--tools", "",
-               "--allowedTools", ",".join(f"mcp__ridgeline__{t}" for t in TOOL_NAMES),
-               "--system-prompt", SYSTEM, "--no-session-persistence", "--setting-sources", ""]
+               "--allowedTools", ",".join(f"mcp__ridgeline__{t}" for t in tool_names),
+               "--system-prompt", system, "--no-session-persistence", "--setting-sources", ""]
         if model:
             cmd += ["--model", model]
         t0 = time.time()
@@ -76,7 +80,7 @@ def ask_claude_code(question: str, model: str | None, timeout: int = 600) -> dic
                                   timeout=timeout)
         except subprocess.TimeoutExpired:
             return {"text": "", "turns": 0, "tool_calls": [], "seconds": timeout, "error": "timeout"}
-    calls, final = [], {}
+    calls, inputs, final, used_model = [], [], {}, None
     for line in proc.stdout.splitlines():
         try:
             ev = json.loads(line)
@@ -86,14 +90,17 @@ def ask_claude_code(question: str, model: str | None, timeout: int = 600) -> dic
             down = [m for m in ev.get("mcp_servers", []) if m.get("status") != "connected"]
             if down:
                 raise SystemExit(f"MCP server did not start: {down}")
+            used_model = ev.get("model")
         if ev.get("type") == "assistant":
-            calls += [b["name"].removeprefix("mcp__ridgeline__") for b in ev["message"].get("content", [])
-                      if b.get("type") == "tool_use"]
+            uses = [b for b in ev["message"].get("content", []) if b.get("type") == "tool_use"]
+            calls += [b["name"].removeprefix("mcp__ridgeline__") for b in uses]
+            inputs += [b.get("input") for b in uses]
         elif ev.get("type") == "result":
             final = ev
     if "not logged in" in (final.get("result") or "").lower():
         raise SystemExit("Claude Code is not logged in: run `claude auth login` once, then rerun the eval")
     out = {"text": final.get("result", ""), "turns": final.get("num_turns", 0), "tool_calls": calls,
+           "tool_inputs": inputs, "model": used_model,
            "seconds": round(time.time() - t0, 1), "cost_usd": final.get("total_cost_usd")}
     if not final or final.get("is_error"):
         out["error"] = (final.get("subtype") or proc.stderr[-500:] or "no result").strip()
