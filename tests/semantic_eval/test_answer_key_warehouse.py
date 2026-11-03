@@ -47,3 +47,22 @@ def test_spot_checks_against_the_marts(fresh):
     assert a["leads_2025"] == sql("select count(*) from fct_contractor_leads where year(created_at) = 2025")
     assert a["churned_mrr_2025"] == pytest.approx(
         -sql("select sum(churned_mrr) from fct_mrr_daily where year(date_day) = 2025"))
+
+
+
+def test_eval_truth_matches_the_answer_key(fresh, tmp_path):
+    """The eval computes truth through the read-only path; it must agree with semantic.query. Runs in another
+    process on a copy: this process already holds the warehouse's write lock through dbt-duckdb."""
+    import os
+    import shutil
+    import subprocess
+    import sys
+
+    copy = tmp_path / DB.name
+    shutil.copy(DB, copy)
+
+    code = ("import json; from semantic_eval.answer_key import load_questions; from semantic_eval.run import truth; "
+            "print(json.dumps({q['id']: truth(q) for q in load_questions()}))")
+    out = subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, check=True,
+                         env={**os.environ, "RIDGELINE_DUCKDB_PATH": str(copy)}).stdout
+    assert json.loads(out.strip().splitlines()[-1]) == fresh["answers"]
