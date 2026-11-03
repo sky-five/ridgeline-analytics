@@ -1,0 +1,189 @@
+{
+ "targets": [
+  "snowflake",
+  "duckdb"
+ ],
+ "as_of": {
+  "snowflake": "2026-11-02",
+  "duckdb": "2026-11-02"
+ },
+ "same_as_of": true,
+ "matched": 25,
+ "total": 25,
+ "max_abs_diff": 0.0,
+ "tolerance": {
+  "rel": 1e-06,
+  "abs": 1e-06
+ },
+ "rows": [
+  {
+   "id": "activation_rate_2025",
+   "snowflake": 0.31311475409836065,
+   "duckdb": 0.31311475409836065,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "ad_spend_2025",
+   "snowflake": 429930.05,
+   "duckdb": 429930.05,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "best_net_new_month_2026",
+   "snowflake": "2026-06",
+   "duckdb": "2026-06",
+   "match": true
+  },
+  {
+   "id": "best_speed_bucket",
+   "snowflake": "lt_5m",
+   "duckdb": "lt_5m",
+   "match": true
+  },
+  {
+   "id": "cac_2025",
+   "snowflake": 882.8132443531828,
+   "duckdb": 882.8132443531828,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "cac_highest_channel_2025",
+   "snowflake": "trade_show",
+   "duckdb": "trade_show",
+   "match": true
+  },
+  {
+   "id": "churned_mrr_2025",
+   "snowflake": 110899.0,
+   "duckdb": 110899.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "free_to_paid_activated",
+   "snowflake": 0.389352403655145,
+   "duckdb": 0.389352403655145,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "free_to_paid_all",
+   "snowflake": 0.1565347646985395,
+   "duckdb": 0.1565347646985395,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "free_to_paid_best_channel",
+   "snowflake": "referral",
+   "duckdb": "referral",
+   "match": true
+  },
+  {
+   "id": "free_to_paid_best_crew_size",
+   "snowflake": "16+",
+   "duckdb": "16+",
+   "match": true
+  },
+  {
+   "id": "free_to_paid_worst_channel",
+   "snowflake": "facebook",
+   "duckdb": "facebook",
+   "match": true
+  },
+  {
+   "id": "lead_close_rate_all",
+   "snowflake": 0.22883942781677366,
+   "duckdb": 0.22883942781677366,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "leads_2025",
+   "snowflake": 77895.0,
+   "duckdb": 77895.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "mrr_end_sep_2026",
+   "snowflake": 243419.0,
+   "duckdb": 243419.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "net_new_mrr_2025",
+   "snowflake": 85939.0,
+   "duckdb": 85939.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "net_new_mrr_top_channel_2025",
+   "snowflake": "google_ads",
+   "duckdb": "google_ads",
+   "match": true
+  },
+  {
+   "id": "new_mrr_q1_2026",
+   "snowflake": 36374.0,
+   "duckdb": 36374.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "nrr_12m_2024_cohorts",
+   "snowflake": 0.6282498847308348,
+   "duckdb": 0.6282498847308348,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "nrr_12m_all",
+   "snowflake": 0.6172734798558582,
+   "duckdb": 0.6172734798558582,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "paying_accounts_end_2025",
+   "snowflake": 552.0,
+   "duckdb": 552.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "redo_rate_2025",
+   "snowflake": 0.05593968862916537,
+   "duckdb": 0.05593968862916537,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "signups_2025",
+   "snowflake": 3050.0,
+   "duckdb": 3050.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "speed_to_lead_2025",
+   "snowflake": 18.0,
+   "duckdb": 18.0,
+   "match": true,
+   "abs_diff": 0.0
+  },
+  {
+   "id": "top_ticket_theme_2025",
+   "snowflake": "measurement_accuracy",
+   "duckdb": "measurement_accuracy",
+   "match": true
+  }
+ ],
+ "run_at": "2026-11-03T12:28Z",
+ "run": "https://github.com/sky-five/ridgeline-analytics/actions/runs/41635695859"
+}

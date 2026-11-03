@@ -78,3 +78,11 @@ def test_target_defaults_to_duckdb(monkeypatch):
     assert ct.target() == "duckdb"
     monkeypatch.setenv("RIDGELINE_DBT_TARGET", "snowflake")
     assert ct.target() == "snowflake"
+
+
+def test_recorded_snowflake_run_matches_duckdb():
+    path = KEY.parent / "results" / "governed-snowflake-vs-duckdb-2026-11-03.json"
+    report = json.loads(path.read_text(encoding="utf-8"))
+    assert report["targets"] == ["snowflake", "duckdb"]
+    assert ct.ok(report) and report["matched"] == report["total"] == 25
+    assert report["run"].startswith("https://github.com/sky-five/ridgeline-analytics/actions/runs/")
