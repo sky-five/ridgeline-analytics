@@ -71,8 +71,30 @@ jobs:
           dbt build --profiles-dir . --target snowflake --vars "{as_of_date: '$AS_OF'}"
           dbt source freshness --profiles-dir . --target snowflake
 
+      # The semantic manifest from the Snowflake build points MetricFlow at Snowflake tables;
+      # answer the eval questions now, before the DuckDB build rewrites it.
+      - name: Governed eval answers on Snowflake
+        if: steps.secrets.outputs.ok == 'true'
+        env:
+          RIDGELINE_DBT_TARGET: snowflake
+        run: python -m semantic_eval.cross_target snapshot --out "$RUNNER_TEMP/governed-snowflake.json"
+
       - name: Same numbers as DuckDB
         if: steps.secrets.outputs.ok == 'true'
         run: |
           python scripts/run_all.py --fresh --as-of "$AS_OF"
           python scripts/compare_targets.py
+
+      - name: Same governed eval answers on DuckDB
+        if: steps.secrets.outputs.ok == 'true'
+        run: |
+          python -m semantic_eval.cross_target compare "$RUNNER_TEMP/governed-snowflake.json" \
+            --out "$RUNNER_TEMP/governed-snowflake-vs-duckdb.json"
+
+      - name: Upload governed comparison
+        if: always() && steps.secrets.outputs.ok == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: governed-snowflake-vs-duckdb
+          path: ${{ runner.temp }}/governed-snowflake*.json
+          if-no-files-found: ignore
