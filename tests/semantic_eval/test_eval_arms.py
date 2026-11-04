@@ -104,15 +104,22 @@ def test_summarize_counts_each_arm_and_the_differences():
 
 
 RECORDED = sorted(RESULTS.glob("raw-vs-governed-*.json"))
+CLAUDE_CODE_RUN = RESULTS / "raw-vs-governed-2026-11-03.json"
 
 
-@pytest.mark.skipif(not RECORDED, reason="no recorded run")
-def test_recorded_run_replays_to_the_same_scores():
-    path = RECORDED[-1]
+@pytest.mark.parametrize("path", RECORDED, ids=[p.stem for p in RECORDED])
+def test_recorded_run_replays_to_the_same_scores(path):
+    """Every committed run, complete or still being recorded on a free quota, rescores to what it stored."""
     stored = json.loads(path.read_text(encoding="utf-8"))
     rescored = replay(path)
     assert rescored["summary"] == stored["summary"]
     assert [r["correct"] for r in rescored["results"]] == [r["correct"] for r in stored["results"]]
+    assert len({(r["id"], r["arm"]) for r in stored["results"]}) == len(stored["results"])
+
+
+@pytest.mark.skipif(not CLAUDE_CODE_RUN.exists(), reason="no recorded run")
+def test_claude_code_run_is_complete():
+    stored = json.loads(CLAUDE_CODE_RUN.read_text(encoding="utf-8"))
     assert len(stored["results"]) == 50
     assert {(r["id"], r["arm"]) for r in stored["results"]} == {
         (q, a) for q in {r["id"] for r in stored["results"]} for a in arms.ARMS}

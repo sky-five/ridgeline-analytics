@@ -209,3 +209,21 @@ def test_missing_key_and_unknown_provider_fail_clearly(monkeypatch):
         llm.gemini()
     with pytest.raises(ValueError, match="unknown provider"):
         llm.make_client("other")
+
+
+def test_gemini_thought_signature_round_trips():
+    """Gemini 3 returns a thought_signature with each tool call and rejects the next turn without it."""
+    sig = {"google": {"thought_signature": "c2ln"}}
+    data = completion(calls=[("c1", "add", {"a": 4})], finish="tool_calls")
+    data["choices"][0]["message"]["tool_calls"][0]["extra_content"] = sig
+    call = llm.parse_chat_completion(data).tool_calls[0]
+    assert call.extra == sig
+    body = ChatClient.payload("m", "s", [{"role": "assistant", "content": None, "tool_calls": [call]}], [])
+    assert body["messages"][1]["tool_calls"][0]["extra_content"] == sig
+    plain = ChatClient.payload("m", "s", [{"role": "assistant", "content": None,
+                                           "tool_calls": [ToolCall("c", "add", {})]}], [])
+    assert "extra_content" not in plain["messages"][1]["tool_calls"][0]
+
+
+def test_gemini_default_model_is_open_to_new_free_keys():
+    assert llm.make_client("gemini", api_key="k").model == "gemini-3.5-flash-lite"
