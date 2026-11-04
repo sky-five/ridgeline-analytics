@@ -32,6 +32,7 @@ class ToolCall:
     id: str
     name: str
     arguments: dict
+    extra: dict | None = None  # provider data to send back with this call (Gemini 3's thought_signature)
 
 
 @dataclass
@@ -228,8 +229,7 @@ class ChatClient:
             if m["role"] == "assistant":
                 msg = {"role": "assistant", "content": m.get("content")}
                 if m.get("tool_calls"):
-                    msg["tool_calls"] = [{"id": c.id, "type": "function", "function": {
-                        "name": c.name, "arguments": json.dumps(c.arguments)}} for c in m["tool_calls"]]
+                    msg["tool_calls"] = [_tool_call_out(c) for c in m["tool_calls"]]
                 out.append(msg)
             elif m["role"] == "tool":
                 out.append({"role": "tool", "tool_call_id": m["tool_call_id"], "content": m["content"]})
@@ -261,6 +261,14 @@ class ChatClient:
         raise AssertionError("unreachable")
 
 
+def _tool_call_out(c: ToolCall) -> dict:
+    out = {"id": c.id, "type": "function", "function": {"name": c.name, "arguments": json.dumps(c.arguments)}}
+    if c.extra:
+        # Gemini 3 models reject the next turn unless each tool call's thought_signature comes back with it.
+        out["extra_content"] = c.extra
+    return out
+
+
 def parse_chat_completion(data: dict) -> Reply:
     choice = data["choices"][0]
     message = choice["message"]
@@ -270,8 +278,8 @@ def parse_chat_completion(data: dict) -> Reply:
             args = json.loads(c["function"].get("arguments") or "{}")
         except json.JSONDecodeError:
             args = {}
-        calls.append(ToolCall(c.get("id") or f"call_{i}", c["function"]["name"], args if isinstance(args, dict)
-                              else {}))
+        calls.append(ToolCall(c.get("id") or f"call_{i}", c["function"]["name"],
+                              args if isinstance(args, dict) else {}, c.get("extra_content")))
     usage = data.get("usage") or {}
     stop = {"tool_calls": "tool_use", "length": "length", "content_filter": "refusal"}.get(
         choice.get("finish_reason"), "end")
@@ -279,13 +287,18 @@ def parse_chat_completion(data: dict) -> Reply:
                  usage.get("completion_tokens", 0), stop)
 
 
-def gemini(model: str = "gemini-2.5-flash", api_key: str | None = None, **kw) -> ChatClient:
+# New free-tier keys can't use gemini-2.5-* (checked 2026-11-04), and gemini-3.5-flash allows 20 free
+# requests a day; one eval answer takes several requests, so the default is the lite model.
+GEMINI_DEFAULT_MODEL = "gemini-3.5-flash-lite"
+
+
+def gemini(model: str = GEMINI_DEFAULT_MODEL, api_key: str | None = None, **kw) -> ChatClient:
     """Google's Gemini API through its OpenAI-compatible endpoint; a free-tier key from AI Studio works."""
     return ChatClient(GEMINI_URL, model, api_key or os.environ.get("GEMINI_API_KEY", ""), provider="gemini", **kw)
 
 
 PROVIDERS = {"anthropic": lambda model=None, **kw: AnthropicClient(model or "claude-opus-5-5"),
-             "gemini": lambda model=None, **kw: gemini(model or "gemini-2.5-flash", **kw)}
+             "gemini": lambda model=None, **kw: gemini(model or GEMINI_DEFAULT_MODEL, **kw)}
 
 
 def make_client(provider: str, model: str | None = None, **kw) -> Client:
