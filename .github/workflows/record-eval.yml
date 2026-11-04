@@ -1,0 +1,93 @@
+name: record eval
+
+# Records the raw-tables vs governed-metrics eval through the Gemini API (free tier) on a DuckDB build
+# and commits the answers, so the eval replays later without a key. Resumable: the warehouse is built for a
+# fixed as-of date and answers go to one file per model and date, so running it again with the same inputs
+# records only what is still missing (a free daily quota can be spread over several runs).
+# Needs the repository secret GEMINI_API_KEY (a free key from Google AI Studio).
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model"
+        required: true
+        default: gemini-3.5-flash-lite
+      as_of:
+        description: "As-of date of the warehouse (keep it fixed while resuming)"
+        required: true
+        default: "2026-11-02"
+      limit:
+        description: "Record at most this many new answers in this run (50 = both arms, all questions)"
+        required: true
+        default: "50"
+      pace:
+        description: "Seconds between model requests"
+        required: true
+        default: "6"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record-eval
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+      MODEL: ${{ inputs.model }}
+      AS_OF: ${{ inputs.as_of }}
+      LIMIT: ${{ inputs.limit }}
+      PACE: ${{ inputs.pace }}
+    steps:
+      - name: Check the key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: test -n "$GEMINI_API_KEY" || { echo "::error::GEMINI_API_KEY secret is not set"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('simulator/**') }}
+
+      - name: Load + dbt build (DuckDB)
+        run: |
+          python scripts/run_all.py --fresh --as-of "$AS_OF"
+          echo "OUT=semantic_eval/results/raw-vs-governed-gemini-$MODEL-as-of-$AS_OF.json" >> "$GITHUB_ENV"
+
+      - name: Record
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python -m semantic_eval.run --backend api --provider gemini --model "$MODEL" \
+            --limit "$LIMIT" --pace "$PACE" --out "$OUT"
+
+      - name: Score the recording
+        run: python -m semantic_eval.run --replay "$OUT"
+
+      - name: Commit the recording
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add semantic_eval/results
+          git diff --cached --quiet && { echo "nothing new recorded"; exit 0; }
+          git commit -m "eval(semantic-eval): record raw vs governed on $MODEL (Gemini API), as of $AS_OF"
+          git pull --rebase origin main
+          git push origin HEAD:main
