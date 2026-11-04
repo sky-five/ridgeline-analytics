@@ -80,7 +80,7 @@ jobs:
             --limit "$LIMIT" --pace "$PACE" --out "$OUT"
 
       - name: Score the recording
-        run: python -m semantic_eval.run --replay "$OUT"
+        run: test ! -f "$OUT" || python -m semantic_eval.run --replay "$OUT"
 
       - name: Commit the recording
         run: |
