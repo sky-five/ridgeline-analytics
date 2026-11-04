@@ -81,7 +81,7 @@ An agent that answers business questions from the warehouse the way an analytics
 | `sql_guard.py` | Read-only at three levels: the DuckDB file opens `read_only`, the session turns off file and network access and locks its settings, and every statement must parse as a single `SELECT`. Rows and run time are capped |
 | `tools.py` | Six tools: `search_catalog`, `describe_model`, `get_lineage`, `list_metrics`, `query_metric`, `run_sql`. Metric queries are compiled by MetricFlow and run through the same guard, so the agent's numbers match the dashboards |
 | `server.py` | MCP server over stdio, so Claude Code, Claude Desktop or any MCP client can use the tools |
-| `agent.py` | The same tools as a Claude API agent (`claude-opus-5-5`), capped at 12 model calls and 300k tokens per question |
+| `agent.py`, `llm.py` | The same tools as an API agent, capped at 12 model calls and 300k tokens per question. The model client is pluggable: Claude (`claude-opus-5-5` by default) or Gemini's free tier (`--provider gemini`) |
 | `evals/` | 20 questions with answers computed from the marts at run time, scored for correctness (0.5% or half a point) and grounding (did it cite the right mart) |
 
 ```bash

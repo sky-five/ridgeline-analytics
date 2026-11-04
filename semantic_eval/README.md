@@ -80,6 +80,25 @@ python -m semantic_eval.run --replay semantic_eval/results/raw-vs-governed-2026-
 Tests: the raw arm can't reach marts, staging, dlt tables or `query()`; scoring and the summary are unit-tested; the committed run replays to the same scores; both MCP servers start and answer (warehouse tests); the eval's read-only truth equals the answer key.
 
 
+## Other model providers
+
+The recorded run above used Claude Code. The same eval also runs through a provider-agnostic API agent (`analyst/llm.py`), so it can be repeated on another model without changing the arms, prompts or scoring:
+
+| Provider | Client | Key |
+|---|---|---|
+| `anthropic` | `AnthropicClient`, the Messages API | `ANTHROPIC_API_KEY` |
+| `gemini` | `ChatClient` on the Gemini API's OpenAI-compatible endpoint, standard library only | `GEMINI_API_KEY` (a free-tier key from Google AI Studio) |
+
+```bash
+python -m semantic_eval.run --backend api --provider gemini --limit 20 --pace 6
+```
+
+Each arm keeps its two tools and its system prompt, and the caps are the analyst's (12 model calls, 300k tokens per answer). Answers go into `results/raw-vs-governed-<provider>-<model>-<date>.json` one at a time; running the command again resumes the file and asks only what is missing or ended in an error, so a free daily quota can be spread over several runs. `--limit` caps new answers per run, `--pace` spaces requests (6 s is 10 a minute), and rate-limit or server errors are retried with backoff. Each record keeps the provider, model, turns, tool calls and token counts.
+
+No run through another provider is committed yet; when one is, it will be listed here with its provider and model. Results differ by model.
+
+Tests (`tests/analyst/test_llm.py`, `tests/semantic_eval/test_eval_api_backend.py`) use a fake SDK and a fake HTTP transport, so nothing calls a model: tool specs, tool results passed back by id, caps, retries and pacing, and resume after a limit or a provider failure.
+
 ## The governed side on Snowflake
 
 The same dbt project also builds on Snowflake (`.github/workflows/snowflake.yml`). That workflow now asks the 25 questions through MetricFlow on both warehouses and checks the answers match (`cross_target.py`):
