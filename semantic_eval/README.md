@@ -95,9 +95,22 @@ python -m semantic_eval.run --backend api --provider gemini --limit 20 --pace 6
 
 Each arm keeps its two tools and its system prompt, and the caps are the analyst's (12 model calls, 300k tokens per answer). Answers go into `results/raw-vs-governed-<provider>-<model>-<date>.json` one at a time; running the command again resumes the file and asks only what is missing or ended in an error, so a free daily quota can be spread over several runs. `--limit` caps new answers per run, `--pace` spaces requests (6 s is 10 a minute), and rate-limit or server errors are retried with backoff. Each record keeps the provider, model, turns, tool calls and token counts.
 
+On the Gemini API free tier (checked 2026-11-04), a new key can no longer use `gemini-2.5-*` and `gemini-3.5-flash` allows 20 requests a day, while one answer takes several requests, so the Gemini default is `gemini-3.5-flash-lite`. Gemini 3 models return a `thought_signature` with each tool call and reject the next turn unless it is sent back; `ChatClient` passes it through, and recordings leave it out since replay never calls the API.
+
+### Recording in GitHub Actions
+
+`.github/workflows/record-eval.yml` is a manual (`workflow_dispatch`) job that builds DuckDB for a fixed as-of date, records both arms through Gemini and commits the answers to `results/raw-vs-governed-gemini-<model>-as-of-<date>.json`. The default as-of date is 2026-11-02, the same simulated day as the Claude Code run above, so the two are scored against the same answer key. Running it again with the same inputs resumes that file. It needs the repository secret `GEMINI_API_KEY` and stops at the first step without it; the key is passed only to the recording step.
+
+| Input | Default | Meaning |
+|---|---|---|
+| `model` | `gemini-3.5-flash-lite` | Gemini model id |
+| `as_of` | `2026-11-02` | warehouse date; keep it fixed while resuming |
+| `limit` | `50` | most new answers per run (50 is both arms, all questions) |
+| `pace` | `6` | seconds between model requests |
+
 No run through another provider is committed yet; when one is, it will be listed here with its provider and model. Results differ by model.
 
-Tests (`tests/analyst/test_llm.py`, `tests/semantic_eval/test_eval_api_backend.py`) use a fake SDK and a fake HTTP transport, so nothing calls a model: tool specs, tool results passed back by id, caps, retries and pacing, and resume after a limit or a provider failure.
+Tests (`tests/analyst/test_llm.py`, `tests/semantic_eval/test_eval_api_backend.py`, `tests/semantic_eval/test_record_workflow.py`) use a fake SDK and a fake HTTP transport, so nothing calls a model: tool specs, tool results passed back by id, the `thought_signature` round trip, caps, retries and pacing, resume after a limit or a provider failure, and that the workflow keeps its as-of date and results file fixed and the key out of every step but recording. Every committed results file, complete or partial, must replay to the scores it stored.
 
 ## The governed side on Snowflake
 
