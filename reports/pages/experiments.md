@@ -65,7 +65,7 @@ select day, diff, ci_low, ci_high, p_value from ridgeline.experiment_looks order
 
 <LineChart data={looks} x=day y={['diff', 'ci_low', 'ci_high']} yFmt=pct1 title="Running difference and 95% interval, by day of the test" colorPalette={['#C2410C', '#9CA3AF', '#9CA3AF']}/>
 
-The difference swings a lot in the first days. Checking every day and stopping at the first p < 0.05 turns a 5%
+The difference swings a lot in the first days. Checking every day and stopping at the first p-value below 0.05 turns a 5%
 false-positive rate into a much bigger one. In <Value data={s} column=aa_tests fmt=num0/> simulated A/A tests (both
 arms identical, so every "win" is false), testing once at day 28 gave <Value data={s} column=fp_fixed fmt=pct1/> false
 positives; testing daily and stopping at the first significant day gave <Value data={s} column=fp_peeking fmt=pct1/>.
