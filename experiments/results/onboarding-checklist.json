@@ -1,0 +1,343 @@
+{
+  "note": "Learning project on simulated data. The true effect is planted, so the analysis can be checked.",
+  "seed": 20261105,
+  "design": {
+    "metric": "activation: first proposal sent within 14 days of signup",
+    "p_control": 0.3,
+    "planted_lift": 0.04,
+    "alpha": 0.05,
+    "power": 0.8,
+    "days": 28,
+    "arrivals_per_day": 170,
+    "treatment_share": 0.5,
+    "sample_size_per_arm": 2131,
+    "days_needed": 26,
+    "power_at_planned_size": 0.841538
+  },
+  "result": {
+    "n_control": 2335,
+    "n_treatment": 2425,
+    "rate_control": 0.311349,
+    "rate_treatment": 0.334845,
+    "diff": 0.023496,
+    "relative_lift": 0.075466,
+    "z": 1.732559,
+    "p_value": 0.083174,
+    "ci_low": -0.003066,
+    "ci_high": 0.050059,
+    "significant": false
+  },
+  "srm": {
+    "n_control": 2335,
+    "n_treatment": 2425,
+    "chi2": 1.701681,
+    "p_value": 0.192068,
+    "alarm": false
+  },
+  "srm_tracking_bug": {
+    "lost_share_of_non_activated": 0.2,
+    "n_control": 2335,
+    "n_treatment": 2065,
+    "chi2": 16.568182,
+    "p_value": 4.7e-05,
+    "alarm": true,
+    "biased_result": {
+      "n_control": 2335,
+      "n_treatment": 2065,
+      "rate_control": 0.311349,
+      "rate_treatment": 0.39322,
+      "diff": 0.081871,
+      "relative_lift": 0.262957,
+      "z": 5.683073,
+      "p_value": 0.0,
+      "ci_low": 0.053647,
+      "ci_high": 0.110095,
+      "significant": true
+    }
+  },
+  "funnel": [
+    {
+      "step": "created_job",
+      "rate_control": 0.810707,
+      "rate_treatment": 0.818969
+    },
+    {
+      "step": "measured_roof",
+      "rate_control": 0.511349,
+      "rate_treatment": 0.573196
+    },
+    {
+      "step": "sent_proposal",
+      "rate_control": 0.311349,
+      "rate_treatment": 0.334845
+    }
+  ],
+  "daily_looks": [
+    {
+      "day": 1,
+      "n_control": 94,
+      "n_treatment": 76,
+      "diff": -0.042833,
+      "ci_low": -0.180628,
+      "ci_high": 0.094962,
+      "p_value": 0.544567
+    },
+    {
+      "day": 2,
+      "n_control": 167,
+      "n_treatment": 173,
+      "diff": 0.030494,
+      "ci_low": -0.067109,
+      "ci_high": 0.128097,
+      "p_value": 0.540734
+    },
+    {
+      "day": 3,
+      "n_control": 259,
+      "n_treatment": 251,
+      "diff": 0.041102,
+      "ci_low": -0.039139,
+      "ci_high": 0.121343,
+      "p_value": 0.3156
+    },
+    {
+      "day": 4,
+      "n_control": 337,
+      "n_treatment": 343,
+      "diff": 0.026724,
+      "ci_low": -0.043307,
+      "ci_high": 0.096754,
+      "p_value": 0.454784
+    },
+    {
+      "day": 5,
+      "n_control": 414,
+      "n_treatment": 436,
+      "diff": 0.030758,
+      "ci_low": -0.031657,
+      "ci_high": 0.093173,
+      "p_value": 0.334701
+    },
+    {
+      "day": 6,
+      "n_control": 502,
+      "n_treatment": 518,
+      "diff": 0.027265,
+      "ci_low": -0.029886,
+      "ci_high": 0.084416,
+      "p_value": 0.350139
+    },
+    {
+      "day": 7,
+      "n_control": 589,
+      "n_treatment": 601,
+      "diff": 0.010334,
+      "ci_low": -0.042712,
+      "ci_high": 0.06338,
+      "p_value": 0.702643
+    },
+    {
+      "day": 8,
+      "n_control": 681,
+      "n_treatment": 679,
+      "diff": 0.018586,
+      "ci_low": -0.030953,
+      "ci_high": 0.068124,
+      "p_value": 0.462217
+    },
+    {
+      "day": 9,
+      "n_control": 756,
+      "n_treatment": 774,
+      "diff": 0.013351,
+      "ci_low": -0.03345,
+      "ci_high": 0.060151,
+      "p_value": 0.576176
+    },
+    {
+      "day": 10,
+      "n_control": 842,
+      "n_treatment": 858,
+      "diff": 0.014011,
+      "ci_low": -0.030265,
+      "ci_high": 0.058287,
+      "p_value": 0.535202
+    },
+    {
+      "day": 11,
+      "n_control": 923,
+      "n_treatment": 947,
+      "diff": 0.013157,
+      "ci_low": -0.029152,
+      "ci_high": 0.055465,
+      "p_value": 0.542294
+    },
+    {
+      "day": 12,
+      "n_control": 1011,
+      "n_treatment": 1029,
+      "diff": 0.009006,
+      "ci_low": -0.031577,
+      "ci_high": 0.049589,
+      "p_value": 0.663638
+    },
+    {
+      "day": 13,
+      "n_control": 1091,
+      "n_treatment": 1119,
+      "diff": 0.003544,
+      "ci_low": -0.035494,
+      "ci_high": 0.042583,
+      "p_value": 0.858772
+    },
+    {
+      "day": 14,
+      "n_control": 1175,
+      "n_treatment": 1205,
+      "diff": 0.00446,
+      "ci_low": -0.033118,
+      "ci_high": 0.042038,
+      "p_value": 0.81606
+    },
+    {
+      "day": 15,
+      "n_control": 1254,
+      "n_treatment": 1296,
+      "diff": 0.008875,
+      "ci_low": -0.027507,
+      "ci_high": 0.045258,
+      "p_value": 0.63262
+    },
+    {
+      "day": 16,
+      "n_control": 1340,
+      "n_treatment": 1380,
+      "diff": 0.013249,
+      "ci_low": -0.021939,
+      "ci_high": 0.048437,
+      "p_value": 0.460651
+    },
+    {
+      "day": 17,
+      "n_control": 1416,
+      "n_treatment": 1474,
+      "diff": 0.019492,
+      "ci_low": -0.014647,
+      "ci_high": 0.053631,
+      "p_value": 0.263359
+    },
+    {
+      "day": 18,
+      "n_control": 1507,
+      "n_treatment": 1553,
+      "diff": 0.022899,
+      "ci_low": -0.010289,
+      "ci_high": 0.056087,
+      "p_value": 0.176518
+    },
+    {
+      "day": 19,
+      "n_control": 1605,
+      "n_treatment": 1625,
+      "diff": 0.02262,
+      "ci_low": -0.009635,
+      "ci_high": 0.054874,
+      "p_value": 0.16946
+    },
+    {
+      "day": 20,
+      "n_control": 1687,
+      "n_treatment": 1713,
+      "diff": 0.022103,
+      "ci_low": -0.00935,
+      "ci_high": 0.053556,
+      "p_value": 0.168583
+    },
+    {
+      "day": 21,
+      "n_control": 1760,
+      "n_treatment": 1810,
+      "diff": 0.01896,
+      "ci_low": -0.011715,
+      "ci_high": 0.049636,
+      "p_value": 0.225917
+    },
+    {
+      "day": 22,
+      "n_control": 1839,
+      "n_treatment": 1901,
+      "diff": 0.017103,
+      "ci_low": -0.012862,
+      "ci_high": 0.047069,
+      "p_value": 0.263468
+    },
+    {
+      "day": 23,
+      "n_control": 1916,
+      "n_treatment": 1994,
+      "diff": 0.017339,
+      "ci_low": -0.011944,
+      "ci_high": 0.046622,
+      "p_value": 0.24605
+    },
+    {
+      "day": 24,
+      "n_control": 2018,
+      "n_treatment": 2062,
+      "diff": 0.015668,
+      "ci_low": -0.012932,
+      "ci_high": 0.044268,
+      "p_value": 0.283077
+    },
+    {
+      "day": 25,
+      "n_control": 2090,
+      "n_treatment": 2160,
+      "diff": 0.012961,
+      "ci_low": -0.015106,
+      "ci_high": 0.041027,
+      "p_value": 0.365553
+    },
+    {
+      "day": 26,
+      "n_control": 2173,
+      "n_treatment": 2247,
+      "diff": 0.020002,
+      "ci_low": -0.007531,
+      "ci_high": 0.047535,
+      "p_value": 0.154686
+    },
+    {
+      "day": 27,
+      "n_control": 2263,
+      "n_treatment": 2327,
+      "diff": 0.024582,
+      "ci_low": -0.002433,
+      "ci_high": 0.051598,
+      "p_value": 0.074693
+    },
+    {
+      "day": 28,
+      "n_control": 2335,
+      "n_treatment": 2425,
+      "diff": 0.023496,
+      "ci_low": -0.003066,
+      "ci_high": 0.050059,
+      "p_value": 0.083174
+    }
+  ],
+  "replays": {
+    "runs": 1000,
+    "significant": 0.856,
+    "ci_covers_planted": 0.94,
+    "median_diff": 0.039542
+  },
+  "peeking": {
+    "n_tests": 2000,
+    "looks": 28,
+    "alpha": 0.05,
+    "false_positive_fixed": 0.0515,
+    "false_positive_peeking": 0.2555,
+    "median_stop_day": 5.0
+  }
+}
