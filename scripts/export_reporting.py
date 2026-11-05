@@ -85,6 +85,24 @@ def export(warehouse: Path) -> dict[str, int]:
              "seconds": r["seconds"], "cost_usd": r.get("cost_usd")}
             for i, r in enumerate(run["results"])])
 
+    # the simulated A/B test readout (experiments/), shown on the "A/B test" page
+    exp_file = ROOT / "experiments" / "results" / "onboarding-checklist.json"
+    if exp_file.exists():
+        exp = json.loads(exp_file.read_text(encoding="utf-8"))
+        res, bug, pk, rp = exp["result"], exp["srm_tracking_bug"], exp["peeking"], exp["replays"]
+        tables["experiment_summary"] = pd.DataFrame([{
+            **{k: exp["design"][k] for k in ("p_control", "planted_lift", "alpha", "power", "days",
+                                             "sample_size_per_arm", "days_needed", "power_at_planned_size")},
+            **{k: res[k] for k in ("n_control", "n_treatment", "rate_control", "rate_treatment", "diff",
+                                   "ci_low", "ci_high", "p_value", "significant")},
+            "srm_p": exp["srm"]["p_value"], "bug_n_treatment": bug["n_treatment"], "bug_srm_p": bug["p_value"],
+            "bug_diff": bug["biased_result"]["diff"], "replay_runs": rp["runs"],
+            "replay_significant": rp["significant"], "replay_ci_covers": rp["ci_covers_planted"],
+            "aa_tests": pk["n_tests"], "fp_fixed": pk["false_positive_fixed"],
+            "fp_peeking": pk["false_positive_peeking"]}])
+        tables["experiment_looks"] = pd.DataFrame(exp["daily_looks"]).assign(planted=exp["design"]["planted_lift"])
+        tables["experiment_funnel"] = pd.DataFrame(exp["funnel"])
+
     with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
         con.sql("create schema if not exists reporting")
         for name, df in tables.items():
