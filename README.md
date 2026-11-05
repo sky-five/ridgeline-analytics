@@ -123,6 +123,14 @@ The analyst answered each question twice, once with only the raw loaded tables a
 .venv/Scripts/python -m revrec
 ```
 
+## A/B test analysis
+
+`experiments/` is a learning project on simulated data: an onboarding experiment (a guided setup checklist vs the current flow) with a planted true lift of 4 points on 30% activation. It plans the sample size (2,131 per arm), reads out the test with a 95% interval, checks the traffic split for a sample-ratio mismatch (and catches a planted tracking bug that would have doubled the apparent lift), and shows with 2,000 A/A tests why stopping at the first significant day is a mistake (5.1% false positives testing once, 25.6% testing daily). The site's [A/B test page](https://sky-five.github.io/ridgeline-analytics/experiments) shows the readout. Details: [experiments/README.md](experiments/README.md).
+
+```bash
+.venv/Scripts/python -m experiments
+```
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -151,6 +159,7 @@ simulator/   accounts, lifecycle, side systems, world (as-of view), mock API
 pipelines/   dlt sources + load CLI
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
 semantic_eval/ business questions, governed-metric answer key, raw-vs-governed eval and its recorded run
+experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
