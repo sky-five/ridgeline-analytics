@@ -131,6 +131,10 @@ The analyst answered each question twice, once with only the raw loaded tables a
 .venv/Scripts/python -m experiments
 ```
 
+## Orchestration with Airflow
+
+`orchestration/` is a learning project on simulated data: the nightly build as one Airflow 3 DAG (load, dbt build, reporting refresh, warehouse tests and source freshness, then a last-good-build marker), with retries and backoff, a failure alert callback and a backfill example. A separate workflow runs DAG integrity tests and one full `airflow dags test` run on every change; the GitHub Actions nightly still publishes the site. Details: [orchestration/README.md](orchestration/README.md).
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -159,6 +163,7 @@ simulator/   accounts, lifecycle, side systems, world (as-of view), mock API
 pipelines/   dlt sources + load CLI
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
 semantic_eval/ business questions, governed-metric answer key, raw-vs-governed eval and its recorded run
+orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
