@@ -47,13 +47,13 @@ jobs:
             -c "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
           echo "$GITHUB_WORKSPACE/.airflow-venv/bin" >> "$GITHUB_PATH"
 
-      - name: DAG integrity tests
-        run: python -m pytest -q -p no:cacheprovider tests/orchestration/test_dag.py
-
       - name: Airflow metadata database
         run: |
           airflow db migrate
           airflow dags reserialize
+
+      - name: DAG integrity tests
+        run: python -m pytest -q -p no:cacheprovider tests/orchestration/test_dag.py
 
       - name: Cache simulated history
         uses: actions/cache@v4

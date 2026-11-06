@@ -29,7 +29,7 @@ load ─▶ dbt_deps ─▶ dbt_build ─▶ report_refresh ─┬─▶ warehou
 
 - The run for logical date D builds the warehouse as of D - 1 (`{{ macros.ds_add(ds, -1) }}`), the same "yesterday"
   the nightly workflow uses. The same as-of date always gives the same rows.
-- Every task retries twice with exponential backoff (1 minute, then 2) and has a 30-minute timeout. A task that still
+- Every task retries twice with exponential backoff (from 1 minute, capped at 10) and has a 30-minute timeout. A task that still
   fails calls `alerts.on_failure`; the run stops there and `mark_good` never runs.
 - `max_active_runs=1` because every run rebuilds the same DuckDB file. `catchup=False`: history comes from an explicit
   backfill, not from switching the DAG on.
