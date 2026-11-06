@@ -1,0 +1,74 @@
+name: orchestration
+
+# Runs the Airflow DAG (orchestration/dags/daily_build.py) end to end with `airflow dags test`, after DAG
+# integrity tests and before a backfill dry run. Airflow gets its own virtualenv (its pins clash with dbt's);
+# the DAG's steps call the project's virtualenv. This does not replace the nightly workflow.
+on:
+  push:
+    branches: [main]
+    paths: ["orchestration/**", "scripts/**", "pipelines/**", "dbt/**", "simulator/**", "tests/orchestration/**",
+            ".github/workflows/orchestration.yml", "requirements.txt"]
+  pull_request:
+    paths: ["orchestration/**", "tests/orchestration/**", ".github/workflows/orchestration.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  AIRFLOW_VERSION: "3.3.2"
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  dag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      AIRFLOW_HOME: ${{ github.workspace }}/.airflow
+      AIRFLOW__CORE__DAGS_FOLDER: ${{ github.workspace }}/orchestration/dags
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      RIDGELINE_PYTHON: ${{ github.workspace }}/.venv/bin/python
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install the project
+        run: |
+          uv venv .venv
+          uv pip install --python .venv -r requirements.txt
+
+      - name: Install Airflow (own virtualenv, official constraints)
+        run: |
+          uv venv .airflow-venv
+          uv pip install --python .airflow-venv "apache-airflow==${AIRFLOW_VERSION}" pytest \
+            -c "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+          echo "$GITHUB_WORKSPACE/.airflow-venv/bin" >> "$GITHUB_PATH"
+
+      - name: DAG integrity tests
+        run: python -m pytest -q -p no:cacheprovider tests/orchestration/test_dag.py
+
+      - name: Airflow metadata database
+        run: |
+          airflow db migrate
+          airflow dags reserialize
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('simulator/**') }}
+
+      - name: Run the DAG once (as of yesterday, UTC)
+        run: airflow dags test daily_build "$(date -u +%F)"
+
+      - name: The run marked a good build
+        run: |
+          cat warehouse/last_good.json
+          test "$(jq -r .as_of warehouse/last_good.json)" = "$(date -u -d yesterday +%F)"
+          test ! -s warehouse/alerts.jsonl
+
+      - name: Backfill dry run (first week of October)
+        run: airflow backfill create --dag-id daily_build --from-date 2026-10-01 --to-date 2026-10-08 --dry-run
