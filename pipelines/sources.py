@@ -4,8 +4,7 @@ from datetime import datetime
 import dlt
 from dlt.sources import DltResource
 
-from simulator.api import MockApi
-from simulator.world import TABLES
+from pipelines.engine import TABLES, MockApi
 
 SCHEMA_CONTRACT = {"tables": "evolve", "columns": "evolve", "data_type": "freeze"}
 EPOCH = datetime(1970, 1, 1)

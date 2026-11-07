@@ -7,8 +7,8 @@ from datetime import date
 
 import dlt
 
+from pipelines.engine import MockApi
 from pipelines.sources import SYSTEMS, ridgeline_source
-from simulator.api import MockApi
 
 DEFAULT_DUCKDB = "warehouse/ridgeline.duckdb"
 

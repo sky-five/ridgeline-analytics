@@ -32,12 +32,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .cache
-          key: sim-${{ hashFiles('simulator/**') }}
+          key: sim-${{ hashFiles('requirements.txt') }}
 
       - name: Lint Python
         run: ruff check .
 
-      - name: Unit tests (simulator, pipelines)
+      - name: Unit tests
         run: pytest -m "not e2e" -q
 
       - name: Pick as-of date (yesterday, UTC)

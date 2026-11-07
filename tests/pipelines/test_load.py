@@ -3,8 +3,8 @@ from datetime import date
 import duckdb
 import pytest
 
+from pipelines.engine import world_as_of
 from pipelines.run import load
-from simulator.world import world_as_of
 
 D, D_NEXT = date(2024, 3, 31), date(2024, 4, 29)
 

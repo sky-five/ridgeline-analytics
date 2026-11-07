@@ -6,7 +6,7 @@ name: orchestration
 on:
   push:
     branches: [main]
-    paths: ["orchestration/**", "scripts/**", "pipelines/**", "dbt/**", "simulator/**", "tests/orchestration/**",
+    paths: ["orchestration/**", "scripts/**", "pipelines/**", "dbt/**", "tests/orchestration/**",
             ".github/workflows/orchestration.yml", "requirements.txt"]
   pull_request:
     paths: ["orchestration/**", "tests/orchestration/**", ".github/workflows/orchestration.yml"]
@@ -59,7 +59,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .cache
-          key: sim-${{ hashFiles('simulator/**') }}
+          key: sim-${{ hashFiles('requirements.txt') }}
 
       - name: Run the DAG once (as of yesterday, UTC)
         run: airflow dags test daily_build "$(date -u +%F)"

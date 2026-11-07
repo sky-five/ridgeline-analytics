@@ -65,7 +65,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .cache
-          key: sim-${{ hashFiles('simulator/**') }}
+          key: sim-${{ hashFiles('requirements.txt') }}
 
       - name: Load + dbt build (DuckDB)
         run: |
