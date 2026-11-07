@@ -2,7 +2,7 @@
 
 The analytics platform of **Ridgeline**, a fictional SaaS company that sells software to roofing contractors. It covers the full path from source systems, through ingestion and a tested dbt model, to the metrics a revenue, product and customer team would use.
 
-> **All data is synthetic.** A deterministic simulator generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
+> **All data is synthetic.** A deterministic simulator ([saas-world-sim](https://github.com/sky-five/saas-world-sim), pinned to a tag) generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
 
 **Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night from a fresh simulated day)
 
@@ -14,7 +14,7 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 | Layer | What it does |
 |---|---|
-| `simulator/` | Deterministic history of six systems: app DB, product events, CRM, support desk, ad spend, and contractors' own homeowner leads. Served "as of" any date through a paginated mock API with `updated_at` cursors. |
+| [`saas-world-sim`](https://github.com/sky-five/saas-world-sim) (installed package) | Deterministic history of six systems: app DB, product events, CRM, support desk, ad spend, and contractors' own homeowner leads. Served "as of" any date through a paginated mock API with `updated_at` cursors. |
 | `pipelines/` | One dlt source per system. Incremental on `updated_at`, merge for mutable tables, append for logs, schema contracts that freeze data types. Loads about 1.2M rows in ~30s. |
 | `dbt/` | Staging → intermediate → six domain mart folders. 31 models (29 SQL, 2 Python), 12 with enforced contracts, 94 tests. |
 
@@ -70,6 +70,12 @@ These were built into the simulator so the analysis has something real to find:
 - Measurement-report redos lead to support tickets and raise churn.
 - About 8% of lead stage times are never logged.
 - Churn reasons are written in the support-ticket text.
+
+## Where the data comes from
+
+The simulated business used to live in a `simulator/` folder here. It is now its own package, [saas-world-sim](https://github.com/sky-five/saas-world-sim), so other demos can use the same engine. This repo installs it from git at a pinned tag (`v0.3.0`, in `requirements.txt`) and imports it in one place, `pipelines/engine.py`. The full seeded history is still cached in `.cache/` at the repo root.
+
+Moving it did not change any number. Before the switch, the old folder and the package gave identical tables (every column, every row) as of 2024-03-01, 2025-07-15, 2026-06-30, 2026-11-02 and 2026-11-07, which is 1,245,216 rows on the last date. `tests/test_engine_pin.py` keeps it that way: it fails if `requirements.txt`, the engine tag and the installed version disagree, or if the 2026-06-30 row counts and invoice and MRR totals move. The engine's own unit tests and fingerprint tests run in its repo.
 
 ## AI analyst (Phase 4)
 
@@ -159,8 +165,7 @@ uv pip install --python .venv/Scripts/python.exe -r requirements.txt   # macOS/L
 ## Repo map
 
 ```
-simulator/   accounts, lifecycle, side systems, world (as-of view), mock API
-pipelines/   dlt sources + load CLI
+pipelines/   dlt sources + load CLI; engine.py imports the pinned saas-world-sim package
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
 semantic_eval/ business questions, governed-metric answer key, raw-vs-governed eval and its recorded run
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
