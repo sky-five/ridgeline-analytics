@@ -145,6 +145,10 @@ The analyst answered each question twice, once with only the raw loaded tables a
 
 `crm_pipeline/` is a learning project on simulated data. It takes the standard CRM objects from saas-world-sim's sales CRM pack (leads, accounts, contacts, opportunities, opportunity history) and models them in a small dbt project on DuckDB: pipeline coverage, stage conversion, sales velocity and a quarter-start forecast back-tested over 9 quarters. The pack's duplicate accounts and backdated close dates are fixed in the models and scored against labels the warehouse never sees. As of 2026-06-30, the models find 60 of 61 duplicates and all 9 backdated deals closed by then, with no false matches. Stage win rates learned from history cut the forecast error from 27.1% to 19.6%. There are also four SOQL-style example queries, each with a SQL version that runs. Details: [crm_pipeline/README.md](crm_pipeline/README.md).
 
+## Customer health scoring
+
+`customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. Details: [customer_health/README.md](customer_health/README.md).
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -175,6 +179,7 @@ semantic_eval/ business questions, governed-metric answer key, raw-vs-governed e
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
+customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
