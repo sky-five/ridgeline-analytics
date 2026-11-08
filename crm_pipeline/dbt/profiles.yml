@@ -1,0 +1,7 @@
+crm_pipeline:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('CRM_DUCKDB_PATH', '../../warehouse/crm.duckdb') }}"
+      threads: 4

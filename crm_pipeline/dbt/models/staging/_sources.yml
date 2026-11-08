@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: raw_crm
+    description: The sales CRM pack from saas-world-sim, as of the load date, without its label columns.
+    tables:
+      - name: leads
+      - name: accounts
+      - name: contacts
+      - name: opportunities
+      - name: opportunity_history

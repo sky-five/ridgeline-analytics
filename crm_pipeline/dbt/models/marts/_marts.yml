@@ -1,0 +1,23 @@
+version: 2
+models:
+  - name: fct_opportunities
+    description: One row per deal, on the deduplicated account, with the corrected close date.
+    columns:
+      - name: opportunity_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('dim_accounts'), field: account_id}}
+  - name: dim_accounts
+    description: One row per company after folding duplicate account records together.
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+  - name: stage_conversion
+    description: Stage-to-stage conversion and win rate from each stage, closed deals only.
+  - name: sales_velocity
+    description: Open deals x win rate x average won deal / median days to win, per segment.
+  - name: pipeline_coverage
+    description: Open pipeline by expected close quarter against the average won per quarter.
+  - name: forecast_backtest
+    description: Quarter-start weighted-pipeline forecasts against what was really won.

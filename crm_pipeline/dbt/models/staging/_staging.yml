@@ -1,0 +1,36 @@
+version: 2
+models:
+  - name: stg_crm__accounts
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+  - name: stg_crm__leads
+    columns:
+      - name: lead_id
+        data_tests: [unique, not_null]
+  - name: stg_crm__contacts
+    columns:
+      - name: contact_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_crm__accounts'), field: account_id}}
+  - name: stg_crm__opportunities
+    columns:
+      - name: opportunity_id
+        data_tests: [unique, not_null]
+      - name: account_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_crm__accounts'), field: account_id}}
+      - name: stage
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [prospecting, qualification, demo, proposal, negotiation, closed_won, closed_lost]
+  - name: stg_crm__opportunity_history
+    columns:
+      - name: history_id
+        data_tests: [unique, not_null]
+      - name: opportunity_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_crm__opportunities'), field: opportunity_id}}

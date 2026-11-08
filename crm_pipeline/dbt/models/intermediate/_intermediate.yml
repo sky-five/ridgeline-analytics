@@ -1,0 +1,18 @@
+version: 2
+models:
+  - name: int_account_dedupe
+    columns:
+      - name: account_id
+        data_tests: [unique, not_null]
+      - name: canonical_account_id
+        data_tests:
+          - not_null
+          - relationships: {arguments: {to: ref('stg_crm__accounts'), field: account_id}}
+  - name: int_opportunity_close_dates
+    columns:
+      - name: opportunity_id
+        data_tests: [unique, not_null]
+  - name: int_opportunity_snapshots
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [snapshot_date, opportunity_id]}
