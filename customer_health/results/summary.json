@@ -1,0 +1,30 @@
+{
+  "snapshots": 9028,
+  "snapshot_months": 23,
+  "accounts": 1061,
+  "test_accounts": 280,
+  "horizon_days": 60,
+  "churn_rate": 0.133,
+  "auc_health_score": 0.594,
+  "auc_model": 0.599,
+  "riskiest_share": 0.2,
+  "churn_in_riskiest_score": 0.166,
+  "churn_in_riskiest_model": 0.182,
+  "churners_caught_score": 0.274,
+  "churners_caught_model": 0.3,
+  "model_weights": {
+    "crew_size_rank": -0.257,
+    "accuracy_tickets_30d": -0.113,
+    "had_redo_60d": 0.06,
+    "logins_30d": 0.049,
+    "proposals_30d": -0.046,
+    "tickets_30d": 0.044,
+    "late_invoices_90d": 0.044,
+    "redos_30d": 0.04,
+    "login_trend": -0.037,
+    "is_scale_plan": -0.034,
+    "jobs_30d": 0.032,
+    "measurements_30d": -0.014,
+    "tenure_months": -0.014
+  }
+}
