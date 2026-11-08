@@ -1,0 +1,16 @@
+{
+  "as_of": "2026-06-30",
+  "account_records": 903,
+  "companies_after_dedupe": 843,
+  "duplicates_labelled": 61,
+  "duplicates_found": 60,
+  "duplicates_false_matches": 0,
+  "backdated_labelled_closed": 9,
+  "backdated_found": 9,
+  "backdated_false_flags": 0,
+  "won_usd_moved_to_true_quarter": 84700.0,
+  "forecast_quarters": 9,
+  "forecast_mape_crm_probability": 0.271,
+  "forecast_mape_learned_rates": 0.196,
+  "coverage_next_quarter": 3.16
+}

@@ -6,7 +6,9 @@ The pack's label columns (which accounts are duplicates, which close dates are b
 the warehouse sees what a CRM export would show, and score.py checks the fixes against the labels.
 """
 import os
+import shutil
 import subprocess
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -32,9 +34,14 @@ def load(as_of: date, db_path: Path = DEFAULT_DB) -> dict[str, int]:
     return counts
 
 
+def _dbt() -> str:
+    """dbt from PATH, else the one next to this Python (a venv that is not activated)."""
+    return shutil.which("dbt") or str(Path(sys.executable).parent / "dbt")
+
+
 def dbt_build(as_of: date, db_path: Path = DEFAULT_DB) -> None:
     env = {**os.environ, "CRM_DUCKDB_PATH": str(db_path)}
     subprocess.run(
-        ["dbt", "build", "--profiles-dir", ".", "--vars", f"{{as_of_date: '{as_of}'}}", "--quiet"],
+        [_dbt(), "build", "--profiles-dir", ".", "--vars", f"{{as_of_date: '{as_of}'}}", "--quiet"],
         cwd=HERE / "dbt", env=env, check=True,
     )

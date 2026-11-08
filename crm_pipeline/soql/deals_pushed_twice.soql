@@ -1,0 +1,5 @@
+SELECT OpportunityId, COUNT(Id) pushes
+FROM OpportunityFieldHistory
+WHERE Field = 'CloseDate'
+GROUP BY OpportunityId
+HAVING COUNT(Id) >= 2

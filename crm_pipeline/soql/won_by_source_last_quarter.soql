@@ -1,0 +1,4 @@
+SELECT LeadSource, COUNT(Id) deals, SUM(Amount) won
+FROM Opportunity
+WHERE IsWon = true AND CloseDate = LAST_QUARTER
+GROUP BY LeadSource

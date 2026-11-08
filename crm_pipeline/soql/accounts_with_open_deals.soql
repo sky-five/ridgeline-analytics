@@ -1,0 +1,4 @@
+SELECT Name, BillingState,
+       (SELECT Name, StageName, Amount FROM Opportunities WHERE IsClosed = false)
+FROM Account
+WHERE BillingState = 'TX'

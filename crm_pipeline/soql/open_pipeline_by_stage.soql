@@ -1,0 +1,5 @@
+SELECT StageName, COUNT(Id) deals, SUM(Amount) pipeline
+FROM Opportunity
+WHERE IsClosed = false
+GROUP BY StageName
+ORDER BY SUM(Amount) DESC
