@@ -73,7 +73,7 @@ These were built into the simulator so the analysis has something real to find:
 
 ## Where the data comes from
 
-The simulated business used to live in a `simulator/` folder here. It is now its own package, [saas-world-sim](https://github.com/sky-five/saas-world-sim), so other demos can use the same engine. This repo installs it from git at a pinned tag (`v0.3.0`, in `requirements.txt`) and imports it in one place, `pipelines/engine.py`. The full seeded history is still cached in `.cache/` at the repo root.
+The simulated business used to live in a `simulator/` folder here. It is now its own package, [saas-world-sim](https://github.com/sky-five/saas-world-sim), so other demos can use the same engine. This repo installs it from git at a pinned tag (`v0.4.0`, in `requirements.txt`) and imports it in one place, `pipelines/engine.py`. The full seeded history is still cached in `.cache/` at the repo root.
 
 Moving it did not change any number. Before the switch, the old folder and the package gave identical tables (every column, every row) as of 2024-03-01, 2025-07-15, 2026-06-30, 2026-11-02 and 2026-11-07, which is 1,245,216 rows on the last date. `tests/test_engine_pin.py` keeps it that way: it fails if `requirements.txt`, the engine tag and the installed version disagree, or if the 2026-06-30 row counts and invoice and MRR totals move. The engine's own unit tests and fingerprint tests run in its repo.
 
@@ -141,6 +141,10 @@ The analyst answered each question twice, once with only the raw loaded tables a
 
 `orchestration/` is a learning project on simulated data: the nightly build as one Airflow 3 DAG (load, dbt build, reporting refresh, warehouse tests and source freshness, then a last-good-build marker), with retries and backoff, a failure alert callback and a backfill example. A separate workflow runs DAG integrity tests and one full `airflow dags test` run on every change; the GitHub Actions nightly still publishes the site. Details: [orchestration/README.md](orchestration/README.md).
 
+## Sales CRM data model
+
+`crm_pipeline/` is a learning project on simulated data. It takes the standard CRM objects from saas-world-sim's sales CRM pack (leads, accounts, contacts, opportunities, opportunity history) and models them in a small dbt project on DuckDB: pipeline coverage, stage conversion, sales velocity and a quarter-start forecast back-tested over 9 quarters. The pack's duplicate accounts and backdated close dates are fixed in the models and scored against labels the warehouse never sees. As of 2026-06-30, the models find 60 of 61 duplicates and all 9 backdated deals closed by then, with no false matches. Stage win rates learned from history cut the forecast error from 27.1% to 19.6%. There are also four SOQL-style example queries, each with a SQL version that runs. Details: [crm_pipeline/README.md](crm_pipeline/README.md).
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -170,6 +174,7 @@ dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cro
 semantic_eval/ business questions, governed-metric answer key, raw-vs-governed eval and its recorded run
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
+crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
