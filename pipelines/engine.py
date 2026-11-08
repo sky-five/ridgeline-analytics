@@ -7,7 +7,7 @@ engine moved out), whatever folder a command runs from.
 import os
 from pathlib import Path
 
-ENGINE_TAG = "v0.3.0"  # keep in step with the saas-world-sim line in requirements.txt
+ENGINE_TAG = "v0.4.0"  # keep in step with the saas-world-sim line in requirements.txt
 os.environ.setdefault("SAAS_WORLD_SIM_CACHE", str(Path(__file__).resolve().parent.parent / ".cache"))
 
 from saas_world_sim import TABLES, MockApi, __version__, world_as_of  # noqa: E402
