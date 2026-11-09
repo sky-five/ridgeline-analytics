@@ -149,6 +149,10 @@ The analyst answered each question twice, once with only the raw loaded tables a
 
 `customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) lists the 683 live subscriptions on 2026-07-01 with the riskiest fifth by each method and the reasons behind each score. Details: [customer_health/README.md](customer_health/README.md).
 
+## Account reviews
+
+One Evidence page template renders a review for each of the 25 largest paying accounts by MRR, rebuilt every night: [Account reviews](https://sky-five.github.io/ridgeline-analytics/account-reviews/). Each review shows the last 12 complete months of MRR, homeowner leads won and closed, measurement orders and redos, and support tickets, plus the account's health score and a few talking points built from the same numbers. The monthly figures are the governed metrics grouped by the `account` entity, so a review can't disagree with the company-wide pages. A warehouse test checks every account's month-end MRR against the MRR movements and its tickets against the support mart. Code: [account_reviews/](account_reviews/), template: [reports/pages/account-reviews/[account_id].md](reports/pages/account-reviews/%5Baccount_id%5D.md).
+
 ## Snowflake
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
@@ -179,6 +183,7 @@ semantic_eval/ business questions, governed-metric answer key, raw-vs-governed e
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
+account_reviews/ the tables behind one review page per large account, from the governed metrics
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)

@@ -29,6 +29,8 @@ where account_id = '${params.account_id}'
 <Value data={acct} column=plan/> plan · customer since <Value data={acct} column=signup_date fmt=mmm-yyyy/> ·
 review as of <Value data={acct} column=as_of fmt=longdate/> (simulated data)
 
+&nbsp;
+
 <BigValue data={acct} value=mrr title="MRR now" fmt=usd0/>
 <BigValue data={acct} value=health_score title="Health score"/>
 <BigValue data={totals} value=leads title="Leads, 12 months" fmt=num0/>
