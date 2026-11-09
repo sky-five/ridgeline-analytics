@@ -7,7 +7,7 @@ fitting. The data is the simulated roofing-software business from
 [saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.4.0. Nothing here comes from real customers.
 
 ```bash
-python -m customer_health          # build snapshots, compare score and model, write results/summary.json
+python -m customer_health          # build snapshots, compare score and model, write results/
 python -m customer_health --check  # fail if the committed results are out of date
 ```
 
@@ -16,6 +16,7 @@ python -m customer_health --check  # fail if the committed results are out of da
 | File | What it does |
 |---|---|
 | `features.py` | One snapshot per live subscription on the first of each month, July 2024 to May 2026 (23 months). Each snapshot uses only rows timestamped before that day: logins, measurements, proposals and jobs in the last 30 days, the login trend vs the month before, tickets and measurement-accuracy tickets, re-measure requests, invoices paid more than 7 days late in the last 90 days, tenure, plan and crew size. Status columns are never read, because the app overwrites them later. The label is a cancel in the next 60 days. |
+| `at_risk.py` | The renewals-at-risk list (`results/at_risk.csv`): every live subscription on 2026-07-01, the morning after the history ends, with its health score, model risk, the score rules that fired, and whether each method puts it in its riskiest 20%. |
 | `model.py` | **Health score**: start at 100 and take points off for each warning sign (`SCORE_RULES`, eight rules, set by hand and not fitted). **Churn model**: a scaled logistic regression on the same columns. Accounts are split 70/30 by a hash of the account id, so one account's months never sit on both sides. |
 
 ## Results
@@ -45,3 +46,11 @@ What this shows:
 
 The tests check that snapshots never see rows from after their date, that only live subscriptions are
 snapshotted, that the split keeps each account on one side, and that a fresh run matches the committed results.
+
+## Renewals at risk
+
+The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) shows the list
+and the held-out comparison above. On 2026-07-01 there are 683 live subscriptions ($214,743 MRR). Each method
+flags its riskiest 137 (20%); 70 accounts are flagged by both, and the two lists together cover $59,791 of MRR.
+Each row shows which score rules fired, and the tests check that those reasons add up to the score. The list
+comes from this fixed history, so it does not change with the nightly build.
