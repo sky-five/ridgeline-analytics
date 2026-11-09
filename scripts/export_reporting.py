@@ -103,6 +103,18 @@ def export(warehouse: Path) -> dict[str, int]:
         tables["experiment_looks"] = pd.DataFrame(exp["daily_looks"]).assign(planted=exp["design"]["planted_lift"])
         tables["experiment_funnel"] = pd.DataFrame(exp["funnel"])
 
+    # customer health scoring (customer_health/), shown on the "Renewals at risk" page
+    health_dir = ROOT / "customer_health" / "results"
+    if (health_dir / "summary.json").exists() and (health_dir / "at_risk.csv").exists():
+        hs = json.loads((health_dir / "summary.json").read_text(encoding="utf-8"))
+        tables["health_compare"] = pd.DataFrame([
+            {"method": label, "auc": hs[f"auc_{key}"], "churn_in_riskiest": hs[f"churn_in_riskiest_{short}"],
+             "churners_caught": hs[f"churners_caught_{short}"], "churn_rate": hs["churn_rate"],
+             "snapshots": hs["snapshots"], "test_accounts": hs["test_accounts"]}
+            for label, key, short in (("Health score (hand-weighted)", "health_score", "score"),
+                                      ("Logistic regression", "model", "model"))])
+        tables["health_at_risk"] = pd.read_csv(health_dir / "at_risk.csv")
+
     with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
         con.sql("create schema if not exists reporting")
         for name, df in tables.items():
