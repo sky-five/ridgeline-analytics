@@ -64,3 +64,18 @@ def test_reporting_export_uses_governed_metrics():
     assert got and got == pytest.approx(want)
     names = {r[0] for r in sql("select name from reporting.metric_catalog")}
     assert {"mrr", "free_to_paid_60d", "lead_close_rate", "nrr_12m"} <= names
+
+
+def test_reporting_export_carries_the_health_results():
+    # the Renewals at risk page reads the committed customer_health results through reporting.*
+    import json
+
+    from scripts.export_reporting import ROOT, export
+
+    export(DB)
+    results = ROOT / "customer_health" / "results"
+    n_csv = sum(1 for _ in (results / "at_risk.csv").open()) - 1
+    assert sql("select count(*) from reporting.health_at_risk")[0][0] == n_csv
+    summary = json.loads((results / "summary.json").read_text())
+    aucs = dict(sql("select method, auc from reporting.health_compare"))
+    assert sorted(aucs.values()) == sorted([summary["auc_health_score"], summary["auc_model"]])
