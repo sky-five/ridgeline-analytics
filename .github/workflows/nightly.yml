@@ -83,6 +83,9 @@ jobs:
       - name: Smoke test
         run: |
           base="${{ steps.deployment.outputs.page_url }}"
-          for page in "" acquisition/ sales/ data-health/ metrics/ experiments/ renewals-at-risk/; do
+          for page in "" acquisition/ sales/ data-health/ metrics/ experiments/ renewals-at-risk/ account-reviews/; do
             curl -fsS -o /dev/null "${base}${page}" && echo "ok ${base}${page}"
           done
+          # one page rendered from the account review template
+          review=$(curl -fsS "${base}account-reviews/" | grep -o 'account-reviews/ACC-[0-9]*' | head -1)
+          test -n "$review" && curl -fsS -o /dev/null "${base}${review}/" && echo "ok ${base}${review}/"

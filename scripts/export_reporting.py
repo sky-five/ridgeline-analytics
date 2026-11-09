@@ -115,6 +115,11 @@ def export(warehouse: Path) -> dict[str, int]:
                                       ("Logistic regression", "model", "model"))])
         tables["health_at_risk"] = pd.read_csv(health_dir / "at_risk.csv")
 
+    # account reviews (account_reviews/): one templated page per large account, from the governed metrics
+    from account_reviews.reviews import build as build_reviews
+
+    tables.update(build_reviews(warehouse))
+
     with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
         con.sql("create schema if not exists reporting")
         for name, df in tables.items():
