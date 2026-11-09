@@ -1,0 +1,684 @@
+account_id,company_name,region,crew_size,plan,mrr_usd,tenure_months,health_score,model_risk,flagged_by_score,flagged_by_model,reasons
+ACC-002193,Eagle Valley Roofing,Southwest,1,essentials,249,18.0,45,0.193,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-004192,Harbor Ridge Roofing,Northeast,1,scale,349,8.8,45,0.172,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-005800,Coastal Shield Roofing,Midwest,1,essentials,398,3.6,45,0.168,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; logins down a third or more
+ACC-006004,Coastal Truss Roofing,Northeast,1,essentials,249,2.3,50,0.197,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-005912,Blue Bay Roofing,Southeast,1,essentials,249,2.3,50,0.194,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006086,Coastal Peak Roofing,West,1,essentials,249,2.6,50,0.181,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-005904,Blue Forge Roofing,Midwest,1,essentials,249,2.4,50,0.177,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006267,Granite Pitch Roofing,Southeast,1,essentials,249,2.1,50,0.174,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006136,Pioneer Bay Roofing,Southwest,1,essentials,249,2.4,50,0.172,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006132,Cedar Rafter Roofing,Southeast,1,essentials,249,2.4,50,0.166,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006751,Iron Field Roofing,Southwest,1,essentials,249,0.1,50,0.155,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006997,Lone Rafter Roofing,West,1,essentials,249,0.0,50,0.149,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-005729,Granite Crown Roofing,Southeast,6-15,essentials,249,2.9,50,0.144,True,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days; logins down a third or more; first three months
+ACC-005987,Silver Bay Roofing,Midwest,2-5,essentials,249,1.9,50,0.14,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; logins down a third or more; first three months
+ACC-004490,Valley Top Roofing,Southwest,1,essentials,298,9.1,55,0.255,True,True,one-person crew; re-measure in last 60 days; late invoice in last 90 days
+ACC-004857,Coastal Top Roofing,Midwest,1,essentials,249,7.7,55,0.224,True,True,one-person crew; re-measure in last 60 days; late invoice in last 90 days
+ACC-003250,Cedar Shingle Roofing,Southwest,1,essentials,398,12.7,55,0.217,True,True,one-person crew; re-measure in last 60 days; late invoice in last 90 days
+ACC-005357,Red Canyon Roofing,Canada,1,scale,498,5.7,55,0.217,True,True,one-person crew; re-measure in last 60 days; late invoice in last 90 days
+ACC-003837,Lone Field Roofing,Canada,1,essentials,249,11.0,55,0.2,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-000651,Eagle Peak Roofing,Southwest,1,essentials,249,25.6,55,0.199,True,True,one-person crew; re-measure in last 60 days; late invoice in last 90 days
+ACC-002528,Lone Bay Roofing,Southeast,1,essentials,249,15.4,55,0.186,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005015,Maple Gable Roofing,Southwest,1,essentials,249,7.0,55,0.183,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-004699,Summit Bay Roofing,Southwest,1,essentials,249,6.1,55,0.182,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-002520,Summit Point Roofing,Northeast,1,scale,349,16.2,55,0.179,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005072,Lone Bay Roofing,Southeast,1,essentials,398,6.6,55,0.179,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005462,Liberty Crest Roofing,Canada,1,essentials,348,4.9,55,0.179,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005112,Red Gable Roofing,West,1,essentials,249,6.8,55,0.178,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005165,Golden Stone Roofing,Southeast,1,scale,349,6.4,55,0.178,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005537,Golden Truss Roofing,Canada,1,essentials,249,4.1,55,0.178,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-004528,Valley Eave Roofing,Midwest,1,essentials,249,9.1,55,0.176,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-003754,Eagle Stone Roofing,West,1,essentials,249,11.4,55,0.175,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005130,Cedar Peak Roofing,Southwest,1,essentials,249,4.9,55,0.175,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-002375,Prairie Eave Roofing,Southeast,1,scale,349,17.0,55,0.172,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-003734,Golden Canyon Roofing,Canada,1,essentials,249,11.2,55,0.167,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-004680,Blue Eave Roofing,Southwest,1,essentials,298,8.4,55,0.167,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-004683,Maple Gable Roofing,Canada,1,essentials,249,8.8,55,0.167,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005173,Prairie Top Roofing,Midwest,1,scale,498,5.7,55,0.166,True,True,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-003685,Golden Shield Roofing,Canada,1,essentials,249,11.4,55,0.163,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005429,Prairie Truss Roofing,Southwest,2-5,essentials,249,3.0,55,0.163,True,True,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-002740,Liberty Top Roofing,Southwest,1,essentials,249,14.8,55,0.162,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-003357,Rocky Shield Roofing,Northeast,1,essentials,298,11.6,55,0.16,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-005356,Rocky Bay Roofing,Midwest,1,scale,349,3.7,55,0.159,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-002807,Prairie Rafter Roofing,Northeast,2-5,scale,597,12.5,55,0.153,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-004759,Summit Stone Roofing,Southeast,1,essentials,249,7.2,55,0.153,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-002981,Rocky Truss Roofing,Midwest,1,essentials,249,14.3,55,0.152,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-004777,Northern Ridge Roofing,Canada,2-5,essentials,249,8.1,55,0.151,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-001789,Golden Line Roofing,Southeast,2-5,essentials,249,17.9,55,0.147,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-000261,Prairie Truss Roofing,Canada,2-5,essentials,397,27.0,55,0.146,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-003071,Lone Gable Roofing,Northeast,1,scale,349,13.8,55,0.145,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-003279,Prairie Stone Roofing,Northeast,1,essentials,249,12.8,55,0.142,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-000217,Maple Valley Roofing,Southeast,1,scale,448,27.0,55,0.141,True,False,one-person crew; re-measure in last 60 days; measurement complaint this month
+ACC-000553,Cedar Point Roofing,Southwest,2-5,scale,349,24.9,55,0.14,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-004923,Blue Peak Roofing,Midwest,2-5,essentials,249,5.3,55,0.137,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; logins down a third or more
+ACC-005594,Harbor Top Roofing,Midwest,2-5,scale,398,4.4,55,0.128,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; logins down a third or more
+ACC-004518,Lone Bay Roofing,Southwest,2-5,scale,448,9.6,55,0.127,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-001417,Iron Rafter Roofing,Southeast,2-5,essentials,398,22.2,55,0.126,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; logins down a third or more
+ACC-006570,Silver Valley Roofing,Southeast,1,essentials,249,0.9,60,0.209,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-005889,Blue Gable Roofing,Northeast,1,essentials,249,2.7,60,0.208,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-004696,Prairie Truss Roofing,Northeast,1,essentials,249,6.0,60,0.205,True,True,one-person crew; late invoice in last 90 days; logins down a third or more
+ACC-006486,Granite Gable Roofing,Northeast,1,essentials,249,1.0,60,0.205,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-006144,Prairie Crown Roofing,Midwest,1,essentials,249,2.3,60,0.194,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-006023,Blue Eave Roofing,Midwest,1,essentials,249,2.6,60,0.193,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-006595,Liberty Pitch Roofing,Northeast,1,essentials,249,0.6,60,0.187,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-005917,Cedar Crown Roofing,Midwest,1,essentials,298,2.2,60,0.186,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-006135,Pioneer Bay Roofing,Southeast,1,essentials,249,0.7,60,0.186,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-006415,Valley Truss Roofing,Northeast,1,essentials,249,1.1,60,0.184,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-006633,Prairie Canyon Roofing,Northeast,1,essentials,249,0.8,60,0.173,True,True,one-person crew; re-measure in last 60 days; first three months
+ACC-005813,Maple Shield Roofing,Southeast,2-5,essentials,249,2.5,60,0.158,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006495,Summit Crown Roofing,Southwest,2-5,essentials,298,1.4,60,0.145,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006395,Oak Truss Roofing,Southeast,2-5,essentials,249,1.7,60,0.14,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-005966,Liberty Stone Roofing,Canada,2-5,essentials,348,2.9,60,0.135,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006180,Cedar Top Roofing,Southeast,2-5,essentials,249,1.1,60,0.133,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006490,Liberty Gable Roofing,Southeast,2-5,essentials,249,1.4,60,0.132,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006821,Oak Pitch Roofing,Canada,2-5,essentials,249,0.4,60,0.125,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006331,Blue Crown Roofing,Canada,2-5,scale,349,1.3,60,0.123,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006877,Red Ridge Roofing,Midwest,2-5,essentials,249,0.4,60,0.119,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006164,Oak Truss Roofing,Canada,2-5,scale,349,1.9,60,0.116,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month; first three months
+ACC-004045,Granite Shingle Roofing,Northeast,1,essentials,348,10.5,65,0.22,True,True,one-person crew; re-measure in last 60 days
+ACC-004783,Granite Field Roofing,Northeast,1,essentials,249,8.2,65,0.217,True,True,one-person crew; re-measure in last 60 days
+ACC-005329,Blue Ridge Roofing,Canada,1,essentials,249,5.1,65,0.212,True,True,one-person crew; re-measure in last 60 days
+ACC-003527,Silver Peak Roofing,Southeast,1,essentials,348,12.7,65,0.206,True,True,one-person crew; re-measure in last 60 days
+ACC-005079,Lone Canyon Roofing,Southeast,1,essentials,249,6.3,65,0.205,True,True,one-person crew; re-measure in last 60 days
+ACC-001225,Pioneer Crown Roofing,Southwest,1,essentials,348,21.3,65,0.202,False,True,one-person crew; re-measure in last 60 days
+ACC-002010,Lone Line Roofing,Southeast,1,essentials,249,19.0,65,0.202,False,True,one-person crew; re-measure in last 60 days
+ACC-004896,Granite Eave Roofing,Southeast,1,essentials,398,7.7,65,0.201,True,True,one-person crew; re-measure in last 60 days
+ACC-005312,Eagle Truss Roofing,Canada,1,essentials,249,6.1,65,0.2,True,True,one-person crew; re-measure in last 60 days
+ACC-003810,Golden Forge Roofing,Northeast,1,essentials,397,11.1,65,0.198,True,True,one-person crew; re-measure in last 60 days
+ACC-005479,Iron Valley Roofing,Southeast,1,essentials,249,5.1,65,0.195,True,True,one-person crew; re-measure in last 60 days
+ACC-001824,Blue Truss Roofing,Midwest,1,essentials,298,20.3,65,0.194,False,True,one-person crew; re-measure in last 60 days
+ACC-003059,Coastal Shingle Roofing,Canada,2-5,essentials,249,13.9,65,0.193,True,True,crew of 2-5; re-measure in last 60 days; late invoice in last 90 days
+ACC-003370,Pioneer Stone Roofing,West,1,scale,349,13.0,65,0.19,True,True,one-person crew; re-measure in last 60 days
+ACC-004555,Prairie Line Roofing,Northeast,1,essentials,249,8.3,65,0.19,True,True,one-person crew; re-measure in last 60 days
+ACC-005236,Eagle Shield Roofing,Canada,1,essentials,249,6.2,65,0.19,True,True,one-person crew; re-measure in last 60 days
+ACC-000293,Iron Canyon Roofing,Northeast,1,essentials,298,27.2,65,0.188,False,True,one-person crew; re-measure in last 60 days
+ACC-002080,Coastal Peak Roofing,Northeast,1,essentials,298,17.9,65,0.188,False,True,one-person crew; re-measure in last 60 days
+ACC-002640,Granite Rafter Roofing,Southwest,1,essentials,298,15.0,65,0.187,False,True,one-person crew; re-measure in last 60 days
+ACC-004785,Golden Crest Roofing,Southwest,1,essentials,398,7.3,65,0.186,True,True,one-person crew; re-measure in last 60 days
+ACC-000712,Harbor Top Roofing,Canada,1,essentials,249,25.2,65,0.184,False,True,one-person crew; re-measure in last 60 days
+ACC-004457,Summit Canyon Roofing,Canada,1,essentials,497,9.4,65,0.184,True,True,one-person crew; re-measure in last 60 days
+ACC-004917,Summit Truss Roofing,Southeast,1,scale,349,7.7,65,0.184,True,True,one-person crew; re-measure in last 60 days
+ACC-003648,Iron Shingle Roofing,Southwest,1,scale,349,9.3,65,0.183,True,True,one-person crew; re-measure in last 60 days
+ACC-005012,Golden Pitch Roofing,Southwest,1,essentials,249,7.3,65,0.183,True,True,one-person crew; re-measure in last 60 days
+ACC-004971,Iron Pitch Roofing,Midwest,1,scale,349,7.3,65,0.182,True,True,one-person crew; re-measure in last 60 days
+ACC-002765,Coastal Stone Roofing,Midwest,2-5,essentials,249,14.0,65,0.181,False,True,crew of 2-5; re-measure in last 60 days; late invoice in last 90 days
+ACC-004745,Valley Rafter Roofing,Northeast,1,essentials,298,8.0,65,0.181,True,True,one-person crew; re-measure in last 60 days
+ACC-000706,Northern Crest Roofing,Northeast,1,essentials,249,25.0,65,0.179,False,True,one-person crew; re-measure in last 60 days
+ACC-005762,Golden Shield Roofing,Midwest,1,essentials,249,3.3,65,0.177,True,True,one-person crew; re-measure in last 60 days
+ACC-002474,Granite Bay Roofing,Canada,1,essentials,348,16.6,65,0.175,False,True,one-person crew; re-measure in last 60 days
+ACC-001359,Silver Gable Roofing,Midwest,1,scale,349,22.8,65,0.174,False,True,one-person crew; re-measure in last 60 days
+ACC-005861,Liberty Shield Roofing,Northeast,2-5,essentials,249,3.1,65,0.172,True,True,crew of 2-5; re-measure in last 60 days; late invoice in last 90 days
+ACC-001935,Granite Stone Roofing,Southeast,1,scale,349,17.9,65,0.169,False,True,one-person crew; re-measure in last 60 days
+ACC-003408,Blue Crown Roofing,West,1,essentials,249,12.7,65,0.169,True,True,one-person crew; re-measure in last 60 days
+ACC-004915,Oak Pitch Roofing,Southwest,1,scale,349,7.7,65,0.169,True,True,one-person crew; re-measure in last 60 days
+ACC-005259,Silver Field Roofing,Southwest,1,scale,349,5.9,65,0.163,True,True,one-person crew; re-measure in last 60 days
+ACC-001071,Lone Stone Roofing,Southwest,2-5,essentials,249,24.0,65,0.156,False,False,crew of 2-5; re-measure in last 60 days; late invoice in last 90 days
+ACC-003794,Golden Gable Roofing,Southeast,2-5,essentials,298,10.8,65,0.156,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005363,Pioneer Pitch Roofing,Southeast,2-5,essentials,249,5.4,65,0.155,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002602,Valley Ridge Roofing,Northeast,1,scale,349,15.6,65,0.154,False,False,one-person crew; re-measure in last 60 days
+ACC-005620,Summit Forge Roofing,Northeast,2-5,scale,349,4.1,65,0.154,True,False,crew of 2-5; re-measure in last 60 days; logins down a third or more
+ACC-003248,Golden Truss Roofing,Southwest,2-5,essentials,348,13.4,65,0.153,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004860,Coastal Eave Roofing,West,2-5,essentials,249,7.0,65,0.152,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003556,Golden Top Roofing,Southwest,2-5,essentials,249,11.0,65,0.149,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004877,Golden Peak Roofing,Canada,2-5,essentials,249,7.3,65,0.145,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005481,Lone Point Roofing,Southeast,2-5,essentials,249,3.7,65,0.145,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001094,Harbor Top Roofing,Southwest,2-5,essentials,447,23.2,65,0.144,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002402,Iron Top Roofing,West,2-5,essentials,398,17.1,65,0.142,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004153,Oak Shingle Roofing,Southwest,2-5,essentials,249,10.4,65,0.142,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004698,Granite Point Roofing,Southwest,2-5,essentials,249,7.0,65,0.142,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005589,Rocky Crown Roofing,Southwest,2-5,essentials,249,3.9,65,0.142,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001757,Blue Crown Roofing,Southeast,2-5,essentials,249,20.9,65,0.14,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001861,Harbor Shingle Roofing,Southwest,2-5,essentials,249,19.8,65,0.14,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003139,Granite Shingle Roofing,Southwest,2-5,scale,349,12.8,65,0.14,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003515,Cedar Forge Roofing,Midwest,2-5,scale,349,12.0,65,0.139,True,False,crew of 2-5; re-measure in last 60 days; logins down a third or more
+ACC-004735,Lone Shield Roofing,Southeast,2-5,essentials,249,8.4,65,0.138,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001895,Silver Stone Roofing,Southeast,2-5,scale,349,19.5,65,0.136,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003395,Prairie Point Roofing,Southwest,2-5,essentials,249,12.0,65,0.135,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001694,Northern Canyon Roofing,Midwest,2-5,scale,547,20.9,65,0.134,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001726,Blue Valley Roofing,Northeast,2-5,essentials,249,20.8,65,0.134,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002387,Silver Point Roofing,Midwest,2-5,essentials,249,17.1,65,0.133,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003973,Lone Crest Roofing,Southeast,2-5,essentials,249,10.1,65,0.133,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004288,Pioneer Forge Roofing,Northeast,2-5,essentials,249,10.2,65,0.133,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004628,Cedar Point Roofing,Southwest,2-5,essentials,249,8.8,65,0.133,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-000528,Red Bay Roofing,Southeast,2-5,scale,349,24.3,65,0.132,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005566,Eagle Forge Roofing,Northeast,2-5,essentials,249,4.2,65,0.132,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003203,Lone Truss Roofing,West,2-5,essentials,249,13.5,65,0.131,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003716,Pioneer Ridge Roofing,Midwest,2-5,scale,349,11.9,65,0.131,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-000351,Valley Forge Roofing,Canada,6-15,essentials,398,26.2,65,0.129,False,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-001952,Oak Shield Roofing,West,2-5,essentials,348,19.6,65,0.129,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003764,Cedar Point Roofing,Southeast,6-15,scale,349,11.6,65,0.129,True,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-005712,Valley Point Roofing,Canada,2-5,essentials,249,3.6,65,0.129,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004379,Maple Canyon Roofing,Canada,2-5,scale,349,10.0,65,0.128,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005399,Lone Stone Roofing,Midwest,2-5,essentials,249,5.2,65,0.127,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005610,Valley Line Roofing,Midwest,2-5,essentials,249,4.0,65,0.127,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-000755,Harbor Forge Roofing,Southwest,2-5,essentials,298,24.6,65,0.126,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001906,Harbor Pitch Roofing,West,6-15,essentials,249,18.8,65,0.126,False,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-002816,Golden Stone Roofing,Southeast,2-5,essentials,348,11.8,65,0.125,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-003901,Cedar Crest Roofing,Southeast,2-5,scale,349,11.0,65,0.125,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004386,Iron Crest Roofing,Southeast,2-5,essentials,249,7.5,65,0.125,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004473,Lone Forge Roofing,Midwest,2-5,essentials,249,9.3,65,0.124,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-005293,Pioneer Valley Roofing,Canada,2-5,scale,498,3.5,65,0.123,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002116,Granite Shield Roofing,Southeast,2-5,scale,349,18.8,65,0.122,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002810,Silver Eave Roofing,Southwest,2-5,scale,597,13.3,65,0.122,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-000058,Golden Truss Roofing,Southwest,2-5,scale,498,29.2,65,0.121,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004438,Prairie Gable Roofing,Southwest,6-15,scale,448,9.7,65,0.121,True,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-003343,Blue Eave Roofing,Southwest,16+,essentials,249,12.4,65,0.12,True,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-003283,Summit Shingle Roofing,Southeast,2-5,scale,349,11.9,65,0.119,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001623,Northern Canyon Roofing,Canada,2-5,essentials,249,21.3,65,0.116,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002793,Cedar Rafter Roofing,Southeast,2-5,scale,349,14.0,65,0.116,False,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-004243,Lone Field Roofing,Canada,2-5,essentials,249,10.1,65,0.112,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-002963,Harbor Crest Roofing,Southeast,6-15,scale,349,14.3,65,0.108,False,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-004872,Granite Canyon Roofing,Southeast,2-5,scale,398,5.5,65,0.108,True,False,crew of 2-5; re-measure in last 60 days; measurement complaint this month
+ACC-001773,Coastal Stone Roofing,Midwest,6-15,essentials,249,18.9,65,0.101,False,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-002089,Blue Ridge Roofing,Southeast,16+,essentials,497,18.3,65,0.101,False,False,re-measure in last 60 days; measurement complaint this month; late invoice in last 90 days
+ACC-005646,Coastal Top Roofing,Midwest,1,essentials,249,4.0,70,0.202,False,True,one-person crew; late invoice in last 90 days
+ACC-003806,Rocky Line Roofing,Southwest,1,essentials,249,10.4,70,0.199,False,True,one-person crew; late invoice in last 90 days
+ACC-002900,Valley Line Roofing,Southwest,1,essentials,397,13.9,70,0.183,False,True,one-person crew; late invoice in last 90 days
+ACC-000598,Maple Stone Roofing,Southeast,1,scale,448,26.0,70,0.182,False,True,one-person crew; late invoice in last 90 days
+ACC-003897,Maple Stone Roofing,Midwest,1,essentials,249,11.6,70,0.181,False,True,one-person crew; late invoice in last 90 days
+ACC-005657,Harbor Canyon Roofing,Northeast,1,essentials,249,3.7,70,0.181,False,True,one-person crew; late invoice in last 90 days
+ACC-005577,Pioneer Bay Roofing,Midwest,1,essentials,249,4.1,70,0.17,False,True,one-person crew; logins down a third or more
+ACC-005890,Granite Eave Roofing,Southwest,2-5,essentials,249,2.8,70,0.166,False,True,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005208,Maple Crown Roofing,Southwest,2-5,essentials,249,2.8,70,0.162,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005775,Iron Valley Roofing,Midwest,2-5,essentials,249,2.4,70,0.161,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005895,Red Canyon Roofing,Southwest,2-5,essentials,249,2.3,70,0.161,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006123,Golden Valley Roofing,Southeast,2-5,essentials,249,2.1,70,0.161,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005866,Summit Peak Roofing,Southwest,2-5,scale,349,2.3,70,0.158,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006195,Coastal Truss Roofing,Canada,2-5,essentials,249,1.9,70,0.158,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-002964,Golden Shingle Roofing,Northeast,1,scale,349,13.9,70,0.157,False,False,one-person crew; logins down a third or more
+ACC-005572,Harbor Eave Roofing,Southwest,2-5,essentials,298,2.7,70,0.157,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006463,Lone Ridge Roofing,Midwest,2-5,essentials,249,1.0,70,0.157,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005914,Iron Point Roofing,Southwest,2-5,essentials,249,1.0,70,0.153,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006373,Cedar Rafter Roofing,Northeast,6-15,scale,349,1.9,70,0.152,False,False,re-measure in last 60 days; late invoice in last 90 days; first three months
+ACC-005651,Golden Field Roofing,Midwest,2-5,scale,349,2.0,70,0.149,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006498,Red Field Roofing,Canada,2-5,essentials,249,0.5,70,0.149,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005706,Silver Canyon Roofing,Southeast,2-5,scale,349,2.6,70,0.147,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006084,Iron Peak Roofing,Canada,2-5,essentials,249,1.7,70,0.147,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006504,Northern Bay Roofing,Southeast,2-5,scale,349,1.5,70,0.147,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006062,Liberty Top Roofing,Midwest,2-5,essentials,249,0.5,70,0.146,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-005840,Harbor Canyon Roofing,Southwest,2-5,essentials,249,2.3,70,0.144,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006339,Rocky Gable Roofing,Canada,2-5,essentials,249,0.4,70,0.143,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006540,Harbor Point Roofing,Northeast,2-5,scale,349,1.5,70,0.139,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006844,Liberty Shield Roofing,Canada,2-5,scale,349,0.7,70,0.137,False,False,crew of 2-5; re-measure in last 60 days; first three months
+ACC-006170,Cedar Bay Roofing,Canada,6-15,essentials,249,1.5,70,0.125,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006005,Iron Forge Roofing,Southeast,6-15,scale,349,1.2,70,0.111,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006303,Iron Valley Roofing,Canada,6-15,essentials,249,1.1,70,0.101,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006924,Valley Top Roofing,Southeast,6-15,scale,349,0.6,70,0.099,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006019,Golden Shingle Roofing,Southwest,6-15,essentials,249,0.7,70,0.096,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006703,Cedar Valley Roofing,Canada,6-15,essentials,249,1.0,70,0.095,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006006,Prairie Line Roofing,Southwest,6-15,scale,349,1.1,70,0.092,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006553,Coastal Peak Roofing,Southeast,6-15,essentials,249,1.2,70,0.091,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006273,Maple Ridge Roofing,Midwest,16+,scale,349,1.2,70,0.077,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-006456,Blue Crown Roofing,Southwest,16+,scale,349,1.6,70,0.073,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-005396,Red Forge Roofing,Canada,16+,scale,349,2.6,70,0.061,False,False,re-measure in last 60 days; measurement complaint this month; first three months
+ACC-004831,Valley Canyon Roofing,Canada,2-5,essentials,249,7.5,75,0.186,False,True,crew of 2-5; re-measure in last 60 days
+ACC-005700,Prairie Crest Roofing,Southeast,1,essentials,249,2.3,75,0.179,False,True,one-person crew; first three months
+ACC-002614,Blue Pitch Roofing,Northeast,2-5,essentials,249,16.0,75,0.175,False,True,crew of 2-5; re-measure in last 60 days
+ACC-003896,Harbor Shield Roofing,Midwest,2-5,essentials,249,10.7,75,0.175,False,True,crew of 2-5; re-measure in last 60 days
+ACC-002996,Oak Valley Roofing,Southwest,2-5,essentials,249,13.8,75,0.174,False,True,crew of 2-5; re-measure in last 60 days
+ACC-006182,Prairie Shield Roofing,Southwest,1,essentials,249,2.2,75,0.173,False,True,one-person crew; first three months
+ACC-005497,Red Shingle Roofing,Canada,2-5,essentials,249,5.0,75,0.17,False,True,crew of 2-5; re-measure in last 60 days
+ACC-006203,Prairie Eave Roofing,Northeast,1,essentials,249,2.0,75,0.17,False,True,one-person crew; first three months
+ACC-005985,Prairie Rafter Roofing,Midwest,1,essentials,348,1.3,75,0.168,False,True,one-person crew; first three months
+ACC-006439,Iron Forge Roofing,Southwest,1,essentials,249,1.0,75,0.168,False,True,one-person crew; first three months
+ACC-003923,Pioneer Eave Roofing,Midwest,2-5,essentials,249,11.6,75,0.167,False,True,crew of 2-5; re-measure in last 60 days
+ACC-005029,Silver Crest Roofing,Canada,2-5,scale,398,5.7,75,0.167,False,True,crew of 2-5; re-measure in last 60 days
+ACC-005908,Coastal Shield Roofing,Midwest,1,essentials,348,2.8,75,0.167,False,True,one-person crew; first three months
+ACC-002955,Granite Pitch Roofing,Southwest,2-5,scale,349,14.1,75,0.166,False,True,crew of 2-5; re-measure in last 60 days
+ACC-004094,Eagle Field Roofing,West,2-5,essentials,398,10.6,75,0.166,False,True,crew of 2-5; re-measure in last 60 days
+ACC-004566,Summit Bay Roofing,Midwest,2-5,essentials,249,7.7,75,0.166,False,True,crew of 2-5; re-measure in last 60 days
+ACC-005386,Blue Line Roofing,Northeast,2-5,essentials,249,5.1,75,0.166,False,True,crew of 2-5; re-measure in last 60 days
+ACC-005699,Valley Stone Roofing,Southeast,2-5,essentials,249,3.5,75,0.166,False,True,crew of 2-5; re-measure in last 60 days
+ACC-004005,Lone Crest Roofing,Northeast,2-5,essentials,249,10.9,75,0.165,False,True,crew of 2-5; re-measure in last 60 days
+ACC-005560,Liberty Field Roofing,Southeast,2-5,essentials,249,4.0,75,0.164,False,True,crew of 2-5; re-measure in last 60 days
+ACC-003041,Prairie Truss Roofing,Southwest,2-5,essentials,249,14.1,75,0.163,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005326,Silver Point Roofing,Midwest,2-5,essentials,249,5.1,75,0.163,False,True,crew of 2-5; re-measure in last 60 days
+ACC-004677,Liberty Line Roofing,Canada,2-5,essentials,298,8.1,75,0.161,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006579,Summit Crown Roofing,Southeast,1,essentials,249,0.7,75,0.161,False,False,one-person crew; first three months
+ACC-003996,Valley Crown Roofing,Southwest,2-5,essentials,249,10.7,75,0.16,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004215,Silver Canyon Roofing,Southeast,2-5,essentials,249,10.1,75,0.16,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006588,Harbor Crown Roofing,Midwest,1,essentials,249,0.5,75,0.159,False,False,one-person crew; first three months
+ACC-006670,Silver Peak Roofing,Midwest,1,essentials,249,0.3,75,0.159,False,False,one-person crew; first three months
+ACC-006730,Eagle Stone Roofing,West,1,essentials,249,0.1,75,0.159,False,False,one-person crew; first three months
+ACC-001444,Cedar Crown Roofing,Midwest,2-5,essentials,298,21.8,75,0.158,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003687,Eagle Forge Roofing,Canada,2-5,essentials,249,11.7,75,0.158,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004552,Red Truss Roofing,Southeast,2-5,essentials,249,8.6,75,0.158,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006452,Blue Valley Roofing,West,1,essentials,249,0.1,75,0.158,False,False,one-person crew; first three months
+ACC-000897,Blue Gable Roofing,Southwest,2-5,essentials,398,24.0,75,0.157,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005622,Maple Truss Roofing,Southwest,1,essentials,249,0.9,75,0.157,False,False,one-person crew; first three months
+ACC-006972,Oak Field Roofing,Southeast,1,essentials,249,0.3,75,0.157,False,False,one-person crew; first three months
+ACC-001945,Summit Valley Roofing,Midwest,2-5,essentials,497,18.8,75,0.156,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003351,Eagle Truss Roofing,Midwest,2-5,essentials,249,11.2,75,0.156,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004617,Iron Crown Roofing,Southwest,2-5,essentials,249,8.9,75,0.156,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004845,Summit Bay Roofing,Southeast,2-5,essentials,249,6.4,75,0.156,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005163,Cedar Line Roofing,Northeast,2-5,essentials,298,6.5,75,0.155,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005227,Silver Crown Roofing,West,2-5,essentials,298,5.9,75,0.155,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006355,Red Stone Roofing,Southwest,1,essentials,249,0.6,75,0.155,False,False,one-person crew; first three months
+ACC-004204,Oak Bay Roofing,Southeast,2-5,scale,349,9.9,75,0.154,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006100,Rocky Point Roofing,Southeast,2-5,essentials,249,1.9,75,0.154,False,False,crew of 2-5; late invoice in last 90 days; first three months
+ACC-006672,Coastal Field Roofing,Northeast,1,essentials,249,0.4,75,0.154,False,False,one-person crew; first three months
+ACC-006684,Eagle Rafter Roofing,Southeast,1,essentials,249,1.1,75,0.154,False,False,one-person crew; first three months
+ACC-006796,Red Field Roofing,Southeast,1,essentials,249,0.5,75,0.154,False,False,one-person crew; first three months
+ACC-000743,Coastal Eave Roofing,Canada,2-5,essentials,398,25.0,75,0.153,False,False,crew of 2-5; re-measure in last 60 days
+ACC-001558,Red Bay Roofing,Southeast,2-5,essentials,249,22.0,75,0.153,False,False,crew of 2-5; re-measure in last 60 days
+ACC-002847,Prairie Crown Roofing,West,2-5,scale,349,13.8,75,0.153,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004152,Eagle Pitch Roofing,Southeast,2-5,essentials,249,10.5,75,0.153,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005131,Eagle Top Roofing,Southwest,2-5,scale,349,6.5,75,0.153,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006283,Prairie Valley Roofing,Southeast,2-5,essentials,249,0.9,75,0.153,False,False,crew of 2-5; late invoice in last 90 days; first three months
+ACC-006878,Lone Top Roofing,Southeast,1,essentials,249,0.6,75,0.153,False,False,one-person crew; first three months
+ACC-003217,Summit Truss Roofing,Midwest,2-5,scale,349,13.0,75,0.152,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003673,Iron Shingle Roofing,Southwest,2-5,essentials,249,11.5,75,0.152,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005069,Cedar Crown Roofing,Northeast,2-5,essentials,249,4.9,75,0.152,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005210,Lone Valley Roofing,Southeast,2-5,essentials,249,6.0,75,0.151,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006777,Oak Top Roofing,Canada,1,essentials,249,0.3,75,0.151,False,False,one-person crew; first three months
+ACC-003759,Rocky Crown Roofing,Southwest,2-5,scale,498,11.4,75,0.15,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003889,Coastal Ridge Roofing,Midwest,2-5,essentials,249,10.3,75,0.15,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003931,Lone Field Roofing,Midwest,2-5,scale,349,11.4,75,0.15,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004325,Northern Crest Roofing,West,2-5,essentials,249,6.2,75,0.15,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005064,Oak Rafter Roofing,Southeast,2-5,essentials,249,6.0,75,0.149,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003650,Northern Truss Roofing,Southwest,2-5,essentials,348,11.7,75,0.148,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003935,Harbor Ridge Roofing,Midwest,2-5,essentials,249,11.2,75,0.148,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003109,Maple Ridge Roofing,Northeast,2-5,essentials,298,14.1,75,0.147,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004734,Liberty Crest Roofing,Southeast,2-5,essentials,249,8.0,75,0.147,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006330,Prairie Field Roofing,Southeast,2-5,essentials,249,0.6,75,0.147,False,False,crew of 2-5; late invoice in last 90 days; first three months
+ACC-006710,Cedar Ridge Roofing,Southwest,1,essentials,249,0.6,75,0.147,False,False,one-person crew; first three months
+ACC-003930,Granite Point Roofing,Northeast,2-5,essentials,348,11.1,75,0.146,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006893,Blue Field Roofing,West,1,essentials,249,0.1,75,0.145,False,False,one-person crew; first three months
+ACC-002493,Rocky Point Roofing,Southwest,6-15,essentials,398,16.7,75,0.144,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-002937,Cedar Point Roofing,Midwest,2-5,essentials,249,14.4,75,0.144,False,False,crew of 2-5; re-measure in last 60 days
+ACC-001833,Golden Field Roofing,Canada,2-5,scale,498,20.1,75,0.143,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004358,Pioneer Canyon Roofing,Southeast,2-5,essentials,348,9.3,75,0.142,False,False,crew of 2-5; re-measure in last 60 days
+ACC-000915,Lone Pitch Roofing,Southwest,2-5,essentials,497,23.8,75,0.141,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003080,Pioneer Valley Roofing,Southwest,2-5,essentials,249,13.0,75,0.141,False,False,crew of 2-5; re-measure in last 60 days
+ACC-007029,Northern Gable Roofing,West,1,essentials,249,0.0,75,0.141,False,False,one-person crew; first three months
+ACC-003004,Lone Forge Roofing,Midwest,2-5,scale,349,14.4,75,0.14,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004818,Granite Crown Roofing,Southwest,2-5,essentials,249,8.1,75,0.14,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004867,Iron Pitch Roofing,Northeast,2-5,scale,349,6.1,75,0.14,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005891,Cedar Eave Roofing,Southwest,2-5,scale,349,3.3,75,0.14,False,False,crew of 2-5; re-measure in last 60 days
+ACC-000209,Granite Gable Roofing,Southwest,2-5,scale,547,27.8,75,0.139,False,False,crew of 2-5; re-measure in last 60 days
+ACC-002684,Valley Point Roofing,Southeast,2-5,scale,349,15.1,75,0.139,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003518,Coastal Bay Roofing,Southeast,2-5,scale,498,12.4,75,0.139,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003945,Liberty Bay Roofing,Midwest,2-5,essentials,249,11.5,75,0.139,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005550,Golden Ridge Roofing,Midwest,2-5,essentials,249,3.8,75,0.139,False,False,crew of 2-5; re-measure in last 60 days
+ACC-003827,Oak Gable Roofing,Southeast,2-5,essentials,249,10.2,75,0.138,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004826,Oak Pitch Roofing,Southeast,2-5,scale,349,7.2,75,0.138,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006908,Maple Crest Roofing,Southeast,1,essentials,249,0.1,75,0.138,False,False,one-person crew; first three months
+ACC-004849,Eagle Eave Roofing,Midwest,2-5,scale,349,8.0,75,0.136,False,False,crew of 2-5; re-measure in last 60 days
+ACC-006774,Valley Canyon Roofing,Canada,2-5,essentials,249,0.5,75,0.136,False,False,crew of 2-5; late invoice in last 90 days; first three months
+ACC-001860,Oak Shield Roofing,Southwest,6-15,essentials,249,20.0,75,0.134,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-005898,Valley Rafter Roofing,Southwest,2-5,scale,349,3.2,75,0.134,False,False,crew of 2-5; re-measure in last 60 days
+ACC-001043,Golden Valley Roofing,Southwest,2-5,scale,398,20.9,75,0.133,False,False,crew of 2-5; re-measure in last 60 days
+ACC-001411,Maple Pitch Roofing,Northeast,2-5,essentials,398,21.5,75,0.133,False,False,crew of 2-5; re-measure in last 60 days
+ACC-002859,Golden Crest Roofing,Northeast,2-5,scale,349,14.2,75,0.133,False,False,crew of 2-5; re-measure in last 60 days
+ACC-002583,Liberty Pitch Roofing,Midwest,6-15,essentials,249,15.6,75,0.131,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-005854,Prairie Ridge Roofing,Southwest,2-5,scale,498,3.1,75,0.131,False,False,crew of 2-5; re-measure in last 60 days
+ACC-002948,Golden Truss Roofing,Midwest,2-5,essentials,249,9.8,75,0.13,False,False,crew of 2-5; re-measure in last 60 days
+ACC-004320,Northern Eave Roofing,West,2-5,scale,349,10.2,75,0.13,False,False,crew of 2-5; re-measure in last 60 days
+ACC-005611,Coastal Top Roofing,Canada,6-15,scale,349,4.5,75,0.129,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-005614,Cedar Stone Roofing,Southeast,6-15,essentials,249,4.5,75,0.129,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-002394,Eagle Stone Roofing,Midwest,2-5,scale,448,17.4,75,0.125,False,False,crew of 2-5; re-measure in last 60 days
+ACC-002814,Maple Gable Roofing,Southeast,6-15,essentials,348,11.8,75,0.125,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005457,Harbor Forge Roofing,Midwest,6-15,scale,349,5.2,75,0.119,False,False,re-measure in last 60 days; logins down a third or more
+ACC-005019,Lone Gable Roofing,Midwest,6-15,essentials,249,5.7,75,0.112,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005389,Granite Crown Roofing,Southeast,6-15,scale,498,4.3,75,0.112,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000385,Summit Truss Roofing,Midwest,6-15,scale,349,26.3,75,0.111,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-001299,Pioneer Rafter Roofing,Southwest,6-15,essentials,249,21.0,75,0.111,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004705,Silver Ridge Roofing,West,6-15,essentials,249,7.6,75,0.111,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005249,Northern Stone Roofing,Southeast,6-15,scale,349,5.3,75,0.11,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-002633,Silver Forge Roofing,Southeast,6-15,scale,349,15.9,75,0.109,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-001907,Maple Line Roofing,West,6-15,essentials,298,13.7,75,0.105,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004380,Iron Forge Roofing,Southeast,6-15,essentials,249,10.1,75,0.105,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004718,Rocky Truss Roofing,Southeast,6-15,essentials,398,7.3,75,0.105,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004982,Oak Field Roofing,Southeast,6-15,scale,349,7.0,75,0.105,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004333,Iron Canyon Roofing,Midwest,6-15,scale,349,8.2,75,0.104,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005177,Iron Gable Roofing,Southwest,6-15,scale,349,5.2,75,0.104,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005284,Harbor Crest Roofing,Northeast,6-15,scale,349,4.6,75,0.104,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004051,Golden Forge Roofing,Southeast,6-15,scale,349,11.0,75,0.102,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005542,Lone Truss Roofing,Southeast,6-15,scale,398,4.3,75,0.102,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000122,Prairie Line Roofing,Midwest,6-15,scale,349,28.4,75,0.101,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004255,Oak Ridge Roofing,Midwest,6-15,essentials,249,9.9,75,0.099,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005532,Northern Crest Roofing,Northeast,6-15,scale,349,4.4,75,0.099,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000257,Pioneer Peak Roofing,Canada,6-15,scale,349,27.9,75,0.097,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000645,Red Crest Roofing,West,6-15,scale,349,24.9,75,0.096,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-001074,Iron Ridge Roofing,Southeast,6-15,scale,349,23.7,75,0.096,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000532,Cedar Bay Roofing,Southeast,16+,scale,448,25.7,75,0.095,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-001923,Rocky Bay Roofing,Southwest,6-15,scale,349,19.8,75,0.095,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-003748,Valley Ridge Roofing,Midwest,16+,scale,349,8.3,75,0.095,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-004682,Blue Top Roofing,Midwest,6-15,scale,349,4.8,75,0.095,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-003955,Pioneer Ridge Roofing,Southwest,16+,scale,349,11.3,75,0.092,False,False,re-measure in last 60 days; late invoice in last 90 days
+ACC-003702,Oak Stone Roofing,Southwest,6-15,scale,398,11.5,75,0.091,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005595,Summit Ridge Roofing,Southeast,16+,scale,349,4.2,75,0.091,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000128,Rocky Top Roofing,Southeast,6-15,scale,349,28.4,75,0.09,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004492,Liberty Shield Roofing,Southwest,6-15,scale,349,8.5,75,0.09,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004347,Silver Crest Roofing,Southwest,6-15,scale,349,9.8,75,0.089,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004747,Northern Stone Roofing,Southeast,16+,essentials,249,7.6,75,0.089,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004751,Iron Top Roofing,Southwest,6-15,essentials,249,4.1,75,0.088,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000373,Iron Forge Roofing,Canada,16+,scale,349,26.6,75,0.087,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-003301,Coastal Crown Roofing,Southeast,16+,scale,349,11.3,75,0.084,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-002484,Valley Ridge Roofing,West,16+,scale,349,16.8,75,0.082,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000750,Blue Truss Roofing,Northeast,16+,essentials,348,24.1,75,0.081,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-003545,Prairie Crest Roofing,Southeast,6-15,scale,349,10.7,75,0.079,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-003471,Oak Top Roofing,Midwest,16+,essentials,249,12.3,75,0.078,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004500,Oak Eave Roofing,Southwest,16+,scale,349,9.2,75,0.078,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-003112,Rocky Peak Roofing,Southeast,16+,scale,498,13.7,75,0.077,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000301,Silver Gable Roofing,Southeast,16+,scale,349,27.1,75,0.076,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-004827,Silver Bay Roofing,Midwest,16+,essentials,249,7.6,75,0.075,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005153,Lone Valley Roofing,Midwest,16+,scale,349,6.1,75,0.073,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-001221,Cedar Pitch Roofing,Southwest,16+,scale,547,21.6,75,0.072,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-002682,Valley Top Roofing,Southwest,16+,scale,349,14.7,75,0.07,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-000201,Oak Line Roofing,Southeast,16+,scale,349,28.1,75,0.069,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-005669,Summit Valley Roofing,Southeast,16+,scale,398,4.2,75,0.065,False,False,re-measure in last 60 days; measurement complaint this month
+ACC-002991,Prairie Peak Roofing,Southeast,1,scale,349,13.8,80,0.183,False,True,one-person crew
+ACC-003907,Eagle Crest Roofing,Southeast,1,essentials,249,9.5,80,0.183,False,True,one-person crew
+ACC-005466,Northern Rafter Roofing,Southeast,1,essentials,249,4.0,80,0.183,False,True,one-person crew
+ACC-004909,Coastal Truss Roofing,Northeast,1,essentials,249,7.0,80,0.177,False,True,one-person crew
+ACC-005151,Summit Canyon Roofing,Midwest,1,essentials,249,4.6,80,0.177,False,True,one-person crew
+ACC-005371,Eagle Rafter Roofing,Midwest,1,essentials,398,5.7,80,0.177,False,True,one-person crew
+ACC-002565,Granite Crest Roofing,Southeast,1,essentials,249,15.2,80,0.176,False,True,one-person crew
+ACC-005007,Harbor Valley Roofing,Midwest,1,essentials,249,5.7,80,0.176,False,True,one-person crew
+ACC-003605,Northern Point Roofing,Northeast,1,essentials,348,10.3,80,0.175,False,True,one-person crew
+ACC-003732,Lone Shield Roofing,Canada,1,essentials,249,12.1,80,0.174,False,True,one-person crew
+ACC-005527,Cedar Gable Roofing,Southeast,1,essentials,249,4.2,80,0.174,False,True,one-person crew
+ACC-005915,Blue Bay Roofing,Northeast,1,essentials,249,3.0,80,0.174,False,True,one-person crew
+ACC-003163,Coastal Rafter Roofing,Midwest,1,essentials,249,12.9,80,0.173,False,True,one-person crew
+ACC-003965,Lone Shingle Roofing,Southeast,1,scale,448,10.9,80,0.172,False,True,one-person crew
+ACC-001566,Red Valley Roofing,Southwest,1,essentials,298,21.5,80,0.171,False,True,one-person crew
+ACC-005487,Oak Crest Roofing,Northeast,1,essentials,298,5.2,80,0.171,False,True,one-person crew
+ACC-001368,Valley Crown Roofing,Southwest,1,essentials,249,21.6,80,0.17,False,True,one-person crew
+ACC-001799,Red Forge Roofing,Northeast,1,essentials,249,20.9,80,0.17,False,True,one-person crew
+ACC-004129,Iron Field Roofing,Southeast,1,essentials,447,10.8,80,0.169,False,True,one-person crew
+ACC-003862,Pioneer Stone Roofing,Northeast,1,essentials,249,11.5,80,0.168,False,True,one-person crew
+ACC-001391,Lone Crown Roofing,Midwest,1,essentials,249,21.3,80,0.167,False,True,one-person crew
+ACC-002530,Lone Truss Roofing,Southwest,1,essentials,298,16.4,80,0.167,False,True,one-person crew
+ACC-000744,Pioneer Pitch Roofing,Midwest,1,essentials,249,24.4,80,0.165,False,True,one-person crew
+ACC-004293,Lone Point Roofing,Southeast,1,essentials,249,9.0,80,0.163,False,True,one-person crew
+ACC-004535,Red Crest Roofing,Midwest,2-5,essentials,249,8.9,80,0.163,False,True,crew of 2-5; late invoice in last 90 days
+ACC-005637,Lone Canyon Roofing,Northeast,2-5,essentials,249,3.9,80,0.163,False,True,crew of 2-5; late invoice in last 90 days
+ACC-001517,Prairie Shield Roofing,Southeast,1,scale,398,21.6,80,0.161,False,False,one-person crew
+ACC-003494,Valley Shingle Roofing,Southwest,1,essentials,298,9.9,80,0.161,False,False,one-person crew
+ACC-005028,Cedar Stone Roofing,Southeast,1,scale,349,6.6,80,0.161,False,False,one-person crew
+ACC-003574,Lone Valley Roofing,Northeast,1,essentials,249,10.9,80,0.16,False,False,one-person crew
+ACC-005584,Granite Pitch Roofing,Southeast,2-5,essentials,249,4.1,80,0.16,False,False,crew of 2-5; late invoice in last 90 days
+ACC-001524,Valley Ridge Roofing,Midwest,1,essentials,348,21.7,80,0.158,False,False,one-person crew
+ACC-003290,Pioneer Crown Roofing,Northeast,1,essentials,249,12.2,80,0.158,False,False,one-person crew
+ACC-002758,Harbor Forge Roofing,Midwest,1,essentials,249,14.7,80,0.154,False,False,one-person crew
+ACC-004510,Eagle Valley Roofing,Southwest,1,essentials,348,8.7,80,0.154,False,False,one-person crew
+ACC-001363,Liberty Truss Roofing,Midwest,1,scale,398,21.9,80,0.15,False,False,one-person crew
+ACC-000031,Silver Line Roofing,Southwest,1,scale,398,28.9,80,0.147,False,False,one-person crew
+ACC-001801,Coastal Stone Roofing,West,1,essentials,398,20.9,80,0.147,False,False,one-person crew
+ACC-000320,Cedar Crest Roofing,Southwest,1,scale,349,26.9,80,0.146,False,False,one-person crew
+ACC-001163,Coastal Eave Roofing,Canada,2-5,essentials,298,23.3,80,0.145,False,False,crew of 2-5; late invoice in last 90 days
+ACC-005062,Granite Truss Roofing,West,2-5,essentials,447,5.4,80,0.144,False,False,crew of 2-5; late invoice in last 90 days
+ACC-002319,Valley Eave Roofing,Southwest,2-5,scale,349,13.6,80,0.143,False,False,crew of 2-5; late invoice in last 90 days
+ACC-003657,Maple Forge Roofing,West,1,essentials,249,12.0,80,0.138,False,False,one-person crew
+ACC-005468,Coastal Pitch Roofing,West,1,essentials,249,4.9,80,0.134,False,False,one-person crew
+ACC-003194,Granite Bay Roofing,Northeast,2-5,essentials,249,12.5,80,0.133,False,False,crew of 2-5; logins down a third or more
+ACC-006281,Golden Ridge Roofing,Southeast,6-15,scale,349,2.1,80,0.126,False,False,re-measure in last 60 days; first three months
+ACC-003553,Eagle Truss Roofing,Southwest,2-5,essentials,249,12.5,80,0.125,False,False,crew of 2-5; logins down a third or more
+ACC-005612,Coastal Gable Roofing,Southeast,6-15,scale,349,2.6,80,0.119,False,False,re-measure in last 60 days; first three months
+ACC-006552,Prairie Stone Roofing,Southeast,6-15,scale,398,1.3,80,0.119,False,False,re-measure in last 60 days; first three months
+ACC-005671,Golden Truss Roofing,Southwest,6-15,scale,349,2.7,80,0.116,False,False,re-measure in last 60 days; first three months
+ACC-006185,Cedar Point Roofing,Canada,6-15,scale,349,1.7,80,0.116,False,False,re-measure in last 60 days; first three months
+ACC-006401,Rocky Shield Roofing,Southwest,6-15,scale,448,1.7,80,0.115,False,False,re-measure in last 60 days; first three months
+ACC-006478,Oak Truss Roofing,Southwest,6-15,scale,349,1.2,80,0.114,False,False,re-measure in last 60 days; first three months
+ACC-006233,Valley Crest Roofing,Southeast,6-15,scale,349,1.3,80,0.11,False,False,re-measure in last 60 days; first three months
+ACC-006276,Lone Top Roofing,West,6-15,scale,349,0.4,80,0.108,False,False,re-measure in last 60 days; first three months
+ACC-006416,Liberty Forge Roofing,West,6-15,scale,398,0.5,80,0.103,False,False,re-measure in last 60 days; first three months
+ACC-006664,Oak Truss Roofing,Southwest,6-15,scale,349,0.4,80,0.099,False,False,re-measure in last 60 days; first three months
+ACC-005740,Maple Stone Roofing,Midwest,16+,scale,349,2.7,80,0.095,False,False,re-measure in last 60 days; first three months
+ACC-006275,Golden Crown Roofing,West,16+,scale,349,0.7,80,0.086,False,False,re-measure in last 60 days; first three months
+ACC-006311,Northern Canyon Roofing,Southwest,16+,scale,349,1.2,80,0.08,False,False,re-measure in last 60 days; first three months
+ACC-006094,Iron Valley Roofing,Southwest,2-5,essentials,249,1.6,85,0.152,False,False,crew of 2-5; first three months
+ACC-005960,Summit Valley Roofing,West,2-5,essentials,249,2.6,85,0.146,False,False,crew of 2-5; first three months
+ACC-006627,Oak Forge Roofing,Southwest,2-5,essentials,249,1.3,85,0.142,False,False,crew of 2-5; first three months
+ACC-006102,Iron Shingle Roofing,Northeast,2-5,essentials,249,2.1,85,0.141,False,False,crew of 2-5; first three months
+ACC-006349,Granite Shield Roofing,Midwest,2-5,essentials,249,0.9,85,0.141,False,False,crew of 2-5; first three months
+ACC-006193,Eagle Pitch Roofing,Southeast,2-5,essentials,249,1.8,85,0.139,False,False,crew of 2-5; first three months
+ACC-006640,Granite Top Roofing,Northeast,2-5,essentials,249,1.1,85,0.138,False,False,crew of 2-5; first three months
+ACC-005058,Northern Top Roofing,Southeast,6-15,essentials,249,6.5,85,0.135,False,False,re-measure in last 60 days
+ACC-006029,Prairie Shingle Roofing,Northeast,2-5,essentials,249,1.8,85,0.135,False,False,crew of 2-5; first three months
+ACC-006032,Iron Crest Roofing,West,2-5,essentials,249,2.6,85,0.134,False,False,crew of 2-5; first three months
+ACC-006216,Iron Valley Roofing,West,2-5,essentials,249,1.3,85,0.133,False,False,crew of 2-5; first three months
+ACC-000538,Coastal Valley Roofing,Southwest,6-15,scale,398,24.2,85,0.131,False,False,re-measure in last 60 days
+ACC-006099,Pioneer Canyon Roofing,Southeast,2-5,essentials,249,1.2,85,0.131,False,False,crew of 2-5; first three months
+ACC-006289,Silver Stone Roofing,Northeast,2-5,essentials,249,0.3,85,0.131,False,False,crew of 2-5; first three months
+ACC-005995,Maple Top Roofing,Southeast,2-5,essentials,249,0.4,85,0.13,False,False,crew of 2-5; first three months
+ACC-006077,Coastal Forge Roofing,Midwest,2-5,essentials,249,1.4,85,0.13,False,False,crew of 2-5; first three months
+ACC-006762,Oak Shield Roofing,Southwest,2-5,essentials,298,0.7,85,0.13,False,False,crew of 2-5; first three months
+ACC-004395,Oak Forge Roofing,Midwest,6-15,essentials,298,9.2,85,0.129,False,False,re-measure in last 60 days
+ACC-006683,Blue Peak Roofing,Southeast,2-5,essentials,249,0.4,85,0.129,False,False,crew of 2-5; first three months
+ACC-005609,Blue Rafter Roofing,Southeast,6-15,essentials,249,4.4,85,0.128,False,False,re-measure in last 60 days
+ACC-006643,Silver Top Roofing,Midwest,2-5,essentials,249,0.6,85,0.128,False,False,crew of 2-5; first three months
+ACC-006547,Red Bay Roofing,West,2-5,essentials,249,1.2,85,0.127,False,False,crew of 2-5; first three months
+ACC-004728,Rocky Crest Roofing,Northeast,6-15,scale,349,8.3,85,0.126,False,False,re-measure in last 60 days
+ACC-006784,Red Crown Roofing,Midwest,2-5,essentials,249,0.6,85,0.126,False,False,crew of 2-5; first three months
+ACC-001547,Summit Valley Roofing,West,6-15,scale,349,20.5,85,0.125,False,False,re-measure in last 60 days
+ACC-003826,Lone Top Roofing,Midwest,6-15,essentials,249,11.5,85,0.125,False,False,re-measure in last 60 days
+ACC-005238,Silver Top Roofing,Southeast,6-15,essentials,398,4.4,85,0.125,False,False,re-measure in last 60 days
+ACC-005270,Blue Peak Roofing,Southeast,6-15,essentials,249,3.9,85,0.125,False,False,re-measure in last 60 days
+ACC-002986,Eagle Stone Roofing,Northeast,6-15,essentials,249,12.8,85,0.124,False,False,re-measure in last 60 days
+ACC-006943,Liberty Rafter Roofing,Canada,2-5,essentials,249,0.6,85,0.124,False,False,crew of 2-5; first three months
+ACC-005661,Silver Shield Roofing,Southwest,2-5,essentials,249,0.2,85,0.123,False,False,crew of 2-5; first three months
+ACC-004870,Summit Point Roofing,Southwest,6-15,essentials,249,7.5,85,0.122,False,False,re-measure in last 60 days
+ACC-005938,Liberty Truss Roofing,Midwest,6-15,scale,448,3.1,85,0.121,False,False,re-measure in last 60 days
+ACC-006214,Northern Top Roofing,Northeast,2-5,scale,349,1.4,85,0.121,False,False,crew of 2-5; first three months
+ACC-006569,Cedar Crest Roofing,Midwest,2-5,scale,349,0.9,85,0.121,False,False,crew of 2-5; first three months
+ACC-006932,Prairie Truss Roofing,Southwest,2-5,essentials,249,0.6,85,0.121,False,False,crew of 2-5; first three months
+ACC-001598,Maple Stone Roofing,Canada,6-15,essentials,249,21.4,85,0.12,False,False,re-measure in last 60 days
+ACC-000433,Liberty Peak Roofing,Midwest,6-15,essentials,249,26.0,85,0.119,False,False,re-measure in last 60 days
+ACC-001527,Red Crest Roofing,Southwest,6-15,essentials,298,21.6,85,0.118,False,False,re-measure in last 60 days
+ACC-001798,Golden Top Roofing,Midwest,6-15,scale,349,19.1,85,0.117,False,False,re-measure in last 60 days
+ACC-002053,Silver Crest Roofing,Southeast,6-15,essentials,298,18.2,85,0.117,False,False,re-measure in last 60 days
+ACC-005885,Rocky Bay Roofing,Midwest,2-5,scale,349,1.7,85,0.117,False,False,crew of 2-5; first three months
+ACC-002427,Blue Bay Roofing,Northeast,6-15,scale,398,16.9,85,0.115,False,False,re-measure in last 60 days
+ACC-006329,Red Point Roofing,Southeast,2-5,scale,349,1.0,85,0.115,False,False,crew of 2-5; first three months
+ACC-006594,Northern Forge Roofing,Southeast,2-5,scale,349,0.6,85,0.115,False,False,crew of 2-5; first three months
+ACC-006836,Prairie Truss Roofing,Northeast,2-5,scale,349,0.2,85,0.115,False,False,crew of 2-5; first three months
+ACC-001224,Northern Shingle Roofing,Southwest,6-15,essentials,348,23.0,85,0.114,False,False,re-measure in last 60 days
+ACC-001265,Valley Crest Roofing,Midwest,6-15,scale,349,21.5,85,0.114,False,False,re-measure in last 60 days
+ACC-004983,Granite Stone Roofing,Canada,6-15,scale,349,7.4,85,0.114,False,False,re-measure in last 60 days
+ACC-003224,Pioneer Canyon Roofing,Midwest,6-15,scale,349,13.5,85,0.113,False,False,re-measure in last 60 days
+ACC-006709,Northern Field Roofing,Southeast,2-5,essentials,249,0.5,85,0.113,False,False,crew of 2-5; first three months
+ACC-006887,Granite Pitch Roofing,Southwest,2-5,essentials,249,0.3,85,0.113,False,False,crew of 2-5; first three months
+ACC-003591,Maple Point Roofing,Northeast,6-15,scale,349,10.7,85,0.112,False,False,re-measure in last 60 days
+ACC-006883,Cedar Pitch Roofing,Canada,2-5,essentials,249,0.5,85,0.112,False,False,crew of 2-5; first three months
+ACC-006926,Red Canyon Roofing,West,2-5,essentials,249,0.5,85,0.112,False,False,crew of 2-5; first three months
+ACC-000455,Eagle Shield Roofing,Southwest,6-15,scale,349,24.9,85,0.111,False,False,re-measure in last 60 days
+ACC-001530,Iron Ridge Roofing,Midwest,6-15,scale,497,21.5,85,0.111,False,False,re-measure in last 60 days
+ACC-003394,Oak Ridge Roofing,West,6-15,scale,349,11.9,85,0.111,False,False,re-measure in last 60 days
+ACC-004423,Coastal Ridge Roofing,Southwest,6-15,essentials,298,9.8,85,0.111,False,False,re-measure in last 60 days
+ACC-005342,Liberty Peak Roofing,Southeast,6-15,essentials,249,5.9,85,0.111,False,False,re-measure in last 60 days
+ACC-006754,Prairie Canyon Roofing,Southwest,2-5,essentials,249,0.7,85,0.111,False,False,crew of 2-5; first three months
+ACC-002592,Granite Crown Roofing,Southwest,6-15,scale,349,14.7,85,0.11,False,False,re-measure in last 60 days
+ACC-005607,Northern Peak Roofing,Southeast,6-15,scale,349,4.5,85,0.11,False,False,re-measure in last 60 days
+ACC-001213,Northern Point Roofing,West,6-15,scale,349,22.5,85,0.109,False,False,re-measure in last 60 days
+ACC-001805,Valley Pitch Roofing,Northeast,6-15,scale,349,20.5,85,0.109,False,False,re-measure in last 60 days
+ACC-003686,Harbor Ridge Roofing,West,6-15,essentials,249,11.5,85,0.109,False,False,re-measure in last 60 days
+ACC-003770,Red Stone Roofing,Southeast,6-15,essentials,249,9.4,85,0.109,False,False,re-measure in last 60 days
+ACC-004533,Granite Crown Roofing,Northeast,6-15,scale,349,7.8,85,0.109,False,False,re-measure in last 60 days
+ACC-005627,Valley Peak Roofing,Midwest,6-15,scale,349,3.6,85,0.109,False,False,re-measure in last 60 days
+ACC-005692,Harbor Canyon Roofing,Southeast,6-15,scale,349,3.7,85,0.109,False,False,re-measure in last 60 days
+ACC-002315,Lone Ridge Roofing,Midwest,6-15,scale,349,16.1,85,0.108,False,False,re-measure in last 60 days
+ACC-005996,Cedar Rafter Roofing,Midwest,2-5,scale,349,1.2,85,0.107,False,False,crew of 2-5; first three months
+ACC-006845,Pioneer Crown Roofing,Midwest,2-5,essentials,249,0.5,85,0.107,False,False,crew of 2-5; first three months
+ACC-004401,Lone Ridge Roofing,Canada,6-15,scale,349,8.7,85,0.106,False,False,re-measure in last 60 days
+ACC-005344,Oak Shingle Roofing,Southwest,6-15,scale,349,5.4,85,0.106,False,False,re-measure in last 60 days
+ACC-005559,Golden Ridge Roofing,Southeast,6-15,essentials,249,2.5,85,0.104,False,False,logins down a third or more; first three months
+ACC-005407,Cedar Rafter Roofing,Midwest,6-15,scale,349,5.6,85,0.102,False,False,re-measure in last 60 days
+ACC-001513,Summit Eave Roofing,Canada,6-15,essentials,249,21.3,85,0.1,False,False,re-measure in last 60 days
+ACC-002371,Prairie Rafter Roofing,Southwest,16+,scale,349,17.3,85,0.099,False,False,re-measure in last 60 days
+ACC-003663,Red Rafter Roofing,Southwest,6-15,scale,349,11.7,85,0.097,False,False,re-measure in last 60 days
+ACC-002439,Iron Crest Roofing,Southwest,16+,scale,349,16.1,85,0.096,False,False,re-measure in last 60 days
+ACC-003137,Pioneer Rafter Roofing,West,16+,scale,349,12.0,85,0.096,False,False,re-measure in last 60 days
+ACC-006142,Pioneer Pitch Roofing,Southeast,6-15,scale,349,0.0,85,0.095,False,False,logins down a third or more; first three months
+ACC-003091,Liberty Pitch Roofing,Midwest,6-15,scale,349,13.9,85,0.094,False,False,re-measure in last 60 days
+ACC-004089,Harbor Eave Roofing,Southeast,16+,scale,349,10.2,85,0.094,False,False,re-measure in last 60 days
+ACC-002340,Granite Field Roofing,West,16+,essentials,348,16.5,85,0.093,False,False,re-measure in last 60 days
+ACC-001948,Prairie Gable Roofing,Northeast,16+,essentials,249,18.9,85,0.092,False,False,re-measure in last 60 days
+ACC-005207,Pioneer Eave Roofing,Southeast,16+,scale,349,4.5,85,0.09,False,False,re-measure in last 60 days
+ACC-005414,Harbor Valley Roofing,Southeast,16+,scale,349,5.5,85,0.089,False,False,re-measure in last 60 days
+ACC-003054,Maple Pitch Roofing,Southeast,16+,scale,349,13.5,85,0.088,False,False,re-measure in last 60 days
+ACC-003127,Summit Field Roofing,Southeast,16+,scale,498,13.4,85,0.088,False,False,re-measure in last 60 days
+ACC-001194,Red Gable Roofing,Canada,16+,scale,448,21.9,85,0.087,False,False,re-measure in last 60 days
+ACC-003555,Golden Top Roofing,Southeast,16+,scale,349,11.5,85,0.087,False,False,re-measure in last 60 days
+ACC-001569,Eagle Peak Roofing,Southeast,16+,scale,349,22.0,85,0.086,False,False,re-measure in last 60 days
+ACC-001838,Blue Top Roofing,Canada,16+,scale,349,18.8,85,0.086,False,False,re-measure in last 60 days
+ACC-002936,Granite Valley Roofing,West,16+,scale,349,13.2,85,0.085,False,False,re-measure in last 60 days
+ACC-005769,Rocky Shield Roofing,Southeast,16+,scale,349,3.4,85,0.084,False,False,re-measure in last 60 days
+ACC-005188,Coastal Rafter Roofing,Southeast,16+,scale,349,5.9,85,0.083,False,False,re-measure in last 60 days
+ACC-005226,Northern Eave Roofing,Southwest,16+,scale,398,5.9,85,0.082,False,False,re-measure in last 60 days
+ACC-005490,Valley Gable Roofing,Northeast,16+,scale,349,4.8,85,0.08,False,False,re-measure in last 60 days
+ACC-002281,Maple Crest Roofing,Southwest,16+,scale,349,17.1,85,0.077,False,False,re-measure in last 60 days
+ACC-005202,Blue Gable Roofing,Southeast,2-5,essentials,249,6.3,90,0.149,False,False,crew of 2-5
+ACC-002558,Silver Field Roofing,Southeast,2-5,scale,349,16.3,90,0.147,False,False,crew of 2-5
+ACC-001316,Liberty Peak Roofing,Northeast,2-5,essentials,298,21.0,90,0.146,False,False,crew of 2-5
+ACC-005328,Granite Pitch Roofing,Southwest,2-5,essentials,249,4.5,90,0.145,False,False,crew of 2-5
+ACC-005504,Cedar Forge Roofing,Southeast,2-5,essentials,249,4.8,90,0.144,False,False,crew of 2-5
+ACC-004781,Cedar Shield Roofing,Midwest,2-5,essentials,249,8.3,90,0.143,False,False,crew of 2-5
+ACC-001186,Maple Bay Roofing,Southeast,2-5,essentials,249,23.5,90,0.141,False,False,crew of 2-5
+ACC-004715,Red Top Roofing,Southeast,2-5,essentials,249,6.8,90,0.141,False,False,crew of 2-5
+ACC-005519,Golden Peak Roofing,Northeast,2-5,essentials,249,4.1,90,0.141,False,False,crew of 2-5
+ACC-002938,Red Field Roofing,Southwest,2-5,essentials,249,14.2,90,0.139,False,False,crew of 2-5
+ACC-003452,Iron Valley Roofing,Northeast,2-5,scale,498,11.3,90,0.138,False,False,crew of 2-5
+ACC-004632,Coastal Crest Roofing,Southwest,2-5,essentials,249,9.0,90,0.137,False,False,crew of 2-5
+ACC-004804,Eagle Eave Roofing,Southeast,2-5,essentials,249,8.1,90,0.137,False,False,crew of 2-5
+ACC-005582,Harbor Shingle Roofing,Northeast,2-5,essentials,249,4.5,90,0.137,False,False,crew of 2-5
+ACC-003700,Coastal Peak Roofing,Southeast,2-5,essentials,249,10.7,90,0.136,False,False,crew of 2-5
+ACC-003332,Prairie Gable Roofing,Southeast,2-5,essentials,249,13.0,90,0.135,False,False,crew of 2-5
+ACC-004385,Harbor Crest Roofing,Southeast,2-5,scale,349,9.8,90,0.134,False,False,crew of 2-5
+ACC-004494,Liberty Truss Roofing,Southeast,2-5,scale,349,8.8,90,0.134,False,False,crew of 2-5
+ACC-005570,Golden Pitch Roofing,Northeast,2-5,essentials,398,4.5,90,0.133,False,False,crew of 2-5
+ACC-000984,Valley Ridge Roofing,Southwest,2-5,essentials,398,24.1,90,0.132,False,False,crew of 2-5
+ACC-002507,Harbor Eave Roofing,Midwest,2-5,essentials,298,16.2,90,0.132,False,False,crew of 2-5
+ACC-005162,Harbor Gable Roofing,Southeast,2-5,essentials,249,6.8,90,0.132,False,False,crew of 2-5
+ACC-000076,Granite Shingle Roofing,Northeast,2-5,essentials,249,28.4,90,0.131,False,False,crew of 2-5
+ACC-003875,Eagle Bay Roofing,Southwest,2-5,essentials,298,9.8,90,0.131,False,False,crew of 2-5
+ACC-004667,Cedar Crown Roofing,Southwest,2-5,essentials,249,8.6,90,0.131,False,False,crew of 2-5
+ACC-005963,Coastal Peak Roofing,Southeast,2-5,essentials,249,3.0,90,0.131,False,False,crew of 2-5
+ACC-001379,Prairie Peak Roofing,Southeast,2-5,essentials,249,21.0,90,0.13,False,False,crew of 2-5
+ACC-003627,Cedar Crest Roofing,Southeast,2-5,essentials,298,11.9,90,0.13,False,False,crew of 2-5
+ACC-004285,Golden Gable Roofing,Southeast,2-5,essentials,249,9.4,90,0.13,False,False,crew of 2-5
+ACC-004409,Rocky Stone Roofing,Midwest,2-5,essentials,398,9.5,90,0.13,False,False,crew of 2-5
+ACC-004547,Valley Stone Roofing,Southeast,2-5,scale,349,8.3,90,0.13,False,False,crew of 2-5
+ACC-001708,Maple Shingle Roofing,Northeast,2-5,essentials,249,21.0,90,0.129,False,False,crew of 2-5
+ACC-004319,Coastal Shingle Roofing,Midwest,2-5,essentials,398,8.9,90,0.129,False,False,crew of 2-5
+ACC-004475,Granite Shingle Roofing,Midwest,2-5,scale,349,8.7,90,0.129,False,False,crew of 2-5
+ACC-004918,Summit Top Roofing,Southwest,2-5,essentials,249,7.3,90,0.129,False,False,crew of 2-5
+ACC-005747,Golden Shingle Roofing,Canada,2-5,scale,349,3.5,90,0.129,False,False,crew of 2-5
+ACC-000958,Northern Top Roofing,Canada,2-5,essentials,298,22.9,90,0.128,False,False,crew of 2-5
+ACC-001442,Golden Canyon Roofing,Northeast,2-5,essentials,249,22.3,90,0.128,False,False,crew of 2-5
+ACC-001562,Blue Pitch Roofing,Midwest,2-5,scale,349,21.6,90,0.128,False,False,crew of 2-5
+ACC-002919,Granite Crest Roofing,Midwest,2-5,essentials,249,14.5,90,0.128,False,False,crew of 2-5
+ACC-004020,Coastal Crown Roofing,Northeast,2-5,essentials,249,10.9,90,0.128,False,False,crew of 2-5
+ACC-005862,Harbor Top Roofing,Northeast,2-5,scale,349,3.1,90,0.128,False,False,crew of 2-5
+ACC-000627,Coastal Point Roofing,Southeast,2-5,scale,448,24.7,90,0.127,False,False,crew of 2-5
+ACC-001292,Rocky Rafter Roofing,Southwest,2-5,essentials,298,22.4,90,0.127,False,False,crew of 2-5
+ACC-003976,Granite Field Roofing,Southwest,2-5,essentials,249,11.3,90,0.127,False,False,crew of 2-5
+ACC-005546,Granite Peak Roofing,Midwest,2-5,essentials,249,3.9,90,0.126,False,False,crew of 2-5
+ACC-003551,Rocky Rafter Roofing,Midwest,2-5,scale,497,12.2,90,0.125,False,False,crew of 2-5
+ACC-000273,Coastal Peak Roofing,Southwest,2-5,scale,498,27.5,90,0.124,False,False,crew of 2-5
+ACC-003146,Iron Shingle Roofing,Southeast,2-5,essentials,497,13.5,90,0.124,False,False,crew of 2-5
+ACC-003856,Silver Top Roofing,Southwest,2-5,essentials,249,11.8,90,0.124,False,False,crew of 2-5
+ACC-002692,Liberty Valley Roofing,West,2-5,essentials,249,14.4,90,0.123,False,False,crew of 2-5
+ACC-003191,Summit Bay Roofing,Northeast,2-5,scale,349,13.3,90,0.123,False,False,crew of 2-5
+ACC-005241,Iron Eave Roofing,Southeast,2-5,essentials,249,5.3,90,0.122,False,False,crew of 2-5
+ACC-000102,Northern Stone Roofing,Southeast,2-5,scale,349,27.3,90,0.121,False,False,crew of 2-5
+ACC-000950,Cedar Stone Roofing,Southwest,2-5,scale,398,24.2,90,0.121,False,False,crew of 2-5
+ACC-003793,Prairie Truss Roofing,Southeast,2-5,scale,349,9.9,90,0.121,False,False,crew of 2-5
+ACC-004651,Granite Rafter Roofing,Southeast,2-5,scale,498,7.3,90,0.119,False,False,crew of 2-5
+ACC-000593,Iron Forge Roofing,Midwest,2-5,scale,349,25.8,90,0.118,False,False,crew of 2-5
+ACC-002254,Prairie Gable Roofing,West,2-5,essentials,249,17.5,90,0.118,False,False,crew of 2-5
+ACC-005525,Cedar Forge Roofing,Southeast,2-5,scale,349,3.0,90,0.118,False,False,crew of 2-5
+ACC-003455,Coastal Canyon Roofing,Southeast,6-15,scale,448,12.6,90,0.117,False,False,late invoice in last 90 days
+ACC-003006,Golden Peak Roofing,Southeast,6-15,essentials,249,11.3,90,0.116,False,False,late invoice in last 90 days
+ACC-000392,Red Gable Roofing,Southwest,2-5,scale,349,26.3,90,0.112,False,False,crew of 2-5
+ACC-005000,Rocky Bay Roofing,Canada,16+,scale,349,6.2,90,0.09,False,False,late invoice in last 90 days
+ACC-001975,Northern Gable Roofing,Midwest,16+,scale,398,17.8,90,0.08,False,False,logins down a third or more
+ACC-004900,Pioneer Valley Roofing,Southeast,16+,scale,349,7.5,90,0.074,False,False,logins down a third or more
+ACC-006543,Rocky Gable Roofing,Midwest,6-15,essentials,249,1.5,95,0.113,False,False,first three months
+ACC-005942,Rocky Crown Roofing,Southeast,6-15,scale,349,2.8,95,0.101,False,False,first three months
+ACC-006528,Liberty Truss Roofing,Southeast,6-15,essentials,249,0.5,95,0.101,False,False,first three months
+ACC-006623,Prairie Eave Roofing,Southwest,6-15,essentials,249,0.2,95,0.101,False,False,first three months
+ACC-006127,Harbor Pitch Roofing,Northeast,6-15,essentials,249,2.6,95,0.1,False,False,first three months
+ACC-006550,Silver Stone Roofing,Midwest,6-15,essentials,249,1.1,95,0.098,False,False,first three months
+ACC-006653,Summit Eave Roofing,Southeast,6-15,essentials,249,0.9,95,0.098,False,False,first three months
+ACC-005990,Blue Eave Roofing,Northeast,6-15,scale,349,1.8,95,0.096,False,False,first three months
+ACC-006636,Lone Point Roofing,Northeast,6-15,scale,349,0.9,95,0.096,False,False,first three months
+ACC-006071,Silver Field Roofing,Southwest,6-15,scale,349,2.5,95,0.095,False,False,first three months
+ACC-005420,Summit Crest Roofing,Northeast,6-15,scale,349,1.1,95,0.092,False,False,first three months
+ACC-006685,Granite Forge Roofing,Southeast,6-15,scale,349,0.4,95,0.09,False,False,first three months
+ACC-006647,Pioneer Peak Roofing,Northeast,6-15,scale,349,1.0,95,0.088,False,False,first three months
+ACC-006652,Northern Crest Roofing,West,6-15,scale,349,0.4,95,0.087,False,False,first three months
+ACC-006779,Red Valley Roofing,Midwest,6-15,scale,349,0.1,95,0.086,False,False,first three months
+ACC-006947,Rocky Shield Roofing,West,6-15,essentials,249,0.1,95,0.084,False,False,first three months
+ACC-005984,Granite Shield Roofing,Midwest,16+,essentials,249,2.6,95,0.083,False,False,first three months
+ACC-006149,Lone Crest Roofing,Southeast,16+,scale,349,2.2,95,0.078,False,False,first three months
+ACC-006366,Liberty Rafter Roofing,Midwest,16+,scale,349,0.9,95,0.075,False,False,first three months
+ACC-006467,Golden Crest Roofing,Midwest,16+,scale,349,0.6,95,0.075,False,False,first three months
+ACC-006115,Summit Stone Roofing,West,16+,scale,349,2.0,95,0.074,False,False,first three months
+ACC-006476,Coastal Forge Roofing,Southeast,16+,essentials,249,0.5,95,0.074,False,False,first three months
+ACC-006740,Silver Pitch Roofing,Southwest,16+,scale,349,0.7,95,0.074,False,False,first three months
+ACC-006157,Silver Gable Roofing,Northeast,16+,scale,349,1.5,95,0.073,False,False,first three months
+ACC-006850,Granite Valley Roofing,Southwest,16+,scale,349,0.5,95,0.069,False,False,first three months
+ACC-006269,Maple Valley Roofing,Southeast,16+,scale,349,1.3,95,0.068,False,False,first three months
+ACC-006903,Iron Crown Roofing,Midwest,16+,scale,349,0.4,95,0.068,False,False,first three months
+ACC-006696,Summit Gable Roofing,Midwest,16+,scale,349,0.7,95,0.066,False,False,first three months
+ACC-004869,Northern Canyon Roofing,Midwest,6-15,essentials,249,7.8,100,0.121,False,False,
+ACC-005473,Maple Bay Roofing,Midwest,6-15,scale,498,5.1,100,0.112,False,False,
+ACC-005272,Rocky Crown Roofing,Northeast,6-15,scale,498,5.6,100,0.111,False,False,
+ACC-002099,Cedar Valley Roofing,Northeast,6-15,essentials,397,17.9,100,0.108,False,False,
+ACC-000313,Red Peak Roofing,Southeast,6-15,scale,349,25.0,100,0.106,False,False,
+ACC-002345,Cedar Gable Roofing,Southeast,6-15,scale,448,17.3,100,0.105,False,False,
+ACC-003176,Oak Top Roofing,Southwest,6-15,scale,349,13.2,100,0.105,False,False,
+ACC-004790,Maple Line Roofing,Southeast,6-15,essentials,249,7.5,100,0.104,False,False,
+ACC-005973,Granite Peak Roofing,Southeast,6-15,scale,349,3.0,100,0.104,False,False,
+ACC-003512,Iron Crest Roofing,Southwest,6-15,scale,349,12.6,100,0.102,False,False,
+ACC-003680,Rocky Ridge Roofing,Midwest,6-15,essentials,249,12.1,100,0.102,False,False,
+ACC-004118,Granite Ridge Roofing,Southwest,6-15,essentials,249,10.0,100,0.102,False,False,
+ACC-004744,Harbor Peak Roofing,Northeast,6-15,scale,349,7.3,100,0.102,False,False,
+ACC-000985,Coastal Canyon Roofing,Southwest,6-15,essentials,298,24.1,100,0.101,False,False,
+ACC-004538,Pioneer Forge Roofing,Southeast,6-15,essentials,398,8.9,100,0.101,False,False,
+ACC-004931,Oak Field Roofing,Canada,6-15,scale,498,6.5,100,0.101,False,False,
+ACC-000093,Oak Truss Roofing,Southeast,6-15,scale,597,28.6,100,0.1,False,False,
+ACC-000135,Golden Eave Roofing,Midwest,6-15,essentials,249,27.6,100,0.1,False,False,
+ACC-005303,Golden Ridge Roofing,Midwest,6-15,essentials,249,4.4,100,0.1,False,False,
+ACC-003201,Blue Eave Roofing,West,6-15,scale,498,10.6,100,0.099,False,False,
+ACC-001934,Granite Rafter Roofing,Northeast,6-15,scale,498,18.3,100,0.098,False,False,
+ACC-002173,Oak Eave Roofing,Southwest,6-15,scale,349,16.9,100,0.098,False,False,
+ACC-000237,Blue Eave Roofing,Southwest,6-15,essentials,249,27.0,100,0.097,False,False,
+ACC-001021,Northern Eave Roofing,Southwest,6-15,essentials,249,22.2,100,0.097,False,False,
+ACC-001716,Liberty Shield Roofing,Southwest,6-15,scale,349,20.5,100,0.097,False,False,
+ACC-003389,Coastal Valley Roofing,Southwest,6-15,scale,349,12.5,100,0.097,False,False,
+ACC-004736,Oak Pitch Roofing,Southwest,6-15,scale,349,8.6,100,0.097,False,False,
+ACC-004154,Blue Gable Roofing,Southeast,6-15,scale,349,10.6,100,0.096,False,False,
+ACC-000859,Iron Ridge Roofing,Northeast,6-15,scale,349,24.8,100,0.095,False,False,
+ACC-002326,Summit Top Roofing,Southwest,6-15,scale,498,15.7,100,0.095,False,False,
+ACC-002462,Cedar Ridge Roofing,Southeast,6-15,scale,349,15.1,100,0.095,False,False,
+ACC-004882,Eagle Crown Roofing,Southeast,6-15,scale,349,7.6,100,0.095,False,False,
+ACC-001258,Granite Crest Roofing,Southeast,6-15,essentials,249,21.0,100,0.094,False,False,
+ACC-002637,Blue Canyon Roofing,Southeast,6-15,scale,349,15.2,100,0.094,False,False,
+ACC-001920,Oak Ridge Roofing,Southeast,6-15,scale,349,19.7,100,0.093,False,False,
+ACC-003830,Golden Line Roofing,West,6-15,scale,349,10.8,100,0.093,False,False,
+ACC-002198,Granite Forge Roofing,Northeast,6-15,scale,349,15.3,100,0.092,False,False,
+ACC-002660,Liberty Stone Roofing,West,6-15,scale,498,15.1,100,0.092,False,False,
+ACC-003777,Coastal Forge Roofing,Northeast,16+,essentials,249,10.1,100,0.092,False,False,
+ACC-004236,Valley Valley Roofing,Southwest,6-15,scale,349,10.0,100,0.092,False,False,
+ACC-005102,Pioneer Field Roofing,Southwest,6-15,scale,349,5.7,100,0.092,False,False,
+ACC-004194,Valley Crest Roofing,Southeast,6-15,scale,349,10.1,100,0.089,False,False,
+ACC-005087,Coastal Eave Roofing,West,6-15,scale,349,6.9,100,0.089,False,False,
+ACC-004305,Prairie Shield Roofing,Southeast,6-15,scale,448,8.6,100,0.087,False,False,
+ACC-004873,Valley Forge Roofing,Midwest,16+,scale,349,7.3,100,0.083,False,False,
+ACC-004940,Harbor Crown Roofing,Midwest,16+,scale,349,6.7,100,0.081,False,False,
+ACC-005639,Harbor Point Roofing,Midwest,16+,scale,349,3.8,100,0.081,False,False,
+ACC-003463,Rocky Shingle Roofing,Midwest,16+,essentials,298,12.6,100,0.078,False,False,
+ACC-005392,Cedar Crest Roofing,Southeast,16+,scale,349,4.6,100,0.078,False,False,
+ACC-003749,Eagle Bay Roofing,Southeast,16+,scale,349,8.4,100,0.077,False,False,
+ACC-001260,Eagle Shield Roofing,West,16+,scale,398,21.8,100,0.076,False,False,
+ACC-002788,Lone Forge Roofing,West,16+,scale,349,14.7,100,0.075,False,False,
+ACC-005160,Prairie Valley Roofing,Midwest,16+,scale,349,4.6,100,0.075,False,False,
+ACC-001889,Prairie Line Roofing,Northeast,16+,scale,498,18.7,100,0.074,False,False,
+ACC-002138,Iron Gable Roofing,Southeast,16+,scale,349,15.3,100,0.074,False,False,
+ACC-001102,Coastal Forge Roofing,Southeast,16+,essentials,249,23.4,100,0.073,False,False,
+ACC-000659,Blue Forge Roofing,Midwest,16+,scale,349,23.5,100,0.069,False,False,
+ACC-001475,Liberty Rafter Roofing,West,16+,essentials,249,20.0,100,0.066,False,False,

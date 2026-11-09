@@ -47,7 +47,9 @@ def _count(df: pd.DataFrame, col: str, start: pd.Timestamp, end: pd.Timestamp, n
     return rows.groupby("account_id").size().rename(name)
 
 
-def build_snapshots(world: dict[str, pd.DataFrame] | None = None) -> pd.DataFrame:
+def build_snapshots(world: dict[str, pd.DataFrame] | None = None,
+                    dates: list[pd.Timestamp] | None = None) -> pd.DataFrame:
+    """One row per live subscription per date (default: the monthly snapshot_dates())."""
     w = world if world is not None else world_as_of(HISTORY_END)
     changes = w["subscription_changes"]
     events, tickets, orders, invoices = w["events"], w["support_tickets"], w["measurement_orders"], w["invoices"]
@@ -62,7 +64,7 @@ def build_snapshots(world: dict[str, pd.DataFrame] | None = None) -> pd.DataFram
     crew = w["accounts"].set_index("account_id").crew_size.map(CREW_RANK).rename("crew_size_rank")
     out = []
     win = pd.Timedelta(days=WINDOW_DAYS)
-    for t in snapshot_dates():
+    for t in (snapshot_dates() if dates is None else dates):
         live = _live_at(changes, t).set_index("account_id")
         s = pd.DataFrame(index=live.index)
         s["snapshot"] = t
