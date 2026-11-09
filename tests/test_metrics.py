@@ -79,3 +79,35 @@ def test_reporting_export_carries_the_health_results():
     summary = json.loads((results / "summary.json").read_text())
     aucs = dict(sql("select method, auc from reporting.health_compare"))
     assert sorted(aucs.values()) == sorted([summary["auc_health_score"], summary["auc_model"]])
+
+
+def test_account_reviews_match_the_marts():
+    # every review page reads reporting.account_review*; its MRR must reconcile with the finance marts
+    from scripts.export_reporting import export
+
+    export(DB)
+    assert sql("select count(*) from reporting.account_review")[0][0] == 25
+    assert sql("select count(*) from reporting.account_review_monthly")[0][0] == 25 * 12
+    # the reviewed accounts are the largest by current MRR
+    smallest_reviewed = sql("select min(mrr) from reporting.account_review")[0][0]
+    assert sql(f"select count(*) from fct_account_health where mrr > {smallest_reviewed}")[0][0] < 25
+    # month-end MRR on the review = that account's MRR movements summed up to the end of the month
+    got = {(a, str(m)): float(v) for a, m, v in sql(
+        "select account_id, month, mrr from reporting.account_review_monthly")}
+    want = {(a, str(m)): float(v) for a, m, v in sql("""
+        select r.account_id, r.month, coalesce(sum(mv.mrr_delta), 0)
+        from reporting.account_review_monthly r
+        left join fct_mrr_movements mv
+          on mv.account_id = r.account_id and mv.changed_at < r.month + interval 1 month
+        group by 1, 2""")}
+    assert got == pytest.approx(want)
+    # monthly tickets on the review = the support mart counted directly
+    got_t = dict(sql("select account_id, sum(tickets) from reporting.account_review_monthly group by 1"))
+    want_t = dict(sql("""
+        select r.account_id, count(t.ticket_id)
+        from reporting.account_review r
+        left join fct_support_tickets t on t.account_id = r.account_id
+          and t.created_at >= (select min(month) from reporting.account_review_monthly)
+          and t.created_at < (select max(month) from reporting.account_review_monthly) + interval 1 month
+        group by 1"""))
+    assert got_t == want_t
