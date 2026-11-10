@@ -1,0 +1,2779 @@
+{
+ "results": [
+  {
+   "id": "mrr_end_sep_2026",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "What was our MRR at the end of September 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 243419.0,
+   "answer": 231695,
+   "unit": "usd",
+   "definition": "Sum of MRR for all subscriptions active as of the end of September 30, 2026.",
+   "parsed": true,
+   "trap": "MRR is a balance on a day. Summing daily MRR over the month gives about 30 times the real number.",
+   "text": "```json\n{\"answer\": 231695,\n \"unit\": \"usd\",\n \"definition\": \"Sum of MRR for all subscriptions active as of the end of September 30, 2026.\"}\n```",
+   "turns": 8,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    sum(mrr_usd) as total_mrr\nFROM raw_app_db.subscriptions\nWHERE started_at <= '2026-09-30 23:59:59'\n  AND (canceled_at IS NULL OR canceled_at > '2026-09-30 23:59:59')\n  AND status = 'active'\n"
+    },
+    {
+     "sql": "\nSELECT \n    status,\n    count(*),\n    sum(mrr_usd)\nFROM raw_app_db.subscriptions\nWHERE started_at <= '2026-09-30 23:59:59'\n  AND (canceled_at IS NULL OR canceled_at > '2026-09-30 23:59:59')\nGROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT \n    change_type, \n    count(*) \nFROM raw_app_db.subscription_changes \nWHERE changed_at >= '2026-09-01' AND changed_at <= '2026-09-30 23:59:59'\nGROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT \n    sum(mrr_after) as mrr_sum\nFROM raw_app_db.subscription_changes c1\nWHERE changed_at <= '2026-09-30 23:59:59'\n  AND changed_at = (\n      SELECT max(changed_at)\n      FROM raw_app_db.subscription_changes c2\n      WHERE c2.subscription_id = c1.subscription_id\n        AND c2.changed_at <= '2026-09-30 23:59:59'\n  )\n  AND mrr_after > 0\n"
+    },
+    {
+     "sql": "\nSELECT \n    s.subscription_id,\n    s.mrr_usd as sub_mrr,\n    (SELECT mrr_after FROM raw_app_db.subscription_changes c WHERE c.subscription_id = s.subscription_id AND c.changed_at <= '2026-09-30 23:59:59' ORDER BY changed_at DESC LIMIT 1) as latest_change_mrr\nFROM raw_app_db.subscriptions s\nWHERE s.started_at <= '2026-09-30 23:59:59'\n  AND (s.canceled_at IS NULL OR s.canceled_at > '2026-09-30 23:59:59')\nLIMIT 10\n"
+    },
+    {
+     "sql": "\nSELECT \n    sum(mrr_usd) as total_mrr\nFROM raw_app_db.subscriptions\nWHERE started_at <= '2026-09-30 23:59:59'\n  AND (canceled_at IS NULL OR canceled_at > '2026-09-30 23:59:59')\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 43.0,
+   "input_tokens": 13401,
+   "output_tokens": 862,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "mrr_end_sep_2026",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "What was our MRR at the end of September 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 243419.0,
+   "answer": 243419.0,
+   "unit": "usd",
+   "definition": "Monthly recurring revenue at the end of September 30, 2026.",
+   "parsed": true,
+   "trap": "MRR is a balance on a day. Summing daily MRR over the month gives about 30 times the real number.",
+   "text": "```json\n{\"answer\": 243419.0,\n \"unit\": \"usd\",\n \"definition\": \"Monthly recurring revenue at the end of September 30, 2026.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} = '2026-09-30'"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2026-09-01' AND {{ TimeDimension('metric_time', 'day') }} <= '2026-09-30'"
+     ],
+     "metrics": [
+      "mrr"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2026-09-01'"
+     ],
+     "metrics": [
+      "mrr"
+     ],
+     "group_by": [
+      "metric_time__day"
+     ],
+     "order_by": [
+      "-metric_time__day"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 29.6,
+   "input_tokens": 13161,
+   "output_tokens": 263,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "paying_accounts_end_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How many paying customers did we have going into 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 552.0,
+   "answer": 340,
+   "unit": "count",
+   "definition": "Count of unique accounts with an active subscription with MRR > 0 that started before 2026-01-01 and was not canceled prior to that date.",
+   "parsed": true,
+   "trap": "Counting accounts that ever paid, or accounts with a paid plan today, instead of those paying on 2025-12-31.",
+   "text": "To find the number of paying customers going into 2026, we count the unique active subscriptions that started before January 1, 2026, and were still active on that date (i.e., not canceled before January 1, 2026).\n\n```json\n{\"answer\": 340,\n \"unit\": \"count\",\n \"definition\": \"Count of unique accounts with an active subscription with MRR > 0 that started before 2026-01-01 and was not canceled prior to that date.\"}\n```",
+   "turns": 12,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT \n  count(DISTINCT account_id) as paying_customers_start_2026\nFROM raw_app_db.subscriptions\nWHERE started_at < '2026-01-01' \n  AND (canceled_at IS NULL OR canceled_at >= '2026-01-01')\n  AND status != 'canceled'\n  AND mrr_usd > 0\n"
+    },
+    {
+     "sql": "SELECT status, count(*) FROM raw_app_db.subscriptions WHERE started_at < '2026-01-01' AND (canceled_at IS NULL OR canceled_at >= '2026-01-01') GROUP BY status"
+    },
+    {
+     "sql": "SELECT min(started_at), max(started_at), min(canceled_at), max(canceled_at) FROM raw_app_db.subscriptions"
+    },
+    {
+     "sql": "SELECT count(DISTINCT account_id) FROM raw_app_db.subscriptions WHERE started_at < '2026-01-01' AND (canceled_at IS NULL OR canceled_at >= '2026-01-01')"
+    },
+    {
+     "sql": "SELECT count(DISTINCT account_id) FROM raw_app_db.subscriptions WHERE started_at < '2026-01-01' AND (canceled_at IS NULL OR canceled_at >= '2026-01-01') AND mrr_usd > 0"
+    },
+    {
+     "sql": "SELECT status, count(*) FROM raw_app_db.subscriptions WHERE started_at < '2026-01-01' AND (canceled_at IS NULL OR canceled_at >= '2026-01-01') GROUP BY status"
+    },
+    {
+     "sql": "SELECT * FROM raw_app_db.subscriptions WHERE started_at < '2026-01-01' AND canceled_at >= '2026-01-01' LIMIT 5"
+    },
+    {
+     "sql": "SELECT mrr_usd, count(*) FROM raw_app_db.subscriptions GROUP BY mrr_usd"
+    },
+    {
+     "sql": "SELECT \n  count(DISTINCT account_id) as paying_customers\nFROM raw_app_db.subscriptions\nWHERE started_at < '2026-01-01' \n  AND (canceled_at IS NULL OR canceled_at >= '2026-01-01')\n  AND status = 'active'\n"
+    },
+    {
+     "sql": "SELECT \n  count(DISTINCT account_id) as paying_customers\nFROM raw_app_db.subscriptions\nWHERE started_at < '2026-01-01' \n  AND (canceled_at IS NULL OR canceled_at >= '2026-01-01')\n  AND status = 'active'\n  AND mrr_usd > 0\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 72.4,
+   "input_tokens": 24792,
+   "output_tokens": 909,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "paying_accounts_end_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How many paying customers did we have going into 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 552.0,
+   "answer": 552,
+   "unit": "count",
+   "definition": "Number of accounts on a paid plan at the end of December 31, 2025.",
+   "parsed": true,
+   "trap": "Counting accounts that ever paid, or accounts with a paid plan today, instead of those paying on 2025-12-31.",
+   "text": "```json\n{\"answer\": 552,\n \"unit\": \"count\",\n \"definition\": \"Number of accounts on a paid plan at the end of December 31, 2025.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "paying_accounts"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} = '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 17.8,
+   "input_tokens": 5585,
+   "output_tokens": 112,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How much MRR did we add in 2025, net of losses?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 85939.0,
+   "answer": 85939,
+   "unit": "usd",
+   "definition": "Sum of MRR change (mrr_after - mrr_before) across all subscription changes in 2025.",
+   "parsed": true,
+   "trap": "Leaving out reactivations, or adding contraction and churn as positives because of their sign.",
+   "text": "```json\n{\"answer\": 85939,\n \"unit\": \"usd\",\n \"definition\": \"Sum of MRR change (mrr_after - mrr_before) across all subscription changes in 2025.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    sum(mrr_after - mrr_before) as net_mrr_added\nFROM raw_app_db.subscription_changes\nWHERE changed_at >= '2025-01-01' AND changed_at < '2026-01-01';\n"
+    },
+    {
+     "sql": "\nSELECT change_type, count(*), sum(mrr_after - mrr_before) as net_mrr\nFROM raw_app_db.subscription_changes\nWHERE changed_at >= '2025-01-01' AND changed_at < '2026-01-01'\nGROUP BY change_type;\n"
+    },
+    {
+     "sql": "\nSELECT \n    min(changed_at), max(changed_at)\nFROM raw_app_db.subscription_changes;\n"
+    },
+    {
+     "sql": "\nSELECT \n    sum(mrr_after - mrr_before) as net_mrr_added\nFROM raw_app_db.subscription_changes\nWHERE changed_at >= '2025-01-01' AND changed_at < '2026-01-01';\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 36.0,
+   "input_tokens": 8282,
+   "output_tokens": 387,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How much MRR did we add in 2025, net of losses?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 85939.0,
+   "answer": 85939.0,
+   "unit": "usd",
+   "definition": "Net new MRR added in 2025, including new, expansion, reactivation, contraction, and churn.",
+   "parsed": true,
+   "trap": "Leaving out reactivations, or adding contraction and churn as positives because of their sign.",
+   "text": "```json\n{\"answer\": 85939.0,\n \"unit\": \"usd\",\n \"definition\": \"Net new MRR added in 2025, including new, expansion, reactivation, contraction, and churn.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "net_new_mrr"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 23.9,
+   "input_tokens": 8325,
+   "output_tokens": 196,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "new_mrr_q1_2026",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How much MRR came from brand-new customers in Q1 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 36374.0,
+   "answer": 36374,
+   "unit": "usd",
+   "definition": "Total MRR added from subscription change events of type 'new' occurring in Q1 2026 (Jan 1 to Mar 31, 2026).",
+   "parsed": true,
+   "trap": "Counting upgrades or returning customers as new, or using signup date instead of first-payment date.",
+   "text": "To find the MRR from brand-new customers in Q1 2026, we examine the `subscription_changes` table for events classified as `new` during the period from January 1, 2026, through March 31, 2026. Summing the `mrr_after` for these new subscription events yields $36,374.\n\n```json\n{\"answer\": 36374,\n \"unit\": \"usd\",\n \"definition\": \"Total MRR added from subscription change events of type 'new' occurring in Q1 2026 (Jan 1 to Mar 31, 2026).\"}\n```",
+   "turns": 8,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT change_type, COUNT(*), MIN(mrr_after), MAX(mrr_after) FROM raw_app_db.subscription_changes WHERE changed_at >= '2026-01-01' AND changed_at < '2026-04-01' GROUP BY change_type"
+    },
+    {
+     "sql": "SELECT SUM(mrr_after) FROM raw_app_db.subscription_changes WHERE changed_at >= '2026-01-01' AND changed_at < '2026-04-01' AND change_type = 'new'"
+    },
+    {
+     "sql": "SELECT SUM(mrr_usd) FROM raw_app_db.subscriptions WHERE started_at >= '2026-01-01' AND started_at < '2026-04-01'"
+    },
+    {
+     "sql": "SELECT change_type, changed_at, mrr_after, subscription_id FROM raw_app_db.subscription_changes WHERE changed_at >= '2026-01-01' AND changed_at < '2026-04-01' AND change_type = 'new' LIMIT 5"
+    },
+    {
+     "sql": "SELECT s.started_at, sc.changed_at, s.mrr_usd, sc.mrr_after FROM raw_app_db.subscriptions s JOIN raw_app_db.subscription_changes sc ON s.subscription_id = sc.subscription_id WHERE sc.change_type = 'new' AND sc.changed_at >= '2026-01-01' AND sc.changed_at < '2026-04-01' LIMIT 5"
+    },
+    {
+     "sql": "SELECT SUM(mrr_after) FROM raw_app_db.subscription_changes WHERE changed_at >= '2026-01-01' AND changed_at < '2026-04-01' AND change_type = 'new'"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 48.2,
+   "input_tokens": 13994,
+   "output_tokens": 687,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "new_mrr_q1_2026",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How much MRR came from brand-new customers in Q1 2026?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 36374.0,
+   "answer": 36374.0,
+   "unit": "usd",
+   "definition": "Total new MRR in Q1 2026.",
+   "parsed": true,
+   "trap": "Counting upgrades or returning customers as new, or using signup date instead of first-payment date.",
+   "text": "```json\n{\"answer\": 36374.0,\n \"unit\": \"usd\",\n \"definition\": \"Total new MRR in Q1 2026.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "new_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'quarter') }} == '2026-Q1'"
+     ]
+    },
+    {
+     "metrics": [
+      "new_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2026-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2026-03-31'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 23.8,
+   "input_tokens": 8401,
+   "output_tokens": 185,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "churned_mrr_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "How much recurring revenue did we lose to cancellations in 2025?",
+   "type": "number",
+   "absolute": true,
+   "tolerance": null,
+   "truth": 110899.0,
+   "answer": 110899,
+   "unit": "usd",
+   "definition": "Sum of MRR before cancellation for all subscription cancellation events in 2025.",
+   "parsed": true,
+   "trap": "Mixing in downgrades (contraction), which are not cancellations. Churned MRR is stored as a negative.",
+   "text": "```json\n{\"answer\": 110899,\n \"unit\": \"usd\",\n \"definition\": \"Sum of MRR before cancellation for all subscription cancellation events in 2025.\"}\n```",
+   "turns": 9,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    COUNT(*) as total_cancellations,\n    SUM(mrr_before) as total_mrr_before,\n    SUM(mrr_after) as total_mrr_after,\n    SUM(mrr_before - mrr_after) as total_mrr_lost\nFROM raw_app_db.subscription_changes\nWHERE change_type ILIKE '%cancel%'\n  AND EXTRACT(YEAR FROM changed_at) = 2025;\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT change_type FROM raw_app_db.subscription_changes;\n"
+    },
+    {
+     "sql": "\nSELECT \n    EXTRACT(YEAR FROM changed_at) as yr,\n    change_type,\n    COUNT(*),\n    SUM(mrr_before) as sum_before,\n    SUM(mrr_after) as sum_after,\n    SUM(mrr_before - mrr_after) as sum_lost\nFROM raw_app_db.subscription_changes\nWHERE change_type = 'cancel'\nGROUP BY 1, 2\nORDER BY 1 DESC;\n"
+    },
+    {
+     "sql": "\nSELECT \n    SUM(mrr_usd) as total_canceled_mrr\nFROM raw_app_db.subscriptions\nWHERE EXTRACT(YEAR FROM canceled_at) = 2025;\n"
+    },
+    {
+     "sql": "\nSELECT \n    COUNT(*),\n    SUM(mrr_usd)\nFROM raw_app_db.subscriptions\nWHERE status = 'canceled'\n  AND canceled_at IS NOT NULL;\n"
+    },
+    {
+     "sql": "\nSELECT * FROM raw_app_db.subscriptions LIMIT 5;\n"
+    },
+    {
+     "sql": "\nSELECT \n    c.change_type,\n    COUNT(*),\n    SUM(c.mrr_before) as sum_before,\n    SUM(c.mrr_after) as sum_after\nFROM raw_app_db.subscription_changes c\nWHERE EXTRACT(YEAR FROM c.changed_at) = 2025\nGROUP BY c.change_type;\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 54.2,
+   "input_tokens": 16171,
+   "output_tokens": 612,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "churned_mrr_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "How much recurring revenue did we lose to cancellations in 2025?",
+   "type": "number",
+   "absolute": true,
+   "tolerance": null,
+   "truth": 110899.0,
+   "answer": 110899.0,
+   "unit": "usd",
+   "definition": "Total MRR lost to cancellations (absolute value of Churned MRR) in 2025.",
+   "parsed": true,
+   "trap": "Mixing in downgrades (contraction), which are not cancellations. Churned MRR is stored as a negative.",
+   "text": "```json\n{\"answer\": 110899.0,\n \"unit\": \"usd\",\n \"definition\": \"Total MRR lost to cancellations (absolute value of Churned MRR) in 2025.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "churned_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "churned_mrr"
+     ]
+    },
+    {
+     "group_by": [
+      "metric_time__year"
+     ],
+     "metrics": [
+      "churned_mrr"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'"
+     ],
+     "group_by": [
+      "metric_time__day"
+     ],
+     "metrics": [
+      "churned_mrr"
+     ],
+     "limit": 5
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 35.8,
+   "input_tokens": 14404,
+   "output_tokens": 297,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "best_net_new_month_2026",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "Which month from January to September 2026 had the biggest net MRR gain?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "2026-06",
+   "answer": "June",
+   "unit": "text",
+   "definition": "Month between January and September 2026 with the highest sum of MRR change (mrr_after - mrr_before) from subscription changes.",
+   "parsed": true,
+   "trap": "Comparing month-end MRR balances instead of the month's movements.",
+   "text": "```json\n{\"answer\": \"June\",\n \"unit\": \"text\",\n \"definition\": \"Month between January and September 2026 with the highest sum of MRR change (mrr_after - mrr_before) from subscription changes.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n  DATE_TRUNC('month', changed_at) AS month,\n  SUM(mrr_after - mrr_before) AS net_mrr_gain\nFROM raw_app_db.subscription_changes\nWHERE changed_at >= '2026-01-01' AND changed_at < '2026-10-01'\nGROUP BY 1\nORDER BY net_mrr_gain DESC;\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 18.0,
+   "input_tokens": 3284,
+   "output_tokens": 189,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "best_net_new_month_2026",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "Which month from January to September 2026 had the biggest net MRR gain?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "2026-06",
+   "answer": "June 2026",
+   "unit": "text",
+   "definition": "The month between January and September 2026 with the highest net new MRR.",
+   "parsed": true,
+   "trap": "Comparing month-end MRR balances instead of the month's movements.",
+   "text": "```json\n{\"answer\": \"June 2026\",\n \"unit\": \"text\",\n \"definition\": \"The month between January and September 2026 with the highest net new MRR.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'month') }} >= '2026-01-01'",
+      "{{ TimeDimension('metric_time', 'month') }} <= '2026-09-30'"
+     ],
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "group_by": [
+      "metric_time__month"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 18.2,
+   "input_tokens": 5908,
+   "output_tokens": 155,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_top_channel_2025",
+   "arm": "raw",
+   "category": "revenue",
+   "question": "Customers from which acquisition channel added the most net MRR in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "google_ads",
+   "answer": "google_ads",
+   "unit": "text",
+   "definition": "Acquisition channel that generated the highest net MRR change (sum of mrr_after - mrr_before across all subscription changes) in 2025.",
+   "parsed": true,
+   "trap": "Using the ad-spend channel table, which has no revenue, or attributing by the marketing channel of the day of payment.",
+   "text": "```json\n{\"answer\": \"google_ads\",\n \"unit\": \"text\",\n \"definition\": \"Acquisition channel that generated the highest net MRR change (sum of mrr_after - mrr_before across all subscription changes) in 2025.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    a.channel,\n    SUM(sc.mrr_after - sc.mrr_before) AS net_mrr_added\nFROM raw_app_db.subscription_changes sc\nJOIN raw_app_db.accounts a ON sc.account_id = a.account_id\nWHERE sc.changed_at >= TIMESTAMP '2025-01-01 00:00:00'\n  AND sc.changed_at < TIMESTAMP '2026-01-01 00:00:00'\nGROUP BY a.channel\nORDER BY net_mrr_added DESC\n"
+    },
+    {
+     "sql": "\nSELECT change_type, count(*), sum(mrr_after - mrr_before)\nFROM raw_app_db.subscription_changes\nWHERE changed_at >= TIMESTAMP '2025-01-01 00:00:00'\n  AND changed_at < TIMESTAMP '2026-01-01 00:00:00'\nGROUP BY change_type\n"
+    },
+    {
+     "sql": "\nSELECT a.channel, SUM(sc.mrr_after - sc.mrr_before) as net_mrr\nFROM raw_app_db.subscription_changes sc\nJOIN raw_app_db.accounts a ON sc.account_id = a.account_id\nWHERE sc.changed_at >= '2025-01-01' AND sc.changed_at < '2026-01-01'\nGROUP BY a.channel\nORDER BY net_mrr DESC\nLIMIT 1\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 43.3,
+   "input_tokens": 6866,
+   "output_tokens": 485,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "net_new_mrr_top_channel_2025",
+   "arm": "governed",
+   "category": "revenue",
+   "question": "Customers from which acquisition channel added the most net MRR in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "google_ads",
+   "answer": "google_ads",
+   "unit": "text",
+   "definition": "Acquisition channel that generated the highest net new MRR in 2025.",
+   "parsed": true,
+   "trap": "Using the ad-spend channel table, which has no revenue, or attributing by the marketing channel of the day of payment.",
+   "text": "```json\n{\"answer\": \"google_ads\",\n \"unit\": \"text\",\n \"definition\": \"Acquisition channel that generated the highest net new MRR in 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "group_by": [
+      "account__channel"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ]
+    },
+    {
+     "group_by": [
+      "account__channel"
+     ],
+     "metrics": [
+      "net_new_mrr"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 23.9,
+   "input_tokens": 8430,
+   "output_tokens": 206,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "nrr_12m_all",
+   "arm": "raw",
+   "category": "retention",
+   "question": "What is our net revenue retention?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6172734798558582,
+   "answer": null,
+   "unit": "ratio",
+   "definition": "Net revenue retention cannot be determined from the provided schema without standard cohort-based recurring revenue tracking.",
+   "parsed": true,
+   "trap": "Comparing total MRR a year apart (that mixes in new customers), or dropping expansion so it becomes GRR.",
+   "text": "The available data contains invoices, subscriptions, and subscription change logs, but it does not specify a pre-calculated net revenue retention (NRR) metric, nor does it define cohort tracking over a standard 12-month period required to calculate NRR precisely in standard SaaS accounting. Therefore, the data cannot answer the question.\n\n```json\n{\"answer\": null,\n \"unit\": \"ratio\",\n \"definition\": \"Net revenue retention cannot be determined from the provided schema without standard cohort-based recurring revenue tracking.\"}\n```",
+   "turns": 10,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT min(issued_at), max(issued_at) FROM raw_app_db.invoices"
+    },
+    {
+     "sql": "SELECT min(signup_at), max(signup_at) FROM raw_app_db.accounts"
+    },
+    {
+     "sql": "SELECT \n  DATE_TRUNC('year', signup_at) as signup_year,\n  COUNT(*) as accounts,\n  MIN(signup_at) as min_signup,\n  MAX(signup_at) as max_signup\nFROM raw_app_db.accounts\nGROUP BY 1\nORDER BY 1"
+    },
+    {
+     "sql": "SELECT \n  DATE_TRUNC('month', period_start_date) as month,\n  SUM(amount_usd) as total_invoiced,\n  COUNT(DISTINCT account_id) as active_accounts\nFROM raw_app_db.invoices\nWHERE status = 'paid'\nGROUP BY 1\nORDER BY 1"
+    },
+    {
+     "sql": "SELECT \n  DATE_TRUNC('month', started_at) as start_month,\n  COUNT(DISTINCT subscription_id) as subs,\n  SUM(mrr_usd) as total_mrr\nFROM raw_app_db.subscriptions\nGROUP BY 1\nORDER BY 1\nLIMIT 20"
+    },
+    {
+     "sql": "SELECT \n  DATE_TRUNC('month', changed_at) as change_month,\n  change_type,\n  COUNT(*) as count,\n  SUM(mrr_after - mrr_before) as net_mrr_change\nFROM raw_app_db.subscription_changes\nGROUP BY 1, 2\nORDER BY 1, 2"
+    },
+    {
+     "sql": "SELECT \n  DATE_TRUNC('month', period_start_date) as month,\n  SUM(amount_usd) as total_revenue\nFROM raw_app_db.invoices\nWHERE status = 'paid'\nGROUP BY 1\nORDER BY 1"
+    },
+    {
+     "sql": "SELECT column_name, table_name FROM information_schema.columns WHERE table_schema = 'raw_app_db'"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 60.2,
+   "input_tokens": 54758,
+   "output_tokens": 683,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "nrr_12m_all",
+   "arm": "governed",
+   "category": "retention",
+   "question": "What is our net revenue retention?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6172734798558582,
+   "answer": 0.707312925170068,
+   "unit": "ratio",
+   "definition": "MRR a paid cohort keeps 12 months after starting, incl. expansion, as a share of its starting MRR for November 2025.",
+   "parsed": true,
+   "trap": "Comparing total MRR a year apart (that mixes in new customers), or dropping expansion so it becomes GRR.",
+   "text": "Net Revenue Retention (NRR) is measured via 12-month NRR (`nrr_12m`), which represents the MRR a paid cohort keeps 12 months after starting, including expansion, as a share of its starting MRR. For the most recent available 12-month cohort (November 2025), the NRR is 70.73%.\n\n```json\n{\"answer\": 0.707312925170068,\n \"unit\": \"ratio\",\n \"definition\": \"MRR a paid cohort keeps 12 months after starting, incl. expansion, as a share of its starting MRR for November 2025.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "group_by": [
+      "cohort_period__cohort_month",
+      "cohort_period__months_since_start"
+     ],
+     "metrics": [
+      "nrr_12m"
+     ]
+    },
+    {
+     "metrics": [
+      "nrr_12m"
+     ],
+     "order_by": [
+      "-cohort_period__cohort_month"
+     ]
+    },
+    {
+     "order_by": [
+      "-cohort_period__cohort_month"
+     ],
+     "group_by": [
+      "cohort_period__cohort_month"
+     ],
+     "metrics": [
+      "nrr_12m"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 30.3,
+   "input_tokens": 15309,
+   "output_tokens": 312,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "nrr_12m_2024_cohorts",
+   "arm": "raw",
+   "category": "retention",
+   "question": "What was 12-month net revenue retention for customers who started paying in 2024?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6282498847308348,
+   "answer": 0.6351,
+   "unit": "ratio",
+   "definition": "12-month net revenue retention is the ratio of month-12 paid invoice revenue to month-1 paid invoice revenue for customers who made their first payment in 2024 and reached their 12-month mark.",
+   "parsed": true,
+   "trap": "Averaging the monthly cohorts' NRR instead of weighting by starting MRR.",
+   "text": "```json\n{\"answer\": 0.6351,\n \"unit\": \"ratio\",\n \"definition\": \"12-month net revenue retention is the ratio of month-12 paid invoice revenue to month-1 paid invoice revenue for customers who made their first payment in 2024 and reached their 12-month mark.\"}\n```",
+   "turns": 9,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    MIN(period_start_date) as min_date,\n    MAX(period_start_date) as max_date\nFROM raw_app_db.invoices\n"
+    },
+    {
+     "sql": "\nSELECT status, count(*) FROM raw_app_db.invoices GROUP BY 1\n"
+    },
+    {
+     "sql": "\nWITH customer_start AS (\n    SELECT \n        account_id,\n        MIN(period_start_date) as first_payment_date\n    FROM raw_app_db.invoices\n    WHERE status = 'paid'\n    GROUP BY account_id\n),\ncohort_2024 AS (\n    SELECT account_id, first_payment_date\n    FROM customer_start\n    WHERE EXTRACT(YEAR FROM first_payment_date) = 2024\n),\nmonth_0 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m0_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date\n        AND i.period_start_date < c.first_payment_date + INTERVAL '1 month'\n    GROUP BY c.account_id\n),\nmonth_12 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m12_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date + INTERVAL '12 months'\n        AND i.period_start_date < c.first_payment_date + INTERVAL '13 months'\n    GROUP BY c.account_id\n)\nSELECT \n    COUNT(m0.account_id) as cohort_size,\n    SUM(m0.m0_revenue) as total_m0_revenue,\n    SUM(COALESCE(m12.m12_revenue, 0)) as total_m12_revenue,\n    CAST(SUM(COALESCE(m12.m12_revenue, 0)) AS DOUBLE) / SUM(m0.m0_revenue) as nrr_12m\nFROM month_0 m0\nLEFT JOIN month_12 m12 ON m0.account_id = m12.account_id\n"
+    },
+    {
+     "sql": "\nSELECT \n    MIN(period_start_date) as min_p,\n    MAX(period_start_date) as max_p\nFROM raw_app_db.invoices\nWHERE status = 'paid'\n"
+    },
+    {
+     "sql": "\nWITH customer_start AS (\n    SELECT \n        account_id,\n        MIN(period_start_date) as first_payment_date\n    FROM raw_app_db.invoices\n    WHERE status = 'paid'\n    GROUP BY account_id\n),\ncohort_2024 AS (\n    SELECT account_id, first_payment_date\n    FROM customer_start\n    WHERE EXTRACT(YEAR FROM first_payment_date) = 2024\n),\nmonth_0 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m0_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date\n        AND i.period_start_date < c.first_payment_date + INTERVAL '1 month'\n    GROUP BY c.account_id\n),\nmonth_12 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m12_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date + INTERVAL '12 months'\n        AND i.period_start_date < c.first_payment_date + INTERVAL '13 months'\n    GROUP BY c.account_id\n)\nSELECT \n    COUNT(m0.account_id) as total_cohort,\n    COUNT(m12.account_id) as have_m12_data_count\nFROM month_0 m0\nLEFT JOIN month_12 m12 ON m0.account_id = m12.account_id\nWHERE m0.first_payment_date <= '2025-11-02'\n"
+    },
+    {
+     "sql": "\nWITH customer_start AS (\n    SELECT \n        account_id,\n        MIN(period_start_date) as first_payment_date\n    FROM raw_app_db.invoices\n    WHERE status = 'paid'\n    GROUP BY account_id\n),\ncohort_2024 AS (\n    SELECT account_id, first_payment_date\n    FROM customer_start\n    WHERE EXTRACT(YEAR FROM first_payment_date) = 2024\n),\nmonth_0 AS (\n    SELECT \n        c.account_id,\n        c.first_payment_date,\n        SUM(i.amount_usd) as m0_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date\n        AND i.period_start_date < c.first_payment_date + INTERVAL '1 month'\n    GROUP BY c.account_id, c.first_payment_date\n),\nmonth_12 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m12_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date + INTERVAL '12 months'\n        AND i.period_start_date < c.first_payment_date + INTERVAL '13 months'\n    GROUP BY c.account_id\n)\nSELECT \n    COUNT(m0.account_id) as total_cohort,\n    COUNT(CASE WHEN m0.first_payment_date <= '2025-11-02' THEN 1 END) as eligible_for_12m\nFROM month_0 m0\nLEFT JOIN month_12 m12 ON m0.account_id = m12.account_id\n"
+    },
+    {
+     "sql": "\nWITH customer_start AS (\n    SELECT \n        account_id,\n        MIN(period_start_date) as first_payment_date\n    FROM raw_app_db.invoices\n    WHERE status = 'paid'\n    GROUP BY account_id\n),\ncohort_2024 AS (\n    SELECT account_id, first_payment_date\n    FROM customer_start\n    WHERE EXTRACT(YEAR FROM first_payment_date) = 2024\n        AND first_payment_date <= TIMESTAMP '2025-11-02'\n),\nmonth_0 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m0_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date\n        AND i.period_start_date < c.first_payment_date + INTERVAL '1 month'\n    GROUP BY c.account_id\n),\nmonth_12 AS (\n    SELECT \n        c.account_id,\n        SUM(i.amount_usd) as m12_revenue\n    FROM cohort_2024 c\n    JOIN raw_app_db.invoices i ON c.account_id = i.account_id \n        AND i.status = 'paid'\n        AND i.period_start_date >= c.first_payment_date + INTERVAL '12 months'\n        AND i.period_start_date < c.first_payment_date + INTERVAL '13 months'\n    GROUP BY c.account_id\n)\nSELECT \n    COUNT(m0.account_id) as cohort_size,\n    SUM(m0.m0_revenue) as total_m0_revenue,\n    SUM(COALESCE(m12.m12_revenue, 0)) as total_m12_revenue,\n    CAST(SUM(COALESCE(m12.m12_revenue, 0)) AS DOUBLE) / SUM(m0.m0_revenue) as nrr_12m\nFROM month_0 m0\nLEFT JOIN month_12 m12 ON m0.account_id = m12.account_id\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 54.9,
+   "input_tokens": 19318,
+   "output_tokens": 2370,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "nrr_12m_2024_cohorts",
+   "arm": "governed",
+   "category": "retention",
+   "question": "What was 12-month net revenue retention for customers who started paying in 2024?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.6282498847308348,
+   "answer": 0.6282386111307579,
+   "unit": "ratio",
+   "definition": "Aggregate 12-month retained MRR divided by aggregate starting MRR for 2024 paying cohorts.",
+   "parsed": true,
+   "trap": "Averaging the monthly cohorts' NRR instead of weighting by starting MRR.",
+   "text": "For customers who started paying in 2024 (cohorts starting between January and December 2024), the aggregate 12-month net revenue retention rate\u2014calculated as total retained MRR at month 12 divided by total starting MRR for those cohorts\u2014was approximately 62.82%.\n\n```json\n{\"answer\": 0.6282386111307579,\n \"unit\": \"ratio\",\n \"definition\": \"Aggregate 12-month retained MRR divided by aggregate starting MRR for 2024 paying cohorts.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "group_by": [
+      "cohort_period__cohort_month",
+      "cohort_period__months_since_start"
+     ],
+     "where": [
+      "{{ Dimension('cohort_period__cohort_month') }} >= '2024-01-01'",
+      "{{ Dimension('cohort_period__cohort_month') }} <= '2024-12-31'",
+      "{{ Dimension('cohort_period__months_since_start') }} == 12"
+     ],
+     "metrics": [
+      "nrr_12m"
+     ]
+    },
+    {
+     "group_by": [
+      "cohort_period__cohort_month",
+      "cohort_period__months_since_start"
+     ],
+     "where": [
+      "{{ Dimension('cohort_period__cohort_month') }} >= '2024-01-01'",
+      "{{ Dimension('cohort_period__cohort_month') }} <= '2024-12-31'",
+      "{{ Dimension('cohort_period__months_since_start') }} == 12"
+     ],
+     "metrics": [
+      "cohort_start_mrr",
+      "retained_mrr"
+     ]
+    },
+    {
+     "group_by": [
+      "cohort_period__cohort_month",
+      "cohort_period__months_since_start"
+     ],
+     "metrics": [
+      "nrr_12m"
+     ],
+     "where": [
+      "{{ Dimension('cohort_period__cohort_month') }} >= '2024-01-01'",
+      "{{ Dimension('cohort_period__cohort_month') }} <= '2024-03-31'",
+      "{{ Dimension('cohort_period__months_since_start') }} == 12"
+     ]
+    },
+    {
+     "metrics": [
+      "cohort_start_mrr",
+      "retained_mrr"
+     ],
+     "where": [
+      "{{ Dimension('cohort_period__cohort_month') }} >= '2024-01-01'",
+      "{{ Dimension('cohort_period__cohort_month') }} <= '2024-03-31'",
+      "{{ Dimension('cohort_period__months_since_start') }} == 12"
+     ],
+     "group_by": [
+      "cohort_period__months_since_start"
+     ]
+    },
+    {
+     "group_by": [
+      "cohort_period__months_since_start"
+     ],
+     "where": [
+      "{{ Dimension('cohort_period__cohort_month') }} >= '2024-01-01'",
+      "{{ Dimension('cohort_period__cohort_month') }} <= '2024-12-31'",
+      "{{ Dimension('cohort_period__months_since_start') }} == 12"
+     ],
+     "metrics": [
+      "cohort_start_mrr",
+      "retained_mrr"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 41.1,
+   "input_tokens": 23763,
+   "output_tokens": 795,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "signups_2025",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "How many accounts signed up in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 3050.0,
+   "answer": 3050,
+   "unit": "count",
+   "definition": "Count of accounts where signup_at is in the year 2025.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated (rows are merged on updated_at) instead of the signup date.",
+   "text": "```json\n{\"answer\": 3050,\n \"unit\": \"count\",\n \"definition\": \"Count of accounts where signup_at is in the year 2025.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT count(*) FROM raw_app_db.accounts WHERE signup_at >= '2025-01-01' AND signup_at < '2026-01-01'"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 17.6,
+   "input_tokens": 2907,
+   "output_tokens": 118,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "signups_2025",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "How many accounts signed up in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 3050.0,
+   "answer": 3050,
+   "unit": "count",
+   "definition": "Total number of accounts that signed up in the year 2025.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated (rows are merged on updated_at) instead of the signup date.",
+   "text": "```json\n{\"answer\": 3050,\n \"unit\": \"count\",\n \"definition\": \"Total number of accounts that signed up in the year 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} >= '2025-01-01'"
+     ],
+     "group_by": [
+      "metric_time__year"
+     ],
+     "metrics": [
+      "signups"
+     ]
+    },
+    {
+     "metrics": [
+      "signups"
+     ],
+     "group_by": [
+      "metric_time__year"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} = '2025-01-01'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 23.8,
+   "input_tokens": 8461,
+   "output_tokens": 180,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "activation_rate_2025",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "What share of 2025 signups got activated?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.31311475409836065,
+   "answer": null,
+   "unit": null,
+   "definition": null,
+   "parsed": false,
+   "trap": "Activation means sending a proposal within 14 days of signup. Any proposal ever, or any login, is not activation.",
+   "text": "",
+   "turns": 12,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT column_name, table_name FROM information_schema.columns WHERE column_name LIKE '%activation%' OR column_name LIKE '%activ%' OR column_name LIKE '%status%' OR column_name LIKE '%event%'"
+    },
+    {
+     "sql": "SELECT DISTINCT event_type FROM raw_product_events.events"
+    },
+    {
+     "sql": "SELECT column_name, table_name FROM information_schema.columns WHERE table_name = 'accounts' OR table_name = 'subscriptions'"
+    },
+    {
+     "sql": "SELECT properties FROM raw_product_events.events LIMIT 5"
+    },
+    {
+     "sql": "SELECT table_name FROM information_schema.tables WHERE table_schema LIKE '%'"
+    },
+    {
+     "sql": "SELECT column_name, table_name FROM information_schema.columns WHERE column_name LIKE '%act%'"
+    },
+    {
+     "sql": "SELECT column_name, table_name FROM information_schema.columns WHERE table_name = 'events'"
+    },
+    {
+     "sql": "SELECT table_name, column_name FROM information_schema.columns WHERE column_name LIKE '%date%' OR column_name LIKE '%at%'"
+    },
+    {
+     "sql": "SELECT table_name, column_name FROM information_schema.columns WHERE table_name = 'accounts'"
+    },
+    {
+     "sql": "SELECT table_name, column_name FROM information_schema.columns WHERE table_name = 'subscriptions'"
+    },
+    {
+     "sql": "SELECT table_name, column_name FROM information_schema.columns WHERE table_name = 'invoices'"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 72.3,
+   "input_tokens": 22369,
+   "output_tokens": 458,
+   "cost_usd": null,
+   "error": "turn_cap",
+   "correct": false
+  },
+  {
+   "id": "activation_rate_2025",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "What share of 2025 signups got activated?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.31311475409836065,
+   "answer": 0.31311475409836065,
+   "unit": "ratio",
+   "definition": "Share of signups in 2025 that got activated (sent a proposal within 14 days).",
+   "parsed": true,
+   "trap": "Activation means sending a proposal within 14 days of signup. Any proposal ever, or any login, is not activation.",
+   "text": "```json\n{\"answer\": 0.31311475409836065,\n \"unit\": \"ratio\",\n \"definition\": \"Share of signups in 2025 that got activated (sent a proposal within 14 days).\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ],
+     "metrics": [
+      "activation_rate"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "activation_rate"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 23.6,
+   "input_tokens": 8305,
+   "output_tokens": 201,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_all",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "What's our trial-to-paid conversion rate?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.1565347646985395,
+   "answer": null,
+   "unit": null,
+   "definition": null,
+   "parsed": false,
+   "trap": "Including signups younger than 60 days (they have not had time to pay), or counting payments after day 60.",
+   "text": "",
+   "turns": 12,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT plan, status, count(*) \nFROM raw_app_db.subscriptions \nGROUP BY 1, 2\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT plan, addons FROM raw_app_db.subscriptions\n"
+    },
+    {
+     "sql": "\nSELECT change_type, plan_after, mrr_before, mrr_after, count(*) \nFROM raw_app_db.subscription_changes \nGROUP BY 1, 2, 3, 4 \nLIMIT 20\n"
+    },
+    {
+     "sql": "\nSELECT column_name, table_name FROM information_schema.columns WHERE table_schema = 'raw_app_db'\n"
+    },
+    {
+     "sql": "\nSELECT event_type, count(*) \nFROM raw_product_events.events \nGROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT stage, count(*) \nFROM raw_crm.crm_deals \nGROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT * FROM raw_app_db.subscriptions LIMIT 5\n"
+    },
+    {
+     "sql": "\nSELECT count(DISTINCT account_id) as total_accounts,\n       count(DISTINCT s.account_id) as accounts_with_sub\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\n"
+    },
+    {
+     "sql": "\nSELECT count(DISTINCT a.account_id) as total_accounts,\n       count(DISTINCT s.account_id) as accounts_with_sub\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\n"
+    },
+    {
+     "sql": "\nSELECT line_type, status, count(*) \nFROM raw_app_db.invoices \nGROUP BY 1, 2\n"
+    },
+    {
+     "sql": "\nSELECT * FROM raw_app_db.invoices LIMIT 5\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 74.0,
+   "input_tokens": 30050,
+   "output_tokens": 573,
+   "cost_usd": null,
+   "error": "turn_cap",
+   "correct": false
+  },
+  {
+   "id": "free_to_paid_all",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "What's our trial-to-paid conversion rate?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.1565347646985395,
+   "answer": 0.1565347646985395,
+   "unit": "ratio",
+   "definition": "Share of signups old enough to judge that paid within 60 days.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days (they have not had time to pay), or counting payments after day 60.",
+   "text": "The trial-to-paid conversion rate, measured as the share of mature signups that paid within 60 days (`free_to_paid_60d`), is approximately 15.65%.\n\n```json\n{\"answer\": 0.1565347646985395,\n \"unit\": \"ratio\",\n \"definition\": \"Share of signups old enough to judge that paid within 60 days.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d"
+     ]
+    },
+    {
+     "metrics": [
+      "free_to_paid_60d,mature_signups,mature_paid_60d"
+     ]
+    },
+    {
+     "metrics": [
+      "mature_signups"
+     ]
+    },
+    {
+     "metrics": [
+      "mature_paid_60d"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 77.7,
+   "input_tokens": 14243,
+   "output_tokens": 229,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_channel",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "referral",
+   "answer": "referral",
+   "unit": "text",
+   "definition": "Acquisition channel with the highest percentage of signups that eventually convert to a paid subscription.",
+   "parsed": true,
+   "trap": "Ranking channels by number of paid accounts rather than by rate, or including immature signups.",
+   "text": "```json\n{\"answer\": \"referral\",\n \"unit\": \"text\",\n \"definition\": \"Acquisition channel with the highest percentage of signups that eventually convert to a paid subscription.\"}\n```",
+   "turns": 9,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    a.channel,\n    COUNT(DISTINCT a.account_id) as total_accounts,\n    COUNT(DISTINCT s.account_id) as paid_accounts,\n    CAST(COUNT(DISTINCT s.account_id) AS DOUBLE) / COUNT(DISTINCT a.account_id) as conversion_rate\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id AND s.status = 'active'\nGROUP BY 1\nORDER BY conversion_rate DESC\n"
+    },
+    {
+     "sql": "\nSELECT \n    a.channel,\n    COUNT(DISTINCT a.account_id) as total_accounts,\n    COUNT(DISTINCT s.account_id) as paid_accounts,\n    CAST(COUNT(DISTINCT s.account_id) AS DOUBLE) / COUNT(DISTINCT a.account_id) as conversion_rate\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\nGROUP BY 1\nORDER BY conversion_rate DESC\n"
+    },
+    {
+     "sql": "\nSELECT status, count(*) FROM raw_app_db.subscriptions GROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT \n    a.channel,\n    COUNT(DISTINCT a.account_id) as total_accounts,\n    COUNT(DISTINCT i.account_id) as accounts_with_paid_invoice,\n    CAST(COUNT(DISTINCT i.account_id) AS DOUBLE) / COUNT(DISTINCT a.account_id) as conversion_rate\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.invoices i ON a.account_id = i.account_id AND i.status = 'paid'\nGROUP BY 1\nORDER BY conversion_rate DESC\n"
+    },
+    {
+     "sql": "\nSELECT * FROM raw_app_db.subscriptions LIMIT 5\n"
+    },
+    {
+     "sql": "\nSELECT \n    a.channel,\n    COUNT(DISTINCT a.account_id) as total_accounts,\n    COUNT(DISTINCT s.account_id) as paid_accounts,\n    CAST(COUNT(DISTINCT s.account_id) AS DOUBLE) / COUNT(DISTINCT a.account_id) as conversion_rate\nFROM raw_app_db.accounts a\nJOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\nGROUP BY 1\nORDER BY conversion_rate DESC\n"
+    },
+    {
+     "sql": "\nSELECT \n    a.channel,\n    COUNT(DISTINCT a.account_id) as total_signups,\n    COUNT(DISTINCT s.account_id) as converted_to_paid,\n    ROUND(CAST(COUNT(DISTINCT s.account_id) AS DOUBLE) * 100.0 / COUNT(DISTINCT a.account_id), 2) as conversion_rate_pct\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\nGROUP BY 1\nORDER BY conversion_rate_pct DESC\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 75.5,
+   "input_tokens": 20468,
+   "output_tokens": 852,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_channel",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "referral",
+   "answer": "referral",
+   "unit": "text",
+   "definition": "The acquisition channel with the highest share of mature signups that converted to paid within 60 days.",
+   "parsed": true,
+   "trap": "Ranking channels by number of paid accounts rather than by rate, or including immature signups.",
+   "text": "To answer which acquisition channel converts to paid best, we can look at the governed metric `free_to_paid_60d` (Share of signups old enough to judge that paid within 60 days), broken down by acquisition channel.\n\nThe conversion rates to paid (within 60 days) by channel are:\n- **Referral**: ~25.2%\n- **Supplier partner**: ~17.3%\n- **Trade show**: ~17.3%\n- **Organic**: ~16.6%\n- **Google ads**: ~13.6%\n- **Facebook**: ~9.8%\n\nReferral converts to paid the best with a 25.2% conversion rate.\n\n```json\n{\"answer\": \"referral\",\n \"unit\": \"text\",\n \"definition\": \"The acquisition channel with the highest share of mature signups that converted to paid within 60 days.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "free_to_paid_60d"
+     ],
+     "group_by": [
+      "account__channel"
+     ]
+    },
+    {
+     "group_by": [
+      "account__channel"
+     ],
+     "metrics": [
+      "activation_rate"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 40.5,
+   "input_tokens": 8679,
+   "output_tokens": 285,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_worst_channel",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid worst?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "facebook",
+   "answer": "facebook",
+   "unit": "text",
+   "definition": "Acquisition channel with the lowest percentage of accounts converting to a paid subscription.",
+   "parsed": true,
+   "trap": "Same as the best channel; small or young channels look worst if immature signups are left in.",
+   "text": "```json\n{\"answer\": \"facebook\",\n \"unit\": \"text\",\n \"definition\": \"Acquisition channel with the lowest percentage of accounts converting to a paid subscription.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    a.channel,\n    COUNT(DISTINCT a.account_id) AS signups,\n    COUNT(DISTINCT s.account_id) AS paid_accounts,\n    CAST(COUNT(DISTINCT s.account_id) AS DOUBLE) / NULLIF(COUNT(DISTINCT a.account_id), 0) AS conversion_rate\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\nGROUP BY 1\nORDER BY conversion_rate ASC\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 28.2,
+   "input_tokens": 3196,
+   "output_tokens": 194,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_worst_channel",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Which acquisition channel converts to paid worst?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "facebook",
+   "answer": "facebook",
+   "unit": "text",
+   "definition": "The acquisition channel with the lowest share of signups that paid within 60 days (free_to_paid_60d).",
+   "parsed": true,
+   "trap": "Same as the best channel; small or young channels look worst if immature signups are left in.",
+   "text": "Facebook has the lowest free-to-paid conversion rate at approximately 9.76%.\n\n```json\n{\"answer\": \"facebook\",\n \"unit\": \"text\",\n \"definition\": \"The acquisition channel with the lowest share of signups that paid within 60 days (free_to_paid_60d).\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "group_by": [
+      "account__channel"
+     ],
+     "metrics": [
+      "free_to_paid_60d"
+     ]
+    },
+    {
+     "group_by": [
+      "account__channel"
+     ],
+     "metrics": [
+      "free_to_paid_60d"
+     ],
+     "order_by": [
+      "free_to_paid_60d"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 26.5,
+   "input_tokens": 8710,
+   "output_tokens": 175,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_activated",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Of the accounts that activated, what share became paying customers?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.389352403655145,
+   "answer": null,
+   "unit": "text",
+   "definition": "The dataset does not contain an activation event or definition for accounts activating.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days, or counting any later payment instead of payment within 60 days.",
+   "text": "The available tables contain information about accounts, subscriptions, invoices, and product events, but there is no event or attribute indicating that an account has \"activated\" (no \"activated\" event or activation timestamp). \n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"definition\": \"The dataset does not contain an activation event or definition for accounts activating.\"}\n```",
+   "turns": 12,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    COUNT(DISTINCT a.account_id) AS total_accounts,\n    COUNT(DISTINCT CASE WHEN e.event_type = 'activated' THEN a.account_id END) AS activated_count,\n    COUNT(DISTINCT CASE WHEN e.event_type = 'activated' AND s.account_id IS NOT NULL THEN a.account_id END) AS activated_and_paying\nFROM raw_app_db.accounts a\nLEFT JOIN (\n    SELECT DISTINCT account_id \n    FROM raw_product_events.events \n    WHERE event_type = 'activated'\n) e ON a.account_id = e.account_id\nLEFT JOIN (\n    SELECT DISTINCT account_id \n    FROM raw_app_db.subscriptions\n) s ON a.account_id = s.account_id\n"
+    },
+    {
+     "sql": "\nSELECT event_type, count(*) \nFROM raw_product_events.events \nGROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT \n    table_name, column_name \nFROM information_schema.columns \nWHERE table_schema = 'raw_app_db' OR table_schema = 'raw_product_events'\n"
+    },
+    {
+     "sql": "\nSELECT \n    DISTINCT properties \nFROM raw_product_events.events \nLIMIT 20\n"
+    },
+    {
+     "sql": "\nSELECT \n    table_name, column_name \nFROM information_schema.columns \nWHERE table_schema = 'raw_crm' OR table_schema = 'raw_support' OR table_schema = 'raw_contractor_ops' OR table_schema = 'raw_ads'\n"
+    },
+    {
+     "sql": "\nSELECT column_name, table_name \nFROM information_schema.columns \nWHERE column_name LIKE '%act%' OR column_name LIKE '%stat%' OR column_name LIKE '%plan%' OR column_name LIKE '%sub%'\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT plan, status FROM raw_app_db.subscriptions\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT status FROM raw_app_db.invoices\n"
+    },
+    {
+     "sql": "\nSELECT \n    (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.subscriptions) AS subscriptions_count,\n    (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.invoices WHERE status = 'paid') AS paid_invoices_count,\n    (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.accounts) AS total_accounts\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT event_type FROM raw_product_events.events\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 68.3,
+   "input_tokens": 30830,
+   "output_tokens": 797,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "free_to_paid_activated",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Of the accounts that activated, what share became paying customers?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.389352403655145,
+   "answer": 0.389352403655145,
+   "unit": "ratio",
+   "definition": "Share of mature signups that activated and paid within 60 days.",
+   "parsed": true,
+   "trap": "Including signups younger than 60 days, or counting any later payment instead of payment within 60 days.",
+   "text": "Based on the governed metrics, 38.9% of mature signups that activated became paying customers within 60 days.\n\n```json\n{\"answer\": 0.389352403655145,\n \"unit\": \"ratio\",\n \"definition\": \"Share of mature signups that activated and paid within 60 days.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "group_by": [
+      "account__is_activated"
+     ],
+     "metrics": [
+      "free_to_paid_60d"
+     ]
+    },
+    {
+     "metrics": [
+      "free_to_paid_60d",
+      "mature_signups",
+      "activated_signups"
+     ],
+     "group_by": [
+      "account__is_activated",
+      "account__is_mature"
+     ]
+    },
+    {
+     "metrics": [
+      "mature_paid_60d",
+      "mature_signups"
+     ],
+     "group_by": [
+      "account__is_activated"
+     ]
+    },
+    {
+     "metrics": [
+      "mature_paid_60d",
+      "activated_signups"
+     ],
+     "group_by": [
+      "account__is_activated"
+     ]
+    },
+    {
+     "group_by": [
+      "account__is_activated"
+     ],
+     "metrics": [
+      "free_to_paid_60d"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 41.7,
+   "input_tokens": 17961,
+   "output_tokens": 323,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_crew_size",
+   "arm": "raw",
+   "category": "funnel",
+   "question": "Which crew size converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "16+",
+   "answer": "16+",
+   "unit": "text",
+   "definition": "Crew size category with the highest percentage of signed-up accounts having at least one subscription or paid invoice.",
+   "parsed": true,
+   "trap": "Ranking by the number of paid accounts. The 2-5 crew group is the biggest, so it wins on volume, not on rate.",
+   "text": "```json\n{\"answer\": \"16+\",\n \"unit\": \"text\",\n \"definition\": \"Crew size category with the highest percentage of signed-up accounts having at least one subscription or paid invoice.\"}\n```",
+   "turns": 6,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    a.crew_size,\n    COUNT(DISTINCT a.account_id) AS total_accounts,\n    COUNT(DISTINCT CASE WHEN s.status = 'active' OR s.status = 'trialing' OR s.status = 'past_due' OR s.status IS NOT NULL THEN s.account_id END) AS paid_or_sub_accounts,\n    COUNT(DISTINCT i.account_id) AS accounts_with_invoices\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\nLEFT JOIN raw_app_db.invoices i ON a.account_id = i.account_id AND i.status = 'paid'\nGROUP BY 1\n"
+    },
+    {
+     "sql": "\nSELECT \n    a.crew_size,\n    COUNT(DISTINCT a.account_id) AS total_accounts,\n    COUNT(DISTINCT s.account_id) AS subscribed_accounts,\n    CAST(COUNT(DISTINCT s.account_id) AS DOUBLE) / COUNT(DISTINCT a.account_id) AS conversion_rate\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.subscriptions s ON a.account_id = s.account_id\nGROUP BY 1\nORDER BY conversion_rate DESC\n"
+    },
+    {
+     "sql": "\nSELECT \n    plan,\n    status,\n    COUNT(*) \nFROM raw_app_db.subscriptions \nGROUP BY 1, 2\n"
+    },
+    {
+     "sql": "\nSELECT \n    a.crew_size,\n    COUNT(DISTINCT a.account_id) AS total_accounts,\n    COUNT(DISTINCT i.account_id) AS paid_invoice_accounts,\n    CAST(COUNT(DISTINCT i.account_id) AS DOUBLE) / COUNT(DISTINCT a.account_id) AS paid_conversion_rate\nFROM raw_app_db.accounts a\nLEFT JOIN raw_app_db.invoices i ON a.account_id = i.account_id AND i.status = 'paid'\nGROUP BY 1\nORDER BY paid_conversion_rate DESC\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 37.0,
+   "input_tokens": 9474,
+   "output_tokens": 598,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "free_to_paid_best_crew_size",
+   "arm": "governed",
+   "category": "funnel",
+   "question": "Which crew size converts to paid best?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "16+",
+   "answer": "16+",
+   "unit": "text",
+   "definition": "Crew size with the highest share of signups old enough to judge that paid within 60 days.",
+   "parsed": true,
+   "trap": "Ranking by the number of paid accounts. The 2-5 crew group is the biggest, so it wins on volume, not on rate.",
+   "text": "Based on the governed metric for free-to-paid conversion within 60 days (`free_to_paid_60d`), the crew size that converts to paid best is **16+** with a conversion rate of approximately 20.7%.\n\n```json\n{\"answer\": \"16+\",\n \"unit\": \"text\",\n \"definition\": \"Crew size with the highest share of signups old enough to judge that paid within 60 days.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "group_by": [
+      "account__crew_size"
+     ],
+     "metrics": [
+      "free_to_paid_60d"
+     ]
+    },
+    {
+     "group_by": [
+      "account__crew_size"
+     ],
+     "metrics": [
+      "free_to_paid_60d,mature_signups,mature_paid_60d"
+     ]
+    },
+    {
+     "metrics": [
+      "free_to_paid_60d"
+     ],
+     "group_by": [
+      "account__crew_size"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 29.2,
+   "input_tokens": 11716,
+   "output_tokens": 244,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "ad_spend_2025",
+   "arm": "raw",
+   "category": "acquisition",
+   "question": "What did we spend on advertising in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 429930.05,
+   "answer": 429930.05,
+   "unit": "usd",
+   "definition": "Total ad spend recorded in the ad_spend table for the year 2025.",
+   "parsed": true,
+   "trap": "Summing the ad platforms' daily rows after joining them to signups, which repeats each day's spend.",
+   "text": "```json\n{\"answer\": 429930.05,\n \"unit\": \"usd\",\n \"definition\": \"Total ad spend recorded in the ad_spend table for the year 2025.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT SUM(spend_usd) AS total_spend FROM raw_ads.ad_spend WHERE EXTRACT(YEAR FROM spend_date) = 2025"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 17.7,
+   "input_tokens": 2912,
+   "output_tokens": 115,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "ad_spend_2025",
+   "arm": "governed",
+   "category": "acquisition",
+   "question": "What did we spend on advertising in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 429930.05,
+   "answer": 429930.05,
+   "unit": "usd",
+   "definition": "Total ad spend for the year 2025.",
+   "parsed": true,
+   "trap": "Summing the ad platforms' daily rows after joining them to signups, which repeats each day's spend.",
+   "text": "```json\n{\"answer\": 429930.05,\n \"unit\": \"usd\",\n \"definition\": \"Total ad spend for the year 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ],
+     "metrics": [
+      "ad_spend"
+     ]
+    },
+    {
+     "metrics": [
+      "ad_spend"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 24.0,
+   "input_tokens": 8295,
+   "output_tokens": 180,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "cac_2025",
+   "arm": "raw",
+   "category": "acquisition",
+   "question": "What was our customer acquisition cost in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 882.8132443531828,
+   "answer": 783.11,
+   "unit": "usd",
+   "definition": "Total ad spend in 2025 divided by the number of subscriptions started in 2025.",
+   "parsed": true,
+   "trap": "Dividing spend by conversions counted on payment date. Governed CAC credits each conversion to its signup date.",
+   "text": "```json\n{\"answer\": 783.11,\n \"unit\": \"usd\",\n \"definition\": \"Total ad spend in 2025 divided by the number of subscriptions started in 2025.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n  (SELECT SUM(spend_usd) FROM raw_ads.ad_spend WHERE spend_date >= '2025-01-01' AND spend_date < '2026-01-01') as total_spend,\n  (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.accounts WHERE signup_at >= '2025-01-01' AND signup_at < '2026-01-01') as signups_2025,\n  (SELECT COUNT(DISTINCT s.account_id) FROM raw_app_db.subscriptions s JOIN raw_app_db.accounts a ON s.account_id = a.account_id WHERE a.signup_at >= '2025-01-01' AND a.signup_at < '2026-01-01') as subs_2025\n"
+    },
+    {
+     "sql": "\nSELECT \n  (SELECT SUM(spend_usd) FROM raw_ads.ad_spend WHERE spend_date >= '2025-01-01' AND spend_date < '2026-01-01') as total_spend,\n  (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.subscriptions WHERE started_at >= '2025-01-01' AND started_at < '2026-01-01') as subscriptions_started_2025\n"
+    },
+    {
+     "sql": "\nSELECT \n  (SELECT SUM(spend_usd) FROM raw_ads.ad_spend WHERE spend_date >= '2025-01-01' AND spend_date < '2026-01-01') \n  / \n  (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.subscriptions WHERE started_at >= '2025-01-01' AND started_at < '2026-01-01') as cac_subs,\n  \n  (SELECT SUM(spend_usd) FROM raw_ads.ad_spend WHERE spend_date >= '2025-01-01' AND spend_date < '2026-01-01') \n  / \n  (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.accounts WHERE signup_at >= '2025-01-01' AND signup_at < '2026-01-01') as cac_signups\n"
+    },
+    {
+     "sql": "\nSELECT column_name, table_name FROM information_schema.columns WHERE column_name LIKE '%cost%' OR column_name LIKE '%spend%' OR column_name LIKE '%amount%'\n"
+    },
+    {
+     "sql": "\nSELECT \n  (SELECT SUM(spend_usd) FROM raw_ads.ad_spend WHERE spend_date >= '2025-01-01' AND spend_date < '2026-01-01') \n  / \n  (SELECT COUNT(DISTINCT account_id) FROM raw_app_db.subscriptions WHERE started_at >= '2025-01-01' AND started_at < '2026-01-01') as cac\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 41.9,
+   "input_tokens": 11670,
+   "output_tokens": 881,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "cac_2025",
+   "arm": "governed",
+   "category": "acquisition",
+   "question": "What was our customer acquisition cost in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 882.8132443531828,
+   "answer": 882.81,
+   "unit": "usd",
+   "definition": "Spend per paid conversion for 2025, by the signup date of the conversions.",
+   "parsed": true,
+   "trap": "Dividing spend by conversions counted on payment date. Governed CAC credits each conversion to its signup date.",
+   "text": "The customer acquisition cost in 2025 was $882.81.\n\n```json\n{\"answer\": 882.81,\n \"unit\": \"usd\",\n \"definition\": \"Spend per paid conversion for 2025, by the signup date of the conversions.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ],
+     "metrics": [
+      "cac"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "cac"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 24.4,
+   "input_tokens": 8295,
+   "output_tokens": 200,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "cac_highest_channel_2025",
+   "arm": "raw",
+   "category": "acquisition",
+   "question": "Which paid channel had the most expensive customers in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "trade_show",
+   "answer": null,
+   "unit": null,
+   "definition": null,
+   "parsed": false,
+   "trap": "Ranking by total spend rather than spend per conversion.",
+   "text": "",
+   "turns": 12,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    a.channel,\n    SUM(s.spend_usd) AS total_spend,\n    COUNT(DISTINCT ac.account_id) AS customer_count,\n    SUM(s.spend_usd) / NULLIF(COUNT(DISTINCT ac.account_id), 0) AS cac\nFROM raw_ads.ad_spend s\nJOIN raw_app_db.accounts ac ON s.channel = ac.channel AND EXTRACT(YEAR FROM ac.signup_at) = 2025 AND EXTRACT(YEAR FROM s.spend_date) = 2025\nGROUP BY a.channel\n"
+    },
+    {
+     "sql": "\nSELECT \n    ac.channel,\n    SUM(s.spend_usd) AS total_spend,\n    COUNT(DISTINCT ac.account_id) AS customer_count,\n    SUM(s.spend_usd) / NULLIF(COUNT(DISTINCT ac.account_id), 0) AS cac\nFROM raw_app_db.accounts ac\nJOIN raw_ads.ad_spend s ON ac.channel = s.channel \nWHERE EXTRACT(YEAR FROM ac.signup_at) = 2025 \n  AND EXTRACT(YEAR FROM s.spend_date) = 2025\nGROUP BY ac.channel\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT channel FROM raw_ads.ad_spend;\nSELECT DISTINCT channel FROM raw_app_db.accounts;\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT channel FROM raw_ads.ad_spend\n"
+    },
+    {
+     "sql": "\nSELECT DISTINCT channel FROM raw_app_db.accounts\n"
+    },
+    {
+     "sql": "\nSELECT \n    ac.channel,\n    SUM(s.spend_usd) AS total_spend,\n    COUNT(DISTINCT ac.account_id) AS customer_count,\n    SUM(s.spend_usd) / NULLIF(COUNT(DISTINCT ac.account_id), 0) AS cac\nFROM raw_app_db.accounts ac\nLEFT JOIN raw_ads.ad_spend s ON ac.channel = s.channel AND EXTRACT(YEAR FROM s.spend_date) = 2025\nWHERE EXTRACT(YEAR FROM ac.signup_at) = 2025 \nGROUP BY ac.channel\nORDER BY cac DESC NULLS LAST\n"
+    },
+    {
+     "sql": "\nSELECT channel, SUM(spend_usd) as spend FROM raw_ads.ad_spend WHERE EXTRACT(YEAR FROM spend_date) = 2025 GROUP BY channel\n"
+    },
+    {
+     "sql": "\nSELECT channel, spend_date, spend_usd FROM raw_ads.ad_spend LIMIT 5\n"
+    },
+    {
+     "sql": "\nSELECT MIN(spend_date), MAX(spend_date), COUNT(*) FROM raw_ads.ad_spend\n"
+    },
+    {
+     "sql": "\nSELECT \n    ac.channel,\n    SUM(s.spend_usd) AS total_spend,\n    COUNT(DISTINCT ac.account_id) AS customer_count,\n    SUM(s.spend_usd) / NULLIF(COUNT(DISTINCT ac.account_id), 0) AS cac\nFROM raw_app_db.accounts ac\nJOIN raw_ads.ad_spend s ON ac.channel = s.channel\nWHERE EXTRACT(YEAR FROM ac.signup_at) = 2025\nGROUP BY ac.channel\nORDER BY cac DESC\n"
+    },
+    {
+     "sql": "\nSELECT \n    ac.channel,\n    SUM(s.spend_usd) / COUNT(DISTINCT ac.account_id) AS cac\nFROM raw_app_db.accounts ac\nJOIN raw_ads.ad_spend s ON ac.channel = s.channel\nWHERE EXTRACT(YEAR FROM ac.signup_at) = 2025\nGROUP BY ac.channel\nORDER BY cac DESC\nLIMIT 1\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 72.3,
+   "input_tokens": 25828,
+   "output_tokens": 1003,
+   "cost_usd": null,
+   "error": "turn_cap",
+   "correct": false
+  },
+  {
+   "id": "cac_highest_channel_2025",
+   "arm": "governed",
+   "category": "acquisition",
+   "question": "Which paid channel had the most expensive customers in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "trade_show",
+   "answer": "trade_show",
+   "unit": "text",
+   "definition": "The marketing channel with the highest CAC (spend per paid conversion) in 2025.",
+   "parsed": true,
+   "trap": "Ranking by total spend rather than spend per conversion.",
+   "text": "To find which paid channel had the most expensive customers in 2025, we look at the Customer Acquisition Cost (CAC) for each marketing channel during that year:\n\n- **Trade Show**: $4,307.69\n- **Supplier Partner**: $1,611.93\n- **Facebook**: $891.23\n- **Google Ads**: $822.29\n- **Organic** and **Referral** have $0.00 CAC as non-paid channels.\n\nTrade show was the most expensive paid channel.\n\n```json\n{\"answer\": \"trade_show\",\n \"unit\": \"text\",\n \"definition\": \"The marketing channel with the highest CAC (spend per paid conversion) in 2025.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "cac"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ],
+     "group_by": [
+      "channel_day__marketing_channel"
+     ]
+    },
+    {
+     "group_by": [
+      "channel_day__marketing_channel"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "cac"
+     ]
+    },
+    {
+     "group_by": [
+      "channel_day__marketing_channel"
+     ],
+     "metrics": [
+      "ad_spend",
+      "paid_conversions"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 29.6,
+   "input_tokens": 11573,
+   "output_tokens": 430,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "leads_2025",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "How many homeowner leads did our contractors get in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 77895.0,
+   "answer": 77895,
+   "unit": "count",
+   "definition": "Count of homeowner leads recorded in contractor_leads table created during the year 2025.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated instead of when the lead came in.",
+   "text": "```json\n{\"answer\": 77895,\n \"unit\": \"count\",\n \"definition\": \"Count of homeowner leads recorded in contractor_leads table created during the year 2025.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT count(*) as cnt FROM raw_contractor_ops.contractor_leads WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01'"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 17.8,
+   "input_tokens": 2920,
+   "output_tokens": 128,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "leads_2025",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "How many homeowner leads did our contractors get in 2025?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 77895.0,
+   "answer": 77895,
+   "unit": "count",
+   "definition": "Total homeowner leads created in 2025 across all contractor accounts.",
+   "parsed": true,
+   "trap": "Filtering on when the raw row was last updated instead of when the lead came in.",
+   "text": "```json\n{\"answer\": 77895,\n \"unit\": \"count\",\n \"definition\": \"Total homeowner leads created in 2025 across all contractor accounts.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == '2025'"
+     ],
+     "metrics": [
+      "leads"
+     ]
+    },
+    {
+     "metrics": [
+      "leads"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 24.1,
+   "input_tokens": 8359,
+   "output_tokens": 176,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "lead_close_rate_all",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "What share of homeowner leads do our contractors win?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.22883942781677366,
+   "answer": 0.22578982287157115,
+   "unit": "ratio",
+   "definition": "Share of contractor leads where the outcome is 'won' out of all recorded contractor leads.",
+   "parsed": true,
+   "trap": "Dividing by all leads. Open leads have no outcome yet and are left out of the governed rate.",
+   "text": "```json\n{\"answer\": 0.22578982287157115,\n \"unit\": \"ratio\",\n \"definition\": \"Share of contractor leads where the outcome is 'won' out of all recorded contractor leads.\"}\n```",
+   "turns": 7,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT outcome, COUNT(*) FROM raw_contractor_ops.contractor_leads GROUP BY 1"
+    },
+    {
+     "sql": "SELECT \n  CAST(SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) AS DOUBLE) / COUNT(*) AS win_rate\nFROM raw_contractor_ops.contractor_leads"
+    },
+    {
+     "sql": "SELECT source, outcome, COUNT(*) FROM raw_contractor_ops.contractor_leads GROUP BY 1, 2"
+    },
+    {
+     "sql": "SELECT MIN(created_at), MAX(created_at) FROM raw_contractor_ops.contractor_leads"
+    },
+    {
+     "sql": "SELECT \n  CAST(SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) AS DOUBLE) / COUNT(*) AS win_share,\n  SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) as won_leads,\n  COUNT(*) as total_leads\nFROM raw_contractor_ops.contractor_leads"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 42.0,
+   "input_tokens": 11722,
+   "output_tokens": 354,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "lead_close_rate_all",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "What share of homeowner leads do our contractors win?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.22883942781677366,
+   "answer": 0.22883942781677366,
+   "unit": "ratio",
+   "definition": "Won leads divided by closed leads (open leads excluded).",
+   "parsed": true,
+   "trap": "Dividing by all leads. Open leads have no outcome yet and are left out of the governed rate.",
+   "text": "Based on the data, contractors win 22.9% of their closed homeowner leads.\n\n```json\n{\"answer\": 0.22883942781677366,\n \"unit\": \"ratio\",\n \"definition\": \"Won leads divided by closed leads (open leads excluded).\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "lead_close_rate"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 17.9,
+   "input_tokens": 5560,
+   "output_tokens": 109,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "speed_to_lead_2025",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "How fast did contractors typically get back to new leads in 2025, in minutes?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": 0.02,
+   "truth": 18.0,
+   "answer": 18.03,
+   "unit": "minutes",
+   "definition": "Median time from lead creation (created_at) to first contact (first_contact_at) for contractor leads created in 2025.",
+   "parsed": true,
+   "trap": "Using the mean (a few multi-day replies drag it up), or treating leads with no logged contact time as zero.",
+   "text": "```json\n{\"answer\": 18.03,\n \"unit\": \"minutes\",\n \"definition\": \"Median time from lead creation (created_at) to first contact (first_contact_at) for contractor leads created in 2025.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    COUNT(*) as total_leads,\n    COUNT(first_contact_at) as contacted_leads,\n    AVG(EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60.0) as avg_minutes,\n    MEDIAN(EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60.0) as median_minutes\nFROM raw_contractor_ops.contractor_leads\nWHERE EXTRACT(YEAR FROM created_at) = 2025\n  AND first_contact_at IS NOT NULL\n"
+    },
+    {
+     "sql": "\nSELECT \n    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60.0) as median_minutes\nFROM raw_contractor_ops.contractor_leads\nWHERE EXTRACT(YEAR FROM created_at) = 2025\n  AND first_contact_at IS NOT NULL\n"
+    },
+    {
+     "sql": "\nSELECT \n    AVG(EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60.0) as mean_minutes\nFROM raw_contractor_ops.contractor_leads\nWHERE EXTRACT(YEAR FROM created_at) = 2025\n  AND first_contact_at IS NOT NULL\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 30.2,
+   "input_tokens": 6565,
+   "output_tokens": 423,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "speed_to_lead_2025",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "How fast did contractors typically get back to new leads in 2025, in minutes?",
+   "type": "number",
+   "absolute": false,
+   "tolerance": 0.02,
+   "truth": 18.0,
+   "answer": 18.0,
+   "unit": "minutes",
+   "definition": "Median minutes to first contact for homeowner leads created in 2025.",
+   "parsed": true,
+   "trap": "Using the mean (a few multi-day replies drag it up), or treating leads with no logged contact time as zero.",
+   "text": "Based on the governed metrics, the median speed to lead in 2025 was 18.0 minutes.\n\n```json\n{\"answer\": 18.0,\n \"unit\": \"minutes\",\n \"definition\": \"Median minutes to first contact for homeowner leads created in 2025.\"}\n```",
+   "turns": 5,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ],
+     "metrics": [
+      "speed_to_lead_median_min"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('lead__created_at', 'year') }} == 2025"
+     ],
+     "metrics": [
+      "speed_to_lead_median_min"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "speed_to_lead_median_min"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 30.0,
+   "input_tokens": 11134,
+   "output_tokens": 269,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "best_speed_bucket",
+   "arm": "raw",
+   "category": "contractor_outcomes",
+   "question": "Which response-time bucket has the highest lead close rate?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "lt_5m",
+   "answer": "0-5 minutes",
+   "unit": "text",
+   "definition": "The response-time bucket (time from lead creation to first contact) with the highest percentage of won leads among all contractor leads.",
+   "parsed": true,
+   "trap": "Letting the \"missing\" bucket in. Those leads were worked but never got a contact time, so they are not a speed.",
+   "text": "To answer which response-time bucket has the highest lead close rate, we analyze the `contractor_leads` table by calculating the time difference between lead creation (`created_at`) and first contact (`first_contact_at`), grouping leads into standard response-time buckets, and finding the proportion of leads with an outcome of `won`. \n\nThe 0-5 minutes response bucket has the highest lead close rate at approximately 38.58%.\n\n```json\n{\"answer\": \"0-5 minutes\",\n \"unit\": \"text\",\n \"definition\": \"The response-time bucket (time from lead creation to first contact) with the highest percentage of won leads among all contractor leads.\"}\n```",
+   "turns": 8,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT column_name FROM information_schema.columns WHERE table_name = 'contractor_leads'"
+    },
+    {
+     "sql": "SELECT outcome, count(*) FROM raw_contractor_ops.contractor_leads GROUP BY 1"
+    },
+    {
+     "sql": "SELECT \n  CASE \n    WHEN first_contact_at IS NULL THEN 'no_contact'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60 <= 5 THEN '0-5 min'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60 <= 15 THEN '5-15 min'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60 <= 60 THEN '15-60 min'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 3600 <= 24 THEN '1-24 hours'\n    ELSE '24+ hours'\n  END AS bucket,\n  COUNT(*) AS total_leads,\n  SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) AS won_leads,\n  SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) * 1.0 / COUNT(*) AS close_rate\nFROM raw_contractor_ops.contractor_leads\nGROUP BY 1\nORDER BY close_rate DESC"
+    },
+    {
+     "sql": "SELECT \n  MIN(EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60) AS min_mins,\n  MAX(EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60) AS max_mins\nFROM raw_contractor_ops.contractor_leads\nWHERE first_contact_at IS NOT NULL AND first_contact_at >= created_at"
+    },
+    {
+     "sql": "SELECT DISTINCT \n  REGEXP_EXTRACT(column_name, '.*') AS sample \nFROM information_schema.columns \nWHERE table_name = 'contractor_leads'"
+    },
+    {
+     "sql": "SELECT \n  CASE \n    WHEN first_contact_at IS NULL THEN 'No Contact'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60 <= 5 THEN '0-5 minutes'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60 <= 15 THEN '5-15 minutes'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 60 <= 60 THEN '15-60 minutes'\n    WHEN EXTRACT(EPOCH FROM (first_contact_at - created_at)) / 3600 <= 24 THEN '1-24 hours'\n    ELSE '24+ hours'\n  END AS bucket,\n  COUNT(*) AS total_leads,\n  SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) AS won_leads,\n  ROUND(SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) AS close_rate_pct\nFROM raw_contractor_ops.contractor_leads\nGROUP BY 1\nORDER BY SUM(CASE WHEN outcome = 'won' THEN 1 ELSE 0 END) * 1.0 / COUNT(*) DESC"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 48.2,
+   "input_tokens": 14347,
+   "output_tokens": 1014,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "best_speed_bucket",
+   "arm": "governed",
+   "category": "contractor_outcomes",
+   "question": "Which response-time bucket has the highest lead close rate?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "lt_5m",
+   "answer": "lt_5m",
+   "unit": "text",
+   "definition": "The response-time bucket with the highest lead close rate is lt_5m.",
+   "parsed": true,
+   "trap": "Letting the \"missing\" bucket in. Those leads were worked but never got a contact time, so they are not a speed.",
+   "text": "```json\n{\"answer\": \"lt_5m\",\n \"unit\": \"text\",\n \"definition\": \"The response-time bucket with the highest lead close rate is lt_5m.\"}\n```",
+   "turns": 3,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "lead_close_rate"
+     ],
+     "group_by": [
+      "lead__speed_bucket"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 17.6,
+   "input_tokens": 5710,
+   "output_tokens": 92,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "redo_rate_2025",
+   "arm": "raw",
+   "category": "operations",
+   "question": "How often did contractors ask us to redo a roof measurement in 2025?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.05593968862916537,
+   "answer": 3762,
+   "unit": "count",
+   "definition": "Total number of measurement orders placed in 2025 that had a redo requested.",
+   "parsed": true,
+   "trap": "Counting redo orders as extra orders in the denominator, which lowers the rate.",
+   "text": "In 2025, contractors requested redos for 3,762 out of 67,251 measurement orders (approximately 5.59% of orders placed in 2025).\n\n```json\n{\"answer\": 3762,\n \"unit\": \"count\",\n \"definition\": \"Total number of measurement orders placed in 2025 that had a redo requested.\"}\n```",
+   "turns": 8,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "\nSELECT \n    COUNT(*) AS total_orders,\n    SUM(CASE WHEN redo_requested_at IS NOT NULL THEN 1 ELSE 0 END) AS redos,\n    CAST(SUM(CASE WHEN redo_requested_at IS NOT NULL THEN 1 ELSE 0 END) AS DOUBLE) / COUNT(*) AS redo_ratio\nFROM raw_app_db.measurement_orders\nWHERE EXTRACT(YEAR FROM ordered_at) = 2025;\n"
+    },
+    {
+     "sql": "\nSELECT \n    COUNT(*) AS total_orders_delivered,\n    SUM(CASE WHEN redo_requested_at IS NOT NULL THEN 1 ELSE 0 END) AS redos,\n    CAST(SUM(CASE WHEN redo_requested_at IS NOT NULL THEN 1 ELSE 0 END) AS DOUBLE) / COUNT(*) AS redo_ratio\nFROM raw_app_db.measurement_orders\nWHERE EXTRACT(YEAR FROM delivered_at) = 2025;\n"
+    },
+    {
+     "sql": "\nSELECT \n    COUNT(*) AS redos_requested_in_2025\nFROM raw_app_db.measurement_orders\nWHERE EXTRACT(YEAR FROM redo_requested_at) = 2025;\n"
+    },
+    {
+     "sql": "\nSELECT min(ordered_at), max(ordered_at), min(redo_requested_at), max(redo_requested_at)\nFROM raw_app_db.measurement_orders;\n"
+    },
+    {
+     "sql": "\nSELECT min(ordered_at), max(ordered_at)\nFROM raw_app_db.measurement_orders\nWHERE EXTRACT(YEAR FROM ordered_at) = 2025;\n"
+    },
+    {
+     "sql": "\nSELECT \n    COUNT(*) AS total_orders_2025,\n    SUM(CASE WHEN redo_requested_at IS NOT NULL THEN 1 ELSE 0 END) AS redos_2025\nFROM raw_app_db.measurement_orders\nWHERE EXTRACT(YEAR FROM ordered_at) = 2025;\n"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 48.0,
+   "input_tokens": 12899,
+   "output_tokens": 628,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "redo_rate_2025",
+   "arm": "governed",
+   "category": "operations",
+   "question": "How often did contractors ask us to redo a roof measurement in 2025?",
+   "type": "ratio",
+   "absolute": false,
+   "tolerance": null,
+   "truth": 0.05593968862916537,
+   "answer": 0.05593968862916537,
+   "unit": "ratio",
+   "definition": "Share of measurement reports the contractor asked to redo in 2025.",
+   "parsed": true,
+   "trap": "Counting redo orders as extra orders in the denominator, which lowers the rate.",
+   "text": "```json\n{\"answer\": 0.05593968862916537,\n \"unit\": \"ratio\",\n \"definition\": \"Share of measurement reports the contractor asked to redo in 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == '2025'"
+     ],
+     "metrics": [
+      "measurement_redo_rate"
+     ]
+    },
+    {
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "metrics": [
+      "measurement_redo_rate"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 24.2,
+   "input_tokens": 8401,
+   "output_tokens": 199,
+   "cost_usd": null,
+   "correct": true
+  },
+  {
+   "id": "top_ticket_theme_2025",
+   "arm": "raw",
+   "category": "operations",
+   "question": "What did customers contact support about most in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "measurement_accuracy",
+   "answer": "Pitch on report is wrong",
+   "unit": "text",
+   "definition": "The most frequent support ticket subject for tickets created in 2025.",
+   "parsed": true,
+   "trap": "Raw tickets have no theme. Keyword-matching the text is what the governed theme (hand labels plus a tested classifier) replaced.",
+   "text": "```json\n{\"answer\": \"Pitch on report is wrong\",\n \"unit\": \"text\",\n \"definition\": \"The most frequent support ticket subject for tickets created in 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_raw_tables",
+    "run_raw_sql",
+    "run_raw_sql"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "sql": "SELECT subject, count(*) as cnt FROM raw_support.support_tickets WHERE extract(year from created_at) = 2025 GROUP BY subject ORDER BY cnt DESC LIMIT 10"
+    },
+    {
+     "sql": "SELECT subject, count(*) as cnt FROM raw_support.support_tickets WHERE created_at >= '2025-01-01' AND created_at < '2026-01-01' GROUP BY subject ORDER BY cnt DESC LIMIT 1"
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 23.7,
+   "input_tokens": 4588,
+   "output_tokens": 190,
+   "cost_usd": null,
+   "correct": false
+  },
+  {
+   "id": "top_ticket_theme_2025",
+   "arm": "governed",
+   "category": "operations",
+   "question": "What did customers contact support about most in 2025?",
+   "type": "text",
+   "absolute": false,
+   "tolerance": null,
+   "truth": "measurement_accuracy",
+   "answer": "measurement_accuracy",
+   "unit": "text",
+   "definition": "The churn theme of support tickets with the highest ticket count in 2025.",
+   "parsed": true,
+   "trap": "Raw tickets have no theme. Keyword-matching the text is what the governed theme (hand labels plus a tested classifier) replaced.",
+   "text": "Based on the governed support ticket data for 2025, customers contacted support most frequently about measurement accuracy, with 3,028 tickets.\n\n```json\n{\"answer\": \"measurement_accuracy\",\n \"unit\": \"text\",\n \"definition\": \"The churn theme of support tickets with the highest ticket count in 2025.\"}\n```",
+   "turns": 4,
+   "tool_calls": [
+    "list_governed_metrics",
+    "query_governed_metric",
+    "query_governed_metric"
+   ],
+   "tool_inputs": [
+    {},
+    {
+     "metrics": [
+      "tickets"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'year') }} == 2025"
+     ],
+     "group_by": [
+      "ticket__churn_theme"
+     ]
+    },
+    {
+     "metrics": [
+      "tickets"
+     ],
+     "where": [
+      "{{ TimeDimension('metric_time', 'day') }} >= '2025-01-01'",
+      "{{ TimeDimension('metric_time', 'day') }} <= '2025-12-31'"
+     ],
+     "group_by": [
+      "ticket__churn_theme"
+     ]
+    }
+   ],
+   "model": "gemini-3.5-flash-lite",
+   "provider": "gemini",
+   "seconds": 24.3,
+   "input_tokens": 8385,
+   "output_tokens": 233,
+   "cost_usd": null,
+   "correct": true
+  }
+ ],
+ "as_of": "2026-11-02",
+ "backend": "api",
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "ran_at": "2026-11-10T00:35:04",
+ "summary": {
+  "arms": {
+   "raw": {
+    "correct": 12,
+    "total": 25,
+    "by_category": {
+     "acquisition": [
+      1,
+      3
+     ],
+     "contractor_outcomes": [
+      3,
+      4
+     ],
+     "funnel": [
+      4,
+      7
+     ],
+     "operations": [
+      0,
+      2
+     ],
+     "retention": [
+      0,
+      2
+     ],
+     "revenue": [
+      4,
+      7
+     ]
+    },
+    "errors": 3,
+    "cost_usd": 0,
+    "median_seconds": 43.3,
+    "median_tool_calls": 7.0
+   },
+   "governed": {
+    "correct": 24,
+    "total": 25,
+    "by_category": {
+     "acquisition": [
+      3,
+      3
+     ],
+     "contractor_outcomes": [
+      4,
+      4
+     ],
+     "funnel": [
+      7,
+      7
+     ],
+     "operations": [
+      2,
+      2
+     ],
+     "retention": [
+      1,
+      2
+     ],
+     "revenue": [
+      7,
+      7
+     ]
+    },
+    "errors": 0,
+    "cost_usd": 0,
+    "median_seconds": 24.3,
+    "median_tool_calls": 3.0
+   }
+  },
+  "only_governed_right": [
+   "activation_rate_2025",
+   "best_net_new_month_2026",
+   "best_speed_bucket",
+   "cac_2025",
+   "cac_highest_channel_2025",
+   "free_to_paid_activated",
+   "free_to_paid_all",
+   "mrr_end_sep_2026",
+   "nrr_12m_2024_cohorts",
+   "paying_accounts_end_2025",
+   "redo_rate_2025",
+   "top_ticket_theme_2025"
+  ],
+  "only_raw_right": []
+ }
+}
