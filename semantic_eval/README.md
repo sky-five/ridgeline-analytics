@@ -108,7 +108,29 @@ On the Gemini API free tier (checked 2026-11-04), a new key can no longer use `g
 | `limit` | `50` | most new answers per run (50 is both arms, all questions) |
 | `pace` | `6` | seconds between model requests |
 
-No run through another provider is committed yet; when one is, it will be listed here with its provider and model. Results differ by model.
+### The same eval on Gemini
+
+Recorded 2026-11-10 by `record-eval.yml` (workflow run 42725303765) through the Gemini API free tier, model `gemini-3.5-flash-lite`, data as of 2026-11-02: the same warehouse day, questions, tools, prompts and answer key as the Claude Code run. One run per arm and question; other models score differently.
+
+| | Claude Code, claude-sonnet-5-5 (Anthropic) | | gemini-3.5-flash-lite (Gemini API) | |
+|---|---|---|---|---|
+| | Raw tables | Governed metrics | Raw tables | Governed metrics |
+| Correct | 17 / 25 | 25 / 25 | 12 / 25 | 24 / 25 |
+| Revenue | 7 / 7 | 7 / 7 | 4 / 7 | 7 / 7 |
+| Funnel | 4 / 7 | 7 / 7 | 4 / 7 | 7 / 7 |
+| Contractor outcomes | 2 / 4 | 4 / 4 | 3 / 4 | 4 / 4 |
+| Acquisition | 2 / 3 | 3 / 3 | 1 / 3 | 3 / 3 |
+| Retention | 1 / 2 | 2 / 2 | 0 / 2 | 1 / 2 |
+| Operations | 1 / 2 | 2 / 2 | 0 / 2 | 2 / 2 |
+| Median tool calls / seconds | 4 / 11.8 s | 2 / 11.0 s | 7 / 43.3 s | 3 / 24.3 s |
+
+This model widens the gap: governed metrics lose one answer, raw tables lose five more. Its raw misses go beyond definitions into plain SQL mistakes: MRR at the end of September ($231,695 against $243,419), paying accounts at the end of 2025 (340 against 552) and the 2025 redo rate (it returned the count of redone orders, 3,762, not the rate). Three raw answers (activation rate, trial-to-paid, CAC by channel) hit the 12-call cap without answering and are scored wrong. The one governed miss is net revenue retention, where it picked a single November 2025 cohort (70.7%) instead of all cohorts (61.7%). No question was right on raw tables and wrong on governed metrics. On substance, two raw misses are right but miss the scorer's form: "June" for the best 2026 month (the scorer wants the year) and "0-5 minutes" for `lt_5m`, so raw tables get 14 / 25 counted that way.
+
+```bash
+python -m semantic_eval.run --replay semantic_eval/results/raw-vs-governed-gemini-gemini-3.5-flash-lite-as-of-2026-11-02.json
+```
+
+This run is DuckDB only; the governed side on Snowflake (below) is the Claude Code run's.
 
 Tests (`tests/analyst/test_llm.py`, `tests/semantic_eval/test_eval_api_backend.py`, `tests/semantic_eval/test_record_workflow.py`) use a fake SDK and a fake HTTP transport, so nothing calls a model: tool specs, tool results passed back by id, the `thought_signature` round trip, caps, retries and pacing, resume after a limit or a provider failure, and that the workflow keeps its as-of date and results file fixed and the key out of every step but recording. Every committed results file, complete or partial, must replay to the scores it stored.
 

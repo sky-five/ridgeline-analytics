@@ -114,7 +114,7 @@ For the NPS question it searched every table and column for survey data, found n
 
 `semantic_eval/` is a test set for one question: is an AI analyst more reliable when it can only use governed metrics? 25 business questions, worded the way a stakeholder would ask them, each with an answer computed from the MetricFlow metrics and a note on the mistake a raw-table query tends to make (summing daily MRR, counting signups too young to judge, dividing by open leads). Answers about closed periods are checked on every CI build.
 
-The analyst answered each question twice, once with only the raw loaded tables and once with only the governed metrics. **Governed metrics: 25 / 25 correct. Raw tables: 17 / 25.** Revenue questions were right either way; the raw misses were all definition questions (trial-to-paid, activation, lead close rate, CAC, NRR), where it picked its own definition and returned a confident number. The recorded run replays without an API key. Details: [semantic_eval/README.md](semantic_eval/README.md).
+The analyst answered each question twice, once with only the raw loaded tables and once with only the governed metrics (Claude Code, claude-sonnet-5-5). **Governed metrics: 25 / 25 correct. Raw tables: 17 / 25.** Revenue questions were right either way; the raw misses were all definition questions (trial-to-paid, activation, lead close rate, CAC, NRR), where it picked its own definition and returned a confident number. The same eval on a free-tier model (gemini-3.5-flash-lite through the Gemini API): governed 24 / 25, raw tables 12 / 25. Both recorded runs replay without an API key. Details: [semantic_eval/README.md](semantic_eval/README.md).
 
 ```bash
 .venv/Scripts/python -m semantic_eval.answer_key
