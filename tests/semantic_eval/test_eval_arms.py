@@ -125,6 +125,27 @@ def test_claude_code_run_is_complete():
         (q, a) for q in {r["id"] for r in stored["results"]} for a in arms.ARMS}
 
 
+GEMINI_RUN = RESULTS / "raw-vs-governed-gemini-gemini-3.5-flash-lite-as-of-2026-11-02.json"
+
+
+@pytest.mark.skipif(not GEMINI_RUN.exists(), reason="no Gemini run")
+def test_gemini_run_is_complete_and_matches_the_readme():
+    """Same 25 questions and as-of date as the Claude Code run; the numbers the README quotes."""
+    stored = json.loads(GEMINI_RUN.read_text(encoding="utf-8"))
+    claude = json.loads(CLAUDE_CODE_RUN.read_text(encoding="utf-8"))
+    assert (stored["provider"], stored["model"], stored["as_of"]) == ("gemini", "gemini-3.5-flash-lite", "2026-11-02")
+    assert stored["as_of"] == claude["as_of"]
+    assert {(r["id"], r["arm"]) for r in stored["results"]} == {(r["id"], r["arm"]) for r in claude["results"]}
+    s = stored["summary"]["arms"]
+    assert (s["raw"]["correct"], s["governed"]["correct"]) == (12, 24)
+    assert sorted(r["id"] for r in stored["results"] if r.get("error")) == [
+        "activation_rate_2025", "cac_highest_channel_2025", "free_to_paid_all"]
+    assert {r.get("error") for r in stored["results"] if r.get("error")} == {"turn_cap"}
+    assert not any(r["arm"] == "raw" and r["correct"] and not g["correct"]
+                   for r in stored["results"] for g in stored["results"]
+                   if g["arm"] == "governed" and g["id"] == r["id"])
+
+
 @pytest.mark.skipif(not RECORDED, reason="no recorded run")
 def test_replay_cli_needs_no_warehouse(tmp_path):
     import subprocess
