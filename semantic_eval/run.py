@@ -126,16 +126,24 @@ def record(q: dict, arm: str, truth_value, res: dict) -> dict:
     return rec
 
 
-def _prepare(only: list[str] | None) -> tuple[list[dict], dict, str, Path, Path]:
-    """Questions, their truths, the as-of date, and the warehouse plus a raw-only copy of it."""
+def _prepare(only: list[str] | None, raw: bool = True) -> tuple[list[dict], dict, str, Path, Path | None]:
+    """Questions, their truths, the as-of date, and the warehouse plus a raw-only copy of it.
+
+    On the governed arm alone (raw=False) no raw copy is made, so this also works on Snowflake
+    (RIDGELINE_DBT_TARGET=snowflake), where the truths come from the Snowflake build.
+    """
     from semantic_eval import arms as arm_tools
 
     questions = [q for q in load_questions() if not only or q["id"] in only]
     truths = {q["id"]: truth(q) for q in questions}
     warehouse = Path(os.environ.get("RIDGELINE_DUCKDB_PATH", HERE.parent / "warehouse" / "ridgeline.duckdb"))
     as_of = arm_tools.query_governed_metric(["mrr"], ["metric_time__day"], None, ["-metric_time__day"], 1)
+    if "error" in as_of:
+        raise RuntimeError(f"as-of date: {as_of['error']}")
     as_of = str(as_of["rows"][0][0])[:10]
-    raw_copy = arm_tools.build_raw_copy(warehouse, Path(tempfile.mkdtemp(prefix="ridgeline-raw-")) / "raw.duckdb")
+    raw_copy = None
+    if raw:
+        raw_copy = arm_tools.build_raw_copy(warehouse, Path(tempfile.mkdtemp(prefix="ridgeline-raw-")) / "raw.duckdb")
     arm_tools.close()  # MCP servers (or the API backend's tools) reopen the files read-only
     return questions, truths, as_of, warehouse, raw_copy
 
@@ -168,14 +176,20 @@ def run_api(arms: list[str], only: list[str] | None, client, out: Path, limit: i
     The file is rewritten after every answer, so a run stopped by a quota or a timeout keeps its work.
     An answer that ended in an error (cap hit, provider error) is asked again on the next run.
     """
-    questions, truths, as_of, warehouse, raw_copy = prepare(only)
+    from semantic import target
+
+    questions, truths, as_of, warehouse, raw_copy = prepare(only, raw="raw" in arms)
     os.environ["RIDGELINE_DUCKDB_PATH"] = str(warehouse)
-    os.environ["RIDGELINE_RAW_DUCKDB_PATH"] = str(raw_copy)
+    if raw_copy is not None:
+        os.environ["RIDGELINE_RAW_DUCKDB_PATH"] = str(raw_copy)
     report = json.loads(out.read_text(encoding="utf-8")) if out.exists() else {"results": []}
     if report.get("as_of", as_of) != as_of:
         raise SystemExit(f"{out} was recorded as of {report['as_of']}, the warehouse is as of {as_of}: "
                          "use a new --out file or rebuild the warehouse for that date")
-    report.update({"as_of": as_of, "backend": "api", "provider": client.provider, "model": client.model})
+    if report.get("target", target()) != target():
+        raise SystemExit(f"{out} was recorded on {report['target']}, this run is on {target()}: use a new --out file")
+    report.update({"as_of": as_of, "backend": "api", "provider": client.provider, "model": client.model,
+                   "target": target()})
     todo = pending(questions, arms, report["results"])[:limit]
     for q, arm in todo:
         try:

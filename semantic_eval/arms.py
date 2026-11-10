@@ -6,6 +6,8 @@ governed  list_governed_metrics + query_governed_metric: MetricFlow only. No SQL
 
 Both arms run on the same read-only connection and SQL guard as the analyst (analyst/sql_guard.py).
 The raw arm connects to a separate file that holds only the raw tables (build_raw_copy).
+With RIDGELINE_DBT_TARGET=snowflake the governed arm runs its compiled metric queries on the Snowflake
+build instead, after the same one-SELECT check (sql_guard.check_snowflake_sql).
 """
 import os
 import tempfile
@@ -105,10 +107,14 @@ def query_governed_metric(metrics: list[str], group_by: list[str] | None = None,
     """Query governed metrics through MetricFlow. group_by takes dimension names from list_governed_metrics, or
     metric_time__day/week/month/quarter/year; where takes Jinja filters, e.g.
     "{{ TimeDimension('metric_time', 'day') }} >= '2026-01-01'" or "{{ Dimension('account__channel') }} = 'seo'"."""
-    from semantic import explain
+    from semantic import explain, run_compiled, target
 
     try:
         sql = explain(metrics, group_by or [], where or None, order_by or None, limit)
+        if target() == "snowflake":  # same compiled metric query, run on the Snowflake build
+            columns, rows = run_compiled(sql_guard.check_snowflake_sql(sql))
+            rows, truncated = sql_guard.plain_rows(rows)
+            return sql_guard.QueryResult(columns, rows, truncated).as_dict()
         return sql_guard.run_sql(_con(), sql).as_dict()
     except Exception as e:  # MetricFlow raises many types; the agent needs the message to fix its call
         return _error(e)

@@ -7,6 +7,12 @@
 parse for that target). `compare` answers them again on the current target (DuckDB) and checks each
 pair. Same questions, same metric definitions, same reduce step (answer_key.pick_answer); only the
 engine differs. Exit code 1 if any answer differs.
+
+    python -m semantic_eval.cross_target runs sf-run.json duckdb-run.json --out report.json
+
+`runs` pairs two recorded governed-arm runs of the same model (semantic_eval.run --backend api
+--arms governed), one per warehouse: is each answer right on its own warehouse, and did the model
+give the same answer on both? Model answers vary from run to run, so this reports, it never fails.
 """
 import argparse
 import json
@@ -63,6 +69,58 @@ def compare(left: dict, right: dict) -> dict:
     }
 
 
+def compare_runs(left: dict, right: dict, arm: str = "governed") -> dict:
+    """Pair two recorded runs (same model, one per warehouse) question by question."""
+    def by_id(run):
+        return {r["id"]: r for r in run["results"] if r["arm"] == arm}
+
+    a, b = by_id(left), by_id(right)
+    ta, tb = left.get("target", "duckdb"), right.get("target", "duckdb")
+    rows = []
+    for qid in sorted(set(a) | set(b)):
+        ra, rb = a.get(qid), b.get(qid)
+        rows.append({"id": qid,
+                     f"{ta}_answer": ra and ra["answer"], f"{tb}_answer": rb and rb["answer"],
+                     f"{ta}_correct": bool(ra and ra["correct"]), f"{tb}_correct": bool(rb and rb["correct"]),
+                     "truth_match": bool(ra and rb) and same(ra["truth"], rb["truth"]),
+                     "same_answer": bool(ra and rb) and _same_answer(ra["answer"], rb["answer"])})
+    return {
+        "arm": arm, "targets": [ta, tb],
+        "models": {ta: left.get("model"), tb: right.get("model")},
+        "as_of": {ta: left.get("as_of"), tb: right.get("as_of")},
+        "same_as_of": left.get("as_of") == right.get("as_of"),
+        "total": len(rows),
+        "correct": {ta: sum(r[f"{ta}_correct"] for r in rows), tb: sum(r[f"{tb}_correct"] for r in rows)},
+        "truths_match": sum(r["truth_match"] for r in rows),
+        "same_answer": sum(r["same_answer"] for r in rows),
+        "right_on_one_only": [r["id"] for r in rows if r[f"{ta}_correct"] != r[f"{tb}_correct"]],
+        "rows": rows,
+    }
+
+
+def _same_answer(a, b) -> bool:
+    try:
+        return same(float(a), float(b))
+    except (TypeError, ValueError):
+        return str(a).strip().lower() == str(b).strip().lower()
+
+
+def runs_markdown(report: dict) -> str:
+    a, b = report["targets"]
+    c = report["correct"]
+    lines = [f"### {report['arm'].capitalize()} arm, {report['models'][a]}: {a} vs {b}", "",
+             f"Correct: {c[a]} / {report['total']} on {a}, {c[b]} / {report['total']} on {b}. "
+             f"Same answer on both: {report['same_answer']} / {report['total']}. "
+             f"Answer key equal on both: {report['truths_match']} / {report['total']}.", "",
+             f"| Question | {a} | {b} | |", "|---|---|---|---|"]
+    for r in report["rows"]:
+        mark = lambda ok: "right" if ok else "wrong"  # noqa: E731
+        lines.append(f"| {r['id']} | {_fmt(r[f'{a}_answer'])} ({mark(r[f'{a}_correct'])}) | "
+                     f"{_fmt(r[f'{b}_answer'])} ({mark(r[f'{b}_correct'])}) | "
+                     f"{'same' if r['same_answer'] else 'differs'} |")
+    return "\n".join(lines) + "\n"
+
+
 def ok(report: dict) -> bool:
     return report["same_as_of"] and report["matched"] == report["total"] and report["total"] > 0
 
@@ -92,7 +150,23 @@ def main(argv: list[str] | None = None) -> int:
     c = sub.add_parser("compare", help="answer on the current target and compare with a snapshot")
     c.add_argument("snapshot", type=Path)
     c.add_argument("--out", type=Path)
+    r = sub.add_parser("runs", help="pair two recorded governed-arm runs, one per warehouse")
+    r.add_argument("left", type=Path)
+    r.add_argument("right", type=Path)
+    r.add_argument("--out", type=Path)
     args = p.parse_args(argv)
+
+    if args.cmd == "runs":
+        left, right = (json.loads(f.read_text(encoding="utf-8")) for f in (args.left, args.right))
+        report = compare_runs(left, right)
+        text = runs_markdown(report)
+        print(text)
+        if summary := os.environ.get("GITHUB_STEP_SUMMARY"):
+            with open(summary, "a", encoding="utf-8") as f:
+                f.write(text)
+        if args.out:
+            args.out.write_text(json.dumps(report, indent=1, default=str) + "\n", encoding="utf-8")
+        return 0
 
     if args.cmd == "snapshot":
         snap = snapshot()

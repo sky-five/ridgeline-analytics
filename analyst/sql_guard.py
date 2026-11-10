@@ -53,6 +53,26 @@ def check_sql(sql: str) -> str:
     return text
 
 
+def check_snowflake_sql(sql: str) -> str:
+    """The Snowflake version of check_sql: exactly one statement, and it must be a query (SELECT,
+    WITH ... SELECT, UNION). Parsed with sqlglot's Snowflake dialect, since DuckDB can't parse it."""
+    import sqlglot
+    from sqlglot import exp
+
+    text = (sql or "").strip().rstrip(";").strip()
+    if not text:
+        raise UnsafeSQL("empty query")
+    try:
+        statements = [s for s in sqlglot.parse(text, read="snowflake") if s is not None]
+    except sqlglot.errors.ParseError as e:
+        raise UnsafeSQL(f"could not parse: {e}") from None
+    if len(statements) != 1:
+        raise UnsafeSQL(f"one statement only (got {len(statements)})")
+    if not isinstance(statements[0], exp.Query):
+        raise UnsafeSQL(f"only SELECT is allowed (got {statements[0].key.upper()})")
+    return text
+
+
 def connect(db_path: Path | str = DEFAULT_DB) -> duckdb.DuckDBPyConnection:
     if not Path(db_path).exists():
         raise FileNotFoundError(f"warehouse not found: {db_path} (run scripts/run_all.py first)")
@@ -77,6 +97,11 @@ def run_sql(con: duckdb.DuckDBPyConnection, sql: str, max_rows: int = MAX_ROWS,
         timer.cancel()
     rows = [[_plain(v) for v in r] for r in fetched[:max_rows]]
     return QueryResult(columns, rows, truncated=len(fetched) > max_rows)
+
+
+def plain_rows(rows: list, max_rows: int = MAX_ROWS) -> tuple[list[list], bool]:
+    """Cap rows already fetched and make their values JSON-friendly; returns (rows, truncated)."""
+    return [[_plain(v) for v in r] for r in rows[:max_rows]], len(rows) > max_rows
 
 
 def _plain(v):

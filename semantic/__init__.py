@@ -97,3 +97,17 @@ def explain(metrics: list[str], group_by: list[str] | None = None, where: list[s
     request = MetricFlowQueryRequest.create(metric_names=metrics, group_by_names=group_by or [],
                                             where_constraints=where, order_by_names=order_by, limit=limit)
     return _compile_config().mf.explain(request).sql_statement.sql
+
+
+def target() -> str:
+    return os.environ.get("RIDGELINE_DBT_TARGET", "duckdb")
+
+
+def run_compiled(sql: str) -> tuple[list[str], list[list]]:
+    """Run SQL from explain() on the configured warehouse through MetricFlow's own client.
+
+    Used on Snowflake, where the AI analyst has no read-only file to open: the caller checks the SQL first
+    (analyst/sql_guard.check_snowflake_sql). Column names come back lower-case, as in query().
+    """
+    table = _config().mf.sql_client.query(sql)
+    return [c.column_name.lower() for c in table.column_descriptions], [list(r) for r in table.rows]
