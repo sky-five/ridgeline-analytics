@@ -32,7 +32,7 @@ semantic_models:
         expr: paying_accounts
         non_additive_dimension: {name: date_day, window_choice: max}
       - {name: new_mrr_amount, agg: sum, expr: new_mrr}
-      - {name: expansion_mrr_amount, agg: sum, expr: expansion_mrr}
+      - {name: expansion_mrr_amount, agg: sum, expr: expansion_mrr + reactivation_mrr}
       - {name: contraction_mrr_amount, agg: sum, expr: contraction_mrr}
       - {name: churned_mrr_amount, agg: sum, expr: churned_mrr}
 
