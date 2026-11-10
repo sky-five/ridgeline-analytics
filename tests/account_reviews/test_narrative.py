@@ -99,8 +99,10 @@ def test_flat_mrr_and_no_leads():
     s["net_new_mrr"] = [500.0] + [0.0] * 11
     s["mrr"] = 500.0
     s[["closed_leads", "won_leads"]] = 0
+    s["tickets"] = [0] * 9 + [1, 0, 0]
     h = HEADER.copy()
     h["mrr"] = 500.0
     text, _ = checked_draft(h, s)
     assert "at $500 MRR, the same as at the end of November 2025." in text
     assert "homeowner leads" not in text and "largest monthly" not in text
+    assert "It opened 1 support ticket in the last 3 months" in text

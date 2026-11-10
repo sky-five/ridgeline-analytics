@@ -154,8 +154,8 @@ def draft(header: pd.Series, series: pd.DataFrame) -> str:
         out.append(f"It ordered {orders:,} measurement reports in {len(s)} months and asked for a redo on "
                    f"{redos:,} ({redos / orders:.0%}).")
     rt, bt = int(w["recent"]["tickets"].sum()), int(w["before"]["tickets"].sum())
-    out.append(f"It opened {rt:,} support tickets in the last {RECENT} months and {bt:,} in the {RECENT} "
-               "months before.")
+    out.append(f"It opened {rt:,} support ticket{'' if rt == 1 else 's'} in the last {RECENT} months and "
+               f"{bt:,} in the {RECENT} months before.")
     out.append(f"Health score: {int(header['health_score'])} ({str(header['risk_band']).replace('_', ' ')}).")
     return " ".join(out)
 

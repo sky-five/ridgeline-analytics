@@ -111,3 +111,22 @@ def test_account_reviews_match_the_marts():
           and t.created_at < (select max(month) from reporting.account_review_monthly) + interval 1 month
         group by 1"""))
     assert got_t == want_t
+
+
+def test_account_review_summaries_check_against_the_warehouse():
+    # re-check each published summary against the tables as they landed in the warehouse, not the frames
+    # the drafter used; a summary with any number not in its account's table fails here
+    import pandas as pd
+
+    from account_reviews.narrative import check
+    from scripts.export_reporting import export
+
+    export(DB)
+    with duckdb.connect(str(DB)) as c:
+        head = c.sql("select * from reporting.account_review").df()
+        months = c.sql("select * from reporting.account_review_monthly").df()
+    months["month"] = pd.to_datetime(months["month"]).dt.date
+    for _, row in head.iterrows():
+        result = check(row["summary"], row, months[months["account_id"] == row["account_id"]])
+        assert result.ok, result.problems
+        assert len(result.numbers) == row["summary_numbers_checked"] >= 10
