@@ -42,7 +42,7 @@ select count(*) filter (where grade = 'green') as green, count(*) filter (where 
 from ${health}
 ```
 
-Batches for <Value data={health_counts} column=day/>.
+Day graded: <Value data={health_counts} column=day/>
 
 <BigValue data={health_counts} value=green title="Green"/>
 <BigValue data={health_counts} value=amber title="Amber"/>
