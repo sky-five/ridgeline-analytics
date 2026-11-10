@@ -121,6 +121,10 @@ The analyst answered each question twice, once with only the raw loaded tables a
 .venv/Scripts/python -m semantic_eval.run --replay semantic_eval/results/raw-vs-governed-2026-11-03.json
 ```
 
+## Metric contract
+
+A PR that changes a governed metric's numbers has to say so. Each of the 27 metrics carries a version, and `metric_contract/contract.json` records its values on a fixed snapshot (the warehouse as of 2026-06-30, by month). A CI job rebuilds that snapshot on every PR and fails if a metric's value moved while its version stayed the same; a deliberate change bumps the version and re-records the values, so the new numbers show up in review. [PR #1](https://github.com/sky-five/ridgeline-analytics/pull/1) is the demo: a one-line change that counts win-backs as expansion MRR passes the build and fails the contract. Details: [metric_contract/README.md](metric_contract/README.md).
+
 ## ARR and revenue recognition
 
 `revrec/` is a separate module on its own synthetic Stripe-shaped billing data: monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. Details: [revrec/README.md](revrec/README.md).
@@ -192,6 +196,7 @@ orchestration/ Airflow DAG for the nightly build, failure alerts, last-good mark
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
+metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
 data_health/ product-event contract and table health scorecard, checked daily, with injected faults as tests
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
