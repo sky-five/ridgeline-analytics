@@ -38,6 +38,13 @@ review as of <Value data={acct} column=as_of fmt=longdate/> (simulated data)
 <BigValue data={totals} value=redos title="Measurement redos" fmt=num0/>
 <BigValue data={totals} value=tickets title="Support tickets" fmt=num0/>
 
+## Summary
+
+<Value data={acct} column=summary/>
+
+Every number in this summary (<Value data={acct} column=summary_numbers_checked/> here) was checked against the
+monthly table below when the site was built; the build stops if one does not match.
+
 ## Talking points
 
 <Value data={acct} column=talking_points/>

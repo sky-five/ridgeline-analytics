@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from account_reviews.narrative import checked_draft
+
 N_ACCOUNTS = 25  # the largest paying accounts by current MRR
 MONTHS = 12  # complete months shown on each review
 
@@ -73,13 +75,17 @@ def talking_points(header: pd.Series, series: pd.DataFrame) -> list[str]:
 
 def review_tables(health: pd.DataFrame, metrics: pd.DataFrame, as_of: date,
                   n: int = N_ACCOUNTS) -> dict[str, pd.DataFrame]:
-    """The reporting tables: account_review (header + talking points) and account_review_monthly."""
+    """The reporting tables: account_review (header, talking points, checked summary) and account_review_monthly."""
     header = pick_accounts(health, n)
     header.insert(0, "rank", range(1, len(header) + 1))
     series = monthly_series(metrics, header["account_id"].tolist(), last_complete_month(as_of))
     by_account = dict(tuple(series.groupby("account_id")))
     header["talking_points"] = [" ".join(talking_points(row, by_account[row["account_id"]]))
                                 for _, row in header.iterrows()]
+    # the written summary; checked_draft raises if any number in it is not in the series or the header
+    drafts = [checked_draft(row, by_account[row["account_id"]]) for _, row in header.iterrows()]
+    header["summary"] = [text for text, _ in drafts]
+    header["summary_numbers_checked"] = [n for _, n in drafts]
     header["as_of"] = as_of
     return {"account_review": header, "account_review_monthly": series}
 
