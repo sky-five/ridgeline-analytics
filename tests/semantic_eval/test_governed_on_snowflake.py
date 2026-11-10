@@ -136,3 +136,10 @@ def test_workflow_records_snowflake_first_then_duckdb_on_one_day():
     assert '--as-of "$AS_OF"' in steps["Load + dbt build (DuckDB)"]["run"]
     with_key = [n for n, s in steps.items() if "GEMINI_API_KEY" in str(s.get("env", {}))]
     assert with_key == ["Check the secrets", "Record governed arm on Snowflake", "Record governed arm on DuckDB"]
+
+
+def test_snowflake_workflows_run_only_on_demand_since_the_trial_ended():
+    for name in ("snowflake.yml", "record-eval-snowflake.yml"):
+        wf = yaml.safe_load((ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8"))
+        on = wf[True] if True in wf else wf["on"]
+        assert set(on) == {"workflow_dispatch"}, name

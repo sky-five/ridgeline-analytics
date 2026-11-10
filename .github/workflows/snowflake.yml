@@ -1,10 +1,9 @@
 name: snowflake
 
 # Builds the same dbt project on Snowflake and checks it matches DuckDB.
-# Runs on main and on demand; skipped when the Snowflake secrets aren't set (e.g. forks).
+# On demand only: the Snowflake trial account was suspended on 2026-11-10, so it no longer runs on
+# every push. Skipped when the Snowflake secrets aren't set (e.g. forks).
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
