@@ -10,11 +10,11 @@
   "decile_paid_rate": {
     "1": 0.0243,
     "2": 0.0344,
-    "3": 0.0242,
-    "4": 0.0413,
-    "5": 0.0418,
-    "6": 0.0677,
-    "7": 0.1,
+    "3": 0.024,
+    "4": 0.0419,
+    "5": 0.0414,
+    "6": 0.0685,
+    "7": 0.0988,
     "8": 0.2742,
     "9": 0.41,
     "10": 0.5839
@@ -25,26 +25,26 @@
     "dst": "google_ads",
     "moved_usd": 1400.0,
     "budget_usd": 36503.0,
-    "paid_before": 25.38,
-    "paid_after": 26.84,
+    "paid_before": 25.39,
+    "paid_after": 26.85,
     "paid_change": 1.46,
-    "cac_before": 1438.22,
-    "cac_after": 1360.0
+    "cac_before": 1437.69,
+    "cac_after": 1359.51
   },
   "worst_move": {
     "src": "google_ads",
     "dst": "trade_show",
     "moved_usd": 848.8,
     "budget_usd": 36503.0,
-    "paid_before": 25.38,
+    "paid_before": 25.39,
     "paid_after": 24.5,
     "paid_change": -0.89,
-    "cac_before": 1438.22,
-    "cac_after": 1490.18
+    "cac_before": 1437.69,
+    "cac_after": 1489.63
   },
   "backtest_paid_channels": {
     "predicted": 98.7,
     "actual": 101,
-    "error_pct": -2.3
+    "error_pct": -2.2
   }
 }

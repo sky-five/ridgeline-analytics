@@ -42,11 +42,11 @@ channels (17-18% vs 12-14%), but they cost roughly 3 to 7 times as much per sign
 accounts. Lead-score deciles 8-10 pay at 27%, 41% and 58%; deciles 1-7 at 2-10%.
 
 **What-if** on the average monthly budget of $36,503: moving 10% of trade-show spend ($1,400) to Google Ads adds
-1.5 expected paid accounts a month (25.4 → 26.8) and cuts paid-channel CAC from $1,438 to $1,360. The worst
+1.5 expected paid accounts a month (25.4 → 26.9) and cuts paid-channel CAC from $1,438 to $1,360. The worst
 move, 10% of Google Ads into trade shows, loses 0.9. All 12 pairwise moves are in `results/budget_moves.csv`.
 
 **Back-test:** fitted on May-December 2025, the model predicted 98.7 paid accounts from January-April 2026 paid
-spend; the actual was 101 (2.3% low). Per channel it is rougher: it under-predicted Google Ads and Facebook by
+spend; the actual was 101 (2.2% low). Per channel it is rougher: it under-predicted Google Ads and Facebook by
 about 7 each and over-predicted trade shows by 7 (15.3 vs 8), so treat channel-level numbers as a direction, not
 a forecast.
 
