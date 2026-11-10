@@ -1,0 +1,77 @@
+name: record outbound notes
+
+# Drafts the 25 top-decile outbound notes through the Gemini API (free tier) on the 2026-06-30 snapshot,
+# checks each one and commits the drafts, so they replay later without a key (python -m outbound_notes --check).
+# Needs the repository secret GEMINI_API_KEY. One request per note, 25 in all.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model"
+        required: true
+        default: gemini-3.5-flash-lite
+      pace:
+        description: "Seconds between model requests"
+        required: true
+        default: "6"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record-notes
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+      MODEL: ${{ inputs.model }}
+      PACE: ${{ inputs.pace }}
+    steps:
+      - name: Check the key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: test -n "$GEMINI_API_KEY" || { echo "::error::GEMINI_API_KEY secret is not set"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('requirements.txt') }}
+
+      - name: Load + dbt build (DuckDB, fixed snapshot)
+        run: python scripts/run_all.py --fresh --as-of 2026-06-30
+
+      - name: Record
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python -m outbound_notes --record --provider gemini --model "$MODEL" --pace "$PACE"
+
+      - name: The recording replays
+        run: python -m outbound_notes --check
+
+      - name: Commit the recording
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add outbound_notes/results
+          git diff --cached --quiet && { echo "nothing new recorded"; exit 0; }
+          git commit -m "notes(outbound-notes): record drafts on $MODEL (Gemini API), as of 2026-06-30"
+          git pull --rebase origin main
+          git push origin HEAD:main
