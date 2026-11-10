@@ -141,6 +141,10 @@ A PR that changes a governed metric's numbers has to say so. Each of the 27 metr
 .venv/Scripts/python -m acquisition_spend --move trade_show google_ads 2000
 ```
 
+## Outbound notes
+
+`outbound_notes/` drafts a short first note for each of the 25 top-decile leads on the call list (2026-06-30 snapshot), using only that lead's own first-14-day signals and the score's top reasons, and checks every note: each number must be one of the lead's facts, each activity or channel it mentions must be backed by one, and it must not mention the score or offer money. A no-model template passes 25 of 25; drafts recorded once from Gemini's free tier (`gemini-3.5-flash-lite`) pass 23 of 25 and replay in CI without a key. Details: [outbound_notes/README.md](outbound_notes/README.md).
+
 ## A/B test analysis
 
 `experiments/` is a learning project on simulated data: an onboarding experiment (a guided setup checklist vs the current flow) with a planted true lift of 4 points on 30% activation. It plans the sample size (2,131 per arm), reads out the test with a 95% interval, checks the traffic split for a sample-ratio mismatch (and catches a planted tracking bug that would have doubled the apparent lift), and shows with 2,000 A/A tests why stopping at the first significant day is a mistake (5.1% false positives testing once, 25.6% testing daily). The site's [A/B test page](https://sky-five.github.io/ridgeline-analytics/experiments) shows the readout. Details: [experiments/README.md](experiments/README.md).
@@ -208,6 +212,7 @@ metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
 data_health/ product-event contract and table health scorecard, checked daily, with injected faults as tests
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 acquisition_spend/ channel CAC and a budget what-if on lead-score deciles, with a back-test
+outbound_notes/ per-lead outbound notes for the top score decile, drafted and checked against each lead's facts
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
