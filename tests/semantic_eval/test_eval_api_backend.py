@@ -16,7 +16,7 @@ class FakeClient:
     provider, model = "fake", "fake-1"
 
 
-def prepare(only):
+def prepare(only, raw=True):
     return QUESTIONS, TRUTHS, "2026-11-01", "w.duckdb", "raw.duckdb"
 
 
