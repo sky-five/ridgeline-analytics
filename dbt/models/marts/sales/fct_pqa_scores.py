@@ -57,6 +57,8 @@ def model(dbt, session):
     on_snowflake = hasattr(relation, "to_pandas")
     df = _to_pandas(relation)
     df["signup_at"] = pd.to_datetime(df.signup_at)
+    # a fixed row order: many accounts share a score, and rank(method="first") breaks ties by row order
+    df = df.sort_values("account_id", ignore_index=True)
 
     df["proposal_wk1"] = df.proposal_wk1.astype(int)
     for c in CHANNELS:
@@ -85,7 +87,8 @@ def model(dbt, session):
         for i, row in enumerate(order)
     ]
     df["split"] = np.select([train, test], ["train", "test"], "not_labelled")
-    df["decile"] = (pd.qcut(df.score_model.rank(method="first"), 10, labels=False) + 1).astype(int)
+    # rounded so float noise between machines cannot reorder tied accounts; ties go by account_id
+    df["decile"] = (pd.qcut(df.score_model.round(10).rank(method="first"), 10, labels=False) + 1).astype(int)
     days_since = (as_of - df.signup_at.dt.normalize()).dt.days
     df["call_list_eligible"] = (df.first_paid_at.isna() | (df.first_paid_at > as_of)) & days_since.between(14, 45)
 
