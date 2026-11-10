@@ -127,3 +127,33 @@ def test_chat_payload_omits_tools_for_a_plain_completion():
     body = ChatClient.payload("m", "sys", [{"role": "user", "content": "hi"}], [])
     assert "tools" not in body
     assert ChatClient.payload("m", "sys", [], [{"name": "t", "description": "", "parameters": {}}])["tools"]
+
+
+def test_week_1_is_a_fact_only_when_a_proposal_went_out_in_week_1():
+    note = GOOD.replace("If it would help", "Getting one out in week 1 is quick. If it would help")
+    assert check.check(note, lead()).ok
+    assert "the number 1 is not one of this lead's facts" in check.check(note, lead(proposal_wk1=False)).problems
+
+
+def test_rescore_keeps_the_text_and_updates_the_verdict():
+    facts = [lead(proposal_wk1=False)]
+    note = GOOD.replace("If it would help", "Getting one out in week 1 is quick. If it would help")
+    out = notes.record(facts, notes.pd.Timestamp("2026-06-30"), FakeClient([note]))
+    assert out["summary"]["passed"] == 0
+    facts = [lead()]
+    out["notes"][0]["facts"] = leads.fingerprint(facts[0])
+    assert notes.replay(out, facts)[0].startswith("ACC-1: the checker now says ok")
+    again = notes.rescore(out, facts)
+    assert again["notes"][0]["text"] == note and again["notes"][0]["input_tokens"] == 100
+    assert again["summary"]["passed"] == 1 and notes.replay(again, facts) == []
+
+
+def test_the_committed_gemini_run_is_what_the_readme_quotes():
+    import json
+
+    run = json.loads((notes.RESULTS / "notes-gemini-gemini-3.5-flash-lite.json").read_text())
+    assert run["drafter"] == "gemini/gemini-3.5-flash-lite"
+    assert run["summary"] == {"leads": 25, "passed": 23, "numbers_checked": 106, "words": [60, 83]}
+    assert [n["problems"] for n in run["notes"] if not n["ok"]] == [["does not end with a question"]] * 2
+    template = json.loads((notes.RESULTS / notes.TEMPLATE_FILE).read_text())
+    assert template["summary"] == {"leads": 25, "passed": 25, "numbers_checked": 93, "words": [41, 55]}
