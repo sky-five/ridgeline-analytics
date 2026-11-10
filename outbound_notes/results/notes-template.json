@@ -1,0 +1,240 @@
+{
+  "as_of": "2026-06-30",
+  "drafter": "template (no model)",
+  "summary": {
+    "leads": 25,
+    "passed": 25,
+    "numbers_checked": 93,
+    "words": [
+      41,
+      55
+    ]
+  },
+  "notes": [
+    {
+      "account_id": "ACC-006914",
+      "company": "Northern Stone Roofing",
+      "facts": "d51d3676a829",
+      "text": "Hi Northern Stone Roofing team, I saw you sent 3 proposals in your first two weeks. Thanks for coming to us through a referral. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-006764",
+      "company": "Coastal Crown Roofing",
+      "facts": "f37bee98389d",
+      "text": "Hi Coastal Crown Roofing team, I saw you sent 5 proposals in your first two weeks. You also ordered 4 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006827",
+      "company": "Pioneer Shield Roofing",
+      "facts": "f21dd613fd8b",
+      "text": "Hi Pioneer Shield Roofing team, I saw you sent 4 proposals in your first two weeks. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-006927",
+      "company": "Harbor Valley Roofing",
+      "facts": "10e1bc8a0da9",
+      "text": "Hi Harbor Valley Roofing team, I saw you sent 4 proposals in your first two weeks. You also ordered 2 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006802",
+      "company": "Pioneer Peak Roofing",
+      "facts": "743dc437ab6e",
+      "text": "Hi Pioneer Peak Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 4 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006650",
+      "company": "Iron Shingle Roofing",
+      "facts": "4b31545fffaa",
+      "text": "Hi Iron Shingle Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 3 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-007000",
+      "company": "Maple Peak Roofing",
+      "facts": "cb43a8b34ff1",
+      "text": "Hi Maple Peak Roofing team, I saw you sent 5 proposals in your first two weeks. You also ordered 2 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006862",
+      "company": "Summit Ridge Roofing",
+      "facts": "b44ab859cd7b",
+      "text": "Hi Summit Ridge Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 3 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006639",
+      "company": "Liberty Shield Roofing",
+      "facts": "d04133b6519c",
+      "text": "Hi Liberty Shield Roofing team, I saw you sent 4 proposals in your first two weeks. A customer has already signed one of your proposals, which is a great start. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-006688",
+      "company": "Blue Top Roofing",
+      "facts": "4448548d7009",
+      "text": "Hi Blue Top Roofing team, I saw you sent 3 proposals in your first two weeks. Thanks for coming to us through a referral. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-007009",
+      "company": "Rocky Gable Roofing",
+      "facts": "10b144f82e1e",
+      "text": "Hi Rocky Gable Roofing team, I saw you sent 4 proposals in your first two weeks. You also ordered 1 measurement report. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006986",
+      "company": "Eagle Ridge Roofing",
+      "facts": "c476e13218f9",
+      "text": "Hi Eagle Ridge Roofing team, I saw you sent 2 proposals in your first two weeks. Thanks for coming to us through a referral. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-006864",
+      "company": "Coastal Crown Roofing",
+      "facts": "b5a63541a63d",
+      "text": "Hi Coastal Crown Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 3 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006851",
+      "company": "Valley Peak Roofing",
+      "facts": "e9c861a03431",
+      "text": "Hi Valley Peak Roofing team, I saw you sent 1 proposal in your first two weeks. You also ordered 5 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006828",
+      "company": "Coastal Bay Roofing",
+      "facts": "b988186b6ddb",
+      "text": "Hi Coastal Bay Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 3 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006791",
+      "company": "Pioneer Forge Roofing",
+      "facts": "232167f0a494",
+      "text": "Hi Pioneer Forge Roofing team, I saw you sent 3 proposals in your first two weeks. You also ordered 2 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006642",
+      "company": "Liberty Truss Roofing",
+      "facts": "cc3b78361bf5",
+      "text": "Hi Liberty Truss Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 4 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006708",
+      "company": "Eagle Shingle Roofing",
+      "facts": "1037215e2605",
+      "text": "Hi Eagle Shingle Roofing team, I saw you sent 2 proposals in your first two weeks. Thanks for coming to us through a referral. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-006954",
+      "company": "Cedar Shingle Roofing",
+      "facts": "55dcb60a752c",
+      "text": "Hi Cedar Shingle Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 2 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006798",
+      "company": "Red Crown Roofing",
+      "facts": "0e2bfbad7382",
+      "text": "Hi Red Crown Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 2 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006714",
+      "company": "Cedar Crest Roofing",
+      "facts": "60c7ca90b91c",
+      "text": "Hi Cedar Crest Roofing team, I saw you sent 2 proposals in your first two weeks. You also ordered 5 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006787",
+      "company": "Rocky Point Roofing",
+      "facts": "1f5235eebaf2",
+      "text": "Hi Rocky Point Roofing team, I saw you sent 3 proposals in your first two weeks. You also ordered 4 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006992",
+      "company": "Harbor Bay Roofing",
+      "facts": "efb4386e4828",
+      "text": "Hi Harbor Bay Roofing team, I saw you sent 3 proposals in your first two weeks. A customer has already signed one of your proposals, which is a great start. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3
+    },
+    {
+      "account_id": "ACC-006632",
+      "company": "Granite Gable Roofing",
+      "facts": "bfc9d197ed52",
+      "text": "Hi Granite Gable Roofing team, I saw you sent 1 proposal in your first two weeks. You also ordered 3 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    },
+    {
+      "account_id": "ACC-006961",
+      "company": "Eagle Canyon Roofing",
+      "facts": "4ad94013d92f",
+      "text": "Hi Eagle Canyon Roofing team, I saw you sent 3 proposals in your first two weeks. You also ordered 2 measurement reports. If it would help, I can walk your team through anything you haven't tried yet. Would a 15-minute call this week or next be useful?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4
+    }
+  ]
+}

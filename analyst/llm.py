@@ -235,8 +235,10 @@ class ChatClient:
                 out.append({"role": "tool", "tool_call_id": m["tool_call_id"], "content": m["content"]})
             else:
                 out.append({"role": m["role"], "content": m["content"]})
-        return {"model": model, "messages": out, "temperature": 0,
-                "tools": [{"type": "function", "function": t} for t in tools]}
+        body = {"model": model, "messages": out, "temperature": 0}
+        if tools:  # a plain completion (no tools) sends no tools key; some endpoints reject an empty list
+            body["tools"] = [{"type": "function", "function": t} for t in tools]
+        return body
 
     def _pace(self) -> None:
         if self._interval and self._last is not None:
