@@ -36,6 +36,13 @@ def main() -> int:
     for r in con.execute("select * from fct_deferred_revenue order by month_start desc limit 6").fetchall()[::-1]:
         print(f"{r[0]:%Y-%m}  " + "".join(f"{_usd(v):>12}" for v in r[1:]))
 
+    print("\nThree ARR definitions and the bridge between them, last 6 months")
+    print(f"{'month':<9}{'contract':>12}{'annual':>10}{'billed':>12}{'new':>10}{'ended':>10}{'price':>10}"
+          f"{'calendar':>10}{'run-rate':>12}")
+    for r in con.execute("select * from fct_arr_definitions order by month_start desc limit 6").fetchall()[::-1]:
+        print(f"{r[0]:%Y-%m}  " + "".join(f"{_usd(v):>{w}}" for v, w in zip(r[1:], [12, 10, 12, 10, 10, 10, 10, 12],
+                                                                          strict=True)))
+
     future = con.execute(
         "select sum(recognized_cents) from fct_revenue_monthly where is_future"
     ).fetchone()[0]
