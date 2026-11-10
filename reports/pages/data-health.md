@@ -23,6 +23,48 @@ Site built <Value data={sources} column=built_utc/> UTC.
 
 Freshness rule: warn after 36 hours without a successful load, fail after 72.
 
+## Table health scorecard
+
+A load can succeed and still bring the wrong day: late, half empty, doubled, or with a column suddenly blank.
+Each source table's batch for the day is graded against that table's own last 28 days.
+
+```sql health
+select table_name, grade, reason, freshness_grade, volume_grade, null_rate_grade, rows_today, usual_rows,
+       strftime(day, '%Y-%m-%d') as day,
+       case grade when 'red' then 0 when 'amber' then 1 else 2 end as grade_order
+from ridgeline.table_health
+order by grade_order, table_name
+```
+
+```sql health_counts
+select count(*) filter (where grade = 'green') as green, count(*) filter (where grade = 'amber') as amber,
+       count(*) filter (where grade = 'red') as red, max(day) as day
+from ${health}
+```
+
+Batches for <Value data={health_counts} column=day/>.
+
+<BigValue data={health_counts} value=green title="Green"/>
+<BigValue data={health_counts} value=amber title="Amber"/>
+<BigValue data={health_counts} value=red title="Red"/>
+
+<DataTable data={health} rows=all>
+  <Column id=table_name title="Table"/>
+  <Column id=grade title="Grade"/>
+  <Column id=reason title="Reason" wrap=true/>
+  <Column id=freshness_grade title="Freshness"/>
+  <Column id=volume_grade title="Volume"/>
+  <Column id=null_rate_grade title="Null rate"/>
+  <Column id=rows_today title="Rows" fmt=num0/>
+  <Column id=usual_rows title="Usual a day" fmt=num0/>
+</DataTable>
+
+How the grades work: freshness compares the hours since the table's last row with its longest gap in 28 days
+(amber past it, red past three times it, never stricter than 24 hours). Volume and null rate count spreads from
+the usual day (amber past 3, red past 6); the spread is never smaller than what random noise gives a table that
+size, so a table with four rows a day is not flagged for having two. Code and tests:
+[data_health/](https://github.com/sky-five/ridgeline-analytics/tree/main/data_health).
+
 ## Last dbt build
 
 ```sql tests

@@ -3,13 +3,14 @@
 The Evidence site reads only these tables and a few marts for row-level lists, so every KPI on the
 site comes from the same MetricFlow definition the AI analyst uses.
 
-    python scripts/export_reporting.py [--warehouse warehouse/ridgeline.duckdb]
+    python scripts/export_reporting.py [--warehouse warehouse/ridgeline.duckdb] [--as-of YYYY-MM-DD]
 """
 import argparse
 import json
 import os
 import re
 import sys
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import duckdb
@@ -35,7 +36,8 @@ def _plain(text: str) -> str:
     return re.sub(r"\*\*|`", "", text).strip()
 
 
-def export(warehouse: Path) -> dict[str, int]:
+def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
+    """Write the reporting tables. With as_of, also grade that day's source batches (data_health/)."""
     os.environ["RIDGELINE_DUCKDB_PATH"] = str(warehouse)
     from semantic import list_metrics, query
 
@@ -120,6 +122,15 @@ def export(warehouse: Path) -> dict[str, int]:
 
     tables.update(build_reviews(warehouse))
 
+    # table health scorecard (data_health/): each source table's batch for the as-of day, on "Data health"
+    if as_of is not None:
+        from data_health.batches import arrivals
+        from data_health.scorecard import WINDOW_DAYS, scorecard
+        from pipelines.engine import TABLES
+
+        tables["table_health"] = scorecard(arrivals(str(as_of), WINDOW_DAYS), str(as_of),
+                                           {name: spec.primary_key for name, spec in TABLES.items()})
+
     with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
         con.sql("create schema if not exists reporting")
         for name, df in tables.items():
@@ -151,7 +162,10 @@ def export(warehouse: Path) -> dict[str, int]:
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--warehouse", type=Path, default=ROOT / "warehouse" / "ridgeline.duckdb")
-    for name, n in export(p.parse_args().warehouse).items():
+    p.add_argument("--as-of", type=date.fromisoformat, default=datetime.now(UTC).date() - timedelta(days=1),
+                   help="day whose source batches the table health scorecard grades (default: yesterday, UTC)")
+    args = p.parse_args()
+    for name, n in export(args.warehouse, args.as_of).items():
         print(f"{name:22}{n:>8,}")
 
 

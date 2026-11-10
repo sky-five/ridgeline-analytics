@@ -54,7 +54,7 @@ def main() -> None:
         _dbt("build", as_of=args.as_of, warehouse=args.warehouse)
         from scripts.export_reporting import export  # dashboard tables from the governed metrics
 
-        export(args.warehouse)
+        export(args.warehouse, args.as_of)
 
 
 if __name__ == "__main__":

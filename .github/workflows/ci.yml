@@ -46,6 +46,9 @@ jobs:
       - name: Product events meet their contract (yesterday's batch)
         run: python -m data_health --day "$AS_OF"
 
+      - name: No source table graded red (yesterday's batches)
+        run: python -m data_health.scorecard --day "$AS_OF"
+
       - name: Load + dbt build
         run: python scripts/run_all.py --fresh --as-of "$AS_OF"
 
