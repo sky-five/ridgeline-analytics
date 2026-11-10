@@ -133,6 +133,14 @@ A PR that changes a governed metric's numbers has to say so. Each of the 27 metr
 .venv/Scripts/python -m revrec
 ```
 
+## Acquisition spend
+
+`acquisition_spend/` asks where the next marketing dollar should go. It computes channel CAC from the governed funnel and spend marts (blended $846, paid channels $1,427 per paying account, May 2025 to April 2026), then a budget what-if built on lead-score deciles: each paid channel's yield per dollar is its signups per dollar times its mix across score deciles times each decile's paid rate. Moving 10% of trade-show spend to Google Ads adds about 1.5 paying accounts a month. A back-test fitted on 2025 predicted 98.7 paid accounts from January-April 2026 spend against 101 actual. Details: [acquisition_spend/README.md](acquisition_spend/README.md).
+
+```bash
+.venv/Scripts/python -m acquisition_spend --move trade_show google_ads 2000
+```
+
 ## A/B test analysis
 
 `experiments/` is a learning project on simulated data: an onboarding experiment (a guided setup checklist vs the current flow) with a planted true lift of 4 points on 30% activation. It plans the sample size (2,131 per arm), reads out the test with a 95% interval, checks the traffic split for a sample-ratio mismatch (and catches a planted tracking bug that would have doubled the apparent lift), and shows with 2,000 A/A tests why stopping at the first significant day is a mistake (5.1% false positives testing once, 25.6% testing daily). The site's [A/B test page](https://sky-five.github.io/ridgeline-analytics/experiments) shows the readout. Details: [experiments/README.md](experiments/README.md).
@@ -199,6 +207,7 @@ account_reviews/ the tables behind one review page per large account, from the g
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
 data_health/ product-event contract and table health scorecard, checked daily, with injected faults as tests
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
+acquisition_spend/ channel CAC and a budget what-if on lead-score deciles, with a back-test
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
