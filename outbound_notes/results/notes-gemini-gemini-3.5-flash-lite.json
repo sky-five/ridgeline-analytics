@@ -1,0 +1,325 @@
+{
+  "as_of": "2026-06-30",
+  "drafter": "gemini/gemini-3.5-flash-lite",
+  "recorded_at": "2026-11-10",
+  "system_prompt": "You draft a short outbound note from a sales rep at a roofing-software company to a roofing\ncontractor who started a free trial in the last few weeks. Rules:\n- 40 to 90 words, plain text, no subject line, no sign-off name, no placeholders in brackets.\n- Greet the company by the exact name given.\n- Mention one or two things they actually did in the trial, using only the facts given. Any number you write must\n  be one of the numbers in the facts.\n- Do not mention a score, a model, a ranking, a decile, or that they were selected.\n- Do not offer discounts, prices, free months or deadlines, and do not claim results for their business.\n- End with one low-pressure question offering a 15-minute call.",
+  "summary": {
+    "leads": 25,
+    "passed": 21,
+    "numbers_checked": 106,
+    "words": [
+      60,
+      83
+    ]
+  },
+  "notes": [
+    {
+      "account_id": "ACC-006914",
+      "company": "Northern Stone Roofing",
+      "facts": "d51d3676a829",
+      "text": "Hi Northern Stone Roofing,\n\nI noticed you logged in 6 times during your trial and sent 3 proposals in your first 14 days. It is great to see you jumping right in and getting proposals out to your clients so quickly. \n\nWould you be open to a quick 15-minute call this week to talk about how your team is managing those projects?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4,
+      "input_tokens": 359,
+      "output_tokens": 77,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006764",
+      "company": "Coastal Crown Roofing",
+      "facts": "f37bee98389d",
+      "text": "Hi Coastal Crown Roofing,\n\nI noticed you have been busy during your free trial. You ordered 4 measurements and sent 5 proposals in your first 14 days, including one right in week 1. Since you are running a 1-person crew, managing all of that on your own is no small feat. \n\nWould you be open to a quick 15-minute call this week to talk about how to streamline your workflow even further?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 6,
+      "input_tokens": 357,
+      "output_tokens": 94,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006827",
+      "company": "Pioneer Shield Roofing",
+      "facts": "f21dd613fd8b",
+      "text": "Hi Pioneer Shield Roofing,\n\nI noticed you have been busy over the last 29 days, logging in 5 times and sending out 4 proposals during your first two weeks. It is great to see a crew of your size jumping right in and getting proposals out to homeowners quickly. \n\nWould you be open to a quick 15-minute call this week to see how we can make your workflow even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 5,
+      "input_tokens": 364,
+      "output_tokens": 86,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006927",
+      "company": "Harbor Valley Roofing",
+      "facts": "10e1bc8a0da9",
+      "text": "Hi Harbor Valley Roofing,\n\nI noticed you have been diving into the platform over the last few weeks since joining through our supplier partner. It is great to see you already ordering measurements and sending a proposal in week one, with 4 total proposals sent in your first 14 days. \n\nWith a crew of 2-5, how has your workflow felt while handling those projects? I am around if you would like to connect for a quick 15-minute call to chat about it.",
+      "ok": false,
+      "problems": [
+        "does not end with a question"
+      ],
+      "numbers_checked": 5,
+      "input_tokens": 361,
+      "output_tokens": 102,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006802",
+      "company": "Pioneer Peak Roofing",
+      "facts": "743dc437ab6e",
+      "text": "Hello Pioneer Peak Roofing team,\n\nI noticed you have been busy over the last few weeks since starting your trial. It looks like you logged in 5 times, ordered 4 measurements, and sent a proposal in week 1. \n\nWith a crew size of 6-15, managing those jobs efficiently makes all the difference. \n\nWould you be open to a quick 15-minute call this week to talk through your workflow?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 6,
+      "input_tokens": 358,
+      "output_tokens": 92,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006650",
+      "company": "Iron Shingle Roofing",
+      "facts": "4b31545fffaa",
+      "text": "Hi Iron Shingle Roofing,\n\nI noticed you have been busy exploring our roofing software during your trial. It looks like you have already ordered 3 measurements and sent out 2 proposals, including getting one out during the first week. \n\nSince you are already putting the platform to work for your team, would you be open to a quick 15-minute call this week to see how we can make your workflow even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3,
+      "input_tokens": 358,
+      "output_tokens": 88,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-007000",
+      "company": "Maple Peak Roofing",
+      "facts": "cb43a8b34ff1",
+      "text": "Hi Maple Peak Roofing,\n\nI noticed you have been busy exploring the platform over the last 15 days. It is great to see that you already ordered measurements and sent out 5 proposals since getting started. \n\nWould you be open to a quick 15-minute call this week to talk through any questions you have as you continue testing out the software?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3,
+      "input_tokens": 356,
+      "output_tokens": 75,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006862",
+      "company": "Summit Ridge Roofing",
+      "facts": "b44ab859cd7b",
+      "text": "Hi Summit Ridge Roofing,\n\nI noticed you have been busy exploring the platform since signing up. Over your first two weeks, you logged in 6 times, ordered 3 measurements, and sent out 2 proposals. \n\nSince you were already able to send a proposal in week 1, how is your workflow shaping up so far? Would you be open to a quick 15-minute call this week to review any questions you have?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 6,
+      "input_tokens": 359,
+      "output_tokens": 91,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006639",
+      "company": "Liberty Shield Roofing",
+      "facts": "d04133b6519c",
+      "text": "Hi Liberty Shield Roofing,\n\nI noticed you were active on 11 days during your first two weeks, logging in 9 times and sending a proposal in week 1. Overall, you sent 4 proposals and got 3 signed. With a crew of 2 to 5, managing all that fieldwork keeps you busy. \n\nWould you be open to a quick 15-minute call this week to talk about how to keep your workflow moving smoothly?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 9,
+      "input_tokens": 359,
+      "output_tokens": 95,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006688",
+      "company": "Blue Top Roofing",
+      "facts": "4448548d7009",
+      "text": "Hello Blue Top Roofing,\n\nI saw that you came by referral and dove right into your trial. During your first couple of weeks, you logged in 7 times, sent a proposal in week 1, and created 3 proposals total. Getting that early momentum with clients is great to see. \n\nWould you be open to a quick 15-minute call this week to talk about how your workflow is shaping up?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4,
+      "input_tokens": 359,
+      "output_tokens": 87,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-007009",
+      "company": "Rocky Gable Roofing",
+      "facts": "10b144f82e1e",
+      "text": "Hi Rocky Gable Roofing,\n\nI noticed you've been putting our platform to work during your trial. Over the last two weeks, it looks like you ordered measurements and sent out four proposals, including one right in week one. With a crew of 2 to 5, streamlining that workflow can save a lot of time in the field. \n\nWould you be open to a quick 15-minute call this week to see how we can make your next project even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 5,
+      "input_tokens": 358,
+      "output_tokens": 98,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006986",
+      "company": "Eagle Ridge Roofing",
+      "facts": "c476e13218f9",
+      "text": "Hi Eagle Ridge Roofing,\n\nI saw you have been diving into the platform over the last 16 days, including logging in 6 times and sending a proposal in week 1. Since you came over by a referral, I wanted to check in and see how everything is going so far with getting measurements and putting proposals together. \n\nWould you be open to a quick 15-minute call this week to walk through any questions?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4,
+      "input_tokens": 356,
+      "output_tokens": 90,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006864",
+      "company": "Coastal Crown Roofing",
+      "facts": "b5a63541a63d",
+      "text": "Hi Coastal Crown Roofing,\n\nI noticed you have been diving into the platform over the last few weeks. It is great to see that you ordered 3 measurements and sent out a few proposals right after signing up. For a team of your size, getting those initial estimates out the door quickly makes a big difference in keeping projects moving. \n\nAre you open to a quick 15-minute call this week to see how we can make your workflow even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 2,
+      "input_tokens": 356,
+      "output_tokens": 94,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006851",
+      "company": "Valley Peak Roofing",
+      "facts": "e9c861a03431",
+      "text": "Hi Valley Peak Roofing,\n\nI noticed you have been putting our platform to work over the last few weeks since coming over from our supplier partner. It is great to see your team of 6-15 already ordering 5 measurements and getting a proposal out the door in week 1. \n\nHow are you finding the workflow so far? Would you be open to a quick 15-minute call this week to share some tips for your crew size?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 5,
+      "input_tokens": 364,
+      "output_tokens": 94,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006828",
+      "company": "Coastal Bay Roofing",
+      "facts": "b988186b6ddb",
+      "text": "Hello Coastal Bay Roofing,\n\nI noticed you have been exploring our roofing software since signing up, including ordering 3 measurements and sending out 2 proposals in your first couple of weeks. It is great to see you jumping right in and sending a proposal in week 1. \n\nWould you be open to a quick 15-minute call this week to talk about how you are finding the setup so far?",
+      "ok": false,
+      "problems": [
+        "the number 1 is not one of this lead's facts"
+      ],
+      "numbers_checked": 4,
+      "input_tokens": 355,
+      "output_tokens": 84,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006791",
+      "company": "Pioneer Forge Roofing",
+      "facts": "232167f0a494",
+      "text": "Hi Pioneer Forge Roofing,\n\nI noticed you have been putting our software to work over the last few weeks. Since signing up, you ordered 2 sets of measurements and sent 3 proposals, including one right in your first week. \n\nFor a single-person crew, managing all of that on your own keeps your days full. I am curious how the workflow felt during those busy stretches. \n\nWould you be open to a quick 15-minute call this week to share how it went?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 3,
+      "input_tokens": 355,
+      "output_tokens": 103,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006642",
+      "company": "Liberty Truss Roofing",
+      "facts": "cc3b78361bf5",
+      "text": "Hi Liberty Truss Roofing,\n\nI noticed you have been exploring our roofing software since signing up, including ordering measurements and sending a proposal in week 1. With a crew size of 6-15, managing your workflow efficiently is key. \n\nWould you be open to a quick 15-minute call this week to see how we can make your day-to-day operations even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4,
+      "input_tokens": 357,
+      "output_tokens": 82,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006708",
+      "company": "Eagle Shingle Roofing",
+      "facts": "1037215e2605",
+      "text": "Hi Eagle Shingle Roofing,\n\nI saw you started your trial a few weeks ago and wanted to reach out. During your first couple of weeks, you logged in 6 times, created 2 measurements, and sent off 2 proposals, including getting one out during your very first week. \n\nHow is everything going with setting up your workflows so far? Let me know if you are up for a quick 15-minute call this week to walk through any questions.",
+      "ok": false,
+      "problems": [
+        "does not end with a question"
+      ],
+      "numbers_checked": 4,
+      "input_tokens": 359,
+      "output_tokens": 97,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006954",
+      "company": "Cedar Shingle Roofing",
+      "facts": "55dcb60a752c",
+      "text": "Hi Cedar Shingle Roofing,\n\nI noticed you have been diving into the platform since your trade show signup, including ordering measurements and sending out a couple of proposals in your first two weeks. With your crew active on the system over several days, how are things coming together so far? \n\nWould you be open to a quick 15-minute call this week to see how we can make your workflow even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 2,
+      "input_tokens": 360,
+      "output_tokens": 85,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006798",
+      "company": "Red Crown Roofing",
+      "facts": "0e2bfbad7382",
+      "text": "Hi Red Crown Roofing,\n\nI noticed you have been busy exploring the platform since signing up, including ordering measurements and sending out a proposal in week one. It looks like you have already put together 2 proposals and logged in quite a few times to keep things moving. \n\nSince you have been hands-on with the features, would you be open to a quick 15-minute call this week to see how we can make your workflow even smoother?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 2,
+      "input_tokens": 356,
+      "output_tokens": 93,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006714",
+      "company": "Cedar Crest Roofing",
+      "facts": "60c7ca90b91c",
+      "text": "Hello Cedar Crest Roofing team,\n\nI noticed you have been busy exploring our roofing software over the past few weeks since signing up. It looks like you jumped right in by ordering 5 measurements and sending out 2 proposals during your first two weeks. Getting those proposals out the door early makes a big difference when managing a crew in the field. \n\nWould you be open to a quick 15-minute call this week to see how we can help streamline your workflow further?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 4,
+      "input_tokens": 360,
+      "output_tokens": 97,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006787",
+      "company": "Rocky Point Roofing",
+      "facts": "1f5235eebaf2",
+      "text": "Hello Rocky Point Roofing,\n\nI noticed you have been busy exploring the platform over the last few weeks, logging in 9 times and ordering 4 measurements. It was great to see you hit the ground running by sending a proposal in week 1. \n\nWould you be open to a quick 15-minute call this week to talk about how things are going so far?",
+      "ok": false,
+      "problems": [
+        "the number 1 is not one of this lead's facts"
+      ],
+      "numbers_checked": 4,
+      "input_tokens": 358,
+      "output_tokens": 78,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006992",
+      "company": "Harbor Bay Roofing",
+      "facts": "efb4386e4828",
+      "text": "Hello Harbor Bay Roofing,\n\nI noticed you have been busy over the last 16 days. It looks like you logged in 4 times, sent a proposal in week 1, and even got a proposal signed. For a crew of 2-5, keeping things moving like that is impressive. \n\nWould you be open to a quick 15-minute call this week to talk about how things are going so far?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 6,
+      "input_tokens": 362,
+      "output_tokens": 89,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006632",
+      "company": "Granite Gable Roofing",
+      "facts": "bfc9d197ed52",
+      "text": "Hello Granite Gable Roofing team,\n\nI noticed you have been putting our software to work over the last few weeks. During that time, your team logged in 4 times, ordered 3 measurements, and sent out a proposal in your very first week. \n\nBalancing jobs for a crew of 6-15 keeps everyone busy, so I wanted to see how the workflow is holding up for you. Would you be open to a quick 15-minute call this week to talk through your setup?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 5,
+      "input_tokens": 364,
+      "output_tokens": 104,
+      "stop": "end"
+    },
+    {
+      "account_id": "ACC-006961",
+      "company": "Eagle Canyon Roofing",
+      "facts": "4ad94013d92f",
+      "text": "Hi Eagle Canyon Roofing,\n\nI noticed you have been busy exploring the platform over the last couple of weeks. It looks like you have already put our tools to work by ordering measurements and sending a proposal in week one. \n\nSince you are managing a crew on your own, I wanted to see how the workflow is holding up for you. Would you be open to a quick 15-minute call this week to walk through any questions?",
+      "ok": true,
+      "problems": [],
+      "numbers_checked": 1,
+      "input_tokens": 355,
+      "output_tokens": 90,
+      "stop": "end"
+    }
+  ]
+}
