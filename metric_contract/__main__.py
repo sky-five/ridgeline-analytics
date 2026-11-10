@@ -29,7 +29,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"contract: {len(new['metrics'])} metrics recorded on the {new['snapshot_as_of']} snapshot")
         return 1 if refused else 0
 
-    base = json.loads(args.base.read_text(encoding="utf-8")) if args.base and args.base.exists() else None
+    base_text = args.base.read_text(encoding="utf-8").strip() if args.base and args.base.exists() else ""
+    base = json.loads(base_text) if base_text else None  # no contract on the base branch yet
     problems = check(versions, contract, values, base)
     for line in problems:
         print(f"FAIL {line}")

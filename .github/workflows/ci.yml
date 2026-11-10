@@ -73,3 +73,40 @@ jobs:
             dbt/target/manifest.json
             dbt/target/run_results.json
             dbt/target/sources.json
+
+  # Governed metrics on a fixed snapshot: a PR that moves a metric's value must bump its version.
+  metric-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+      RIDGELINE_AS_OF: "2026-06-30"  # the contract's snapshot; never moves with the calendar
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('requirements.txt') }}
+
+      - name: Base branch's contract
+        run: |
+          git fetch --depth 1 origin "${{ github.base_ref || 'main' }}"
+          git show FETCH_HEAD:metric_contract/contract.json > "$RUNNER_TEMP/base-contract.json" || true
+
+      - name: Build the warehouse on the fixed snapshot
+        run: python scripts/run_all.py --fresh --as-of "$RIDGELINE_AS_OF"
+
+      - name: Governed metrics keep their values unless their version is bumped
+        run: python -m metric_contract --base "$RUNNER_TEMP/base-contract.json"
