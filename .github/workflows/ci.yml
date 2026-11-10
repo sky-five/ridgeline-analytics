@@ -110,3 +110,6 @@ jobs:
 
       - name: Governed metrics keep their values unless their version is bumped
         run: python -m metric_contract --base "$RUNNER_TEMP/base-contract.json"
+
+      - name: Channel CAC and budget what-if results match the snapshot
+        run: python -m acquisition_spend --check
