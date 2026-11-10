@@ -6,7 +6,7 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 **Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night from a fresh simulated day)
 
-**Status:** Phases 1–4 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (identical numbers), tested in CI on both. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics; its recorded eval is on the site's Ask the data page. See the [roadmap](#roadmap).
+**Status:** Phases 1–4 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (identical numbers); CI tested both until the Snowflake trial account was suspended on 2026-11-10, and runs DuckDB only since then. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics; its recorded eval is on the site's Ask the data page. See the [roadmap](#roadmap).
 
 ## Architecture
 
@@ -154,6 +154,8 @@ The analyst answered each question twice, once with only the raw loaded tables a
 One Evidence page template renders a review for each of the 25 largest paying accounts by MRR, rebuilt every night: [Account reviews](https://sky-five.github.io/ridgeline-analytics/account-reviews/). Each review shows the last 12 complete months of MRR, homeowner leads won and closed, measurement orders and redos, and support tickets, plus the account's health score and a few talking points built from the same numbers. The monthly figures are the governed metrics grouped by the `account` entity, so a review can't disagree with the company-wide pages. A warehouse test checks every account's month-end MRR against the MRR movements and its tickets against the support mart. Code: [account_reviews/](account_reviews/), template: [reports/pages/account-reviews/[account_id].md](reports/pages/account-reviews/%5Baccount_id%5D.md).
 
 ## Snowflake
+
+The Snowflake trial account was suspended on 2026-11-10. Since then CI builds DuckDB only and `.github/workflows/snowflake.yml` runs on demand only; the parity checks recorded while the trial lasted are in `semantic_eval/results/`.
 
 Run `infra/snowflake/setup.sql` once as ACCOUNTADMIN (it replaces `<PUBLIC_KEY>` with your key's public half), put the dlt credentials in `.dlt/secrets.toml`, then:
 

@@ -132,6 +132,8 @@ python -m semantic_eval.run --replay semantic_eval/results/raw-vs-governed-gemin
 
 This run is DuckDB only; the governed side on Snowflake (below) is the Claude Code run's.
 
+**Gemini on Snowflake: not recorded.** `.github/workflows/record-eval-snowflake.yml` asks the governed questions through Gemini on a Snowflake build and then on a DuckDB build of the same day, and pairs the answers (`python -m semantic_eval.cross_target runs sf.json duckdb.json`). With `RIDGELINE_DBT_TARGET=snowflake` the governed tool runs MetricFlow's compiled query on Snowflake after a one-SELECT check (`sql_guard.check_snowflake_sql`, sqlglot's Snowflake dialect). Its first run on 2026-11-10 never reached the model: the Snowflake trial account had been suspended that day. The code and its tests (`tests/semantic_eval/test_governed_on_snowflake.py`, fakes only) stay for an account that has Snowflake.
+
 Tests (`tests/analyst/test_llm.py`, `tests/semantic_eval/test_eval_api_backend.py`, `tests/semantic_eval/test_record_workflow.py`) use a fake SDK and a fake HTTP transport, so nothing calls a model: tool specs, tool results passed back by id, the `thought_signature` round trip, caps, retries and pacing, resume after a limit or a provider failure, and that the workflow keeps its as-of date and results file fixed and the key out of every step but recording. Every committed results file, complete or partial, must replay to the scores it stored.
 
 ## The governed side on Snowflake
@@ -144,7 +146,7 @@ The same dbt project also builds on Snowflake (`.github/workflows/snowflake.yml`
 
 **Recorded run (2026-11-03, data as of 2026-11-02, [workflow run](https://github.com/sky-five/ridgeline-analytics/actions/runs/41635695859)):** 25 / 25 governed answers match, largest numeric difference 0. The report is `results/governed-snowflake-vs-duckdb-2026-11-03.json`.
 
-This covers the governed arm only: the metric definitions give the same answers on either engine. The raw-table arm and the AI analyst ran on DuckDB. The Snowflake account is a trial, so this check runs only while the trial lasts; the recorded report stays.
+This covers the governed arm only: the metric definitions give the same answers on either engine. The raw-table arm and the AI analyst ran on DuckDB. The Snowflake account was a trial and was suspended on 2026-11-10, so this check no longer runs; the recorded report stays.
 
 ```bash
 RIDGELINE_DBT_TARGET=snowflake python -m semantic_eval.cross_target snapshot --out sf.json   # after dbt build --target snowflake
