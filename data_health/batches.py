@@ -147,3 +147,69 @@ def inject(fault: str, batch: pd.DataFrame, accounts: pd.DataFrame, loaded: pd.S
     if fault == "replayed_batch":
         loaded = pd.concat([loaded, batch.event_id.head(5)])
     return b, loaded
+
+
+def arrivals(day: str, days_before: int) -> dict[str, pd.DataFrame]:
+    """Every table's daily batches from `days_before` days before `day` up to `day`, stacked.
+
+    A batch is what an incremental load picks up that day: the rows whose updated_at falls on it, as they
+    were then. A row changed on three days shows up in three batches, so counts and empty values per day
+    are what the loader saw, not what the latest version of the table says.
+    """
+    from pipelines.engine import TABLES
+
+    end = pd.Timestamp(day)
+    parts: dict[str, list[pd.DataFrame]] = {name: [] for name in TABLES}
+    for d in pd.date_range(end - pd.Timedelta(days=days_before), end, freq="D"):
+        world = world_as_of(str(d.date()))
+        for name, spec in TABLES.items():
+            df = world[name]
+            on_day = df[df.updated_at.dt.floor("D") == d]
+            parts[name].append(on_day.drop(columns=[c for c in spec.internal_cols if c in df]))
+    return {name: pd.concat(p, ignore_index=True) for name, p in parts.items()}
+
+
+# Table faults for the health scorecard: each takes one table's stacked batches and the day, and returns a
+# broken copy. Unlike the contract faults above, these leave every row valid; what breaks is the shape of
+# the day: it is late, short, doubled or half empty.
+def _stuck_loader(df, day):  # nothing has arrived for the last four days
+    return df[df.updated_at < pd.Timestamp(day) - pd.Timedelta(days=3)]
+
+
+def _half_batch(df, day):  # half of the day's rows never arrived
+    today = df.updated_at.dt.floor("D") == pd.Timestamp(day)
+    drop = df.index[today][::2]
+    return df.drop(index=drop)
+
+
+def _empty_batch(df, day):  # the day's load ran and brought nothing
+    return df[df.updated_at.dt.floor("D") != pd.Timestamp(day)]
+
+
+def _double_load(df, day):  # the day's batch was appended twice
+    today = df[df.updated_at.dt.floor("D") == pd.Timestamp(day)]
+    return pd.concat([df, today], ignore_index=True)
+
+
+def _account_id_dropped(df, day):  # an upstream change stops filling account_id on a fifth of the day's rows
+    if "account_id" not in df:
+        raise ValueError("this table has no account_id column")
+    df = df.copy()
+    today = df.index[df.updated_at.dt.floor("D") == pd.Timestamp(day)]
+    df.loc[today[::5], "account_id"] = None
+    return df
+
+
+TABLE_FAULTS = {  # name -> (break the table, check that must turn red)
+    "stuck_loader": (_stuck_loader, "freshness"),
+    "half_batch": (_half_batch, "volume"),
+    "empty_batch": (_empty_batch, "volume"),
+    "double_load": (_double_load, "volume"),
+    "account_id_dropped": (_account_id_dropped, "null_rate"),
+}
+
+
+def inject_table(fault: str, tables: dict[str, pd.DataFrame], table: str, day: str) -> dict[str, pd.DataFrame]:
+    """A copy of the stacked batches with one table broken by `fault` on `day`."""
+    breaker, _ = TABLE_FAULTS[fault]
+    return {**tables, table: breaker(tables[table], day)}
