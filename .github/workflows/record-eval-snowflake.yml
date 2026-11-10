@@ -1,0 +1,123 @@
+name: record eval (snowflake)
+
+# Records the governed arm of the raw-vs-governed eval through the Gemini API (free tier) twice on the
+# same simulated day: once on the Snowflake build and once on the DuckDB build, then pairs the answers.
+# Same model, questions, tools and prompts; only the warehouse under MetricFlow differs.
+# Needs the repository secrets GEMINI_API_KEY and SNOWFLAKE_PRIVATE_KEY (the Snowflake account is a trial).
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model"
+        required: true
+        default: gemini-3.5-flash-lite
+      pace:
+        description: "Seconds between model requests"
+        required: true
+        default: "6"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snowflake  # shares Snowflake with snowflake.yml; never build the same schemas at once
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      RIDGELINE_DUCKDB_PATH: ${{ github.workspace }}/warehouse/ridgeline.duckdb
+      MODEL: ${{ inputs.model }}
+      PACE: ${{ inputs.pace }}
+    steps:
+      - name: Check the secrets
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        run: |
+          test -n "$GEMINI_API_KEY" || { echo "::error::GEMINI_API_KEY secret is not set"; exit 1; }
+          test -n "$KEY" || { echo "::error::SNOWFLAKE_PRIVATE_KEY secret is not set"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install and write key
+        env:
+          KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/snowflake_key.p8"
+          chmod 600 "$RUNNER_TEMP/snowflake_key.p8"
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=$RUNNER_TEMP/snowflake_key.p8" >> "$GITHUB_ENV"
+          AS_OF=$(date -u -d yesterday +%F)
+          echo "AS_OF=$AS_OF" >> "$GITHUB_ENV"
+          echo "STEM=semantic_eval/results/governed-gemini-$MODEL-as-of-$AS_OF" >> "$GITHUB_ENV"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('requirements.txt') }}
+
+      - name: Load into Snowflake (incremental)
+        env:
+          DESTINATION__SNOWFLAKE__CREDENTIALS__DATABASE: RIDGELINE_RAW
+          DESTINATION__SNOWFLAKE__CREDENTIALS__USERNAME: RIDGELINE_SVC
+          DESTINATION__SNOWFLAKE__CREDENTIALS__HOST: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          DESTINATION__SNOWFLAKE__CREDENTIALS__WAREHOUSE: RIDGELINE_WH
+          DESTINATION__SNOWFLAKE__CREDENTIALS__ROLE: RIDGELINE_LOADER
+        run: |
+          export DESTINATION__SNOWFLAKE__CREDENTIALS__PRIVATE_KEY_PATH="$SNOWFLAKE_PRIVATE_KEY_PATH"
+          python -m pipelines.run --as-of "$AS_OF" --destination snowflake
+
+      - name: dbt build on Snowflake
+        working-directory: dbt
+        run: |
+          dbt deps --profiles-dir .
+          dbt build --profiles-dir . --target snowflake --vars "{as_of_date: '$AS_OF'}"
+
+      # The semantic manifest now points MetricFlow at Snowflake tables: record before the DuckDB build.
+      - name: Record governed arm on Snowflake
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          RIDGELINE_DBT_TARGET: snowflake
+        run: |
+          python -m semantic_eval.run --backend api --provider gemini --model "$MODEL" --arms governed \
+            --pace "$PACE" --out "$STEM-snowflake.json"
+
+      - name: Load + dbt build (DuckDB)
+        run: python scripts/run_all.py --fresh --as-of "$AS_OF"
+
+      - name: Record governed arm on DuckDB
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python -m semantic_eval.run --backend api --provider gemini --model "$MODEL" --arms governed \
+            --pace "$PACE" --out "$STEM-duckdb.json"
+
+      - name: Pair the two runs
+        run: |
+          python -m semantic_eval.run --replay "$STEM-snowflake.json"
+          python -m semantic_eval.run --replay "$STEM-duckdb.json"
+          python -m semantic_eval.cross_target runs "$STEM-snowflake.json" "$STEM-duckdb.json" \
+            --out "$STEM-snowflake-vs-duckdb.json"
+
+      - name: Commit the recordings
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add semantic_eval/results
+          git diff --cached --quiet && { echo "nothing new recorded"; exit 0; }
+          git commit -m "eval(semantic-eval): governed arm on Snowflake and DuckDB through $MODEL (Gemini API), as of $AS_OF"
+          git pull --rebase origin main
+          git push origin HEAD:main
