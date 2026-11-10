@@ -127,7 +127,7 @@ A PR that changes a governed metric's numbers has to say so. Each of the 27 metr
 
 ## ARR and revenue recognition
 
-`revrec/` is a separate module on its own synthetic Stripe-shaped billing data: monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. Details: [revrec/README.md](revrec/README.md).
+`revrec/` is a separate module on its own synthetic Stripe-shaped billing data: monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. It also shows three ARR definitions side by side (contract, billed and revenue run-rate) with a bridge that explains the gap; in September 2026 contract ARR is $806,640 and run-rate ARR $745,916. Details: [revrec/README.md](revrec/README.md).
 
 ```bash
 .venv/Scripts/python -m revrec
