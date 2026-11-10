@@ -149,9 +149,11 @@ The analyst answered each question twice, once with only the raw loaded tables a
 
 `customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) lists the 683 live subscriptions on 2026-07-01 with the riskiest fifth by each method and the reasons behind each score. Details: [customer_health/README.md](customer_health/README.md).
 
-## Event contracts
+## Data health
 
-`data_health/` writes a contract for the simulator's product events (16 rules on columns, types, ids, the six event types, proposal values and timestamps) and checks each day's batch against it. All 623,164 events up to 2026-06-30 pass. 18 injected bad batches (an unknown event type, a value in cents, a replayed batch, an event from tomorrow, a dropped column and others) each fail on exactly the rule meant to catch them, and the command exits 1. CI checks yesterday's batch on every push. Details: [data_health/README.md](data_health/README.md).
+`data_health/` writes a contract for the simulator's product events (16 rules on columns, types, ids, the six event types, proposal values and timestamps) and checks each day's batch against it. All 623,164 events up to 2026-06-30 pass. 18 injected bad batches (an unknown event type, a value in cents, a replayed batch, an event from tomorrow, a dropped column and others) each fail on exactly the rule meant to catch them, and the command exits 1. CI checks yesterday's batch on every push.
+
+A table health scorecard grades every source table's daily batch green, amber or red on freshness, volume and null rate, each against the table's own last 28 days, with a one-line reason. On 2,013 clean table-days it gives no red and 39 ambers; injected faults (a stuck loader, half a batch, a batch loaded twice, a column going blank) turn red on the busy feeds, and the README lists which small tables are too small to show which fault. It is on the [Data health page](https://sky-five.github.io/ridgeline-analytics/data-health/), and CI fails if yesterday's batches have a red table. Details: [data_health/README.md](data_health/README.md).
 
 ## Account reviews
 
@@ -190,7 +192,7 @@ orchestration/ Airflow DAG for the nightly build, failure alerts, last-good mark
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
-data_health/ contract for product-event batches, checked daily, with injected bad batches as tests
+data_health/ product-event contract and table health scorecard, checked daily, with injected faults as tests
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
