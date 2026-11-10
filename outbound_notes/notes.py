@@ -47,6 +47,15 @@ def record(lead_facts: list[dict], as_of: pd.Timestamp, client, pace: float = 0.
             "summary": summary(notes), "notes": notes}
 
 
+def rescore(recorded: dict, lead_facts: list[dict]) -> dict:
+    """Re-run the checker on recorded drafts after a checker change. The model's text is kept as recorded."""
+    by_id = {f["account_id"]: f for f in lead_facts}
+    kept = ("account_id", "company", "facts", "text", "ok", "problems", "numbers_checked")
+    out = [_note(by_id[n["account_id"]], n["text"], **{k: v for k, v in n.items() if k not in kept})
+           for n in recorded["notes"]]
+    return recorded | {"summary": summary(out), "notes": out}
+
+
 def replay(recorded: dict, lead_facts: list[dict]) -> list[str]:
     """Problems with a recording against today's warehouse: missing leads, changed facts, or a stored verdict
     that the checker no longer agrees with. An empty list means the recording replays as committed."""

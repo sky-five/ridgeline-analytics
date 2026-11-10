@@ -3,6 +3,7 @@
 Reads the warehouse (RIDGELINE_DUCKDB_PATH, default warehouse/ridgeline.duckdb).
   (no flags)  write results/notes-template.json: the no-model drafts, checked
   --check     fail if notes-template.json is out of date, or any recorded model run no longer replays
+  --rescore   re-run the checker on recorded drafts after a checker change (the drafts' text is kept)
   --record    draft every note with a model and write results/notes-<provider>-<model>.json (needs its key)
 """
 import argparse
@@ -14,6 +15,7 @@ from outbound_notes import leads, notes
 p = argparse.ArgumentParser(prog="python -m outbound_notes")
 p.add_argument("--check", action="store_true")
 p.add_argument("--record", action="store_true")
+p.add_argument("--rescore", action="store_true", help="re-run the checker on recorded drafts (text unchanged)")
 p.add_argument("--provider", default="gemini")
 p.add_argument("--model", default=None)
 p.add_argument("--pace", type=float, default=6.0, help="seconds between model requests")
@@ -31,6 +33,13 @@ if args.record:
     notes.RESULTS.mkdir(exist_ok=True)
     path.write_text(notes.dumps(out))
     print(f"{path.name}: {out['summary']}")
+    sys.exit(0)
+
+if args.rescore:
+    for path in notes.recorded_files():
+        out = notes.rescore(json.loads(path.read_text()), lead_facts)
+        path.write_text(notes.dumps(out))
+        print(f"{path.name}: {out['summary']}")
     sys.exit(0)
 
 text = notes.dumps(notes.template_notes(lead_facts, as_of))

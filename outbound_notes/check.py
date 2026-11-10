@@ -57,7 +57,8 @@ def allowed_numbers(f: dict) -> set[int]:
     crew = {int(x) for x in DIGITS.findall(f["crew_size"])}
     counts = {f[k] for k in ("measurements_14d", "proposals_14d", "signed_14d", "logins_14d", "active_days_14d",
                              "days_since_signup")}
-    return FIXED_NUMBERS | crew | counts
+    week1 = {1} if f["proposal_wk1"] else set()  # "sent a proposal in week 1"
+    return FIXED_NUMBERS | crew | counts | week1
 
 
 def check(text: str, f: dict) -> Result:
