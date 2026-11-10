@@ -109,5 +109,5 @@ def run_compiled(sql: str) -> tuple[list[str], list[list]]:
     Used on Snowflake, where the AI analyst has no read-only file to open: the caller checks the SQL first
     (analyst/sql_guard.check_snowflake_sql). Column names come back lower-case, as in query().
     """
-    table = _config().mf.sql_client.query(sql)
+    table = _config().sql_client.query(sql)
     return [c.column_name.lower() for c in table.column_descriptions], [list(r) for r in table.rows]
