@@ -95,7 +95,8 @@ def _shift(month: date, k: int) -> date:
 
 
 def build(warehouse: Path) -> dict[str, pd.DataFrame]:
-    """Read the health mart and the governed metrics from a built warehouse and shape the review tables."""
+    """Read the health mart and the governed metrics from a built warehouse; shape the review and opportunity
+    tables."""
     import duckdb
 
     from semantic import query
@@ -113,4 +114,9 @@ def build(warehouse: Path) -> dict[str, pd.DataFrame]:
     metrics = query(MONTHLY_METRICS, ["account", "metric_time__month"],
                     [f"{{{{ Entity('account') }}}} in ({ids})"])
     metrics = metrics.rename(columns={"metric_time__month": "month"})
-    return review_tables(health, metrics, as_of)
+    tables = review_tables(health, metrics, as_of)
+    # the opportunities page: every paying account, flagged on falling orders or a close-rate dip
+    from account_reviews.opportunities import build as build_opportunities
+
+    tables["account_opportunities"] = build_opportunities(health, as_of, picked)
+    return tables
