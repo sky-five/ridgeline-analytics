@@ -136,6 +136,12 @@ This run is DuckDB only; the governed side on Snowflake (below) is the Claude Co
 
 Tests (`tests/analyst/test_llm.py`, `tests/semantic_eval/test_eval_api_backend.py`, `tests/semantic_eval/test_record_workflow.py`) use a fake SDK and a fake HTTP transport, so nothing calls a model: tool specs, tool results passed back by id, the `thought_signature` round trip, caps, retries and pacing, resume after a limit or a provider failure, and that the workflow keeps its as-of date and results file fixed and the key out of every step but recording. Every committed results file, complete or partial, must replay to the scores it stored.
 
+## On the site
+
+The [Raw tables vs governed metrics page](https://sky-five.github.io/ridgeline-analytics/raw-vs-governed/) shows every committed run: correct answers per arm, the lift in accuracy, scores by question area, and one expandable example for each question the raw-table arm got wrong and the governed arm got right (8 for Claude Code, 12 for gemini-3.5-flash-lite). Each example shows the right answer, both arms' answers, the trap the question was written to catch, the definition the raw arm said it used, its last SQL and the governed arm's last metric query. Raw misses that are right in substance but not in the scorer's form (4 across the two runs, listed in `report.py`) are marked, and the page also shows the "on substance" counts (19 / 25 and 14 / 25).
+
+`report.py` builds the three tables behind it (`eval_scores`, `eval_categories`, `eval_questions`) from `results/raw-vs-governed*.json`, and `scripts/export_reporting.py` writes them to the `reporting` schema in the nightly build. No model is called; a new run shows up once its file is committed. `tests/semantic_eval/test_eval_report.py` checks the tables against each run's stored summary and the numbers quoted here, and that the page reads only columns the export writes.
+
 ## The governed side on Snowflake
 
 The same dbt project also builds on Snowflake (`.github/workflows/snowflake.yml`). That workflow now asks the 25 questions through MetricFlow on both warehouses and checks the answers match (`cross_target.py`):
