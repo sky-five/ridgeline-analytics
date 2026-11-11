@@ -2,7 +2,7 @@
 
 A learning project on simulated data. The standard objects of a B2B sales CRM (leads, accounts, contacts,
 opportunities and opportunity history) come from the sales CRM pack in
-[saas-world-sim](https://github.com/sky-five/saas-world-sim#domain-pack-sales-crm) v0.4.0. They are loaded as of a
+[saas-world-sim](https://github.com/sky-five/saas-world-sim#domain-pack-sales-crm) v0.5.0. They are loaded as of a
 date into DuckDB and modelled in a small dbt project. The pack is messy on purpose and keeps the answers in label
 columns. Those labels are never loaded, so the fixes here are scored against data the models never saw. Nothing here
 comes from a real CRM or real customers.

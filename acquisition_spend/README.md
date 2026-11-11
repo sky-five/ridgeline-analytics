@@ -5,7 +5,7 @@ signup funnel (`fct_account_funnel`), the lead score and its deciles (`fct_pqa_s
 channel (`fct_marketing_channel_daily`).
 
 > **All data is synthetic**, from the simulated roofing-software business in
-> [saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.4.0.
+> [saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.5.0.
 
 ```bash
 python scripts/run_all.py --fresh --as-of 2026-06-30   # build the warehouse on the fixed snapshot

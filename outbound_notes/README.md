@@ -4,7 +4,7 @@ A rep calling new trial accounts wants a short first note that says something tr
 did. This module drafts one note per lead from the lead's own data and checks every note before a rep sees it.
 
 > **All data is synthetic**, from the simulated roofing-software business in
-> [saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.4.0.
+> [saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.5.0.
 
 ```bash
 python scripts/run_all.py --fresh --as-of 2026-06-30   # build the warehouse on the fixed snapshot

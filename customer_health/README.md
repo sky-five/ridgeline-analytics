@@ -4,7 +4,7 @@ A learning project on simulated data. It asks one question: can the signals a cu
 (product usage, support tickets, re-measure requests, late invoices, crew size, plan, tenure) warn that a
 subscriber will cancel in the next 60 days? It answers it two ways and compares them on accounts held out from
 fitting. The data is the simulated roofing-software business from
-[saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.4.0. Nothing here comes from real customers.
+[saas-world-sim](https://github.com/sky-five/saas-world-sim) v0.5.0. Nothing here comes from real customers.
 
 ```bash
 python -m customer_health          # build snapshots, compare score and model, write results/
