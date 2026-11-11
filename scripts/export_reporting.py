@@ -68,6 +68,14 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables["metric_glossary"] = glossary_table(reconcile(warehouse))
 
+    # the "Ask the funnel" panel: every funnel metric value it may show, and the words it understands
+    from funnel_ask.answers import answers_table, vocab_table
+
+    with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
+        last_day = con.sql("select max(date_day) from fct_mrr_daily").fetchone()[0]
+    tables["funnel_answers"] = answers_table(last_day)
+    tables["funnel_vocab"] = vocab_table(tables["funnel_answers"])
+
     run_results = ROOT / "dbt" / "target" / "run_results.json"
     if run_results.exists():
         results = json.loads(run_results.read_text())
