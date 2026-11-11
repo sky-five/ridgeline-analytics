@@ -132,6 +132,10 @@ The analyst answered each question twice, once with only the raw loaded tables a
 
 A PR that changes a governed metric's numbers has to say so. Each of the 27 metrics carries a version, and `metric_contract/contract.json` records its values on a fixed snapshot (the warehouse as of 2026-06-30, by month). A CI job rebuilds that snapshot on every PR and fails if a metric's value moved while its version stayed the same; a deliberate change bumps the version and re-records the values, so the new numbers show up in review. [PR #1](https://github.com/sky-five/ridgeline-analytics/pull/1) is the demo: a one-line change that counts win-backs as expansion MRR passes the build and fails the contract. Details: [metric_contract/README.md](metric_contract/README.md).
 
+## Metric glossary and reconciliation
+
+Each of the 27 governed metrics has a second calculation in plain SQL that skips MetricFlow and, where it can, starts from an earlier table: MRR is rebuilt from the movement ledger instead of the daily MRR mart, signups, spend, leads, tickets and orders from the staging models, and the 60-day funnel flags from their timestamps. `python -m metric_glossary` compares the two for every month and fails on any difference, or on a metric with no check; CI and the nightly build run it. On the warehouse as of 2026-11-10 all 27 agree on all 35 months. The site's [Metric glossary page](https://sky-five.github.io/ridgeline-analytics/metrics/) lists each definition, its last full month and the check's SQL. Details: [metric_glossary/README.md](metric_glossary/README.md).
+
 ## ARR and revenue recognition
 
 `revrec/` is the month-end close on the engine's billing pack, a separate seeded subscription business with monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. It also shows three ARR definitions side by side (contract, billed and revenue run-rate) with a bridge that explains the gap; in September 2026 contract ARR is $736,260 and run-rate ARR $679,531. CI and the nightly job run the close and the parallel check as of yesterday. Details: [revrec/README.md](revrec/README.md).
@@ -216,6 +220,7 @@ experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
+metric_glossary/ an independent SQL check for every governed metric, compared month by month
 data_health/ product-event contract and table health scorecard, checked daily, with injected faults as tests
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 acquisition_spend/ channel CAC and a budget what-if on lead-score deciles, with a back-test
@@ -230,7 +235,7 @@ docs/        design spec and implementation plans
 
 1. ✅ Simulator, dlt, dbt on DuckDB, tests, CI
 2. ✅ Snowflake as a second target (key-pair service user, least-privilege roles, credit-capped warehouse: `infra/snowflake/setup.sql`), with its own CI job and a DuckDB parity check. SCD2 snapshot of subscriptions. Support-ticket churn themes come from 300 tickets labelled by Claude Code plus a TF-IDF classifier (100% on held-out labels). Snowflake Cortex `AI_CLASSIFY` is blocked on trial accounts, so it sits behind a `use_cortex` flag for paid accounts.
-3. ✅ MetricFlow semantic layer (27 governed metrics), Evidence site (scorecard, acquisition, ready for sales, data health, metric definitions), nightly simulate → load → build → deploy to GitHub Pages with a smoke test
+3. ✅ MetricFlow semantic layer (27 governed metrics), Evidence site (scorecard, acquisition, ready for sales, data health, metric glossary), nightly simulate → load → build → deploy to GitHub Pages with a smoke test
 4. ✅ AI analyst: MCP server, read-only SQL guard, Claude API agent with spending caps, 20-question eval, shown on the site's "Ask the data" page as a recorded run (no live LLM calls). Retention and contractor outcome pages
 5. Polish: architecture diagram, demo video
 
