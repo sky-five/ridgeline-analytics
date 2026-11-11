@@ -130,3 +130,34 @@ def test_account_review_summaries_check_against_the_warehouse():
         result = check(row["summary"], row, months[months["account_id"] == row["account_id"]])
         assert result.ok, result.problems
         assert len(result.numbers) == row["summary_numbers_checked"] >= 10
+
+
+def test_account_opportunities_match_the_marts():
+    # the opportunities page's window totals must equal the order and lead marts counted directly
+    from account_reviews.opportunities import MIN_CLOSED, MIN_ORDERS, ORDER_DROP, RATE_DROP_PTS
+    from scripts.export_reporting import export
+
+    export(DB)
+    rows = sql("""select account_id, before_start, after_start, last_month, measurement_orders_before,
+                         measurement_orders_after, won_leads_before, closed_leads_before, won_leads_after,
+                         closed_leads_after, orders_falling, close_rate_dip
+                  from reporting.account_opportunities""")
+    assert rows, "no account flagged"
+    for (a, b0, a0, last, ob, oa, wb, cb, wa, ca, falling, dip) in rows:
+        end = f"date '{last}' + interval 1 month"
+        o = sql(f"""select count(*) filter (where ordered_at >= '{b0}' and ordered_at < '{a0}'),
+                           count(*) filter (where ordered_at >= '{a0}' and ordered_at < {end})
+                    from fct_measurement_quality where account_id = '{a}'""")[0]
+        assert (ob, oa) == o, a
+        leads = sql(f"""select
+              count(*) filter (where outcome_group = 'won' and created_at >= '{b0}' and created_at < '{a0}'),
+              count(*) filter (where outcome_group <> 'open' and created_at >= '{b0}' and created_at < '{a0}'),
+              count(*) filter (where outcome_group = 'won' and created_at >= '{a0}' and created_at < {end}),
+              count(*) filter (where outcome_group <> 'open' and created_at >= '{a0}' and created_at < {end})
+            from fct_contractor_leads where account_id = '{a}'""")[0]
+        assert (wb, cb, wa, ca) == leads, a
+        assert falling == (ob >= MIN_ORDERS and (oa - ob) / ob <= -ORDER_DROP), a
+        assert dip == (cb >= MIN_CLOSED and ca >= MIN_CLOSED and round(wa / ca - wb / cb, 4) <= -RATE_DROP_PTS), a
+    # every paying account with a review page is linked when flagged
+    assert sql("""select count(*) from reporting.account_opportunities o join reporting.account_review r
+                  using (account_id) where o.review_link is null""")[0][0] == 0
