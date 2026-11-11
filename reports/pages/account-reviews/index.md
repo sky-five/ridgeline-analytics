@@ -9,6 +9,9 @@ The monthly numbers on every review are the governed metrics (MRR, support ticke
 homeowner leads) grouped by account, the same definitions behind the company-wide pages and the AI analyst. Data is
 simulated.
 
+The [opportunities page](/account-reviews/opportunities) lists every paying account whose measurement orders are
+falling or whose lead close rate has dipped.
+
 ```sql accts
 select count(*) as n, sum(mrr) as mrr, min(as_of) as as_of from ridgeline.account_review
 ```
