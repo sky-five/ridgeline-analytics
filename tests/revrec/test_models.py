@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from revrec.billing import Billing, Subscription, generate
+from revrec.billing import Billing, Subscription, from_engine
 from revrec.build import build
 
 SUB = Subscription("sub_1", "cus_1", "team", 1, "year")
@@ -92,7 +92,7 @@ def test_churn_counts_in_the_month_service_stops():
 
 
 def test_bridge_and_rollforward_identities_on_generated_data():
-    con = build(generate())
+    con = build(from_engine())
     bad_bridge = con.execute(
         "select count(*) from fct_arr_bridge where opening_arr_cents + new_cents + reactivation_cents "
         "+ expansion_cents + contraction_cents + churn_cents <> closing_arr_cents"
@@ -110,7 +110,7 @@ def test_bridge_and_rollforward_identities_on_generated_data():
 
 
 def test_closing_deferred_equals_revenue_scheduled_after_as_of():
-    con = build(generate())
+    con = build(from_engine())
     closing, future = con.execute(
         "select (select closing_cents from fct_deferred_revenue order by month_start desc limit 1), "
         "(select sum(recognized_cents) from fct_revenue_monthly where is_future)"

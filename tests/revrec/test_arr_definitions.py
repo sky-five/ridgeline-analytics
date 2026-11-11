@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from revrec.billing import Billing, Subscription, generate
+from revrec.billing import Billing, Subscription, from_engine
 from revrec.build import build
 
 ITEMS = ["new_part_month_cents", "ended_part_month_cents", "price_change_part_month_cents",
@@ -76,9 +76,24 @@ def test_mid_month_upgrade_is_a_price_change_item():
     assert all(may[i] == 0 for i in ITEMS)
 
 
+def test_mid_month_seat_decrease_is_a_positive_price_change_item():
+    # Monthly plan renewing on the 15th, dropping from $60 to $30 at the 15 April renewal. April earned
+    # 14 of 31 days at the old price and 16 of 30 at the new one, so it runs above 12 x the new price.
+    b = Billing()
+    s = Subscription("sub_1", "cus_1", "starter", 4, "month")
+    b.change(s, date(2025, 3, 15), 6_000, "new")
+    b.line(s, "subscription", date(2025, 3, 15), date(2025, 3, 15), date(2025, 4, 15), 6_000)
+    b.change(s, date(2025, 4, 15), 3_000, "seats_down")
+    b.line(s, "subscription", date(2025, 4, 15), date(2025, 4, 15), date(2025, 5, 15), 3_000)
+    apr = _definitions(build(b, as_of=date(2025, 4, 30)))[date(2025, 4, 1)]
+    assert apr["billed_arr_cents"] == 36_000
+    assert apr["run_rate_arr_cents"] == 12 * (2_710 + 1_600)
+    assert apr["price_change_part_month_cents"] == 15_720
+
+
 @pytest.fixture(scope="module")
 def generated_con():
-    return build(generate())
+    return build(from_engine())
 
 
 def test_bridge_closes_and_ties_to_the_other_models(generated_con):
@@ -116,7 +131,23 @@ def test_bridge_items_have_the_expected_signs(generated_con):
     assert all(d[m]["annual_discount_cents"] < 0 for m in months)
     assert all(d[m]["new_part_month_cents"] < 0 for m in months)
     assert all(d[m]["ended_part_month_cents"] >= 0 for m in months)
-    assert all(d[m]["price_change_part_month_cents"] <= 0 for m in months)
+    # Upgrades and seat increases make the price-change item negative, seat decreases make it positive.
+    # Increases outnumber decreases, so the item nets negative once there are enough subscriptions; in
+    # March and April 2025 (40 and 55 live subscriptions) one large seat decrease outweighs them.
+    assert all(d[m]["price_change_part_month_cents"] <= 0 for m in months if m >= date(2025, 5, 1))
+    assert sum(d[m]["price_change_part_month_cents"] for m in months) < 0
     # Ratable by day: 31-day months run above billed ARR, 30-day months below.
     assert all(d[m]["calendar_and_rounding_cents"] > 0 for m in months if m.month in (1, 3, 5, 7, 8, 10, 12))
     assert all(d[m]["calendar_and_rounding_cents"] < 0 for m in months if m.month in (2, 4, 6, 9, 11))
+
+
+def test_every_mid_month_decrease_is_a_non_negative_item(generated_con):
+    # A subscription whose MRR went down mid-month earned the higher price for the first part of it.
+    total, wrong = generated_con.execute(
+        "select count(*), count(*) filter (where s.run_rate_arr_cents < s.billed_arr_cents) "
+        "from arr_sub_months as s asof inner join subscription_changes as c "
+        "on s.subscription_id = c.subscription_id and s.month_start >= c.effective_on "
+        "where s.bridge_item = 'price_change_part_month' and s.contract_arr_cents < 12 * c.mrr_cents"
+    ).fetchone()
+    assert total > 30
+    assert wrong == 0
