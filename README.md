@@ -136,6 +136,14 @@ A PR that changes a governed metric's numbers has to say so. Each of the 27 metr
 
 Each of the 27 governed metrics has a second calculation in plain SQL that skips MetricFlow and, where it can, starts from an earlier table: MRR is rebuilt from the movement ledger instead of the daily MRR mart, signups, spend, leads, tickets and orders from the staging models, and the 60-day funnel flags from their timestamps. `python -m metric_glossary` compares the two for every month and fails on any difference, or on a metric with no check; CI and the nightly build run it. On the warehouse as of 2026-11-10 all 27 agree on all 35 months. The site's [Metric glossary page](https://sky-five.github.io/ridgeline-analytics/metrics/) lists each definition, its last full month and the check's SQL. Details: [metric_glossary/README.md](metric_glossary/README.md).
 
+## Ask the funnel
+
+The site's [Ask the funnel page](https://sky-five.github.io/ridgeline-analytics/ask-the-funnel/) is a question box that answers only with governed metrics. It has no language model: one SQL query matches the question's words against a phrase list for six funnel metrics (signups, activation rate, free to paid, paid conversions, ad spend, CAC), an optional channel and an optional month or year, and looks the value up in a table queried through MetricFlow. A question that names none of them ("what is our churn rate?") is refused, and a period with no value gets "no value", not a guess. The page runs the query in the browser; the repo has the same query in `funnel_ask/route.sql`, and a test keeps the two identical. Details: [funnel_ask/README.md](funnel_ask/README.md).
+
+```bash
+python -m funnel_ask "What was CAC for Google Ads in March 2026?"
+```
+
 ## ARR and revenue recognition
 
 `revrec/` is the month-end close on the engine's billing pack, a separate seeded subscription business with monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. It also shows three ARR definitions side by side (contract, billed and revenue run-rate) with a bridge that explains the gap; in September 2026 contract ARR is $736,260 and run-rate ARR $679,531. CI and the nightly job run the close and the parallel check as of yesterday. Details: [revrec/README.md](revrec/README.md).
@@ -221,6 +229,7 @@ crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velo
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
 metric_glossary/ an independent SQL check for every governed metric, compared month by month
+funnel_ask/  questions answered only from governed funnel metrics, or refused (the Ask the funnel page)
 data_health/ product-event contract and table health scorecard, checked daily, with injected faults as tests
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 acquisition_spend/ channel CAC and a budget what-if on lead-score deciles, with a back-test
