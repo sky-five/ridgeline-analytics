@@ -57,7 +57,11 @@ def test_latest_value_is_the_last_full_month():
     r = compare("x", {"2026-09-01": 1.0, "2026-10-01": 2.0, "2026-11-01": 0.4},
                 {"2026-09-01": 1.0, "2026-10-01": 2.0, "2026-11-01": 0.4}, current_month="2026-11-01")
     assert (r.latest_month, r.latest_value) == ("2026-10-01", 2.0)
-    # ratios whose recent months are not known yet (nulls) fall back to the last month with a value
+    # ratios and mature-signup counts whose recent months are not known yet (null or zero) fall back to the
+    # last month with a value
     r = compare("x", {"2025-10-01": 0.7, "2025-11-01": None}, {"2025-10-01": 0.7, "2025-11-01": None},
                 current_month="2026-11-01")
     assert (r.latest_month, r.latest_value) == ("2025-10-01", 0.7)
+    r = compare("x", {"2026-08-01": 40.0, "2026-09-01": 0.0}, {"2026-08-01": 40.0, "2026-09-01": 0.0},
+                current_month="2026-11-01")
+    assert (r.latest_month, r.latest_value) == ("2026-08-01", 40.0)

@@ -38,7 +38,8 @@ def compare(name: str, governed: dict[str, float | None], check: dict[str, float
             current_month: str | None = None) -> Result:
     """Months with a value on either side must agree; a month missing on one side counts as a mismatch
     unless the other side is empty (None) or zero there. The latest value shown is the last full month
-    (before current_month) that has one."""
+    (before current_month) with a non-zero value: ratios and mature-signup counts are empty or zero for
+    the months whose outcome is not known yet."""
     bad = []
     for month in sorted(set(governed) | set(check)):
         g, c = governed.get(month), check.get(month)
@@ -48,7 +49,7 @@ def compare(name: str, governed: dict[str, float | None], check: dict[str, float
             continue
         if not _close(g, c):
             bad.append((month, g, c))
-    filled = {m: v for m, v in governed.items() if v is not None and (current_month is None or m < current_month)}
+    filled = {m: v for m, v in governed.items() if v and (current_month is None or m < current_month)}
     latest = max(filled) if filled else None
     return Result(name, len(set(governed) | set(check)), bad, latest, filled.get(latest) if latest else None)
 

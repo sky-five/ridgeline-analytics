@@ -50,6 +50,9 @@ jobs:
       - name: Load + dbt build
         run: python scripts/run_all.py --fresh --as-of "$AS_OF"
 
+      - name: Every governed metric matches its independent check, month by month
+        run: python -m metric_glossary
+
       - name: Source freshness
         working-directory: dbt
         run: |
