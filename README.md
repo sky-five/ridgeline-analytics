@@ -4,7 +4,7 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 > **All data is synthetic.** A deterministic simulator ([saas-world-sim](https://github.com/sky-five/saas-world-sim), pinned to a tag) generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
 
-**Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night from a fresh simulated day)
+**Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night with one more day of the same seeded history; see [how the data is made](#how-the-data-is-made))
 
 **Status:** Phases 1–4 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (identical numbers); CI tested both until the Snowflake trial account was suspended on 2026-11-10, and runs DuckDB only since then. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics; its recorded eval is on the site's Ask the data page. See the [roadmap](#roadmap).
 
@@ -59,6 +59,13 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 | Leads worked but with no first-contact time logged | 7%, a data-quality gap the dashboards must show |
 | 12-month NRR | 61% (SMB churn is heavy, so retention is a key lever) |
 
+## How the data is made
+
+- **One fixed history.** [saas-world-sim](https://github.com/sky-five/saas-world-sim) simulates the whole period, 2024-01-01 to 2027-12-31, once from a single seed. Random draws come from keyed streams, so the result does not depend on machine or run order.
+- **Revealed one day per night.** Each build cuts that history at the end of an as-of date (yesterday, UTC, in CI and the nightly job). Rows created later are dropped and statuses are recomputed, so each night the business is one day older, not a new random business.
+- **Same date, same rows.** Building the same date twice gives identical tables, and an earlier date is a prefix of a later one. `tests/test_engine_pin.py` locks the 2026-06-30 row counts and money totals; `tests/revrec/test_billing.py` locks the billing snapshot.
+- **Patterns are planted on purpose**, listed below (and for billing: monthly plans churn at about 3.8% of renewals, annual plans at 20%, and some churned customers come back on a new subscription).
+
 ## Planted patterns
 
 These were built into the simulator so the analysis has something real to find:
@@ -73,7 +80,7 @@ These were built into the simulator so the analysis has something real to find:
 
 ## Where the data comes from
 
-The simulated business used to live in a `simulator/` folder here. It is now its own package, [saas-world-sim](https://github.com/sky-five/saas-world-sim), so other demos can use the same engine. This repo installs it from git at a pinned tag (`v0.4.0`, in `requirements.txt`) and imports it in one place, `pipelines/engine.py`. The full seeded history is still cached in `.cache/` at the repo root.
+The simulated business used to live in a `simulator/` folder here. It is now its own package, [saas-world-sim](https://github.com/sky-five/saas-world-sim), so other demos can use the same engine. This repo installs it from git at a pinned tag (`v0.5.0`, in `requirements.txt`) and imports it in one place, `pipelines/engine.py`. The full seeded history is still cached in `.cache/` at the repo root.
 
 Moving it did not change any number. Before the switch, the old folder and the package gave identical tables (every column, every row) as of 2024-03-01, 2025-07-15, 2026-06-30, 2026-11-02 and 2026-11-07, which is 1,245,216 rows on the last date. `tests/test_engine_pin.py` keeps it that way: it fails if `requirements.txt`, the engine tag and the installed version disagree, or if the 2026-06-30 row counts and invoice and MRR totals move. The engine's own unit tests and fingerprint tests run in its repo.
 
@@ -127,7 +134,7 @@ A PR that changes a governed metric's numbers has to say so. Each of the 27 metr
 
 ## ARR and revenue recognition
 
-`revrec/` is a separate module on its own synthetic Stripe-shaped billing data: monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. It also shows three ARR definitions side by side (contract, billed and revenue run-rate) with a bridge that explains the gap; in September 2026 contract ARR is $806,640 and run-rate ARR $745,916. Details: [revrec/README.md](revrec/README.md).
+`revrec/` is the month-end close on the engine's billing pack, a separate seeded subscription business with monthly and annual plans, prorated upgrades, refunds, seat changes and churn. It builds ratable revenue by day, a deferred revenue rollforward and a per-customer ARR bridge in DuckDB SQL. A separate Python calculation then has to match every number to the cent (201 of them), and a test plants an error to show the check catches it. It also shows three ARR definitions side by side (contract, billed and revenue run-rate) with a bridge that explains the gap; in September 2026 contract ARR is $736,260 and run-rate ARR $679,531. CI and the nightly job run the close and the parallel check as of yesterday. Details: [revrec/README.md](revrec/README.md).
 
 ```bash
 .venv/Scripts/python -m revrec

@@ -2,7 +2,7 @@
 
 Month-end numbers a finance team signs off on, built from subscription billing data, with a second independent calculation that has to agree to the cent before anything is trusted.
 
-> **All data is synthetic.** `billing.py` generates Stripe-shaped invoices and contract changes from a fixed seed. No real company's data is used.
+> **All data is synthetic.** Invoices and contract changes come from the billing pack in [saas-world-sim](https://github.com/sky-five/saas-world-sim#domain-pack-billing), generated from a fixed seed. No real company's data is used.
 
 ## The problem
 
@@ -20,7 +20,14 @@ ARR and revenue are often treated as the same number, but they aren't. ARR comes
 | `fct_arr_bridge` | month | Opening ARR → movements → closing ARR, and paying customers |
 | `fct_arr_definitions` | closed month | Contract, billed and run-rate ARR side by side, with the items that explain the gaps |
 
-The synthetic billing covers monthly and annual plans (annual = 10 months up front), billing in advance, prorated charges for mid-period upgrades, prorated credits for immediate cancels, seat changes and churn at renewal, and churned customers who come back on a new subscription.
+## How the data is made
+
+- **One fixed history.** saas-world-sim's billing pack (pinned at `v0.5.0`) simulates 700 customers signing up from 2025-01-01 to 2027-12-31, once, from one seed. Each customer draws from its own keyed random stream.
+- **Revealed one day per night.** `billing.py` reads `billing_as_of(date)`: invoices issued and contract changes effective by the end of that date. A line keeps its whole service period, so an annual plan paid up front shows as deferred revenue. `python -m revrec` closes the books as of yesterday (UTC) by default, and CI and the nightly job run it on the same date as the warehouse build.
+- **Same date, same rows.** Two reads of one date are identical, and an earlier date is a prefix of a later one (both tested). The numbers below are pinned to the 2026-09-30 snapshot.
+- **Planted patterns:** monthly plans churn at about 3.8% of renewals and annual plans at 20%; a few percent of billing periods have a mid-period upgrade or an immediate cancel with a refund; 51 of the 700 customers leave and come back on a new subscription.
+
+The billing covers monthly and annual plans (annual = 10 months up front), billing in advance, prorated charges for mid-period upgrades, prorated credits for immediate cancels, seat changes and churn at renewal, and churned customers who come back on a new subscription.
 
 ## Policies, stated once
 
@@ -45,20 +52,20 @@ The bridge, summed per subscription:
 | Annual prepay discount | Annual plans pay 10 months for 12 | always negative |
 | New, part month | A subscription that starts after the 1st earns only part of the month | negative |
 | Ended, part month | A subscription that ends mid-month has no ARR at month end but still earned revenue that month | positive |
-| Price change, part month | An upgrade mid-month counts in full in billed ARR but earns only from the upgrade date | negative |
+| Price change, part month | A mid-month upgrade or seat change counts in full in billed ARR, but the month earned the old price until the change date | negative for an increase, positive for a decrease; net negative in every month from May 2025 |
 | Calendar and rounding | Revenue is earned by day, so a 31-day month runs above 1/12 of a year and a 30-day month below; also cent truncation | follows month length |
 
-Contract ARR + annual discount = billed ARR, and billed ARR + the four timing items = run-rate ARR, every month. Contract ARR is tied to `fct_arr_bridge` and run-rate ARR to `fct_revenue_monthly`, so the bridge is checked against two models built another way. The 10-months rule for annual plans is checked against every annual invoice (163 of them).
+Contract ARR + annual discount = billed ARR, and billed ARR + the four timing items = run-rate ARR, every month. Contract ARR is tied to `fct_arr_bridge` and run-rate ARR to `fct_revenue_monthly`, so the bridge is checked against two models built another way. The 10-months rule for annual plans is checked against every annual invoice (154 of them).
 
 As of 2026-09-30 (in dollars):
 
 ```
 month        contract    annual      billed       new     ended     price  calendar    run-rate
-2026-08      $817,440  $-45,290    $772,150  $-27,736    $1,875  $-11,105    $4,155    $739,339
-2026-09      $806,640  $-46,380    $760,260  $-18,165   $22,090   $-7,437  $-10,832    $745,916
+2026-08      $724,440  $-42,960    $681,480  $-23,893   $17,318   $-5,869    $3,928    $672,964
+2026-09      $736,260  $-44,770    $691,490  $-22,712   $29,827   $-9,723   $-9,351    $679,531
 ```
 
-September's contract ARR is $806,640, but the revenue booked that month supports $745,916, 7.5% less. Most of the gap is the annual discount. The rest is timing that changes month to month: in September more subscriptions ended mid-month (+$22,090: revenue still earned, no ARR at month end) and fewer started mid-month (−$18,165) than in August, and having 30 days cost $10,832 on the calendar line.
+September's contract ARR is $736,260, but the revenue booked that month supports $679,531, 7.7% less. Most of the gap is the annual discount ($44,770). The rest is timing that changes month to month: in September more subscriptions ended mid-month than in August (+$29,827 against +$17,318: revenue still earned, no ARR at month end), mid-month starts cost about the same (−$22,712), and having 30 days cost $9,351 on the calendar line.
 
 ## The parallel run
 
@@ -69,37 +76,39 @@ This is the "run the old and new versions side by side until they match" method,
 ## Run it
 
 ```bash
-.venv/Scripts/python -m revrec                    # build in memory, print the close, run the parallel check
-.venv/Scripts/python -m revrec --db revrec.duckdb # keep the tables to query
+.venv/Scripts/python -m revrec                       # as of yesterday: build in memory, print the close, run the parallel check
+.venv/Scripts/python -m revrec --as-of 2026-09-30    # the snapshot quoted below
+.venv/Scripts/python -m revrec --db revrec.duckdb    # keep the tables to query
 .venv/Scripts/python -m pytest tests/revrec -q
 ```
 
-Output as of 2026-09-30 (400 synthetic customers):
+Output as of 2026-09-30 (393 of the 700 synthetic customers have signed up by then):
 
 ```
 ARR bridge, last 6 months
 month         opening       new   react.    expan.    contr.      churn     closing
-2026-08      $751,920   $45,120       $0   $25,080     $-540    $-4,140    $817,440
-2026-09      $817,440   $23,040   $6,180   $14,220     $-900   $-53,340    $806,640
+2026-08      $687,360   $48,840   $5,280   $13,920   $-1,560   $-29,400    $724,440
+2026-09      $724,440   $42,060   $2,400   $18,120   $-1,500   $-49,260    $736,260
 
 Deferred revenue rollforward, last 6 months
 month         opening      billed  recognized     closing
-2026-08      $138,436     $69,215     $61,612    $146,039
-2026-09      $146,039     $54,502     $62,160    $138,381
+2026-08      $135,726     $70,537     $56,080    $150,183
+2026-09      $150,183     $58,889     $56,628    $152,445
 
-Already billed, still to be earned after 2026-09-30: $138,381
+Already billed, still to be earned after 2026-09-30: $152,445
 
 Parallel run: SQL and the Python reference agree on all 201 numbers, to the cent
 ```
 
 Closing deferred revenue equals the revenue scheduled for future months, a third check, also covered by a test.
 
-## Tests (23)
+## Tests (29)
 
 - Hand-calculated cases: an annual prepay earned by day, a refund reversing the rest of a period, a deferred-revenue rollforward, one customer moving through new → expansion → contraction → churn → reactivation, and churn landing in the month service stops.
-- On the full generated data: every month's ARR bridge adds up, every rollforward balances, deferred revenue never goes negative, and total billed equals total recognized across all time, and closing deferred revenue equals the revenue still scheduled.
-- The parallel run agrees on two different seeds and catches a planted one-cent error.
-- ARR definitions: hand-calculated annual plan (discount and calendar effect), mid-month start, mid-month churn and mid-month upgrade; on the full generated data, the bridge closes and ties to the movement bridge and the revenue schedule in all 21 months, every annual invoice is 10 × MRR, and each item has its expected sign.
+- On the full data: every month's ARR bridge adds up, every rollforward balances, deferred revenue never goes negative, and total billed equals total recognized across all time, and closing deferred revenue equals the revenue still scheduled.
+- The parallel run agrees on two different seeds and as of yesterday, and catches a planted one-cent error.
+- Engine data: the same date gives the same rows, an earlier date is a prefix of a later one, and the snapshot's row counts match the numbers above.
+- ARR definitions: hand-calculated annual plan (discount and calendar effect), mid-month start, mid-month churn, mid-month upgrade and mid-month seat decrease; on the full data, the bridge closes and ties to the movement bridge and the revenue schedule in all 21 months, every annual invoice is 10 × MRR, each item has its expected sign, and every mid-month decrease has a non-negative price-change item.
 
 ## What a production version adds
 
