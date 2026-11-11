@@ -39,3 +39,29 @@ topic passes.
 Tests: `tests/account_reviews/test_narrative.py` (the drafted text for a fixed series; edited amounts, percentages,
 counts, months and windows fail; topics; precision) and `test_account_review_summaries_check_against_the_warehouse`
 in `tests/test_metrics.py`, which re-checks all 25 published summaries against the tables as stored.
+
+## Opportunities
+
+`opportunities.py` builds `reporting.account_opportunities` for the
+[Opportunities page](../reports/pages/account-reviews/opportunities.md): paying accounts worth a call because their
+measurement orders are falling or the share of homeowner leads they win has dipped. For every paying account it
+reads the governed metrics `measurement_orders`, `won_leads` and `closed_leads` by account and month, then compares
+the last 3 complete months with the 3 before:
+
+- **Orders falling**: at least 6 orders in the earlier 3 months, and the last 3 months 40% or more lower.
+- **Close rate dip**: at least 8 closed leads in each window, and won / closed down 15 points or more.
+
+The floors keep small accounts from tripping a flag on a handful of rows. Accounts with both flags come first, then
+by MRR; the 25 accounts that have a review page link to it. Each row carries a reason line built only from its own
+window totals, for example "Measurement orders fell from 33 to 18 (-45%). Lead close rate fell from 33% (14 of 43)
+to 10% (1 of 10)." On the 2026-11-10 build: 63 of 796 paying accounts flagged, 22 on orders, 42 on close rate, 1 on
+both.
+
+Limits: leads count in the month they were created, as in the governed metrics, so recent leads still open lower the
+closed count but not the rate. The thresholds are fixed, not tuned per segment, and a flag says where to look, not
+why.
+
+Tests: `tests/account_reviews/test_opportunities.py` (window split, gap months, the exact 40% and 15-point edges,
+the floors, the reason text, paying-only ordering and review links) and `test_account_opportunities_match_the_marts`
+in `tests/test_metrics.py`, which recounts every flagged account's orders and leads from `fct_measurement_quality`
+and `fct_contractor_leads` and re-applies both rules.
