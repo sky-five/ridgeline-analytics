@@ -68,7 +68,7 @@ def flag(totals: pd.DataFrame) -> pd.DataFrame:
 
     t = t[t["orders_falling"] | t["close_rate_dip"]].copy()
     t["reason"] = [reason(r) for _, r in t.iterrows()]
-    t["flags"] = t["orders_falling"].astype(int) + t["close_rate_dip"].astype(int)
+    t["n_flags"] = t["orders_falling"].astype(int) + t["close_rate_dip"].astype(int)
     return t
 
 
@@ -97,7 +97,7 @@ def opportunities(health: pd.DataFrame, metrics: pd.DataFrame, as_of: date,
     paying = health[health["mrr"] > 0]
     totals = window_totals(metrics[metrics["account"].isin(paying["account_id"])], last_complete_month(as_of))
     flagged = flag(totals).merge(paying, on="account_id", how="inner")
-    flagged = flagged.sort_values(["flags", "mrr", "account_id"], ascending=[False, False, True])
+    flagged = flagged.sort_values(["n_flags", "mrr", "account_id"], ascending=[False, False, True])
     reviewed = set(reviewed or [])
     flagged["review_link"] = [f"/account-reviews/{a}" if a in reviewed else None for a in flagged["account_id"]]
     flagged.insert(0, "rank", range(1, len(flagged) + 1))
