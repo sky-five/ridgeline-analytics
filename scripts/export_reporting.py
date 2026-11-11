@@ -87,6 +87,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
              "seconds": r["seconds"], "cost_usd": r.get("cost_usd")}
             for i, r in enumerate(run["results"])])
 
+    # the raw-vs-governed eval's recorded runs (semantic_eval/), on the "Raw tables vs governed metrics" page
+    from semantic_eval.report import tables as eval_tables
+
+    tables.update(eval_tables())
+
     # the simulated A/B test readout (experiments/), shown on the "A/B test" page
     exp_file = ROOT / "experiments" / "results" / "onboarding-checklist.json"
     if exp_file.exists():
