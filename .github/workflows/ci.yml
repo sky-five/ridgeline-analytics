@@ -49,6 +49,9 @@ jobs:
       - name: No source table graded red (yesterday's batches)
         run: python -m data_health.scorecard --day "$AS_OF"
 
+      - name: Month-end close as of the same date (revrec parallel run)
+        run: python -m revrec --as-of "$AS_OF"
+
       - name: Load + dbt build
         run: python scripts/run_all.py --fresh --as-of "$AS_OF"
 

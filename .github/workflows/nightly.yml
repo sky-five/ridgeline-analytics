@@ -44,6 +44,9 @@ jobs:
           path: .cache
           key: sim-${{ hashFiles('requirements.txt') }}
 
+      - name: Month-end close as of the same date (revrec parallel run)
+        run: python -m revrec --as-of "$AS_OF"
+
       - name: Load + dbt build
         run: python scripts/run_all.py --fresh --as-of "$AS_OF"
 
