@@ -19,11 +19,13 @@ metrics:
   - name: new_mrr
     label: New MRR
     config: {meta: {version: 1}}
+    description: MRR from accounts going from zero to paid (reactivations excluded).
     type: simple
     type_params: {measure: new_mrr_amount}
   - name: expansion_mrr
     label: Expansion MRR
     config: {meta: {version: 1}}
+    description: MRR added when a paying account's MRR goes up.
     type: simple
     type_params: {measure: expansion_mrr_amount}
   - name: churned_mrr
@@ -55,6 +57,7 @@ metrics:
   - name: signups
     label: Signups
     config: {meta: {version: 1}}
+    description: New contractor accounts, by signup date.
     type: simple
     type_params: {measure: signup_count}
   - name: activation_rate
@@ -72,6 +75,7 @@ metrics:
   - name: ad_spend
     label: Ad spend
     config: {meta: {version: 1}}
+    description: Paid marketing spend across the ad platforms.
     type: simple
     type_params: {measure: spend_amount}
   - name: cac
@@ -85,6 +89,7 @@ metrics:
   - name: leads
     label: Homeowner leads
     config: {meta: {version: 1}}
+    description: Homeowner leads contractors logged in the app, by created date.
     type: simple
     type_params: {measure: lead_count}
   - name: lead_close_rate
@@ -104,11 +109,13 @@ metrics:
   - name: tickets
     label: Support tickets
     config: {meta: {version: 1}}
+    description: Support tickets opened, by created date.
     type: simple
     type_params: {measure: ticket_count}
   - name: measurement_orders
     label: Measurement orders
     config: {meta: {version: 1}}
+    description: Roof measurement reports ordered, by order date.
     type: simple
     type_params: {measure: order_count}
   - name: measurement_redo_rate
@@ -122,45 +129,54 @@ metrics:
   - name: activated_signups
     label: Activated signups
     config: {meta: {version: 1}}
+    description: Signups that sent a proposal within 14 days.
     type: simple
     type_params: {measure: activated_count}
   - name: mature_signups
     label: Mature signups
     config: {meta: {version: 1}}
+    description: Signups at least 60 days old, so their 60-day outcome is known.
     type: simple
     type_params: {measure: mature_signup_count}
   - name: mature_paid_60d
     label: Mature signups paid within 60 days
     config: {meta: {version: 1}}
+    description: Mature signups that paid within 60 days of signing up.
     type: simple
     type_params: {measure: mature_paid_60d_count}
   - name: paid_conversions
     label: Paid conversions
     config: {meta: {version: 1}}
+    description: Signups from every channel that paid within 60 days, counted on their signup date.
     type: simple
     type_params: {measure: paid_conversions}
   - name: won_leads
     label: Won leads
     config: {meta: {version: 1}}
+    description: Leads the contractor won.
     type: simple
     type_params: {measure: won_count}
   - name: closed_leads
     label: Closed leads
     config: {meta: {version: 1}}
+    description: Leads with a final outcome (won, lost, unqualified or no response).
     type: simple
     type_params: {measure: closed_count}
   - name: redo_orders
     label: Redo requests
     config: {meta: {version: 1}}
+    description: Measurement orders the contractor asked to redo.
     type: simple
     type_params: {measure: redo_count}
   - name: retained_mrr
     label: Retained cohort MRR
     config: {meta: {version: 1}}
+    description: MRR a paid cohort still has N months after its first paid month (with cohort_period__months_since_start).
     type: simple
     type_params: {measure: retained_mrr_amount}
   - name: cohort_start_mrr
     label: Cohort starting MRR
     config: {meta: {version: 1}}
+    description: A paid cohort's MRR in its first paid month.
     type: simple
     type_params: {measure: cohort_start_mrr_amount}

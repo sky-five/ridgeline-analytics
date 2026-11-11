@@ -63,6 +63,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
              for m in list_metrics()]),
     }
 
+    # the metric glossary: each governed metric next to its independent month-by-month check (metric_glossary/)
+    from metric_glossary.reconcile import glossary_table, reconcile
+
+    tables["metric_glossary"] = glossary_table(reconcile(warehouse))
+
     run_results = ROOT / "dbt" / "target" / "run_results.json"
     if run_results.exists():
         results = json.loads(run_results.read_text())
