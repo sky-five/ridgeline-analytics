@@ -1,11 +1,12 @@
-"""python -m revrec [--db PATH]: build the models, run the parallel check, print the month-end close."""
+"""python -m revrec [--as-of DATE] [--db PATH]: build the models, run the parallel check, print the month-end close."""
 
 from __future__ import annotations
 
 import argparse
 import sys
+from datetime import date
 
-from revrec.billing import AS_OF, generate
+from revrec.billing import from_engine, yesterday
 from revrec.build import build
 from revrec.parallel_run import compare
 
@@ -17,12 +18,15 @@ def _usd(cents: int) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", default=":memory:", help="DuckDB file to write (default: in memory)")
+    parser.add_argument("--as-of", type=date.fromisoformat, default=yesterday(),
+                        help="close the books at the end of this date (default: yesterday, UTC, like the nightly)")
     args = parser.parse_args()
+    as_of = args.as_of
 
-    billing = generate()
-    con = build(billing, path=args.db)
+    billing = from_engine(as_of)
+    con = build(billing, as_of=as_of, path=args.db)
     print(f"{len(billing.invoice_lines):,} invoice lines, {len(billing.subscription_changes):,} contract changes, "
-          f"as of {AS_OF}\n")
+          f"as of {as_of}\n")
 
     print("ARR bridge, last 6 months")
     print(f"{'month':<9}{'opening':>12}{'new':>10}{'react.':>9}{'expan.':>10}{'contr.':>10}{'churn':>11}"
@@ -46,9 +50,9 @@ def main() -> int:
     future = con.execute(
         "select sum(recognized_cents) from fct_revenue_monthly where is_future"
     ).fetchone()[0]
-    print(f"\nAlready billed, still to be earned after {AS_OF}: {_usd(future)}")
+    print(f"\nAlready billed, still to be earned after {as_of}: {_usd(future)}")
 
-    compared, diffs = compare(con, billing, AS_OF)
+    compared, diffs = compare(con, billing, as_of)
     if diffs:
         print(f"\nParallel run: {len(diffs)} of {compared} numbers differ")
         print("\n".join(diffs[:20]))
