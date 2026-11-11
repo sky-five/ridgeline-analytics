@@ -82,3 +82,16 @@ def test_phrases_are_stored_normalized_and_unique():
     assert all(r["phrase"] == normalize(r["phrase"]) for r in rows)
     assert len({(r["kind"], r["phrase"]) for r in rows}) == len(rows)
     assert {r["target"] for r in rows if r["kind"] == "metric"} == {m.name for m in METRICS}
+
+
+def test_the_site_page_runs_the_same_router():
+    from pathlib import Path
+
+    from funnel_ask.ask import ROUTE_SQL
+
+    page = (Path(__file__).resolve().parents[2] / "reports" / "pages" / "ask-the-funnel.md").read_text()
+    in_page = page.split("```sql answer\n", 1)[1].split("```", 1)[0]
+    from_page = (in_page.replace("${inputs.question.sql}", "{question}")
+                 .replace("ridgeline.funnel_", "funnel_"))
+    body = "\n".join(line for line in ROUTE_SQL.splitlines() if not line.startswith("--"))
+    assert from_page.strip() == body.strip()
