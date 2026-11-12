@@ -95,8 +95,7 @@ hand-made hourly tables pin each threshold; and the command exits 1 on a red tab
 
 The [Data health page](https://sky-five.github.io/ridgeline-analytics/data-health/) opens with five steps for
 someone who uses the numbers but did not build them: did the pipelines run, does today's data look normal,
-read the reason rather than the colour (the table that needs the most attention is quoted live from the
-scorecard), check the dbt build, and look up any word. What each grade means for using the numbers is spelled
+read the reason rather than the colour (the scorecard's first row, worst grade first, is quoted live), check the dbt build, and look up any word. What each grade means for using the numbers is spelled
 out: green use them, amber read the reason first, red do not quote numbers built on that table for that day.
 
 The page ends with a glossary of its 16 terms (`glossary.py`, written to `reporting.data_health_glossary` by

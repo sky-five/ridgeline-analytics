@@ -19,8 +19,8 @@ limit 1
 2. **Does today's data look normal?** The scorecard below grades each source table green, amber or red.
    Green: use the numbers. Amber: usable, but read the reason first. Red: do not quote numbers built on that
    table for this day.
-3. **Read the reason, not just the colour.** Each table gets one sentence with its own numbers. The table
-   that needs the most attention today is **<Value data={example} column=table_name/>**
+3. **Read the reason, not just the colour.** Each table gets one sentence with its own numbers. The scorecard
+   lists the worst grade first; today's first row is **<Value data={example} column=table_name/>**
    (<Value data={example} column=grade/>): "<Value data={example} column=reason/>".
 4. **Check the build.** Under *Last dbt build*, passing should equal the total. A failing test stops the
    nightly build before it publishes, so the live site keeps the previous build rather than broken numbers.
