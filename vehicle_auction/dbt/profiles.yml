@@ -1,0 +1,7 @@
+vehicle_auction:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('AUCTION_DUCKDB_PATH', '../../warehouse/auction.duckdb') }}"
+      threads: 4

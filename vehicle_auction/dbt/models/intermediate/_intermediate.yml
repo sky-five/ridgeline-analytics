@@ -1,0 +1,7 @@
+version: 2
+models:
+  - name: int_listing_bids
+    description: Bidders, online bidders and the high bid per listing that drew bids.
+    columns:
+      - name: listing_id
+        data_tests: [unique, not_null]

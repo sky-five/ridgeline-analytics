@@ -1,0 +1,26 @@
+version: 2
+models:
+  - name: fct_listings
+    description: One row per run of a vehicle through a sale, with offered / sold-on-block / if-sale / converted flags.
+    columns:
+      - name: listing_id
+        data_tests: [unique, not_null]
+  - name: fct_vehicles
+    description: One row per consigned vehicle, its first run and whether it sold in any run.
+    columns:
+      - name: vehicle_id
+        data_tests: [unique, not_null]
+  - name: sell_through_weekly
+    description: Listing-basis sell-through and conversion by channel and sale week.
+    data_tests:
+      - unique_combination: {arguments: {columns: [channel, sale_week]}}
+  - name: sell_through_by_channel
+    description: Sell-through per channel on listings and on vehicles, over all sales.
+    columns:
+      - name: channel
+        data_tests: [unique, not_null]
+  - name: reserve_test_arms
+    description: First-run conversion and proceeds per arm of the reserve-price test.
+    columns:
+      - name: arm
+        data_tests: [unique, not_null]

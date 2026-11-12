@@ -1,0 +1,35 @@
+version: 2
+models:
+  - name: stg_auction__vehicles
+    columns:
+      - name: vehicle_id
+        data_tests: [unique, not_null]
+      - name: channel
+        data_tests:
+          - accepted_values: {arguments: {values: [in_lane, simulcast, online_timed]}}
+  - name: stg_auction__listings
+    columns:
+      - name: listing_id
+        data_tests: [unique, not_null]
+      - name: vehicle_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_auction__vehicles'), field: vehicle_id}}
+      - name: status
+        data_tests:
+          - accepted_values: {arguments: {values: [sold, if_sale, no_sale, withdrawn]}}
+  - name: stg_auction__bids
+    columns:
+      - name: bid_id
+        data_tests: [unique, not_null]
+      - name: listing_id
+        data_tests:
+          - relationships: {arguments: {to: ref('stg_auction__listings'), field: listing_id}}
+  - name: stg_auction__test_assignments
+    columns:
+      - name: vehicle_id
+        data_tests:
+          - unique
+          - relationships: {arguments: {to: ref('stg_auction__vehicles'), field: vehicle_id}}
+      - name: arm
+        data_tests:
+          - accepted_values: {arguments: {values: [control, treatment]}}

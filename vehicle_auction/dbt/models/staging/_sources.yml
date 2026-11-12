@@ -1,0 +1,13 @@
+version: 2
+sources:
+  - name: raw_auction
+    description: The simulated auction (vehicle_auction/simulate.py) as an auction system would export it. The planted counterfactual is not loaded.
+    tables:
+      - name: vehicles
+        description: One row per consigned vehicle.
+      - name: listings
+        description: One row per run of a vehicle through a sale. A no-sale can be relisted the next week.
+      - name: bids
+        description: Each bidder's last bid on a listing.
+      - name: test_assignments
+        description: The reserve-price test's assignment log, one row per vehicle in the test.
