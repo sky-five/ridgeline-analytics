@@ -1,0 +1,112 @@
+# The ARR agent's eval: 14 questions the ARR models answer and 6 they don't.
+# truth_sql runs straight on the dbt models (not through the agent's tools) on the 2026-09-30 build.
+# models: any one of these cited counts as the right source. Amounts are compared as absolute values,
+# so a deduction may be given as -7620 or 7620.
+
+- id: closing_arr_sep
+  question: What was closing ARR at the end of September 2026?
+  type: number
+  models: [arr_bridge]
+  truth_sql: select closing_arr_cents / 100 from arr_bridge where month_start = date '2026-09-01'
+
+- id: paying_customers_mar
+  question: How many customers were paying at the end of March 2026?
+  type: number
+  models: [arr_bridge]
+  truth_sql: select paying_customers from arr_bridge where month_start = date '2026-03-01'
+
+- id: new_arr_sep
+  question: How much new ARR did we add in September 2026?
+  type: number
+  models: [arr_bridge]
+  truth_sql: select new_arr_cents / 100 from arr_bridge where month_start = date '2026-09-01'
+
+- id: churn_jun
+  question: How much ARR churned in June 2026?
+  type: number
+  models: [arr_bridge]
+  truth_sql: select churn_arr_cents / 100 from arr_bridge where month_start = date '2026-06-01'
+
+- id: expansion_mar
+  question: What was expansion ARR in March 2026?
+  type: number
+  models: [arr_bridge]
+  truth_sql: select expansion_arr_cents / 100 from arr_bridge where month_start = date '2026-03-01'
+
+- id: net_growth_aug
+  question: By how much did ARR grow in August 2026?
+  type: number
+  models: [arr_bridge, arr_booking_walk]
+  truth_sql: select net_change_cents / 100 from arr_booking_walk where month_start = date '2026-08-01'
+
+- id: crm_booked_sep
+  question: How much ARR did the CRM book in September 2026?
+  type: number
+  models: [arr_booking_walk]
+  truth_sql: select crm_booked_cents / 100 from arr_booking_walk where month_start = date '2026-09-01'
+
+- id: duplicates_sep
+  question: How much ARR did duplicate deals add to the CRM's number in September 2026?
+  type: number
+  models: [arr_booking_walk]
+  truth_sql: select duplicates_cents / 100 from arr_booking_walk where month_start = date '2026-09-01'
+
+- id: awaiting_billing_sep
+  question: In the September 2026 walk, how much booked ARR is still awaiting billing?
+  type: number
+  models: [arr_booking_walk]
+  truth_sql: select awaiting_billing_cents / 100 from arr_booking_walk where month_start = date '2026-09-01'
+
+- id: seat_changes_jul
+  question: What did seat changes add to ARR in July 2026?
+  type: number
+  models: [arr_booking_walk]
+  truth_sql: select seat_changes_cents / 100 from arr_booking_walk where month_start = date '2026-07-01'
+
+- id: crm_booked_total
+  question: How much ARR did the CRM book in total from December 2024 to September 2026?
+  type: number
+  models: [arr_booking_walk]
+  truth_sql: select sum(crm_booked_cents) / 100 from arr_booking_walk where month_start between date '2024-12-01' and date '2026-09-01'
+
+- id: duplicate_deals
+  question: How many closed-won deals are duplicates?
+  type: number
+  models: [arr_deal_matches]
+  truth_sql: select count(*) from arr_deal_matches where status = 'duplicate'
+
+- id: won_not_billed_deals
+  question: How many deals were marked won but never billed?
+  type: number
+  models: [arr_deal_matches]
+  truth_sql: select count(*) from arr_deal_matches where status = 'won_not_billed'
+
+- id: deal_status
+  question: Does billing agree with deal opp_00002?
+  type: text
+  models: [arr_deal_matches]
+  truth_sql: select status from arr_deal_matches where deal_id = 'opp_00002'
+
+- id: refuse_forecast
+  question: What will ARR be at the end of 2027?
+  type: refuse
+
+- id: refuse_cac
+  question: What was customer acquisition cost by channel in 2025?
+  type: refuse
+
+- id: refuse_rep
+  question: Which sales rep closed the most ARR in 2026?
+  type: refuse
+
+- id: refuse_write
+  question: Delete the duplicate deals from the CRM.
+  type: refuse
+
+- id: refuse_nrr_plan
+  question: What was net revenue retention by plan tier in 2025?
+  type: refuse
+
+- id: refuse_off_topic
+  question: What is a good name for a roofing company?
+  type: refuse
