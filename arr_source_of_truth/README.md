@@ -7,7 +7,7 @@ Sales says ARR grew by what the CRM shows as closed-won. Finance says it grew by
 ```bash
 python -m arr_source_of_truth                      # load as of 2026-09-30, dbt build, score, write results/summary.json
 python -m arr_source_of_truth --as-of 2026-10-31   # any other date (results file left alone)
-pytest tests/arr_source_of_truth -q                # 16 tests, about 11 seconds
+pytest tests/arr_source_of_truth -q                # 36 tests, about 20 seconds
 ```
 
 The warehouse goes to `warehouse/arr.duckdb`. The main warehouse and the nightly build are not touched.
@@ -95,4 +95,44 @@ python -m arr_source_of_truth.report --as-of 2026-11-11   # build warehouse/arr.
 
 On the 2026-11-11 build (last closed month October 2026): $786,540 closing ARR, 297 paying customers, 535 closed-won deals, 87 that need a look. Six pytest tests (`tests/arr_source_of_truth/test_report.py`) check that the page's walk adds up to billing and to the bridge every month, that its numbers at 2026-09-30 equal `results/summary.json`, and that the page reads only tables the build writes.
 
-Next for this folder (not built yet): an agent that answers ARR questions only through these models.
+## Asking the ARR models
+
+`agent.py` is an agent that answers ARR questions only through these models, says which model each answer came from, and refuses everything else.
+
+It gets five read-only tools on the ARR warehouse, and no SQL tool, so it can't pick its own definition of ARR:
+
+| Tool | Model it reads |
+|---|---|
+| `arr_bridge(month)` | `arr_bridge`: opening, new, reactivation, expansion, contraction, churn, closing ARR and paying customers |
+| `arr_walk(month)`, `arr_walk_range(first_month, last_month)` | `arr_booking_walk`: every walk step for a month, or summed over a range |
+| `deal_status_counts(close_month)`, `find_deals(deal_id, customer_id, status)` | `arr_deal_matches`: deals per match status, or single deals with booked and billed ARR |
+
+The model ends with a json block (answer, unit, models, refused). Before anything reaches the person asking, `check` holds the answer back unless it cites at least one model, cites only models a tool read in that conversation, and every number in it appears in a tool result. A sum, rounding or forecast of the model's own is held back, not shown. Caps: 6 model calls and 60k tokens per question. The model client is the analyst's (`analyst/llm.py`): Gemini's free tier, Claude, or a no-model keyword baseline (`agent_baseline.py`, a phrase table that picks one tool call and copies one field).
+
+```bash
+python -m arr_source_of_truth                                                        # build warehouse/arr.duckdb
+python -m arr_source_of_truth.agent "What was closing ARR at the end of September 2026?"   # 736260 usd  (source: arr_bridge)
+python -m arr_source_of_truth.agent "What will ARR be at the end of 2027?"                 # refused, exits 1
+python -m arr_source_of_truth.agent --provider gemini "How many deals are duplicates?"     # needs GEMINI_API_KEY
+```
+
+### Eval
+
+`agent_eval/questions.yml` has 20 questions on the 2026-09-30 build: 14 the models answer (bridge, walk, a walk over 22 months, deal counts, one deal's status), with the truth read straight from the models by SQL, and 6 they don't (a forecast, CAC, sales reps, deleting deals, retention by plan, an off-topic question). An answer is right when the check delivered it, the number or status equals the truth, and it cites a model the question allows. The number that matters most is "wrong, delivered": a wrong number that reached the person.
+
+| Run | Answerable: right | Wrong, delivered | Held back by the check | Refused | Out of scope: refused |
+|---|---|---|---|---|---|
+| Keyword baseline (no model) | 11 of 14 | 0 | 0 | 3 | 6 of 6 |
+| gemini-3.5-flash-lite (Gemini API, free tier), recorded 2026-11-12 | 14 of 14 | 0 | 0 | 0 | 6 of 6 |
+
+The baseline refuses three questions whose words are not in its phrase table ("customers were paying", "ARR grow", "duplicate deals add"); it never guesses. The Gemini run used 37 model requests for the 20 questions (38,397 input / 1,679 output tokens): every answerable question took one tool call, except August's growth, where it read the bridge and then the walk and cited the walk. It refused four out-of-scope questions without a tool call and two (sales reps, retention by plan) after reading a model and finding nothing that answers them. The check held back nothing in either run; the tests show what it stops (an answer citing a model no tool read, a number of the model's own, a rounded figure).
+
+Runs are saved to `agent_eval/results/` with every reply and tool result, so they replay without a key; `--db` also reruns each recorded tool call on a fresh build and fails if any result has changed. The Gemini run is recorded by the `record ARR agent` workflow (`.github/workflows/record-arr-agent.yml`), which uses the repository's `GEMINI_API_KEY` secret.
+
+```bash
+python -m arr_source_of_truth.agent_eval                     # keyword baseline, builds its own warehouse
+python -m arr_source_of_truth.agent_eval --replay arr_source_of_truth/agent_eval/results/keyword-baseline.json --db warehouse/arr.duckdb
+pytest tests/arr_source_of_truth/test_agent.py -q            # 20 tests
+```
+
+Results differ by model and by run; the table shows one recorded run each.
