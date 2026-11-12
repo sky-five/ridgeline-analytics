@@ -1,0 +1,64 @@
+{
+  "listings": 15064,
+  "listings_offered": 14477,
+  "listings_converted": 10129,
+  "vehicles": 12569,
+  "bids": 62796,
+  "channels": [
+    {
+      "channel": "in_lane",
+      "listings_offered": 5790,
+      "sell_through_on_block": 0.5718,
+      "conversion_rate": 0.7031,
+      "vehicles_offered": 4845,
+      "vehicle_sell_through": 0.8402,
+      "avg_bidders": 4.1964
+    },
+    {
+      "channel": "online_timed",
+      "listings_offered": 3866,
+      "sell_through_on_block": 0.4467,
+      "conversion_rate": 0.5685,
+      "vehicles_offered": 2960,
+      "vehicle_sell_through": 0.7426,
+      "avg_bidders": 2.9749
+    },
+    {
+      "channel": "simulcast",
+      "listings_offered": 4821,
+      "sell_through_on_block": 0.6986,
+      "conversion_rate": 0.8007,
+      "vehicles_offered": 4279,
+      "vehicle_sell_through": 0.9021,
+      "avg_bidders": 5.6001
+    }
+  ],
+  "reserve_test": {
+    "vehicles_control": 3190,
+    "vehicles_treatment": 3110,
+    "srm_p_value": 0.3135,
+    "conversion": {
+      "control": 0.6808,
+      "treatment": 0.8025,
+      "diff": 0.1217,
+      "ci_low": 0.0999,
+      "ci_high": 0.1435,
+      "p_value": 0.0
+    },
+    "proceeds_per_offered_usd": {
+      "control": 7202.1888,
+      "treatment": 8497.0214,
+      "diff": 1294.8326,
+      "ci_low": 984.7962,
+      "ci_high": 1604.869,
+      "p_value": 0.0
+    },
+    "price_to_book_when_sold_control": 1.0281,
+    "price_to_book_when_sold_treatment": 1.0197,
+    "aa_conversion_diff": 0.0106,
+    "aa_conversion_p_value": 0.3824,
+    "true_conversion_diff": 0.1308,
+    "true_proceeds_diff_usd": 1365.3827,
+    "ci_covers_truth": true
+  }
+}
