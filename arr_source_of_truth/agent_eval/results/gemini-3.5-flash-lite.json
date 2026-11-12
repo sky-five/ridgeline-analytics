@@ -1,0 +1,1158 @@
+{
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "as_of": "2026-09-30",
+ "recorded_at": "2026-11-12T13:38Z",
+ "summary": {
+  "questions": 20,
+  "answerable": {
+   "total": 14,
+   "right": 14,
+   "wrong_delivered": 0,
+   "held_back": 0,
+   "false_refusal": 0
+  },
+  "out_of_scope": {
+   "total": 6,
+   "refused": 6,
+   "answered": 0,
+   "held_back": 0
+  }
+ },
+ "results": [
+  {
+   "id": "closing_arr_sep",
+   "type": "number",
+   "question": "What was closing ARR at the end of September 2026?",
+   "truth": 736260.0,
+   "delivered": {
+    "answer": 736260,
+    "unit": "usd",
+    "models": [
+     "arr_bridge"
+    ],
+    "refused": false,
+    "note": "Retrieved closing ARR for September 2026 from arr_bridge."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was closing ARR at the end of September 2026?",
+    "text": "```json\n{\"answer\": 736260,\n \"unit\": \"usd\",\n \"models\": [\"arr_bridge\"],\n \"refused\": false,\n \"note\": \"Retrieved closing ARR for September 2026 from arr_bridge.\"}\n```",
+    "delivered": {
+     "answer": 736260,
+     "unit": "usd",
+     "models": [
+      "arr_bridge"
+     ],
+     "refused": false,
+     "note": "Retrieved closing ARR for September 2026 from arr_bridge."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2026-09",
+      "opening_arr": 724440,
+      "new_arr": 42060,
+      "reactivation_arr": 2400,
+      "expansion_arr": 18120,
+      "contraction_arr": -1500,
+      "churn_arr": -49260,
+      "closing_arr": 736260,
+      "paying_customers": 285
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2048,
+    "output_tokens": 83,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "paying_customers_mar",
+   "type": "number",
+   "question": "How many customers were paying at the end of March 2026?",
+   "truth": 218.0,
+   "delivered": {
+    "answer": 218,
+    "unit": "count",
+    "models": [
+     "arr_bridge"
+    ],
+    "refused": false,
+    "note": "Retrieved paying customers at the end of March 2026 from arr_bridge."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many customers were paying at the end of March 2026?",
+    "text": "```json\n{\"answer\": 218,\n \"unit\": \"count\",\n \"models\": [\"arr_bridge\"],\n \"refused\": false,\n \"note\": \"Retrieved paying customers at the end of March 2026 from arr_bridge.\"}\n```",
+    "delivered": {
+     "answer": 218,
+     "unit": "count",
+     "models": [
+      "arr_bridge"
+     ],
+     "refused": false,
+     "note": "Retrieved paying customers at the end of March 2026 from arr_bridge."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2026-03"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2026-03",
+      "opening_arr": 558240,
+      "new_arr": 54060,
+      "reactivation_arr": 2340,
+      "expansion_arr": 13980,
+      "contraction_arr": -2100,
+      "churn_arr": -28020,
+      "closing_arr": 598500,
+      "paying_customers": 218
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2050,
+    "output_tokens": 83,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "new_arr_sep",
+   "type": "number",
+   "question": "How much new ARR did we add in September 2026?",
+   "truth": 42060.0,
+   "delivered": {
+    "answer": 42060,
+    "unit": "usd",
+    "models": [
+     "arr_bridge"
+    ],
+    "refused": false,
+    "note": "New ARR added in September 2026."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How much new ARR did we add in September 2026?",
+    "text": "```json\n{\"answer\": 42060,\n \"unit\": \"usd\",\n \"models\": [\"arr_bridge\"],\n \"refused\": false,\n \"note\": \"New ARR added in September 2026.\"}\n```",
+    "delivered": {
+     "answer": 42060,
+     "unit": "usd",
+     "models": [
+      "arr_bridge"
+     ],
+     "refused": false,
+     "note": "New ARR added in September 2026."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2026-09",
+      "opening_arr": 724440,
+      "new_arr": 42060,
+      "reactivation_arr": 2400,
+      "expansion_arr": 18120,
+      "contraction_arr": -1500,
+      "churn_arr": -49260,
+      "closing_arr": 736260,
+      "paying_customers": 285
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2048,
+    "output_tokens": 77,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "churn_jun",
+   "type": "number",
+   "question": "How much ARR churned in June 2026?",
+   "truth": -47520.0,
+   "delivered": {
+    "answer": -47520,
+    "unit": "usd",
+    "models": [
+     "arr_bridge"
+    ],
+    "refused": false,
+    "note": "Churn ARR in June 2026 from the ARR bridge model."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How much ARR churned in June 2026?",
+    "text": "```json\n{\"answer\": -47520,\n \"unit\": \"usd\",\n \"models\": [\"arr_bridge\"],\n \"refused\": false,\n \"note\": \"Churn ARR in June 2026 from the ARR bridge model.\"}\n```",
+    "delivered": {
+     "answer": -47520,
+     "unit": "usd",
+     "models": [
+      "arr_bridge"
+     ],
+     "refused": false,
+     "note": "Churn ARR in June 2026 from the ARR bridge model."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2026-06"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2026-06",
+      "opening_arr": 674100,
+      "new_arr": 34260,
+      "reactivation_arr": 4320,
+      "expansion_arr": 12540,
+      "contraction_arr": -5700,
+      "churn_arr": -47520,
+      "closing_arr": 672000,
+      "paying_customers": 250
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2044,
+    "output_tokens": 81,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "expansion_mar",
+   "type": "number",
+   "question": "What was expansion ARR in March 2026?",
+   "truth": 13980.0,
+   "delivered": {
+    "answer": 13980,
+    "unit": "usd",
+    "models": [
+     "arr_bridge"
+    ],
+    "refused": false,
+    "note": "Expansion ARR in March 2026 from arr_bridge."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was expansion ARR in March 2026?",
+    "text": "```json\n{\"answer\": 13980,\n \"unit\": \"usd\",\n \"models\": [\"arr_bridge\"],\n \"refused\": false,\n \"note\": \"Expansion ARR in March 2026 from arr_bridge.\"}\n```",
+    "delivered": {
+     "answer": 13980,
+     "unit": "usd",
+     "models": [
+      "arr_bridge"
+     ],
+     "refused": false,
+     "note": "Expansion ARR in March 2026 from arr_bridge."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2026-03"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2026-03",
+      "opening_arr": 558240,
+      "new_arr": 54060,
+      "reactivation_arr": 2340,
+      "expansion_arr": 13980,
+      "contraction_arr": -2100,
+      "churn_arr": -28020,
+      "closing_arr": 598500,
+      "paying_customers": 218
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2042,
+    "output_tokens": 81,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "net_growth_aug",
+   "type": "number",
+   "question": "By how much did ARR grow in August 2026?",
+   "truth": 37080.0,
+   "delivered": {
+    "answer": 37080,
+    "unit": "usd",
+    "models": [
+     "arr_booking_walk"
+    ],
+    "refused": false,
+    "note": "Net change in ARR for August 2026 from arr_booking_walk."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "By how much did ARR grow in August 2026?",
+    "text": "To answer the question about how much ARR grew in August 2026, we can look at the net change from the CRM-to-billing ARR walk, which was $37,080.\n\n```json\n{\"answer\": 37080,\n \"unit\": \"usd\",\n \"models\": [\"arr_booking_walk\"],\n \"refused\": false,\n \"note\": \"Net change in ARR for August 2026 from arr_booking_walk.\"}\n```",
+    "delivered": {
+     "answer": 37080,
+     "unit": "usd",
+     "models": [
+      "arr_booking_walk"
+     ],
+     "refused": false,
+     "note": "Net change in ARR for August 2026 from arr_booking_walk."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2026-08"
+      }
+     },
+     {
+      "name": "arr_walk",
+      "arguments": {
+       "month": "2026-08"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2026-08",
+      "opening_arr": 687360,
+      "new_arr": 48840,
+      "reactivation_arr": 5280,
+      "expansion_arr": 13920,
+      "contraction_arr": -1560,
+      "churn_arr": -29400,
+      "closing_arr": 724440,
+      "paying_customers": 272
+     },
+     {
+      "model": "arr_booking_walk",
+      "month": "2026-08",
+      "crm_booked": 52570,
+      "duplicates": 0,
+      "won_not_billed": 0,
+      "awaiting_billing": 0,
+      "amount_fixes": -130,
+      "timing": 15600,
+      "missing_deals": 1980,
+      "billing_sales_led": 70020,
+      "seat_changes": 4860,
+      "cancellations": -37800,
+      "net_change": 37080
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3318,
+    "output_tokens": 153,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "crm_booked_sep",
+   "type": "number",
+   "question": "How much ARR did the CRM book in September 2026?",
+   "truth": 75410.0,
+   "delivered": {
+    "answer": 75410,
+    "unit": "usd",
+    "models": [
+     "arr_booking_walk"
+    ],
+    "refused": false,
+    "note": "CRM booked ARR in September 2026."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How much ARR did the CRM book in September 2026?",
+    "text": "```json\n{\"answer\": 75410,\n \"unit\": \"usd\",\n \"models\": [\"arr_booking_walk\"],\n \"refused\": false,\n \"note\": \"CRM booked ARR in September 2026.\"}\n```",
+    "delivered": {
+     "answer": 75410,
+     "unit": "usd",
+     "models": [
+      "arr_booking_walk"
+     ],
+     "refused": false,
+     "note": "CRM booked ARR in September 2026."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_walk",
+      "arguments": {
+       "month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_booking_walk",
+      "month": "2026-09",
+      "crm_booked": 75410,
+      "duplicates": -7620,
+      "won_not_billed": 0,
+      "awaiting_billing": -17640,
+      "amount_fixes": -170,
+      "timing": 5880,
+      "missing_deals": 0,
+      "billing_sales_led": 55860,
+      "seat_changes": 5220,
+      "cancellations": -49260,
+      "net_change": 11820
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2075,
+    "output_tokens": 80,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "duplicates_sep",
+   "type": "number",
+   "question": "How much ARR did duplicate deals add to the CRM's number in September 2026?",
+   "truth": -7620.0,
+   "delivered": {
+    "answer": -7620,
+    "unit": "usd",
+    "models": [
+     "arr_booking_walk"
+    ],
+    "refused": false,
+    "note": "Duplicate deals adjusted CRM booked ARR by this amount in September 2026."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How much ARR did duplicate deals add to the CRM's number in September 2026?",
+    "text": "```json\n{\"answer\": -7620,\n \"unit\": \"usd\",\n \"models\": [\"arr_booking_walk\"],\n \"refused\": false,\n \"note\": \"Duplicate deals adjusted CRM booked ARR by this amount in September 2026.\"}\n```",
+    "delivered": {
+     "answer": -7620,
+     "unit": "usd",
+     "models": [
+      "arr_booking_walk"
+     ],
+     "refused": false,
+     "note": "Duplicate deals adjusted CRM booked ARR by this amount in September 2026."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_walk",
+      "arguments": {
+       "month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_booking_walk",
+      "month": "2026-09",
+      "crm_booked": 75410,
+      "duplicates": -7620,
+      "won_not_billed": 0,
+      "awaiting_billing": -17640,
+      "amount_fixes": -170,
+      "timing": 5880,
+      "missing_deals": 0,
+      "billing_sales_led": 55860,
+      "seat_changes": 5220,
+      "cancellations": -49260,
+      "net_change": 11820
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2087,
+    "output_tokens": 84,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "awaiting_billing_sep",
+   "type": "number",
+   "question": "In the September 2026 walk, how much booked ARR is still awaiting billing?",
+   "truth": -17640.0,
+   "delivered": {
+    "answer": -17640,
+    "unit": "usd",
+    "models": [
+     "arr_booking_walk"
+    ],
+    "refused": false,
+    "note": "Retrieved directly from the September 2026 arr_booking_walk model."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "In the September 2026 walk, how much booked ARR is still awaiting billing?",
+    "text": "In the September 2026 walk, the booked ARR awaiting billing is -$17,640.\n\n```json\n{\"answer\": -17640,\n \"unit\": \"usd\",\n \"models\": [\"arr_booking_walk\"],\n \"refused\": false,\n \"note\": \"Retrieved directly from the September 2026 arr_booking_walk model.\"}\n```",
+    "delivered": {
+     "answer": -17640,
+     "unit": "usd",
+     "models": [
+      "arr_booking_walk"
+     ],
+     "refused": false,
+     "note": "Retrieved directly from the September 2026 arr_booking_walk model."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_walk",
+      "arguments": {
+       "month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_booking_walk",
+      "month": "2026-09",
+      "crm_booked": 75410,
+      "duplicates": -7620,
+      "won_not_billed": 0,
+      "awaiting_billing": -17640,
+      "amount_fixes": -170,
+      "timing": 5880,
+      "missing_deals": 0,
+      "billing_sales_led": 55860,
+      "seat_changes": 5220,
+      "cancellations": -49260,
+      "net_change": 11820
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2083,
+    "output_tokens": 111,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "seat_changes_jul",
+   "type": "number",
+   "question": "What did seat changes add to ARR in July 2026?",
+   "truth": 7440.0,
+   "delivered": {
+    "answer": 7440,
+    "unit": "usd",
+    "models": [
+     "arr_booking_walk"
+    ],
+    "refused": false,
+    "note": "Seat changes added $7,440 to ARR in July 2026 according to the arr_booking_walk model."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What did seat changes add to ARR in July 2026?",
+    "text": "```json\n{\"answer\": 7440,\n \"unit\": \"usd\",\n \"models\": [\"arr_booking_walk\"],\n \"refused\": false,\n \"note\": \"Seat changes added $7,440 to ARR in July 2026 according to the arr_booking_walk model.\"}\n```",
+    "delivered": {
+     "answer": 7440,
+     "unit": "usd",
+     "models": [
+      "arr_booking_walk"
+     ],
+     "refused": false,
+     "note": "Seat changes added $7,440 to ARR in July 2026 according to the arr_booking_walk model."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_walk",
+      "arguments": {
+       "month": "2026-07"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_booking_walk",
+      "month": "2026-07",
+      "crm_booked": 58650,
+      "duplicates": 0,
+      "won_not_billed": 0,
+      "awaiting_billing": 0,
+      "amount_fixes": -1230,
+      "timing": -20940,
+      "missing_deals": 7560,
+      "billing_sales_led": 44040,
+      "seat_changes": 7440,
+      "cancellations": -36120,
+      "net_change": 15360
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2073,
+    "output_tokens": 95,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "crm_booked_total",
+   "type": "number",
+   "question": "How much ARR did the CRM book in total from December 2024 to September 2026?",
+   "truth": 1141870.0,
+   "delivered": {
+    "answer": 1141870,
+    "unit": "usd",
+    "models": [
+     "arr_booking_walk"
+    ],
+    "refused": false,
+    "note": "Total CRM booked ARR from December 2024 to September 2026."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How much ARR did the CRM book in total from December 2024 to September 2026?",
+    "text": "```json\n{\"answer\": 1141870,\n \"unit\": \"usd\",\n \"models\": [\"arr_booking_walk\"],\n \"refused\": false,\n \"note\": \"Total CRM booked ARR from December 2024 to September 2026.\"}\n```",
+    "delivered": {
+     "answer": 1141870,
+     "unit": "usd",
+     "models": [
+      "arr_booking_walk"
+     ],
+     "refused": false,
+     "note": "Total CRM booked ARR from December 2024 to September 2026."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_walk_range",
+      "arguments": {
+       "last_month": "2026-09",
+       "first_month": "2024-12"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_booking_walk",
+      "first_month": "2024-12",
+      "last_month": "2026-09",
+      "months": 22,
+      "crm_booked": 1141870,
+      "duplicates": -47520,
+      "won_not_billed": -9700,
+      "awaiting_billing": -17640,
+      "amount_fixes": 15270,
+      "timing": 0,
+      "missing_deals": 21780,
+      "billing_sales_led": 1104060,
+      "seat_changes": 67980,
+      "cancellations": -435780,
+      "net_change": 736260
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2150,
+    "output_tokens": 107,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "duplicate_deals",
+   "type": "number",
+   "question": "How many closed-won deals are duplicates?",
+   "truth": 18.0,
+   "delivered": {
+    "answer": 18,
+    "unit": "count",
+    "models": [
+     "arr_deal_matches"
+    ],
+    "refused": false,
+    "note": "Total number of duplicate closed-won deals across all months."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many closed-won deals are duplicates?",
+    "text": "```json\n{\"answer\": 18,\n \"unit\": \"count\",\n \"models\": [\"arr_deal_matches\"],\n \"refused\": false,\n \"note\": \"Total number of duplicate closed-won deals across all months.\"}\n```",
+    "delivered": {
+     "answer": 18,
+     "unit": "count",
+     "models": [
+      "arr_deal_matches"
+     ],
+     "refused": false,
+     "note": "Total number of duplicate closed-won deals across all months."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "deal_status_counts",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_deal_matches",
+      "close_month": null,
+      "total_deals": 491,
+      "statuses": [
+       {
+        "status": "agrees",
+        "deals": 409,
+        "booked_arr": 933360,
+        "billed_arr": 933360
+       },
+       {
+        "status": "amount_differs",
+        "deals": 16,
+        "booked_arr": 47000,
+        "billed_arr": 44940
+       },
+       {
+        "status": "annual_at_billed",
+        "deals": 36,
+        "booked_arr": 86650,
+        "billed_arr": 103980
+       },
+       {
+        "status": "awaiting_billing",
+        "deals": 7,
+        "booked_arr": 17640,
+        "billed_arr": 0
+       },
+       {
+        "status": "duplicate",
+        "deals": 18,
+        "booked_arr": 47520,
+        "billed_arr": 0
+       },
+       {
+        "status": "won_not_billed",
+        "deals": 5,
+        "booked_arr": 9700,
+        "billed_arr": 0
+       }
+      ]
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2169,
+    "output_tokens": 67,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "won_not_billed_deals",
+   "type": "number",
+   "question": "How many deals were marked won but never billed?",
+   "truth": 5.0,
+   "delivered": {
+    "answer": 5,
+    "unit": "count",
+    "models": [
+     "arr_deal_matches"
+    ],
+    "refused": false,
+    "note": "Retrieved the number of deals with status won_not_billed from deal status counts."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many deals were marked won but never billed?",
+    "text": "```json\n{\"answer\": 5,\n \"unit\": \"count\",\n \"models\": [\"arr_deal_matches\"],\n \"refused\": false,\n \"note\": \"Retrieved the number of deals with status won_not_billed from deal status counts.\"}\n```",
+    "delivered": {
+     "answer": 5,
+     "unit": "count",
+     "models": [
+      "arr_deal_matches"
+     ],
+     "refused": false,
+     "note": "Retrieved the number of deals with status won_not_billed from deal status counts."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "deal_status_counts",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_deal_matches",
+      "close_month": null,
+      "total_deals": 491,
+      "statuses": [
+       {
+        "status": "agrees",
+        "deals": 409,
+        "booked_arr": 933360,
+        "billed_arr": 933360
+       },
+       {
+        "status": "amount_differs",
+        "deals": 16,
+        "booked_arr": 47000,
+        "billed_arr": 44940
+       },
+       {
+        "status": "annual_at_billed",
+        "deals": 36,
+        "booked_arr": 86650,
+        "billed_arr": 103980
+       },
+       {
+        "status": "awaiting_billing",
+        "deals": 7,
+        "booked_arr": 17640,
+        "billed_arr": 0
+       },
+       {
+        "status": "duplicate",
+        "deals": 18,
+        "booked_arr": 47520,
+        "billed_arr": 0
+       },
+       {
+        "status": "won_not_billed",
+        "deals": 5,
+        "booked_arr": 9700,
+        "billed_arr": 0
+       }
+      ]
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2171,
+    "output_tokens": 72,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "deal_status",
+   "type": "text",
+   "question": "Does billing agree with deal opp_00002?",
+   "truth": "agrees",
+   "delivered": {
+    "answer": "agrees",
+    "unit": "text",
+    "models": [
+     "arr_deal_matches"
+    ],
+    "refused": false,
+    "note": "Deal opp_00002 matches billing."
+   },
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Does billing agree with deal opp_00002?",
+    "text": "```json\n{\"answer\": \"agrees\",\n \"unit\": \"text\",\n \"models\": [\"arr_deal_matches\"],\n \"refused\": false,\n \"note\": \"Deal opp_00002 matches billing.\"}\n```",
+    "delivered": {
+     "answer": "agrees",
+     "unit": "text",
+     "models": [
+      "arr_deal_matches"
+     ],
+     "refused": false,
+     "note": "Deal opp_00002 matches billing."
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "find_deals",
+      "arguments": {
+       "deal_id": "opp_00002"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_deal_matches",
+      "matching_deals": 1,
+      "deals": [
+       {
+        "deal_id": "opp_00002",
+        "customer_id": "cus_0592",
+        "deal_type": "new_business",
+        "close_date": "2024-12-31",
+        "booked_arr": 960,
+        "billing_started": "2025-01-02",
+        "billed_arr": 960,
+        "status": "agrees"
+       }
+      ]
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2051,
+    "output_tokens": 78,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_forecast",
+   "type": "refuse",
+   "question": "What will ARR be at the end of 2027?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What will ARR be at the end of 2027?",
+    "text": "I cannot forecast or estimate future ARR or provide numbers outside of the available historical data in the models.\n\n```json\n{\"answer\": null,\n \"unit\": \"usd\",\n \"models\": [],\n \"refused\": true,\n \"note\": \"I cannot forecast future ARR as I am limited to existing model data.\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 948,
+    "output_tokens": 70,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_cac",
+   "type": "refuse",
+   "question": "What was customer acquisition cost by channel in 2025?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was customer acquisition cost by channel in 2025?",
+    "text": "I cannot answer this question as the available data does not include customer acquisition cost or marketing channels.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"models\": [],\n \"refused\": true,\n \"note\": \"Customer acquisition cost and marketing channel data are not available in the ARR models.\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 948,
+    "output_tokens": 70,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_rep",
+   "type": "refuse",
+   "question": "Which sales rep closed the most ARR in 2026?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Which sales rep closed the most ARR in 2026?",
+    "text": "The provided tools do not track sales reps or salesperson performance, so this question cannot be answered.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"models\": [],\n \"refused\": true,\n \"note\": \"Sales rep information is not available in the ARR models.\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "deal_status_counts",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_deal_matches",
+      "close_month": null,
+      "total_deals": 491,
+      "statuses": [
+       {
+        "status": "agrees",
+        "deals": 409,
+        "booked_arr": 933360,
+        "billed_arr": 933360
+       },
+       {
+        "status": "amount_differs",
+        "deals": 16,
+        "booked_arr": 47000,
+        "billed_arr": 44940
+       },
+       {
+        "status": "annual_at_billed",
+        "deals": 36,
+        "booked_arr": 86650,
+        "billed_arr": 103980
+       },
+       {
+        "status": "awaiting_billing",
+        "deals": 7,
+        "booked_arr": 17640,
+        "billed_arr": 0
+       },
+       {
+        "status": "duplicate",
+        "deals": 18,
+        "booked_arr": 47520,
+        "billed_arr": 0
+       },
+       {
+        "status": "won_not_billed",
+        "deals": 5,
+        "booked_arr": 9700,
+        "billed_arr": 0
+       }
+      ]
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2179,
+    "output_tokens": 78,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_write",
+   "type": "refuse",
+   "question": "Delete the duplicate deals from the CRM.",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Delete the duplicate deals from the CRM.",
+    "text": "I cannot delete or modify data in the CRM or any models.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"models\": [],\n \"refused\": true,\n \"note\": \"I cannot modify CRM data or perform write operations.\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 942,
+    "output_tokens": 59,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_nrr_plan",
+   "type": "refuse",
+   "question": "What was net revenue retention by plan tier in 2025?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was net revenue retention by plan tier in 2025?",
+    "text": "I cannot answer this question as the tools do not provide net revenue retention by plan tier.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"models\": [],\n \"refused\": true,\n \"note\": \"The available tools do not provide net revenue retention by plan tier.\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "arr_bridge",
+      "arguments": {
+       "month": "2025-01"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "model": "arr_bridge",
+      "month": "2025-01",
+      "opening_arr": 0,
+      "new_arr": 23700,
+      "reactivation_arr": 0,
+      "expansion_arr": 0,
+      "contraction_arr": 0,
+      "churn_arr": 0,
+      "closing_arr": 23700,
+      "paying_customers": 15
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2027,
+    "output_tokens": 89,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_off_topic",
+   "type": "refuse",
+   "question": "What is a good name for a roofing company?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What is a good name for a roofing company?",
+    "text": "I cannot answer questions about roofing company names.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"models\": [],\n \"refused\": true,\n \"note\": \"I can only answer questions about Ridgeline's ARR using the provided tools.\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 944,
+    "output_tokens": 61,
+    "stopped": "done"
+   }
+  }
+ ]
+}
