@@ -42,7 +42,7 @@ def _dbt() -> str:
 
 
 def dbt_build(as_of: date, db_path: Path = DEFAULT_DB) -> None:
-    env = {**os.environ, "ARR_DUCKDB_PATH": str(db_path)}
+    env = {**os.environ, "ARR_DUCKDB_PATH": str(db_path.resolve())}  # dbt runs from its own folder
     subprocess.run(
         [_dbt(), "build", "--profiles-dir", ".", "--vars", f"{{as_of_date: '{as_of}'}}", "--quiet"],
         cwd=HERE / "dbt", env=env, check=True,
