@@ -184,6 +184,10 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 `crm_pipeline/` is a learning project on simulated data. It takes the standard CRM objects from saas-world-sim's sales CRM pack (leads, accounts, contacts, opportunities, opportunity history) and models them in a small dbt project on DuckDB: pipeline coverage, stage conversion, sales velocity and a quarter-start forecast back-tested over 9 quarters. The pack's duplicate accounts and backdated close dates are fixed in the models and scored against labels the warehouse never sees. As of 2026-06-30, the models find 60 of 61 duplicates and all 9 backdated deals closed by then, with no false matches. Stage win rates learned from history cut the forecast error from 27.1% to 19.6%. There are also four SOQL-style example queries, each with a SQL version that runs. Details: [crm_pipeline/README.md](crm_pipeline/README.md).
 
+## Wholesale vehicle auction
+
+`vehicle_auction/` is a learning project on simulated data: 26 weekly sales of dealers' used cars in a physical lane, a lane with online simulcast and a timed online sale, modelled in a small dbt project on DuckDB. Sell-through has three tested definitions (on the block, with if-sales, and per car across relists); in the physical lane the same cars give 57%, 70% or 84%. A simulated reserve-price test (95% vs 100% of book value, 6,300 cars split by a hash of the id) raises first-run conversion by 12.2 points (95% CI 10.0 to 14.4); the simulator knows the true effect on the same cars, +13.1 points, and the tests check the interval covers it. Details: [vehicle_auction/README.md](vehicle_auction/README.md).
+
 ## Customer health scoring
 
 `customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) lists the 683 live subscriptions on 2026-07-01 with the riskiest fifth by each method and the reasons behind each score. Details: [customer_health/README.md](customer_health/README.md).
@@ -232,6 +236,7 @@ semantic_eval/ business questions, governed-metric answer key, raw-vs-governed e
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
+vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
 metric_glossary/ an independent SQL check for every governed metric, compared month by month
