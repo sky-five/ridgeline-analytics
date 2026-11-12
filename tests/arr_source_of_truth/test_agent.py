@@ -162,3 +162,12 @@ def test_baseline_run_matches_its_recording_and_the_tools_still_agree(db):
     assert report["summary"] == saved["summary"]
     for path in sorted(RESULTS.glob("*.json")):
         assert verify_tools(json.loads(path.read_text()), db) == [], path.name
+
+
+def test_gemini_recording_numbers_quoted_in_the_readme():
+    r = json.loads((RESULTS / "gemini-3.5-flash-lite.json").read_text())
+    assert (r["provider"], r["model"]) == ("gemini", "gemini-3.5-flash-lite")
+    s = r["summary"]
+    assert s["answerable"] == {"total": 14, "right": 14, "wrong_delivered": 0, "held_back": 0, "false_refusal": 0}
+    assert s["out_of_scope"] == {"total": 6, "refused": 6, "answered": 0, "held_back": 0}
+    assert sum(x["answer"]["turns"] for x in r["results"]) == 37
