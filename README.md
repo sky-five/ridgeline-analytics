@@ -186,7 +186,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Wholesale vehicle auction
 
-`vehicle_auction/` is a learning project on simulated data: 26 weekly sales of dealers' used cars in a physical lane, a lane with online simulcast and a timed online sale, modelled in a small dbt project on DuckDB. Sell-through has three tested definitions (on the block, with if-sales, and per car across relists); in the physical lane the same cars give 57%, 70% or 84%. A simulated reserve-price test (95% vs 100% of book value, 6,300 cars split by a hash of the id) raises first-run conversion by 12.2 points (95% CI 10.0 to 14.4); the simulator knows the true effect on the same cars, +13.1 points, and the tests check the interval covers it. Details: [vehicle_auction/README.md](vehicle_auction/README.md).
+`vehicle_auction/` is a learning project on simulated data: 26 weekly sales of dealers' used cars in a physical lane, a lane with online simulcast and a timed online sale, modelled in a small dbt project on DuckDB. Sell-through has three tested definitions (on the block, with if-sales, and per car across relists); in the physical lane the same cars give 57%, 70% or 84%. A simulated reserve-price test (95% vs 100% of book value, 6,300 cars split by a hash of the id) raises first-run conversion by 12.2 points (95% CI 10.0 to 14.4); the simulator knows the true effect on the same cars, +13.1 points, and the tests check the interval covers it. The site's [Vehicle auction page](https://sky-five.github.io/ridgeline-analytics/vehicle-auction/) shows the three definitions by channel and week and the test readout next to the true effect. Details: [vehicle_auction/README.md](vehicle_auction/README.md).
 
 ## Customer health scoring
 

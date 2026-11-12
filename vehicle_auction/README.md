@@ -7,7 +7,7 @@ lower reserve-price guidance sell more cars and bring sellers more money. Nothin
 auction, dealer or buyer.
 
 ```bash
-python -m vehicle_auction          # simulate, load DuckDB, dbt build, write results/summary.json
+python -m vehicle_auction          # simulate, load DuckDB, dbt build, write results/
 python -m vehicle_auction --check  # fail if the committed results are out of date
 ```
 
@@ -17,8 +17,9 @@ python -m vehicle_auction --check  # fail if the committed results are out of da
 |---|---|
 | `simulate.py` | 26 weekly sales, 2026-01-05 to 2026-06-29, seeded. Each car gets a book value from its segment, age, mileage and condition grade, and a seller's reserve near the reserve guidance. Bidders arrive by channel (simulcast draws the most) and the high bid lands one $100 increment over the second-highest valuation. A high bid within 10% under the reserve can become an if-sale; a no-sale may be relisted next week with a 3% lower reserve, up to 3 runs; 4% of listings are withdrawn before they run. |
 | `load.py` | Loads `vehicles`, `listings`, `bids` and the test's `test_assignments` log into `raw_auction` in DuckDB, then builds the dbt project in `dbt/`. |
-| `dbt/` | `fct_listings` (one row per run, with the offered / sold-on-block / if-sale / converted flags), `fct_vehicles` (one row per car), `sell_through_weekly`, `sell_through_by_channel`, `reserve_test_arms`. Singular tests pin the metric rules. |
+| `dbt/` | `fct_listings` (one row per run, with the offered / sold-on-block / if-sale / converted flags), `fct_vehicles` (one row per car), `sell_through_weekly`, `vehicle_sell_through_weekly` (cars by the week first offered), `sell_through_by_channel`, `reserve_test_arms`. Singular tests pin the metric rules. |
 | `readout.py` | Reads out the reserve-price test and checks it against the planted truth. |
+| `report.py` | Writes `results/sell_through_weekly.csv` and turns the committed results into the dashboard tables. |
 
 ## Metric definitions
 
@@ -72,9 +73,23 @@ reserve guidance (100% of book value); treatment gets 95% of book. The outcome i
 Limits: the first-run proceeds gain overstates the real one, because many control no-sales sell a week later on a
 relist. And real bidders can anchor on a visible reserve; here they don't, which is what makes the truth knowable.
 
+## Dashboard page
+
+The site's [Vehicle auction page](https://sky-five.github.io/ridgeline-analytics/vehicle-auction/) reads three tables
+that `scripts/export_reporting.py` writes from the committed `results/summary.json` and
+`results/sell_through_weekly.csv`: `reporting.auction_channels`, `auction_weekly` (78 rows, 3 channels by 26 weeks)
+and `auction_reserve_test`. It shows sell-through by channel with the three definitions side by side, the same by sale
+week with a channel picker, and the reserve test with both confidence intervals next to the true effect. The numbers
+come from one fixed run, so they don't move with the nightly build; the nightly smoke test requests the page.
+
+By week, the vehicle rate puts each car in the week it was first offered. Cars first offered near the end have had
+fewer chances to relist, so the rate falls in the last weeks (physical lane: 74.8% for the 2026-06-29 week against
+84.0% overall). That is the data ending, not a slump.
+
 ## Tests
 
-`tests/vehicle_auction/` (15 tests, about 10 seconds). They build a fresh warehouse and check that the simulation and
+`tests/vehicle_auction/` (26 tests, about 10 seconds). They build a fresh warehouse and check that the simulation and
 the split are deterministic, that only cars consigned in the test window are assigned, that the counterfactual
 stays out of `raw_auction`, the metric definitions above against an independent count, the sample-ratio and A/A
-checks, that the confidence intervals cover the true effect, and that `results/summary.json` matches the code.
+checks, that the confidence intervals cover the true effect, that the committed results match the code, and that
+the dashboard tables add up to the channel totals and the page reads only columns they have.
