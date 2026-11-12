@@ -90,3 +90,25 @@ would flag ordinary days.
 `tests/data_health/test_scorecard.py` has 38 tests: two weeks of clean days (154 table-days) have no red;
 each fault turns its check red on the tables listed for it and leaves every other table's grade unchanged;
 hand-made hourly tables pin each threshold; and the command exits 1 on a red table.
+
+## How to read the page
+
+The [Data health page](https://sky-five.github.io/ridgeline-analytics/data-health/) opens with five steps for
+someone who uses the numbers but did not build them: did the pipelines run, does today's data look normal,
+read the reason rather than the colour (the table that needs the most attention is quoted live from the
+scorecard), check the dbt build, and look up any word. What each grade means for using the numbers is spelled
+out: green use them, amber read the reason first, red do not quote numbers built on that table for that day.
+
+The page ends with a glossary of its 16 terms (`glossary.py`, written to `reporting.data_health_glossary` by
+the site build). Its thresholds are not typed in: the scorecard's come from `scorecard.py` and the pipeline
+freshness hours from the dbt source configs, which the `source_loads` table now reads too, so the page, the
+glossary and the checks cannot disagree. Business metrics are defined on the separate
+[Metric glossary](https://sky-five.github.io/ridgeline-analytics/metrics/).
+
+```bash
+python -m data_health.glossary   # print it
+```
+
+`tests/data_health/test_glossary.py` has 9 tests: every column and tile title on the page has a glossary
+entry, the quoted thresholds equal the code's and change when it does, sources with different freshness
+hours are an error, and the walkthrough comes first and links to the glossary.
