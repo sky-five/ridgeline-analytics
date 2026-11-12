@@ -14,6 +14,10 @@ models:
     description: Listing-basis sell-through and conversion by channel and sale week.
     data_tests:
       - unique_combination: {arguments: {columns: [channel, sale_week]}}
+  - name: vehicle_sell_through_weekly
+    description: Vehicle-basis sell-through by channel and the week each car was first offered.
+    data_tests:
+      - unique_combination: {arguments: {columns: [channel, sale_week]}}
   - name: sell_through_by_channel
     description: Sell-through per channel on listings and on vehicles, over all sales.
     columns:
