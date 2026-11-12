@@ -149,6 +149,12 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
         tables["table_health"] = scorecard(arrivals(str(as_of), WINDOW_DAYS), str(as_of),
                                            {name: spec.primary_key for name, spec in TABLES.items()})
 
+    # plain-language glossary for the Data health page, its numbers read from the rules themselves
+    from data_health.glossary import glossary, source_freshness_hours
+
+    tables["data_health_glossary"] = glossary()
+    warn_hours, error_hours = source_freshness_hours()
+
     with duckdb.connect(str(warehouse)) as con:  # same config as MetricFlow's in-process connection
         con.sql("create schema if not exists reporting")
         for name, df in tables.items():
@@ -169,8 +175,8 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
             now_utc as (select timezone('UTC', current_timestamp) as built_at)
             select l.*, n.built_at,
                    date_diff('hour', l.last_loaded_at, n.built_at) as hours_before_build,
-                   case when date_diff('hour', l.last_loaded_at, n.built_at) > 72 then 'error'
-                        when date_diff('hour', l.last_loaded_at, n.built_at) > 36 then 'warn'
+                   case when date_diff('hour', l.last_loaded_at, n.built_at) > {error_hours} then 'error'
+                        when date_diff('hour', l.last_loaded_at, n.built_at) > {warn_hours} then 'warn'
                         else 'fresh' end as freshness
             from l cross join now_utc as n
         """)
