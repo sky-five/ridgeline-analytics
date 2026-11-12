@@ -7,7 +7,7 @@ Sales says ARR grew by what the CRM shows as closed-won. Finance says it grew by
 ```bash
 python -m arr_source_of_truth                      # load as of 2026-09-30, dbt build, score, write results/summary.json
 python -m arr_source_of_truth --as-of 2026-10-31   # any other date (results file left alone)
-pytest tests/arr_source_of_truth -q                # 10 tests, about 8 seconds
+pytest tests/arr_source_of_truth -q                # 16 tests, about 11 seconds
 ```
 
 The warehouse goes to `warehouse/arr.duckdb`. The main warehouse and the nightly build are not touched.
@@ -83,4 +83,16 @@ churn and cancellations   -$49,260
 
 From December 2024 to September 2026 the CRM booked $1,141,870 of ARR; billing started $1,104,060. Annual plans booked at the paid amount understate the CRM by $17,330, duplicates overstate it by $47,520.
 
-Next for this folder (not built yet): an Evidence page for the walk, and an agent that answers ARR questions only through these models.
+## The page
+
+[ARR: from CRM to billing](https://sky-five.github.io/ridgeline-analytics/arr-walk/) on the Evidence site shows the walk for any closed month (pick it from the list), the walk and the bridge for every month, the count and ARR of deals in each match status with what the status means, and a searchable list of every deal that does not simply agree.
+
+`report.py` builds this warehouse as of the run date and copies the page's tables, converted from cents to dollars and nothing else, into `reporting.arr_*` in the main warehouse, where the site reads them. `scripts/run_all.py` calls it after the dashboard export, so the nightly build moves the page forward one day at a time:
+
+```bash
+python -m arr_source_of_truth.report --as-of 2026-11-11   # build warehouse/arr.duckdb, write reporting.arr_* to warehouse/ridgeline.duckdb
+```
+
+On the 2026-11-11 build (last closed month October 2026): $786,540 closing ARR, 297 paying customers, 535 closed-won deals, 87 that need a look. Six pytest tests (`tests/arr_source_of_truth/test_report.py`) check that the page's walk adds up to billing and to the bridge every month, that its numbers at 2026-09-30 equal `results/summary.json`, and that the page reads only tables the build writes.
+
+Next for this folder (not built yet): an agent that answers ARR questions only through these models.
