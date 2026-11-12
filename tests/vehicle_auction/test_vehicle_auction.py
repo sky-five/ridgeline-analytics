@@ -9,6 +9,7 @@ import pytest
 
 from vehicle_auction.load import dbt_build, load
 from vehicle_auction.readout import RESULTS, proportion_diff, readout, srm_p_value, summary, to_json
+from vehicle_auction.report import WEEKLY, to_csv, weekly_frame
 from vehicle_auction.simulate import TEST_START, arm_for, simulate
 
 
@@ -167,3 +168,7 @@ def test_committed_results_are_current(db, auction):
     assert RESULTS.read_text() == to_json(fresh)
     committed = json.loads(RESULTS.read_text())
     assert committed["listings"] == 15064 and committed["vehicles"] == 12569
+
+
+def test_committed_weekly_results_are_current(db):
+    assert WEEKLY.read_text() == to_csv(weekly_frame(db))
