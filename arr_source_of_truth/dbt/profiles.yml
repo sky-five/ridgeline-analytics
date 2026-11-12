@@ -1,0 +1,7 @@
+arr_source_of_truth:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('ARR_DUCKDB_PATH', '../../warehouse/arr.duckdb') }}"
+      threads: 4

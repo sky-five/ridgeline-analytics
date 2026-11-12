@@ -1,0 +1,21 @@
+version: 2
+models:
+  - name: stg_billing__subscription_changes
+    columns:
+      - name: change_key
+        data_tests: [unique, not_null]
+      - name: reason
+        data_tests:
+          - accepted_values:
+              arguments: {values: [new, upgrade, seats_up, seats_down, churn, cancel_refund]}
+  - name: stg_crm__won_deals
+    columns:
+      - name: deal_id
+        data_tests: [unique, not_null]
+      - name: deal_type
+        data_tests:
+          - accepted_values:
+              arguments: {values: [new_business, win_back, expansion]}
+      - name: booked_arr_cents
+        data_tests:
+          - not_null

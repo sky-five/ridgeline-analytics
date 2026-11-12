@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: raw_billing
+    description: saas-world-sim's billing pack, contract side, as of the load date.
+    tables:
+      - name: subscription_changes
+  - name: raw_crm
+    description: Closed-won deals made by crm_side.py from the same billing history, as of the load date, without the defect labels.
+    tables:
+      - name: won_deals

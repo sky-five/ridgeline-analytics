@@ -1,0 +1,105 @@
+version: 2
+models:
+  - name: arr_months
+    description: Months that have closed by the as-of date.
+    columns:
+      - name: month_start
+        data_tests: [unique, not_null]
+
+  - name: arr_customer_months
+    description: >
+      Contract MRR per customer at each month end. ARR is 12 times this. Billing's contract side is the
+      source of truth: a subscription counts from the day billing starts it, not from the CRM close date.
+    data_tests:
+      - unique_combination:
+          arguments: {columns: [customer_id, month_start]}
+
+  - name: arr_movements
+    description: >
+      One row per customer and month in which month-end ARR changed. new = first time paying;
+      reactivation = paying again after reaching zero; churn = down to zero; expansion / contraction =
+      up / down while still paying. Classified per customer, so moving to another subscription is not
+      churn plus new.
+    columns:
+      - name: movement
+        data_tests:
+          - accepted_values:
+              arguments: {values: [new, reactivation, expansion, contraction, churn]}
+
+  - name: arr_bridge
+    description: Opening ARR + new + reactivation + expansion + contraction + churn = closing ARR, per month.
+    columns:
+      - name: month_start
+        data_tests: [unique, not_null]
+
+  - name: arr_deal_matches
+    description: >
+      Each closed-won deal matched to the billing change it should have started (same customer, a new
+      subscription or a plan upgrade 0-30 days after the close date, nearest first). status says how the
+      two agree.
+    columns:
+      - name: deal_id
+        data_tests: [unique, not_null]
+      - name: change_key
+        description: The billing change this deal started. A change is claimed by at most one deal.
+        data_tests: [unique]
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [agrees, annual_at_billed, amount_differs, duplicate, won_not_billed, awaiting_billing]
+
+  - name: arr_booking_walk
+    description: >
+      Per month, from CRM booked ARR to billing's new and upgrade ARR, then to the bridge's net change.
+      Every step is its own column, in cents, signed so the columns add up.
+    columns:
+      - name: month_start
+        data_tests: [unique, not_null]
+
+unit_tests:
+  - name: movements_one_customer_through_every_kind
+    description: New, expansion, contraction, churn, then reactivation for one customer.
+    model: arr_movements
+    given:
+      - input: ref('arr_customer_months')
+        rows:
+          - {customer_id: c1, month_start: 2025-01-01, mrr_cents: 1000}
+          - {customer_id: c1, month_start: 2025-02-01, mrr_cents: 3000}
+          - {customer_id: c1, month_start: 2025-03-01, mrr_cents: 2000}
+          - {customer_id: c1, month_start: 2025-04-01, mrr_cents: 0}
+          - {customer_id: c1, month_start: 2025-05-01, mrr_cents: 0}
+          - {customer_id: c1, month_start: 2025-06-01, mrr_cents: 1500}
+    expect:
+      rows:
+        - {month_start: 2025-01-01, movement: new, change_arr_cents: 12000}
+        - {month_start: 2025-02-01, movement: expansion, change_arr_cents: 24000}
+        - {month_start: 2025-03-01, movement: contraction, change_arr_cents: -12000}
+        - {month_start: 2025-04-01, movement: churn, change_arr_cents: -24000}
+        - {month_start: 2025-06-01, movement: reactivation, change_arr_cents: 18000}
+
+  - name: deal_matches_nearest_change_duplicate_and_annual
+    description: >
+      A deal takes the nearest upgrade within 30 days; its copy logged 3 days later is a duplicate; an
+      annual plan booked at 10 months is annual_at_billed; a deal with nothing in billing is won_not_billed.
+    model: arr_deal_matches
+    overrides:
+      vars: {as_of_date: "2025-12-31"}
+    given:
+      - input: ref('stg_crm__won_deals')
+        rows:
+          - {deal_id: d1, customer_id: c1, deal_type: expansion, close_date: 2025-03-01, month_start: 2025-03-01, booked_arr_cents: 24000}
+          - {deal_id: d2, customer_id: c1, deal_type: expansion, close_date: 2025-03-04, month_start: 2025-03-01, booked_arr_cents: 24000}
+          - {deal_id: d3, customer_id: c2, deal_type: new_business, close_date: 2025-04-10, month_start: 2025-04-01, booked_arr_cents: 100000}
+          - {deal_id: d4, customer_id: c3, deal_type: expansion, close_date: 2025-05-01, month_start: 2025-05-01, booked_arr_cents: 5000}
+      - input: ref('stg_billing__subscription_changes')
+        rows:
+          - {change_key: a, customer_id: c1, reason: upgrade, is_sales_led: true, effective_on: 2025-03-05, month_start: 2025-03-01, delta_mrr_cents: 2000}
+          - {change_key: b, customer_id: c1, reason: upgrade, is_sales_led: true, effective_on: 2025-03-20, month_start: 2025-03-01, delta_mrr_cents: 9000}
+          - {change_key: c, customer_id: c2, reason: new, is_sales_led: true, effective_on: 2025-04-12, month_start: 2025-04-01, delta_mrr_cents: 10000}
+    expect:
+      rows:
+        - {deal_id: d1, change_key: a, status: agrees}
+        - {deal_id: d2, change_key: null, status: duplicate}
+        - {deal_id: d3, change_key: c, status: annual_at_billed}
+        - {deal_id: d4, change_key: null, status: won_not_billed}

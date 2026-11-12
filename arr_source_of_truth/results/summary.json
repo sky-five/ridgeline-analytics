@@ -1,0 +1,47 @@
+{
+  "as_of": "2026-09-30",
+  "awaiting_billing": 7,
+  "caught": {
+    "amount_typo": 16,
+    "annual_at_billed": 36,
+    "duplicate": 18,
+    "missing_deal": 9,
+    "won_not_billed": 5
+  },
+  "closing_arr": 736260,
+  "deals_matched": 461,
+  "false_flags": 0,
+  "last_month": {
+    "amount_fixes": -170,
+    "awaiting_billing": -17640,
+    "billing_sales_led": 55860,
+    "cancellations": -49260,
+    "crm_booked": 75410,
+    "duplicates": -7620,
+    "missing_deals": 0,
+    "month": "2026-09",
+    "net_change": 11820,
+    "seat_changes": 5220,
+    "timing": 5880,
+    "won_not_billed": 0
+  },
+  "paying_customers": 285,
+  "planted": {
+    "amount_typo": 16,
+    "annual_at_billed": 37,
+    "duplicate": 18,
+    "missing_deal": 9,
+    "won_not_billed": 5
+  },
+  "sales_led_billing_changes": 470,
+  "status_counts": {
+    "agrees": 409,
+    "amount_differs": 16,
+    "annual_at_billed": 36,
+    "awaiting_billing": 7,
+    "duplicate": 18,
+    "won_not_billed": 5
+  },
+  "won_deals": 491,
+  "wrong_matches": 0
+}
