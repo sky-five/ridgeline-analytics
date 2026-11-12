@@ -2,7 +2,32 @@
 title: Data health
 ---
 
-Can these numbers be trusted today? This page shows when each source last loaded and how the last dbt run went.
+Can these numbers be trusted today? This page shows when each source last loaded, whether each table's latest
+day of data looks normal, and how the last dbt run went.
+
+## How to read this page
+
+```sql example
+select table_name, grade, reason
+from ridgeline.table_health
+order by case grade when 'red' then 0 when 'amber' then 1 else 2 end, table_name
+limit 1
+```
+
+1. **Did the pipelines run?** In the first table, every source system should say `fresh`. `warn` or `error`
+   means that system has not loaded for a while, so every number built from it may be out of date.
+2. **Does today's data look normal?** The scorecard below grades each source table green, amber or red.
+   Green: use the numbers. Amber: usable, but read the reason first. Red: do not quote numbers built on that
+   table for this day.
+3. **Read the reason, not just the colour.** Each table gets one sentence with its own numbers. The table
+   that needs the most attention today is **<Value data={example} column=table_name/>**
+   (<Value data={example} column=grade/>): "<Value data={example} column=reason/>".
+4. **Check the build.** Under *Last dbt build*, passing should equal the total. A failing test stops the
+   nightly build before it publishes, so the live site keeps the previous build rather than broken numbers.
+5. **Look up any word** in the [glossary](#glossary) at the bottom. Business numbers (MRR, signups, close rate)
+   are defined on the [Metric glossary](/metrics/) page.
+
+## Pipeline loads
 
 ```sql sources
 select source_system, strftime(last_loaded_at, '%Y-%m-%d %H:%M') as last_loaded_utc, hours_before_build,
@@ -90,6 +115,22 @@ from ${tests}, (select max(generated_at) as generated_at from ridgeline.dbt_run_
 Tests include unique and not-null keys, accepted values, relationships, enforced contracts on marts, unit tests
 for business logic (MRR movements, the 60-day cutoff, speed-to-lead buckets), and reconciliations
 (every subscription invoice equals the MRR log; daily MRR ties to account MRR).
+
+## Glossary
+
+Every label on this page, in plain words. The thresholds here are read from the code that applies them, so
+they change when the rules do.
+
+```sql glossary
+select term, shown_as, meaning, what_to_do from ridgeline.data_health_glossary
+```
+
+<DataTable data={glossary} rows=all search=true>
+  <Column id=term title="Term"/>
+  <Column id=shown_as title="Shown on the page as" wrap=true/>
+  <Column id=meaning title="What it means" wrap=true/>
+  <Column id=what_to_do title="What to do about it" wrap=true/>
+</DataTable>
 
 ## Known gaps
 
