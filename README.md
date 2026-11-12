@@ -152,6 +152,10 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 .venv/Scripts/python -m revrec
 ```
 
+## ARR source of truth
+
+`arr_source_of_truth/` reconciles what sales booked in the CRM with the ARR billing actually started. Billing's contract side is the one source of truth: a small dbt project on DuckDB builds the ARR bridge (new, reactivation, expansion, contraction, churn) from it, matches each closed-won deal to the billing change it should have started, and walks CRM bookings to billing ARR month by month in signed steps that add up to the cent (duplicates, won but never billed, awaiting billing, amount fixes, timing, missing deals, then seat changes and churn). The CRM deals are made from the billing pack with five kinds of planted mistakes whose labels the warehouse never sees. As of 2026-09-30 all 461 matched deals land on the change they came from, 84 of the 85 planted mistakes are flagged (the last is an annual deal closed in late September that billing has not started yet) with no false flags, and the dbt bridge equals revrec's independent Python reference in all 21 months. Details: [arr_source_of_truth/README.md](arr_source_of_truth/README.md).
+
 ## Acquisition spend
 
 `acquisition_spend/` asks where the next marketing dollar should go. It computes channel CAC from the governed funnel and spend marts (blended $846, paid channels $1,427 per paying account, May 2025 to April 2026), then a budget what-if built on lead-score deciles: each paid channel's yield per dollar is its signups per dollar times its mix across score deciles times each decile's paid rate. Moving 10% of trade-show spend to Google Ads adds about 1.5 paying accounts a month. A back-test fitted on 2025 predicted 98.7 paid accounts from January-April 2026 spend against 101 actual. Details: [acquisition_spend/README.md](acquisition_spend/README.md).
@@ -236,6 +240,7 @@ data_health/ product-event contract and table health scorecard, checked daily, w
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 acquisition_spend/ channel CAC and a budget what-if on lead-score deciles, with a back-test
 outbound_notes/ per-lead outbound notes for the top score decile, drafted and checked against each lead's facts
+arr_source_of_truth/ CRM closed-won deals reconciled to the billing ARR bridge, in dbt, scored on planted mistakes
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)
 tests/       pytest suites
