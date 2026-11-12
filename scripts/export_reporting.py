@@ -135,6 +135,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
                                       ("Logistic regression", "model", "model"))])
         tables["health_at_risk"] = pd.read_csv(health_dir / "at_risk.csv")
 
+    # the wholesale vehicle auction learning project (vehicle_auction/), on the "Vehicle auction" page
+    from vehicle_auction.report import tables as auction_tables
+
+    tables.update(auction_tables())
+
     # account reviews (account_reviews/): one templated page per large account, from the governed metrics
     from account_reviews.reviews import build as build_reviews
 
