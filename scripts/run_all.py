@@ -55,6 +55,9 @@ def main() -> None:
         from scripts.export_reporting import export  # dashboard tables from the governed metrics
 
         export(args.warehouse, args.as_of)
+        from arr_source_of_truth.report import publish  # the ARR page's tables, from its own dbt project
+
+        publish(args.as_of, args.warehouse, args.warehouse.with_name("arr.duckdb"))
 
 
 if __name__ == "__main__":
