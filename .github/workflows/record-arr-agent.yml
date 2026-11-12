@@ -1,0 +1,79 @@
+name: record ARR agent
+
+# Runs the ARR agent's 20-question eval through the Gemini API (free tier) on the ARR warehouse as of
+# 2026-09-30 and commits the run, so it replays later without a key
+# (python -m arr_source_of_truth.agent_eval --replay ...). Needs the repository secret GEMINI_API_KEY.
+# At most 6 model requests per question; most take 2-3.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model"
+        required: true
+        default: gemini-3.5-flash-lite
+      pace:
+        description: "Seconds between model requests"
+        required: true
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record-arr-agent
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      MODEL: ${{ inputs.model }}
+      PACE: ${{ inputs.pace }}
+    steps:
+      - name: Check the key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: test -n "$GEMINI_API_KEY" || { echo "::error::GEMINI_API_KEY secret is not set"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Cache simulated history
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: sim-${{ hashFiles('requirements.txt') }}
+
+      - name: Build the ARR warehouse as of 2026-09-30
+        run: python -m arr_source_of_truth
+
+      - name: Record
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: >-
+          python -m arr_source_of_truth.agent_eval --provider gemini --model "$MODEL" --pace "$PACE"
+          --record --db warehouse/arr.duckdb
+
+      - name: The recording replays
+        run: python -m arr_source_of_truth.agent_eval --replay "arr_source_of_truth/agent_eval/results/$MODEL.json" --db warehouse/arr.duckdb
+
+      - name: Commit the recording
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add arr_source_of_truth/agent_eval/results
+          git diff --cached --quiet && { echo "nothing new recorded"; exit 0; }
+          git commit -m "eval(arr-agent): record the ARR agent eval on $MODEL (Gemini API), as of 2026-09-30"
+          git pull --rebase origin main
+          git push origin HEAD:main
