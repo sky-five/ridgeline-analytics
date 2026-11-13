@@ -1,0 +1,120 @@
+# Governed HR and payroll metrics. The metric service (metrics.py) and the MCP server (server.py) answer only
+# from these definitions; there is no SQL tool. Every metric is sum(numerator) / sum(denominator) over the
+# rows of one dbt model, so it adds up correctly over any group of departments, locations and levels.
+# Change a definition only with a version bump.
+
+model: hr_group_months
+dimensions: [department, location, job_level]
+first_month: "2024-01"
+small_group_min: 5   # pay metrics are withheld for any group of fewer people than this
+
+metrics:
+  headcount:
+    label: Headcount
+    definition: People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.
+    numerator: [headcount]
+    unit: people
+    sensitivity: internal
+    owner: People team
+    version: 1
+
+  hires:
+    label: Hires
+    definition: People whose hire date falls in the month.
+    numerator: [hires]
+    unit: people
+    sensitivity: internal
+    owner: People team
+    version: 1
+
+  terminations:
+    label: Leavers
+    definition: People whose leaving date falls in the month, voluntary and involuntary together.
+    numerator: [terminations]
+    unit: people
+    sensitivity: internal
+    owner: People team
+    version: 1
+
+  voluntary_terminations:
+    label: Voluntary leavers
+    definition: People who chose to leave (resigned) with a leaving date in the month.
+    numerator: [voluntary_terminations]
+    unit: people
+    sensitivity: internal
+    owner: People team
+    version: 1
+
+  attrition_rate_12m:
+    label: Attrition rate, trailing 12 months
+    definition: Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.
+    numerator: [terminations_12m]
+    denominator: [avg_headcount_12m]
+    unit: share
+    first_month: "2024-12"
+    sensitivity: internal
+    owner: People team
+    version: 1
+
+  avg_tenure_months:
+    label: Average tenure
+    definition: Average whole months from hire date to the month end, over the people employed that day.
+    numerator: [tenure_months_sum]
+    denominator: [headcount]
+    unit: months
+    sensitivity: internal
+    owner: People team
+    version: 1
+
+  payroll_cost:
+    label: Payroll cost
+    definition: Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.
+    numerator: [gross_pay_cents]
+    scale: 0.01
+    unit: usd
+    people: paid_employees
+    sensitivity: confidential
+    owner: Finance
+    version: 1
+
+  overtime_share:
+    label: Overtime share of pay
+    definition: Overtime pay divided by base + overtime pay at the month end (bonus left out).
+    numerator: [overtime_pay_cents]
+    denominator: [base_pay_cents, overtime_pay_cents]
+    unit: share
+    people: paid_employees
+    sensitivity: confidential
+    owner: Finance
+    version: 1
+
+  avg_base_salary:
+    label: Average annual base salary
+    definition: Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).
+    numerator: [annual_base_cents_sum]
+    denominator: [headcount]
+    scale: 0.01
+    unit: usd
+    sensitivity: restricted
+    owner: People team
+    version: 1
+
+# Who can see what. The role is fixed when the server starts; the model cannot pick or change it.
+roles:
+  all_staff:
+    description: Anyone in the company. Company-wide headcount and hires only.
+    metrics: [headcount, hires]
+    group_by: []
+  people_manager:
+    description: Managers. Workforce metrics by department, location and level; no pay.
+    metrics: [headcount, hires, terminations, voluntary_terminations, attrition_rate_12m, avg_tenure_months]
+    group_by: [department, location, job_level]
+  finance:
+    description: Finance. Payroll cost and overtime by department and location, plus headcount.
+    metrics: [headcount, payroll_cost, overtime_share]
+    group_by: [department, location]
+  hr_partner:
+    description: HR business partners. Every metric, including salaries.
+    metrics: [headcount, hires, terminations, voluntary_terminations, attrition_rate_12m, avg_tenure_months,
+              payroll_cost, overtime_share, avg_base_salary]
+    group_by: [department, location, job_level]
