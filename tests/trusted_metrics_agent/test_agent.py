@@ -153,3 +153,15 @@ def test_baseline_plans():
     assert plan("Forecast our headcount for the end of 2027.") is None
     assert plan("What was the average base salary for level 3 at the end of September 2026?")["filters"] == {
         "job_level": "3"}
+
+
+def test_the_gemini_recording_is_complete_and_holds_the_quoted_scores(db):
+    """The README quotes this run; it replays with no key and its tool results match a fresh server."""
+    saved = agent_eval.replay(agent_eval.RESULTS / "gemini-3.5-flash-lite.json")
+    assert (saved["provider"], saved["model"], saved["as_of"]) == ("gemini", "gemini-3.5-flash-lite", "2026-09-30")
+    assert [r["id"] for r in saved["results"]] == [q["id"] for q in agent_eval.load_questions()]
+    s = saved["summary"]
+    assert s["answerable"]["right"] == 18 and s["not_for_role"]["right"] == 6
+    assert s["out_of_scope"] == {"total": 6, "right": 5, "declined": 1, "held_back": 0, "leaked": 0}
+    assert s["tool_calls"] == 53
+    assert agent_eval.verify_tools(saved, db) == []
