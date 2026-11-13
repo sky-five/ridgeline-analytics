@@ -17,8 +17,9 @@ from arr_source_of_truth.agent_baseline import months_in
 REFUSE_WORDS = ("forecast", "predict", "will ", "next year", "delete", "update ", "remove", "change the",
                 "why ", "should we", "emp_", "employee id", "named ", "market rate", "competitor")
 
-# phrase -> metric; the longest phrase found wins
-METRICS = {"headcount": "headcount", "how many people": "headcount", "employees": "headcount",
+# phrase -> metric; the longest phrase found wins, and "how many people" only when nothing else is named
+GENERIC = {"how many people": "headcount", "employ": "headcount", "staff": "headcount"}
+METRICS = {"headcount": "headcount",
            "hires": "hires", "hired": "hires", "joined": "hires",
            "leavers": "terminations", "left": "terminations", "terminations": "terminations",
            "resigned": "voluntary_terminations", "voluntary": "voluntary_terminations",
@@ -34,13 +35,17 @@ def plan(question: str) -> dict | None:
     q = " " + question.lower() + " "
     if any(w in q for w in REFUSE_WORDS):
         return None
+    table = METRICS
     hits = [p for p in METRICS if re.search(rf"\b{p}\b", q)]
+    if not hits:
+        table, hits = GENERIC, [p for p in GENERIC if p in q]
     months = months_in(q)
     if not hits or not months:
         return None
-    args = {"metric": METRICS[max(hits, key=len)], "start_month": months[0]}
+    args = {"metric": table[max(hits, key=len)], "start_month": months[0]}
     filters = {}
-    if dept := next((d for d in DEPARTMENTS if re.search(rf"\bin {d}\b|\b{d} (team|department)\b", q)), None):
+    named = r"\b(in|left|joined|for) {}\b|\b{} (team|department)\b"
+    if dept := next((d for d in DEPARTMENTS if re.search(named.format(d, d), q)), None):
         filters["department"] = dept.title()
     if loc := next((x for x in LOCATIONS if re.search(rf"\b(in|from) {x}\b", q)), None):
         filters["location"] = loc.title()

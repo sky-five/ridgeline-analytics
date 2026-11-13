@@ -2,16 +2,16 @@
  "provider": "baseline",
  "model": "keyword-baseline",
  "as_of": "2026-09-30",
- "recorded_at": "2026-11-13T12:25Z",
+ "recorded_at": "2026-11-13T12:27Z",
  "summary": {
   "questions": 30,
   "answerable": {
    "total": 18,
-   "right": 10,
-   "wrong_delivered": 7,
+   "right": 15,
+   "wrong_delivered": 3,
    "held_back": 0,
    "declined": 0,
-   "refused": 1
+   "refused": 0
   },
   "not_for_role": {
    "total": 6,
@@ -27,7 +27,7 @@
    "held_back": 0,
    "leaked": 0
   },
-  "tool_calls": 22
+  "tool_calls": 23
  },
  "results": [
   {
@@ -112,10 +112,10 @@
    "question": "How many people were hired in July 2026?",
    "truth": 9,
    "delivered": {
-    "answer": 332,
+    "answer": 9,
     "unit": "people",
     "sources": [
-     "trusted_metrics_agent/metrics.yml#headcount"
+     "trusted_metrics_agent/metrics.yml#hires"
     ],
     "declined": false,
     "refused": false,
@@ -124,16 +124,16 @@
    "declined": false,
    "refused": false,
    "held_back": null,
-   "outcome": "wrong_delivered",
+   "outcome": "right",
    "answer": {
     "question": "How many people were hired in July 2026?",
     "role": "all_staff",
-    "text": "```json\n{\"answer\": 332, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "text": "```json\n{\"answer\": 9, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#hires\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
     "delivered": {
-     "answer": 332,
+     "answer": 9,
      "unit": "people",
      "sources": [
-      "trusted_metrics_agent/metrics.yml#headcount"
+      "trusted_metrics_agent/metrics.yml#hires"
      ],
      "declined": false,
      "refused": false,
@@ -146,21 +146,21 @@
      {
       "name": "query_metric",
       "arguments": {
-       "metric": "headcount",
+       "metric": "hires",
        "start_month": "2026-07"
       }
      }
     ],
     "tool_results": [
      {
-      "metric": "headcount",
-      "label": "Headcount",
-      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "metric": "hires",
+      "label": "Hires",
+      "definition": "People whose hire date falls in the month.",
       "unit": "people",
       "sensitivity": "internal",
       "owner": "People team",
       "version": 1,
-      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "source": "trusted_metrics_agent/metrics.yml#hires",
       "role": "all_staff",
       "model": "hr_group_months",
       "group_by": [],
@@ -168,7 +168,7 @@
       "rows": [
        {
         "month": "2026-07",
-        "value": 332
+        "value": 9
        }
       ],
       "withheld_groups": 0
@@ -417,10 +417,10 @@
    "question": "How many people left Field Operations in August 2026?",
    "truth": 2,
    "delivered": {
-    "answer": 333,
+    "answer": 2,
     "unit": "people",
     "sources": [
-     "trusted_metrics_agent/metrics.yml#headcount"
+     "trusted_metrics_agent/metrics.yml#terminations"
     ],
     "declined": false,
     "refused": false,
@@ -429,16 +429,16 @@
    "declined": false,
    "refused": false,
    "held_back": null,
-   "outcome": "wrong_delivered",
+   "outcome": "right",
    "answer": {
     "question": "How many people left Field Operations in August 2026?",
     "role": "people_manager",
-    "text": "```json\n{\"answer\": 333, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "text": "```json\n{\"answer\": 2, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#terminations\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
     "delivered": {
-     "answer": 333,
+     "answer": 2,
      "unit": "people",
      "sources": [
-      "trusted_metrics_agent/metrics.yml#headcount"
+      "trusted_metrics_agent/metrics.yml#terminations"
      ],
      "declined": false,
      "refused": false,
@@ -451,29 +451,34 @@
      {
       "name": "query_metric",
       "arguments": {
-       "metric": "headcount",
-       "start_month": "2026-08"
+       "metric": "terminations",
+       "start_month": "2026-08",
+       "filters": {
+        "department": "Field Operations"
+       }
       }
      }
     ],
     "tool_results": [
      {
-      "metric": "headcount",
-      "label": "Headcount",
-      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "metric": "terminations",
+      "label": "Leavers",
+      "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
       "unit": "people",
       "sensitivity": "internal",
       "owner": "People team",
       "version": 1,
-      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "source": "trusted_metrics_agent/metrics.yml#terminations",
       "role": "people_manager",
       "model": "hr_group_months",
       "group_by": [],
-      "filters": {},
+      "filters": {
+       "department": "Field Operations"
+      },
       "rows": [
        {
         "month": "2026-08",
-        "value": 333
+        "value": 2
        }
       ],
       "withheld_groups": 0
@@ -492,10 +497,10 @@
    "question": "How many people resigned voluntarily in March 2026?",
    "truth": 5,
    "delivered": {
-    "answer": 310,
+    "answer": 5,
     "unit": "people",
     "sources": [
-     "trusted_metrics_agent/metrics.yml#headcount"
+     "trusted_metrics_agent/metrics.yml#voluntary_terminations"
     ],
     "declined": false,
     "refused": false,
@@ -504,16 +509,16 @@
    "declined": false,
    "refused": false,
    "held_back": null,
-   "outcome": "wrong_delivered",
+   "outcome": "right",
    "answer": {
     "question": "How many people resigned voluntarily in March 2026?",
     "role": "people_manager",
-    "text": "```json\n{\"answer\": 310, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "text": "```json\n{\"answer\": 5, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#voluntary_terminations\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
     "delivered": {
-     "answer": 310,
+     "answer": 5,
      "unit": "people",
      "sources": [
-      "trusted_metrics_agent/metrics.yml#headcount"
+      "trusted_metrics_agent/metrics.yml#voluntary_terminations"
      ],
      "declined": false,
      "refused": false,
@@ -526,21 +531,21 @@
      {
       "name": "query_metric",
       "arguments": {
-       "metric": "headcount",
+       "metric": "voluntary_terminations",
        "start_month": "2026-03"
       }
      }
     ],
     "tool_results": [
      {
-      "metric": "headcount",
-      "label": "Headcount",
-      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "metric": "voluntary_terminations",
+      "label": "Voluntary leavers",
+      "definition": "People who chose to leave (resigned) with a leaving date in the month.",
       "unit": "people",
       "sensitivity": "internal",
       "owner": "People team",
       "version": 1,
-      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations",
       "role": "people_manager",
       "model": "hr_group_months",
       "group_by": [],
@@ -548,7 +553,7 @@
       "rows": [
        {
         "month": "2026-03",
-        "value": 310
+        "value": 5
        }
       ],
       "withheld_groups": 0
@@ -726,22 +731,75 @@
    "type": "number",
    "question": "How many level 5 staff did we have at the end of September 2026?",
    "truth": 18,
-   "delivered": null,
+   "delivered": {
+    "answer": 18,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
    "declined": false,
-   "refused": true,
+   "refused": false,
    "held_back": null,
-   "outcome": "refused",
+   "outcome": "right",
    "answer": {
     "question": "How many level 5 staff did we have at the end of September 2026?",
     "role": "people_manager",
-    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
-    "delivered": null,
+    "text": "```json\n{\"answer\": 18, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 18,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
     "declined": false,
-    "refused": true,
+    "refused": false,
     "held_back": null,
-    "tool_calls": [],
-    "tool_results": [],
-    "turns": 1,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-09",
+       "filters": {
+        "job_level": "5"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "job_level": 5
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 18
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
     "input_tokens": 0,
     "output_tokens": 0,
     "stopped": "done"
@@ -1284,10 +1342,10 @@
    "question": "How many people joined Customer Support in May 2026?",
    "truth": 2,
    "delivered": {
-    "answer": 324,
+    "answer": 2,
     "unit": "people",
     "sources": [
-     "trusted_metrics_agent/metrics.yml#headcount"
+     "trusted_metrics_agent/metrics.yml#hires"
     ],
     "declined": false,
     "refused": false,
@@ -1296,16 +1354,16 @@
    "declined": false,
    "refused": false,
    "held_back": null,
-   "outcome": "wrong_delivered",
+   "outcome": "right",
    "answer": {
     "question": "How many people joined Customer Support in May 2026?",
     "role": "hr_partner",
-    "text": "```json\n{\"answer\": 324, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "text": "```json\n{\"answer\": 2, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#hires\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
     "delivered": {
-     "answer": 324,
+     "answer": 2,
      "unit": "people",
      "sources": [
-      "trusted_metrics_agent/metrics.yml#headcount"
+      "trusted_metrics_agent/metrics.yml#hires"
      ],
      "declined": false,
      "refused": false,
@@ -1318,29 +1376,34 @@
      {
       "name": "query_metric",
       "arguments": {
-       "metric": "headcount",
-       "start_month": "2026-05"
+       "metric": "hires",
+       "start_month": "2026-05",
+       "filters": {
+        "department": "Customer Support"
+       }
       }
      }
     ],
     "tool_results": [
      {
-      "metric": "headcount",
-      "label": "Headcount",
-      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "metric": "hires",
+      "label": "Hires",
+      "definition": "People whose hire date falls in the month.",
       "unit": "people",
       "sensitivity": "internal",
       "owner": "People team",
       "version": 1,
-      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "source": "trusted_metrics_agent/metrics.yml#hires",
       "role": "hr_partner",
       "model": "hr_group_months",
       "group_by": [],
-      "filters": {},
+      "filters": {
+       "department": "Customer Support"
+      },
       "rows": [
        {
         "month": "2026-05",
-        "value": 324
+        "value": 2
        }
       ],
       "withheld_groups": 0
@@ -1459,7 +1522,10 @@
       "name": "query_metric",
       "arguments": {
        "metric": "payroll_cost",
-       "start_month": "2026-09"
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Sales"
+       }
       }
      }
     ],
