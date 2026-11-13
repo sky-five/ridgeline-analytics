@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: hr_employee_months
+    description: One row per person and month end they were employed on, with tenure and the annual base in effect.
+    data_tests:
+      - unique_combination:
+          columns: [month_end, emp_id]
+    columns:
+      - name: annual_base_cents
+        data_tests: [not_null]
+
+  - name: hr_group_months
+    description: >
+      The only table the governed metrics in ../metrics.yml read. Month end x department x location x job level,
+      with headcount, hires, leavers, tenure, salaries and pay; trailing 12-month leavers and average headcount.
+    data_tests:
+      - unique_combination:
+          columns: [month_end, department, location, job_level]
+    columns:
+      - name: gross_pay_cents
+        description: Base + overtime + bonus paid at this month end.
+        data_tests: [not_null]

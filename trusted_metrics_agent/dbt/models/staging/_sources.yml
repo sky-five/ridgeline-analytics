@@ -1,0 +1,12 @@
+version: 2
+sources:
+  - name: raw_hr
+    description: HR system export made by hr_data.py (synthetic). Employee ids only, no names or personal fields.
+    tables:
+      - name: employees
+      - name: salary_changes
+      - name: terminations
+  - name: raw_payroll
+    description: Payroll export made by hr_data.py (synthetic), one row per person, month and pay type.
+    tables:
+      - name: pay_lines

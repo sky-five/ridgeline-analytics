@@ -1,0 +1,30 @@
+version: 2
+models:
+  - name: stg_hr__employees
+    description: One row per person ever employed, with the leaving date and reason if they left.
+    columns:
+      - name: emp_id
+        data_tests: [unique, not_null]
+      - name: department
+        data_tests: [not_null]
+      - name: term_reason
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [voluntary, involuntary]
+  - name: stg_hr__salary_changes
+    description: Annual base salary from effective_date on.
+    data_tests:
+      - unique_combination:
+          columns: [emp_id, effective_date]
+  - name: stg_payroll__pay_lines
+    description: Pay per person, month end and pay type.
+    columns:
+      - name: pay_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [base, overtime, bonus]
+    data_tests:
+      - unique_combination:
+          columns: [emp_id, pay_date, pay_type]

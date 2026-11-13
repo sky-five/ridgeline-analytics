@@ -1,0 +1,7 @@
+trusted_metrics:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('TRUSTED_METRICS_DUCKDB_PATH', '../../warehouse/trusted_metrics.duckdb') }}"
+      threads: 4
