@@ -40,6 +40,9 @@ jobs:
       - name: Unit tests
         run: pytest -m "not e2e" -q
 
+      - name: Reports reconcile with their sources; every planted fault is caught
+        run: python -m report_reconciliation --check
+
       - name: Pick as-of date (yesterday, UTC)
         run: echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
 

@@ -196,6 +196,10 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 `migration_kit/` moves a table from a nightly full reload to an incremental load and proves the two match. It runs both loaders side by side on real snapshots of the public USGS earthquake feed (magnitude 2.5+, past 30 days), which changes every few minutes. The new loader is a DuckDB `MERGE` with a row-hash change-capture step and a change log; events that leave the feed are kept and labelled aged out or deleted. After every load a reconciliation checks row counts, keys, all 22 columns row by row and four aggregates. On the 4 committed snapshots it matched every time, while an event-time watermark loader (the usual shortcut) failed on 3 of 4 by missing revisions and age-outs. A generated retirement checklist covers column lineage, the parallel-run record and any code still reading the old table; the nightly workflow repeats the check on that day's feed. Details: [migration_kit/README.md](migration_kit/README.md).
 
+## Report reconciliation
+
+`report_reconciliation/` checks three reports (project hours and cost by month, resource utilisation by week, project budget burn) against their sources before they go to UAT. The project, resource and time data is synthetic and built from source to mart in DuckDB. Each mart is compared with numbers recomputed in pandas from the source tables: row counts by grain key, totals per measure and per key, refresh age of every input, and column lineage against the catalog. All three reports pass; five planted faults (a rate join that double-counts people with a raise, rejected hours left in, closed projects dropped, a 30-hour-old extract, an undocumented column) are each caught, and CI fails if one gets through. A generated UAT checklist per report ticks the automated items and leaves the owner's sign-off open. Details: [report_reconciliation/README.md](report_reconciliation/README.md).
+
 ## Customer health scoring
 
 `customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) lists the 683 live subscriptions on 2026-07-01 with the riskiest fifth by each method and the reasons behind each score. Details: [customer_health/README.md](customer_health/README.md).
@@ -245,6 +249,7 @@ orchestration/ Airflow DAG for the nightly build, failure alerts, last-good mark
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
 migration_kit/ full reload to incremental merge on a public feed, reconciled after every load, retirement checklist
+report_reconciliation/ three reports checked against their sources (rows, totals, refresh, lineage), planted faults, UAT checklist
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
