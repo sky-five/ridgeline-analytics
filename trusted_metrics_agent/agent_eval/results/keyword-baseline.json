@@ -1,0 +1,1754 @@
+{
+ "provider": "baseline",
+ "model": "keyword-baseline",
+ "as_of": "2026-09-30",
+ "recorded_at": "2026-11-13T12:25Z",
+ "summary": {
+  "questions": 30,
+  "answerable": {
+   "total": 18,
+   "right": 10,
+   "wrong_delivered": 7,
+   "held_back": 0,
+   "declined": 0,
+   "refused": 1
+  },
+  "not_for_role": {
+   "total": 6,
+   "right": 5,
+   "refused": 1,
+   "held_back": 0,
+   "leaked": 0
+  },
+  "out_of_scope": {
+   "total": 6,
+   "right": 6,
+   "declined": 0,
+   "held_back": 0,
+   "leaked": 0
+  },
+  "tool_calls": 22
+ },
+ "results": [
+  {
+   "id": "headcount_sep",
+   "role": "all_staff",
+   "type": "number",
+   "question": "How many people did we employ at the end of September 2026?",
+   "truth": 335,
+   "delivered": {
+    "answer": 335,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people did we employ at the end of September 2026?",
+    "role": "all_staff",
+    "text": "```json\n{\"answer\": 335, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 335,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 335
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "hires_jul",
+   "role": "all_staff",
+   "type": "number",
+   "question": "How many people were hired in July 2026?",
+   "truth": 9,
+   "delivered": {
+    "answer": 332,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "How many people were hired in July 2026?",
+    "role": "all_staff",
+    "text": "```json\n{\"answer\": 332, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 332,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-07"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-07",
+        "value": 332
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "headcount_jan_2024",
+   "role": "all_staff",
+   "type": "number",
+   "question": "What was company headcount in January 2024?",
+   "truth": 234,
+   "delivered": {
+    "answer": 234,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was company headcount in January 2024?",
+    "role": "all_staff",
+    "text": "```json\n{\"answer\": 234, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 234,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2024-01"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2024-01",
+        "value": 234
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "attrition_sales_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "What was the trailing 12-month attrition rate in Sales in September 2026?",
+   "truth": 0.2097,
+   "delivered": {
+    "answer": 0.2097,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the trailing 12-month attrition rate in Sales in September 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 0.2097, \"unit\": \"share\", \"sources\": [\"trusted_metrics_agent/metrics.yml#attrition_rate_12m\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 0.2097,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Sales"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "attrition_rate_12m",
+      "label": "Attrition rate, trailing 12 months",
+      "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+      "unit": "share",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "department": "Sales"
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 0.2097
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "attrition_company_jun",
+   "role": "people_manager",
+   "type": "number",
+   "question": "What was company-wide attrition over the 12 months to June 2026?",
+   "truth": 0.2045,
+   "delivered": {
+    "answer": 0.2045,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was company-wide attrition over the 12 months to June 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 0.2045, \"unit\": \"share\", \"sources\": [\"trusted_metrics_agent/metrics.yml#attrition_rate_12m\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 0.2045,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-06"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "attrition_rate_12m",
+      "label": "Attrition rate, trailing 12 months",
+      "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+      "unit": "share",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-06",
+        "value": 0.2045
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "leavers_field_ops_aug",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many people left Field Operations in August 2026?",
+   "truth": 2,
+   "delivered": {
+    "answer": 333,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "How many people left Field Operations in August 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 333, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 333,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-08"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-08",
+        "value": 333
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "voluntary_mar",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many people resigned voluntarily in March 2026?",
+   "truth": 5,
+   "delivered": {
+    "answer": 310,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "How many people resigned voluntarily in March 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 310, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 310,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-03"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-03",
+        "value": 310
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "tenure_engineering_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "What was the average tenure in Engineering at the end of September 2026, in months?",
+   "truth": 49.7,
+   "delivered": {
+    "answer": 49.7,
+    "unit": "months",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average tenure in Engineering at the end of September 2026, in months?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 49.7, \"unit\": \"months\", \"sources\": [\"trusted_metrics_agent/metrics.yml#avg_tenure_months\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 49.7,
+     "unit": "months",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "avg_tenure_months",
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Engineering"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "avg_tenure_months",
+      "label": "Average tenure",
+      "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+      "unit": "months",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "department": "Engineering"
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 49.7
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "headcount_ontario_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many people were based in Ontario at the end of September 2026?",
+   "truth": 125,
+   "delivered": {
+    "answer": 125,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people were based in Ontario at the end of September 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 125, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 125,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-09",
+       "filters": {
+        "location": "Ontario"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "location": "Ontario"
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 125
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "headcount_level5_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many level 5 staff did we have at the end of September 2026?",
+   "truth": 18,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "refused",
+   "answer": {
+    "question": "How many level 5 staff did we have at the end of September 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "highest_attrition_dept_sep",
+   "role": "people_manager",
+   "type": "text",
+   "question": "Which department had the highest 12-month attrition rate in September 2026?",
+   "truth": "Field Operations",
+   "delivered": {
+    "answer": 0.1909,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "Which department had the highest 12-month attrition rate in September 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 0.1909, \"unit\": \"share\", \"sources\": [\"trusted_metrics_agent/metrics.yml#attrition_rate_12m\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 0.1909,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "attrition_rate_12m",
+      "label": "Attrition rate, trailing 12 months",
+      "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+      "unit": "share",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 0.1909
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "payroll_sep",
+   "role": "finance",
+   "type": "number",
+   "question": "What was total payroll cost in September 2026?",
+   "truth": 2420797.03,
+   "delivered": {
+    "answer": 2420797.03,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#payroll_cost"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was total payroll cost in September 2026?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": 2420797.03, \"unit\": \"usd\", \"sources\": [\"trusted_metrics_agent/metrics.yml#payroll_cost\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 2420797.03,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#payroll_cost"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "payroll_cost",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "payroll_cost",
+      "label": "Payroll cost",
+      "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+      "unit": "usd",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#payroll_cost",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 2420797.03
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "payroll_engineering_aug",
+   "role": "finance",
+   "type": "number",
+   "question": "What did Engineering cost in payroll in August 2026?",
+   "truth": 848766.6,
+   "delivered": {
+    "answer": 2407617.78,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#payroll_cost"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "What did Engineering cost in payroll in August 2026?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": 2407617.78, \"unit\": \"usd\", \"sources\": [\"trusted_metrics_agent/metrics.yml#payroll_cost\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 2407617.78,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#payroll_cost"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "payroll_cost",
+       "start_month": "2026-08"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "payroll_cost",
+      "label": "Payroll cost",
+      "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+      "unit": "usd",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#payroll_cost",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-08",
+        "value": 2407617.78
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "overtime_share_jul",
+   "role": "finance",
+   "type": "number",
+   "question": "What share of pay went to overtime in July 2026?",
+   "truth": 0.0318,
+   "delivered": {
+    "answer": 0.0318,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#overtime_share"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What share of pay went to overtime in July 2026?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": 0.0318, \"unit\": \"share\", \"sources\": [\"trusted_metrics_agent/metrics.yml#overtime_share\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 0.0318,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#overtime_share"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "overtime_share",
+       "start_month": "2026-07"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "overtime_share",
+      "label": "Overtime share of pay",
+      "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+      "unit": "share",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#overtime_share",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-07",
+        "value": 0.0318
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "highest_overtime_location_aug",
+   "role": "finance",
+   "type": "text",
+   "question": "Which location had the highest overtime share of pay in August 2026?",
+   "truth": "Alberta",
+   "delivered": {
+    "answer": 0.0298,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#overtime_share"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "Which location had the highest overtime share of pay in August 2026?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": 0.0298, \"unit\": \"share\", \"sources\": [\"trusted_metrics_agent/metrics.yml#overtime_share\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 0.0298,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#overtime_share"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "overtime_share",
+       "start_month": "2026-08"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "overtime_share",
+      "label": "Overtime share of pay",
+      "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+      "unit": "share",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#overtime_share",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-08",
+        "value": 0.0298
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "salary_company_sep",
+   "role": "hr_partner",
+   "type": "number",
+   "question": "What was the average annual base salary across the company at the end of September 2026?",
+   "truth": 84304.48,
+   "delivered": {
+    "answer": 84304.48,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#avg_base_salary"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average annual base salary across the company at the end of September 2026?",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": 84304.48, \"unit\": \"usd\", \"sources\": [\"trusted_metrics_agent/metrics.yml#avg_base_salary\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 84304.48,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#avg_base_salary"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "avg_base_salary",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "avg_base_salary",
+      "label": "Average annual base salary",
+      "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+      "unit": "usd",
+      "sensitivity": "restricted",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#avg_base_salary",
+      "role": "hr_partner",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 84304.48
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "salary_level3_sep",
+   "role": "hr_partner",
+   "type": "number",
+   "question": "What was the average base salary for level 3 at the end of September 2026?",
+   "truth": 95167.21,
+   "delivered": {
+    "answer": 95167.21,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#avg_base_salary"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average base salary for level 3 at the end of September 2026?",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": 95167.21, \"unit\": \"usd\", \"sources\": [\"trusted_metrics_agent/metrics.yml#avg_base_salary\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 95167.21,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#avg_base_salary"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "avg_base_salary",
+       "start_month": "2026-09",
+       "filters": {
+        "job_level": "3"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "avg_base_salary",
+      "label": "Average annual base salary",
+      "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+      "unit": "usd",
+      "sensitivity": "restricted",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#avg_base_salary",
+      "role": "hr_partner",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "job_level": 3
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 95167.21
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "hires_support_may",
+   "role": "hr_partner",
+   "type": "number",
+   "question": "How many people joined Customer Support in May 2026?",
+   "truth": 2,
+   "delivered": {
+    "answer": 324,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": ""
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "wrong_delivered",
+   "answer": {
+    "question": "How many people joined Customer Support in May 2026?",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": 324, \"unit\": \"people\", \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"], \"declined\": false, \"refused\": false, \"note\": \"\"}\n```",
+    "delivered": {
+     "answer": 324,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": ""
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-05"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "hr_partner",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-05",
+        "value": 324
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_staff_attrition",
+   "role": "all_staff",
+   "type": "decline",
+   "question": "What was our attrition rate over the 12 months to September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was our attrition rate over the 12 months to September 2026?",
+    "role": "all_staff",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": true, \"refused\": false, \"note\": \"role all_staff cannot see attrition_rate_12m (internal); roles that can: people_manager, hr_partner\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "declined": "role all_staff cannot see attrition_rate_12m (internal); roles that can: people_manager, hr_partner",
+      "role": "all_staff"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_staff_by_department",
+   "role": "all_staff",
+   "type": "decline",
+   "question": "How many people worked in Engineering at the end of September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people worked in Engineering at the end of September 2026?",
+    "role": "all_staff",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": true, \"refused\": false, \"note\": \"role all_staff cannot break headcount down by department; allowed: none (company totals only)\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Engineering"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "declined": "role all_staff cannot break headcount down by department; allowed: none (company totals only)",
+      "role": "all_staff"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_manager_payroll",
+   "role": "people_manager",
+   "type": "decline",
+   "question": "What was payroll cost for Sales in September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was payroll cost for Sales in September 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": true, \"refused\": false, \"note\": \"role people_manager cannot see payroll_cost (confidential); roles that can: finance, hr_partner\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "payroll_cost",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "declined": "role people_manager cannot see payroll_cost (confidential); roles that can: finance, hr_partner",
+      "role": "people_manager"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_manager_salary",
+   "role": "people_manager",
+   "type": "decline",
+   "question": "What is the average base salary at level 4?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "refused",
+   "answer": {
+    "question": "What is the average base salary at level 4?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_finance_attrition",
+   "role": "finance",
+   "type": "decline",
+   "question": "What was attrition in Field Operations in September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was attrition in Field Operations in September 2026?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": true, \"refused\": false, \"note\": \"role finance cannot see attrition_rate_12m (internal); roles that can: people_manager, hr_partner\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Field Operations"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "declined": "role finance cannot see attrition_rate_12m (internal); roles that can: people_manager, hr_partner",
+      "role": "finance"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_finance_by_level",
+   "role": "finance",
+   "type": "decline",
+   "question": "What was payroll cost for level 5 staff in September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was payroll cost for level 5 staff in September 2026?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": true, \"refused\": false, \"note\": \"role finance cannot break payroll_cost down by job_level; allowed: department, location\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "payroll_cost",
+       "start_month": "2026-09",
+       "filters": {
+        "job_level": "5"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "declined": "role finance cannot break payroll_cost down by job_level; allowed: department, location",
+      "role": "finance"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_forecast",
+   "role": "hr_partner",
+   "type": "refuse",
+   "question": "Forecast our headcount for the end of 2027.",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Forecast our headcount for the end of 2027.",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_one_person",
+   "role": "hr_partner",
+   "type": "refuse",
+   "question": "What is the salary of employee emp_0042?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What is the salary of employee emp_0042?",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_reason",
+   "role": "people_manager",
+   "type": "refuse",
+   "question": "Why did attrition in Field Operations go up this year?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Why did attrition in Field Operations go up this year?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_change",
+   "role": "hr_partner",
+   "type": "refuse",
+   "question": "Please update the September 2026 headcount to 340.",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Please update the September 2026 headcount to 340.",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_market",
+   "role": "finance",
+   "type": "refuse",
+   "question": "How do our salaries compare with the market rate for roofing software companies?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How do our salaries compare with the market rate for roofing software companies?",
+    "role": "finance",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_other_data",
+   "role": "people_manager",
+   "type": "refuse",
+   "question": "What was the average engagement survey score in Sales in 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average engagement survey score in Sales in 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"sources\": [], \"declined\": false, \"refused\": true, \"note\": \"no governed metric for this question\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  }
+ ]
+}

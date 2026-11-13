@@ -1,0 +1,176 @@
+# The trusted-metrics agent's eval: 30 questions, each asked as one role.
+#   18 answerable by that role, 6 the role may not see (decline), 6 no governed metric answers (refuse).
+# truth: the value the hr_partner role gets from the metric service for that metric, month and filters
+# (tests/trusted_metrics_agent/test_metrics.py checks every metric and month against pandas on the raw
+# exports). For type text, pick names the group with the highest (max) or lowest (min) value.
+# An answer is right only when it cites trusted_metrics_agent/metrics.yml#<metric>.
+
+- id: headcount_sep
+  role: all_staff
+  question: How many people did we employ at the end of September 2026?
+  type: number
+  truth: {metric: headcount, month: "2026-09"}
+
+- id: hires_jul
+  role: all_staff
+  question: How many people were hired in July 2026?
+  type: number
+  truth: {metric: hires, month: "2026-07"}
+
+- id: headcount_jan_2024
+  role: all_staff
+  question: What was company headcount in January 2024?
+  type: number
+  truth: {metric: headcount, month: "2024-01"}
+
+- id: attrition_sales_sep
+  role: people_manager
+  question: What was the trailing 12-month attrition rate in Sales in September 2026?
+  type: number
+  truth: {metric: attrition_rate_12m, month: "2026-09", filters: {department: Sales}}
+
+- id: attrition_company_jun
+  role: people_manager
+  question: What was company-wide attrition over the 12 months to June 2026?
+  type: number
+  truth: {metric: attrition_rate_12m, month: "2026-06"}
+
+- id: leavers_field_ops_aug
+  role: people_manager
+  question: How many people left Field Operations in August 2026?
+  type: number
+  truth: {metric: terminations, month: "2026-08", filters: {department: Field Operations}}
+
+- id: voluntary_mar
+  role: people_manager
+  question: How many people resigned voluntarily in March 2026?
+  type: number
+  truth: {metric: voluntary_terminations, month: "2026-03"}
+
+- id: tenure_engineering_sep
+  role: people_manager
+  question: What was the average tenure in Engineering at the end of September 2026, in months?
+  type: number
+  truth: {metric: avg_tenure_months, month: "2026-09", filters: {department: Engineering}}
+
+- id: headcount_ontario_sep
+  role: people_manager
+  question: How many people were based in Ontario at the end of September 2026?
+  type: number
+  truth: {metric: headcount, month: "2026-09", filters: {location: Ontario}}
+
+- id: headcount_level5_sep
+  role: people_manager
+  question: How many level 5 staff did we have at the end of September 2026?
+  type: number
+  truth: {metric: headcount, month: "2026-09", filters: {job_level: 5}}
+
+- id: highest_attrition_dept_sep
+  role: people_manager
+  question: Which department had the highest 12-month attrition rate in September 2026?
+  type: text
+  truth: {metric: attrition_rate_12m, month: "2026-09", group_by: department, pick: max}
+
+- id: payroll_sep
+  role: finance
+  question: What was total payroll cost in September 2026?
+  type: number
+  truth: {metric: payroll_cost, month: "2026-09"}
+
+- id: payroll_engineering_aug
+  role: finance
+  question: What did Engineering cost in payroll in August 2026?
+  type: number
+  truth: {metric: payroll_cost, month: "2026-08", filters: {department: Engineering}}
+
+- id: overtime_share_jul
+  role: finance
+  question: What share of pay went to overtime in July 2026?
+  type: number
+  truth: {metric: overtime_share, month: "2026-07"}
+
+- id: highest_overtime_location_aug
+  role: finance
+  question: Which location had the highest overtime share of pay in August 2026?
+  type: text
+  truth: {metric: overtime_share, month: "2026-08", group_by: location, pick: max}
+
+- id: salary_company_sep
+  role: hr_partner
+  question: What was the average annual base salary across the company at the end of September 2026?
+  type: number
+  truth: {metric: avg_base_salary, month: "2026-09"}
+
+- id: salary_level3_sep
+  role: hr_partner
+  question: What was the average base salary for level 3 at the end of September 2026?
+  type: number
+  truth: {metric: avg_base_salary, month: "2026-09", filters: {job_level: 3}}
+
+- id: hires_support_may
+  role: hr_partner
+  question: How many people joined Customer Support in May 2026?
+  type: number
+  truth: {metric: hires, month: "2026-05", filters: {department: Customer Support}}
+
+# the role may not see these: the agent should say so and give no value
+- id: decline_staff_attrition
+  role: all_staff
+  question: What was our attrition rate over the 12 months to September 2026?
+  type: decline
+
+- id: decline_staff_by_department
+  role: all_staff
+  question: How many people worked in Engineering at the end of September 2026?
+  type: decline
+
+- id: decline_manager_payroll
+  role: people_manager
+  question: What was payroll cost for Sales in September 2026?
+  type: decline
+
+- id: decline_manager_salary
+  role: people_manager
+  question: What is the average base salary at level 4?
+  type: decline
+
+- id: decline_finance_attrition
+  role: finance
+  question: What was attrition in Field Operations in September 2026?
+  type: decline
+
+- id: decline_finance_by_level
+  role: finance
+  question: What was payroll cost for level 5 staff in September 2026?
+  type: decline
+
+# no governed metric answers these: the agent should refuse
+- id: refuse_forecast
+  role: hr_partner
+  question: Forecast our headcount for the end of 2027.
+  type: refuse
+
+- id: refuse_one_person
+  role: hr_partner
+  question: What is the salary of employee emp_0042?
+  type: refuse
+
+- id: refuse_reason
+  role: people_manager
+  question: Why did attrition in Field Operations go up this year?
+  type: refuse
+
+- id: refuse_change
+  role: hr_partner
+  question: Please update the September 2026 headcount to 340.
+  type: refuse
+
+- id: refuse_market
+  role: finance
+  question: How do our salaries compare with the market rate for roofing software companies?
+  type: refuse
+
+- id: refuse_other_data
+  role: people_manager
+  question: What was the average engagement survey score in Sales in 2026?
+  type: refuse
