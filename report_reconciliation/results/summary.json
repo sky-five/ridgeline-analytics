@@ -1,0 +1,268 @@
+{
+  "as_of": "2026-06-29 07:00:00",
+  "built_at": "2026-06-29 06:00:00",
+  "source_rows": {
+    "projects": 18,
+    "resources": 30,
+    "rate_history": 41,
+    "timesheets": 4800
+  },
+  "timesheet_status": {
+    "approved": 4598,
+    "rejected": 84,
+    "submitted": 118
+  },
+  "reports": [
+    {
+      "report": "project_hours",
+      "title": "Project hours and cost by month",
+      "mart": "mart.project_hours_monthly",
+      "ok": true,
+      "checks": {
+        "row_count": {
+          "ok": true,
+          "mart_rows": 92,
+          "source_rows": 92,
+          "keys_only_in_mart": 0,
+          "keys_only_in_source": 0
+        },
+        "totals": {
+          "ok": true,
+          "measures": {
+            "hours": {
+              "mart": 22538.25,
+              "source": 22538.25,
+              "keys_differing": 0
+            },
+            "cost": {
+              "mart": 2234622.68,
+              "source": 2234622.68,
+              "keys_differing": 0
+            }
+          }
+        },
+        "refresh_age": {
+          "ok": true,
+          "sla_hours": 24,
+          "input_age_hours": {
+            "timesheets": 1.5,
+            "projects": 1.5,
+            "rate_history": 1.5
+          },
+          "stale_inputs": []
+        },
+        "lineage": {
+          "ok": true,
+          "columns": 6,
+          "source_columns": 4,
+          "undocumented": [],
+          "missing_in_mart": [],
+          "unknown_source_columns": []
+        }
+      }
+    },
+    {
+      "report": "utilisation",
+      "title": "Resource utilisation by week",
+      "mart": "mart.resource_utilisation_weekly",
+      "ok": true,
+      "checks": {
+        "row_count": {
+          "ok": true,
+          "mart_rows": 708,
+          "source_rows": 708,
+          "keys_only_in_mart": 0,
+          "keys_only_in_source": 0
+        },
+        "totals": {
+          "ok": true,
+          "measures": {
+            "hours": {
+              "mart": 22538.25,
+              "source": 22538.25,
+              "keys_differing": 0
+            },
+            "billable_hours": {
+              "mart": 18585.0,
+              "source": 18585.0,
+              "keys_differing": 0
+            }
+          }
+        },
+        "refresh_age": {
+          "ok": true,
+          "sla_hours": 24,
+          "input_age_hours": {
+            "timesheets": 1.5,
+            "resources": 1.5,
+            "projects": 1.5,
+            "rate_history": 1.5
+          },
+          "stale_inputs": []
+        },
+        "lineage": {
+          "ok": true,
+          "columns": 8,
+          "source_columns": 5,
+          "undocumented": [],
+          "missing_in_mart": [],
+          "unknown_source_columns": []
+        }
+      }
+    },
+    {
+      "report": "budget_burn",
+      "title": "Project budget burn",
+      "mart": "mart.project_budget_burn",
+      "ok": true,
+      "checks": {
+        "row_count": {
+          "ok": true,
+          "mart_rows": 18,
+          "source_rows": 18,
+          "keys_only_in_mart": 0,
+          "keys_only_in_source": 0
+        },
+        "totals": {
+          "ok": true,
+          "measures": {
+            "budget_cost": {
+              "mart": 3049000.0,
+              "source": 3049000.0,
+              "keys_differing": 0
+            },
+            "cost_to_date": {
+              "mart": 2234622.68,
+              "source": 2234622.68,
+              "keys_differing": 0
+            }
+          }
+        },
+        "refresh_age": {
+          "ok": true,
+          "sla_hours": 24,
+          "input_age_hours": {
+            "timesheets": 1.5,
+            "projects": 1.5,
+            "rate_history": 1.5
+          },
+          "stale_inputs": []
+        },
+        "lineage": {
+          "ok": true,
+          "columns": 7,
+          "source_columns": 5,
+          "undocumented": [],
+          "missing_in_mart": [],
+          "unknown_source_columns": []
+        }
+      }
+    }
+  ],
+  "samples": {
+    "project_hours": [
+      {
+        "project_id": "P04",
+        "month": "2026-01-01",
+        "cost": 125439.0
+      },
+      {
+        "project_id": "P08",
+        "month": "2026-01-01",
+        "cost": 58547.5
+      },
+      {
+        "project_id": "P07",
+        "month": "2026-03-01",
+        "cost": 45771.74
+      }
+    ],
+    "utilisation": [
+      {
+        "resource_id": "R15",
+        "week_start": "2026-02-23",
+        "billable_hours": 41.5
+      },
+      {
+        "resource_id": "R15",
+        "week_start": "2026-03-30",
+        "billable_hours": 41.5
+      },
+      {
+        "resource_id": "R03",
+        "week_start": "2026-01-19",
+        "billable_hours": 41.0
+      }
+    ],
+    "budget_burn": [
+      {
+        "project_id": "P04",
+        "cost_to_date": 304763.44
+      },
+      {
+        "project_id": "P07",
+        "cost_to_date": 193608.32
+      },
+      {
+        "project_id": "P02",
+        "cost_to_date": 163715.35
+      }
+    ]
+  },
+  "planted_faults": {
+    "rate_join_fan_out": {
+      "project_hours": [
+        "totals"
+      ],
+      "utilisation": [
+        "totals"
+      ],
+      "budget_burn": [
+        "totals"
+      ]
+    },
+    "rejected_included": {
+      "project_hours": [
+        "totals"
+      ],
+      "utilisation": [
+        "totals"
+      ],
+      "budget_burn": [
+        "totals"
+      ]
+    },
+    "closed_projects_dropped": {
+      "project_hours": [
+        "row_count",
+        "totals"
+      ],
+      "utilisation": [
+        "row_count",
+        "totals"
+      ],
+      "budget_burn": [
+        "row_count",
+        "totals"
+      ]
+    },
+    "stale_extract": {
+      "project_hours": [
+        "refresh_age"
+      ],
+      "utilisation": [
+        "refresh_age"
+      ],
+      "budget_burn": [
+        "refresh_age"
+      ]
+    },
+    "undocumented_column": {
+      "project_hours": [],
+      "utilisation": [
+        "lineage"
+      ],
+      "budget_burn": []
+    }
+  }
+}

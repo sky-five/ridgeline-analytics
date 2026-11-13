@@ -15,6 +15,7 @@ import pandas as pd
 START, END = date(2026, 1, 5), date(2026, 6, 26)  # Mondays to Fridays, 25 weeks
 AS_OF = datetime(2026, 6, 29, 7, 0)  # when the checks run: Monday morning after the last week
 EXTRACTED_AT = datetime(2026, 6, 29, 5, 30)
+BUILT_AT = datetime(2026, 6, 29, 6, 0)
 ROLES = {"analyst": 85.0, "engineer": 110.0, "lead": 140.0, "designer": 95.0}
 SOURCE_TABLES = ("projects", "resources", "rate_history", "timesheets")
 
@@ -48,7 +49,7 @@ def frames(seed: int = 11) -> dict[str, pd.DataFrame]:
     for r in resources.itertuples():
         base = ROLES[r.role] + float(rng.integers(-10, 11))
         if rng.random() < 0.35:
-            raise_on = START + timedelta(weeks=int(rng.integers(6, 22)))
+            raise_on = max(START + timedelta(weeks=int(rng.integers(6, 22))), r.start_date + timedelta(weeks=4))
             rates += [(r.resource_id, r.start_date, raise_on, base), (r.resource_id, raise_on, None, base * 1.08)]
         else:
             rates.append((r.resource_id, r.start_date, None, base))
