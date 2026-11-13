@@ -62,10 +62,19 @@ differently.
 items need the report owner and stay open until a name is filled in `uat.SIGN_OFF`: tracing the listed sample
 rows (the three largest) back to the source, agreeing with the written definitions, and signing off.
 
+## Dashboard page
+
+The site's [Report reconciliation page](https://sky-five.github.io/ridgeline-analytics/report-reconciliation/) shows
+the committed run: a pass/fail grid by report and check with what each check found, the planted-fault matrix, the 9
+owner items still open with the definitions to agree, and the sample rows to trace. `dashboard.py` turns
+`results/summary.json` into five `reporting.recon_*` tables, which `scripts/export_reporting.py` writes for the
+site; the numbers are fixed and do not move with the nightly build, which requests the page as a smoke test.
+
 ## Tests
 
 `tests/report_reconciliation/` checks that a correct build passes everything, that each planted fault fails
 exactly the expected checks, and that the checks catch hand edits: a 2-cent change in one mart row, one deleted
 row, a mart built before a newer extract arrived (inside the SLA), and a lineage entry naming a column that does
 not exist. One test checks an entry on a raise date is priced at the new rate; another that the committed
-results are current.
+results are current. `test_dashboard.py` checks the page's tables against `summary.json`, that the page's two claims
+about the faults hold, and that the page names only exported tables and columns.
