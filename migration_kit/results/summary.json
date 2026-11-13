@@ -1,7 +1,8 @@
 {
   "snapshots": [
     "2026-11-13T0023Z.csv.gz",
-    "2026-11-13T0031Z.csv.gz"
+    "2026-11-13T0031Z.csv.gz",
+    "2026-11-13T0032Z.csv.gz"
   ],
   "hash_merge": {
     "loads": [
@@ -90,17 +91,60 @@
             "event time range": true
           }
         }
+      },
+      {
+        "load_id": 3,
+        "snapshot": "2026-11-13T0032Z.csv.gz",
+        "strategy": "hash_merge",
+        "snapshot_rows": 1984,
+        "inserted": 0,
+        "updated": 1,
+        "returned": 0,
+        "aged_out": 0,
+        "deleted": 0,
+        "unchanged": 1983,
+        "legacy_rows": 1984,
+        "reconciliation": {
+          "ok": true,
+          "checks": {
+            "row_count": true,
+            "keys": true,
+            "rows": true,
+            "aggregates": true
+          },
+          "legacy_rows": 1984,
+          "target_rows": 1984,
+          "only_in_legacy": {
+            "count": 0,
+            "first": []
+          },
+          "only_in_target": {
+            "count": 0,
+            "first": []
+          },
+          "rows_differing": {
+            "count": 0,
+            "first": []
+          },
+          "differing_by_column": {},
+          "aggregates": {
+            "rows by status": true,
+            "rows by type": true,
+            "sum of mag": true,
+            "event time range": true
+          }
+        }
       }
     ],
     "totals": {
       "inserted": 0,
-      "updated": 1,
+      "updated": 2,
       "returned": 0,
       "aged_out": 1,
       "deleted": 0
     },
     "updated_columns": {
-      "updated": 1
+      "updated": 2
     }
   },
   "target_columns": [
@@ -219,6 +263,56 @@
           },
           "differing_by_column": {
             "updated": 1
+          },
+          "aggregates": {
+            "rows by status": false,
+            "rows by type": false,
+            "sum of mag": false,
+            "event time range": false
+          }
+        }
+      },
+      {
+        "load_id": 3,
+        "snapshot": "2026-11-13T0032Z.csv.gz",
+        "strategy": "event_time_watermark",
+        "snapshot_rows": 1984,
+        "inserted": 0,
+        "updated": 0,
+        "returned": 0,
+        "aged_out": 0,
+        "deleted": 0,
+        "unchanged": null,
+        "legacy_rows": 1984,
+        "reconciliation": {
+          "ok": false,
+          "checks": {
+            "row_count": false,
+            "keys": false,
+            "rows": false,
+            "aggregates": false
+          },
+          "legacy_rows": 1984,
+          "target_rows": 1985,
+          "only_in_legacy": {
+            "count": 0,
+            "first": []
+          },
+          "only_in_target": {
+            "count": 1,
+            "first": [
+              "us6000u26c"
+            ]
+          },
+          "rows_differing": {
+            "count": 2,
+            "first": [
+              "us7000tvuv",
+              "us7000txx9"
+            ]
+          },
+          "differing_by_column": {
+            "updated": 2
           },
           "aggregates": {
             "rows by status": false,
