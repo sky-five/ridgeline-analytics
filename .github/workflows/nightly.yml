@@ -95,3 +95,24 @@ jobs:
           # one page rendered from the account review template
           review=$(curl -fsS "${base}account-reviews/" | grep -o 'account-reviews/ACC-[0-9]*' | head -1)
           test -n "$review" && curl -fsS -o /dev/null "${base}${review}/" && echo "ok ${base}${review}/"
+
+  # Migration kit parallel run: today's earthquake feed through the full reload and the incremental merge,
+  # on top of the committed snapshots. Separate from the site build so a feed outage cannot block Pages.
+  migration-parallel-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install duckdb==1.5.6
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Today's feed reconciles between the legacy and target tables
+        run: python -m migration_kit --live

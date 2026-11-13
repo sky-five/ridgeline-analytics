@@ -122,3 +122,6 @@ jobs:
 
       - name: Outbound notes match the snapshot and recorded drafts replay
         run: python -m outbound_notes --check
+
+      - name: Migration kit results match the committed feed snapshots
+        run: python -m migration_kit --check
