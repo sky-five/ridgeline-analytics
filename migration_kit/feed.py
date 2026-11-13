@@ -37,7 +37,8 @@ def snapshots(folder: Path = SNAPSHOTS) -> list[Path]:
 def read_sql(path: Path) -> str:
     """A DuckDB expression that reads one snapshot with fixed types."""
     cols = ", ".join(f"'{c}': '{t}'" for c, t in COLUMNS.items())
-    return f"read_csv('{path.as_posix()}', header = true, columns = {{{cols}}}, timestampformat = '%Y-%m-%dT%H:%M:%S.%gZ')"
+    fmt = "%Y-%m-%dT%H:%M:%S.%gZ"
+    return f"read_csv('{path.as_posix()}', header = true, columns = {{{cols}}}, timestampformat = '{fmt}')"
 
 
 def fetch(folder: Path = SNAPSHOTS, retries: int = 4) -> Path:

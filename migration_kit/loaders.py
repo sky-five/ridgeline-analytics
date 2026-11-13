@@ -17,7 +17,7 @@ from pathlib import Path
 
 import duckdb
 
-from migration_kit.feed import COLUMNS, KEY, WINDOW_DAYS, fetched_at, read_sql
+from migration_kit.feed import COLUMNS, WINDOW_DAYS, fetched_at, read_sql
 
 COLS = list(COLUMNS)
 # The minute in a snapshot's name is when it was fetched, give or take 60 s; this margin keeps an event
