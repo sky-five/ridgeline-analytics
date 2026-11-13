@@ -1,0 +1,76 @@
+name: record HR metrics agent
+
+# Runs the trusted-metrics agent's 30-question eval through the Gemini API (free tier) on the synthetic HR
+# warehouse as of 2026-09-30 and commits the run, so it replays later without a key
+# (python -m trusted_metrics_agent.agent_eval --replay ...). Every tool call goes through the MCP server,
+# started once per role. Needs the repository secret GEMINI_API_KEY. At most 6 model requests per
+# question; most take 2-3.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model"
+        required: true
+        default: gemini-3.5-flash-lite
+      pace:
+        description: "Seconds between model requests"
+        required: true
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record-hr-agent
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      MODEL: ${{ inputs.model }}
+      PACE: ${{ inputs.pace }}
+    steps:
+      - name: Check the key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: test -n "$GEMINI_API_KEY" || { echo "::error::GEMINI_API_KEY secret is not set"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Build the HR warehouse
+        run: python -m trusted_metrics_agent
+
+      - name: Record
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: >-
+          python -m trusted_metrics_agent.agent_eval --provider gemini --model "$MODEL" --pace "$PACE"
+          --record --db warehouse/trusted_metrics.duckdb
+
+      - name: The recording replays
+        run: >-
+          python -m trusted_metrics_agent.agent_eval --db warehouse/trusted_metrics.duckdb
+          --replay "trusted_metrics_agent/agent_eval/results/$MODEL.json"
+
+      - name: Commit the recording
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add trusted_metrics_agent/agent_eval/results
+          git diff --cached --quiet && { echo "nothing new recorded"; exit 0; }
+          git commit -m "eval(trusted-metrics): record the HR metrics agent eval on $MODEL (Gemini API), as of 2026-09-30"
+          git pull --rebase origin main
+          git push origin HEAD:main
