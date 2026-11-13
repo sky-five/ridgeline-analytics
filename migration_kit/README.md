@@ -49,12 +49,16 @@ after a grace period) need a person and stay open.
 
 ## Results on the committed snapshots
 
-Three snapshots fetched on 2026-11-13 between 00:23 and 00:32 UTC (1,985 events in the first). After the
-first load the merge wrote 2 revisions (both changed only the feed's `updated` time) and 1 event aged out, and
-left every other row untouched. The target and the legacy table matched on all four checks after every load.
-The event-time watermark failed reconciliation on both later loads: it kept the aged-out event and missed the
-revisions. The snapshots are minutes apart, so the changes are few; `--live` runs the same check nightly on
-that day's feed.
+Four snapshots fetched on 2026-11-13 between 00:23 and 00:43 UTC (1,985 events in the first, 1,983 in the
+last). Over the three later loads the merge wrote 4 revisions and marked 2 events aged out, and left every other
+row untouched. The revisions were real: two touched only the feed's `updated` time, and in the last snapshot two
+events were relocated (time, latitude, longitude, depth and their error columns moved), one of them also going
+from `automatic` to `reviewed`. The target and the legacy table matched on all
+four checks after all 4 loads, and the target still holds the 2 aged-out events the legacy table dropped.
+
+The event-time watermark failed reconciliation on 3 of 4 loads: by the last one 3 rows were stale and 2 aged-out
+events were still counted as in the feed. The snapshots are minutes apart, so the changes are few; `--live` runs
+the same check in the nightly workflow on that day's feed.
 
 ## Tests
 

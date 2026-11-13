@@ -188,6 +188,10 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 `vehicle_auction/` is a learning project on simulated data: 26 weekly sales of dealers' used cars in a physical lane, a lane with online simulcast and a timed online sale, modelled in a small dbt project on DuckDB. Sell-through has three tested definitions (on the block, with if-sales, and per car across relists); in the physical lane the same cars give 57%, 70% or 84%. A simulated reserve-price test (95% vs 100% of book value, 6,300 cars split by a hash of the id) raises first-run conversion by 12.2 points (95% CI 10.0 to 14.4); the simulator knows the true effect on the same cars, +13.1 points, and the tests check the interval covers it. The site's [Vehicle auction page](https://sky-five.github.io/ridgeline-analytics/vehicle-auction/) shows the three definitions by channel and week and the test readout next to the true effect. Details: [vehicle_auction/README.md](vehicle_auction/README.md).
 
+## Migration kit
+
+`migration_kit/` moves a table from a nightly full reload to an incremental load and proves the two match. It runs both loaders side by side on real snapshots of the public USGS earthquake feed (magnitude 2.5+, past 30 days), which changes every few minutes. The new loader is a DuckDB `MERGE` with a row-hash change-capture step and a change log; events that leave the feed are kept and labelled aged out or deleted. After every load a reconciliation checks row counts, keys, all 22 columns row by row and four aggregates. On the 4 committed snapshots it matched every time, while an event-time watermark loader (the usual shortcut) failed on 3 of 4 by missing revisions and age-outs. A generated retirement checklist covers column lineage, the parallel-run record and any code still reading the old table; the nightly workflow repeats the check on that day's feed. Details: [migration_kit/README.md](migration_kit/README.md).
+
 ## Customer health scoring
 
 `customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) lists the 683 live subscriptions on 2026-07-01 with the riskiest fifth by each method and the reasons behind each score. Details: [customer_health/README.md](customer_health/README.md).
@@ -236,6 +240,7 @@ semantic_eval/ business questions, governed-metric answer key, raw-vs-governed e
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
 experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (learning project)
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
+migration_kit/ full reload to incremental merge on a public feed, reconciled after every load, retirement checklist
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
