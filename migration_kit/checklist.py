@@ -30,13 +30,13 @@ SIGN_OFF = {
 
 
 def legacy_readers(repo: Path = REPO) -> list[str]:
-    """Files outside this folder that still name the legacy table."""
-    here = Path(__file__).resolve().parent
+    """Files outside this kit (its folder and its tests) that still name the legacy table."""
+    own = {Path(__file__).resolve().parent, repo / "tests" / "migration_kit"}
     hits = []
     for path in repo.rglob("*"):
         parts = path.relative_to(repo).parts
         skip_dir = any(p.startswith(".") or p in {"node_modules", "target", "build"} for p in parts)
-        if skip_dir or path.suffix not in SCAN_SUFFIXES or not path.is_file() or here in path.parents:
+        if skip_dir or path.suffix not in SCAN_SUFFIXES or not path.is_file() or own & set(path.parents):
             continue
         if LEGACY_REF.search(path.read_text(errors="ignore")):
             hits.append(path.relative_to(repo).as_posix())
@@ -71,7 +71,7 @@ def items(summary: dict, repo: Path = REPO) -> list[tuple[bool, str, str]]:
         (summary["history_kept"] > 0 or summary["hash_merge"]["totals"]["aged_out"] == 0,
          "Target keeps rows the legacy table loses",
          f"{summary['history_kept']} events kept after leaving the feed"),
-        (not readers, "No code outside migration_kit/ reads legacy.earthquakes",
+        (not readers, "No code outside the kit reads legacy.earthquakes",
          "none found" if not readers else ", ".join(readers)),
     ]
     out += [(bool(who), item, who or "needs a person") for item, who in SIGN_OFF.items()]
