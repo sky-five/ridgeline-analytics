@@ -158,7 +158,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Trusted HR metrics
 
-`trusted_metrics_agent/` serves governed HR and payroll metrics through a read-only MCP server with a role check in front. Synthetic exports for about 300 people (no names or personal fields) go through a small dbt project on DuckDB into one table; `metrics.yml` defines nine metrics on it (headcount, hires, leavers, 12-month attrition, tenure, payroll cost, overtime share, average salary), each with an owner, version and sensitivity, and four roles with the metrics and breakdowns each may see. Every result carries the definition it came from; anything outside the role is declined with a reason and no values; pay values for groups under 5 people are withheld. There is no SQL tool, and no tool takes a role. Tests recompute every metric for every month straight from the raw exports and check each role against the policy. The plain-language agent and its 30-question eval come next. Details: [trusted_metrics_agent/README.md](trusted_metrics_agent/README.md).
+`trusted_metrics_agent/` serves governed HR and payroll metrics through a read-only MCP server with a role check in front. Synthetic exports for about 300 people (no names or personal fields) go through a small dbt project on DuckDB into one table; `metrics.yml` defines nine metrics on it (headcount, hires, leavers, 12-month attrition, tenure, payroll cost, overtime share, average salary), each with an owner, version and sensitivity, and four roles with the metrics and breakdowns each may see. Every result carries the definition it came from; anything outside the role is declined with a reason and no values; pay values for groups under 5 people are withheld. There is no SQL tool, and no tool takes a role. Tests recompute every metric for every month straight from the raw exports and check each role against the policy. An agent answers plain-language questions only through that server (stdio, one server per role); a check holds back any answer whose numbers or cited definitions did not come from a tool result. A 30-question eval (18 answerable, 6 the role may not see, 6 out of scope) replays from committed runs with no key. Details: [trusted_metrics_agent/README.md](trusted_metrics_agent/README.md).
 
 ## Acquisition spend
 
@@ -254,7 +254,7 @@ data_health/ product-event contract and table health scorecard, checked daily, w
 customer_health/ monthly account snapshots, a health score vs a churn model on held-out accounts (learning project)
 acquisition_spend/ channel CAC and a budget what-if on lead-score deciles, with a back-test
 outbound_notes/ per-lead outbound notes for the top score decile, drafted and checked against each lead's facts
-trusted_metrics_agent/ governed HR and payroll metrics behind a role check, served by a read-only MCP server
+trusted_metrics_agent/ governed HR and payroll metrics behind a role check, a read-only MCP server, and an agent with a 30-question eval
 arr_source_of_truth/ CRM closed-won deals reconciled to the billing ARR bridge, in dbt, scored on planted mistakes
 revrec/      ARR bridge, ratable revenue and deferred revenue on synthetic billing, with a parallel-run check
 scripts/     run_all.py, compare_targets.py (DuckDB vs Snowflake parity)

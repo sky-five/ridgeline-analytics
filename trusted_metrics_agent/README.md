@@ -6,7 +6,7 @@ HR and payroll questions ("what was attrition in Field Operations last quarter?"
 
 ```bash
 python -m trusted_metrics_agent                      # load the exports, dbt build, print every metric for 2026-09
-pytest tests/trusted_metrics_agent -q                # 42 tests, about 16 seconds
+pytest tests/trusted_metrics_agent -q                # 53 tests, about 35 seconds
 claude mcp add hr-metrics -- .venv/bin/python -m trusted_metrics_agent.server --role people_manager
 ```
 
@@ -71,7 +71,41 @@ Rules the service enforces (`metrics.py`):
 - Across every pay metric and every combination of breakdowns for January to September 2026, no group under 5 people shows a value, and no month has exactly one hidden group next to shown ones.
 - Unknown metrics, bad months, months outside the data, an injected filter value and an unknown dimension are errors, not queries; the connection refuses writes; a catalog naming a missing column or metric is rejected.
 - The stdio server starts with a role, lists the three tools (none with a `role` input), answers with a citation and declines by role.
+- The agent's tools are the server's; a scripted model that asks for pay as a manager, or passes a `role`, gets declines and its made-up value is held back; the check's rules one by one; the baseline run's scores and its recording replay through a fresh server.
 
-## Next
+## The agent
 
-The agent on top of this server, which answers plain-language questions only through these tools, and a 30-question eval for accuracy and grounding, is the next step (not built yet).
+`agent.py` answers plain-language questions for one role, and only through the MCP server: it starts `python -m trusted_metrics_agent.server --role <role>` as a subprocess and talks to it over stdio like any MCP client. The model sees the server's three tools with the server's own names, descriptions and input schemas (optional inputs flattened so every provider accepts them). It has no SQL, and nothing it sends can change the role; an extra `role` argument is ignored by the server.
+
+```bash
+python -m trusted_metrics_agent.agent --role people_manager "What was attrition in Sales in September 2026?"
+# 0.2097 share  (definition: trusted_metrics_agent/metrics.yml#attrition_rate_12m)
+python -m trusted_metrics_agent.agent --role people_manager "What was payroll cost in August 2026?"
+# Declined: the people_manager role cannot see that.
+python -m trusted_metrics_agent.agent --role finance --provider gemini "What share of pay went to overtime in July 2026?"
+```
+
+Before an answer reaches the person asking, a check (`check` in `agent.py`) holds it back unless it cites at least one definition (`trusted_metrics_agent/metrics.yml#<metric>`), only definitions a `query_metric` result in this conversation came from, and every number in it appears in a tool result (a share may be given as a percent). A declined tool result is not a source, so a value the role may not see cannot get through even if a model makes one up. The model client is `analyst/llm.py`'s; with no `--provider` a keyword baseline (`agent_baseline.py`, no model) plays the model's part. Caps: 6 model calls and 60,000 tokens per question.
+
+## The 30-question eval
+
+`agent_eval/questions.yml`: 30 questions, each asked as one role through a server started with that role.
+
+- 18 the role can answer (16 numbers, 2 "which group is highest"), across all four roles, with department, location and level filters. The truth is the metric service's value for that metric, month and filter, which the tests above check against pandas on the raw exports. Right means delivered by the check, equal to the governed value, and citing that metric's definition.
+- 6 the role may not see (company attrition for all staff, payroll for a manager, attrition or a level breakdown for finance, and so on). Right means declined.
+- 6 no metric answers (a forecast, one person's salary, a reason, a change to data, market pay, a survey score). Right means refused.
+
+"Leaked" counts a value delivered for one of the last 12. A recorded run replays with no key: `--replay` reruns the check and the scoring on the recorded replies, and with `--db` it first reruns every recorded tool call through a fresh server and stops if any result differs.
+
+```bash
+python -m trusted_metrics_agent.agent_eval                       # keyword baseline, no key, about 7 seconds
+python -m trusted_metrics_agent.agent_eval --replay trusted_metrics_agent/agent_eval/results/<model>.json
+```
+
+### Results (HR warehouse as of 2026-09-30)
+
+| Run | Answerable right | Wrong, delivered | Not for role: declined | Out of scope: refused | Leaked |
+|---|---|---|---|---|---|
+| keyword baseline (no model) | 15 of 18 | 3 | 5 of 6 | 6 of 6 | 0 |
+
+The baseline's 3 wrong answers are the two "which group is highest" questions (it copies the company value) and Engineering payroll (it misses the department in "What did Engineering cost"). They show what the check does not catch: a real value of the wrong metric or group, cited correctly. Its one miss on declines is a refusal: "average base salary at level 4" names no month, so it never asks the server.
