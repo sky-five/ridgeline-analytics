@@ -1,0 +1,4581 @@
+{
+ "provider": "gemini",
+ "model": "gemini-3.5-flash-lite",
+ "as_of": "2026-09-30",
+ "recorded_at": "2026-11-13T12:40Z",
+ "summary": {
+  "questions": 30,
+  "answerable": {
+   "total": 18,
+   "right": 18,
+   "wrong_delivered": 0,
+   "held_back": 0,
+   "declined": 0,
+   "refused": 0
+  },
+  "not_for_role": {
+   "total": 6,
+   "right": 6,
+   "refused": 0,
+   "held_back": 0,
+   "leaked": 0
+  },
+  "out_of_scope": {
+   "total": 6,
+   "right": 5,
+   "declined": 1,
+   "held_back": 0,
+   "leaked": 0
+  },
+  "tool_calls": 53
+ },
+ "results": [
+  {
+   "id": "headcount_sep",
+   "role": "all_staff",
+   "type": "number",
+   "question": "How many people did we employ at the end of September 2026?",
+   "truth": 335,
+   "delivered": {
+    "answer": 335,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Headcount at the end of September 2026 retrieved from the governed metric."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people did we employ at the end of September 2026?",
+    "role": "all_staff",
+    "text": "At the end of September 2026, the headcount was 335.\n\n```json\n{\"answer\": 335,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Headcount at the end of September 2026 retrieved from the governed metric.\"}\n```",
+    "delivered": {
+     "answer": 335,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Headcount at the end of September 2026 retrieved from the governed metric."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "all_staff",
+      "role_description": "Anyone in the company. Company-wide headcount and hires only.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       }
+      ],
+      "group_by_allowed": [],
+      "dimension_values": {},
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 335
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2597,
+    "output_tokens": 137,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "hires_jul",
+   "role": "all_staff",
+   "type": "number",
+   "question": "How many people were hired in July 2026?",
+   "truth": 9,
+   "delivered": {
+    "answer": 9,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#hires"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Hires for July 2026 retrieved from company metrics."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people were hired in July 2026?",
+    "role": "all_staff",
+    "text": "```json\n{\"answer\": 9,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#hires\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Hires for July 2026 retrieved from company metrics.\"}\n```",
+    "delivered": {
+     "answer": 9,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#hires"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Hires for July 2026 retrieved from company metrics."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "start_month": "2026-07",
+       "metric": "hires"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "all_staff",
+      "role_description": "Anyone in the company. Company-wide headcount and hires only.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       }
+      ],
+      "group_by_allowed": [],
+      "dimension_values": {},
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "hires",
+      "label": "Hires",
+      "definition": "People whose hire date falls in the month.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#hires",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-07",
+        "value": 9
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2559,
+    "output_tokens": 109,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "headcount_jan_2024",
+   "role": "all_staff",
+   "type": "number",
+   "question": "What was company headcount in January 2024?",
+   "truth": 234,
+   "delivered": {
+    "answer": 234,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Retrieved company headcount for January 2024 from the trusted metric."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was company headcount in January 2024?",
+    "role": "all_staff",
+    "text": "Company headcount in January 2024 was 234.\n\n```json\n{\"answer\": 234,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Retrieved company headcount for January 2024 from the trusted metric.\"}\n```",
+    "delivered": {
+     "answer": 234,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Retrieved company headcount for January 2024 from the trusted metric."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2024-01"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "all_staff",
+      "role_description": "Anyone in the company. Company-wide headcount and hires only.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       }
+      ],
+      "group_by_allowed": [],
+      "dimension_values": {},
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2024-01",
+        "value": 234
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2582,
+    "output_tokens": 131,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "attrition_sales_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "What was the trailing 12-month attrition rate in Sales in September 2026?",
+   "truth": 0.2097,
+   "delivered": {
+    "answer": 0.2097,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Trailing 12-month attrition rate for Sales in September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the trailing 12-month attrition rate in Sales in September 2026?",
+    "role": "people_manager",
+    "text": "The trailing 12-month attrition rate in Sales in September 2026 was 0.2097.\n\n```json\n{\"answer\": 0.2097,\n \"unit\": \"share\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#attrition_rate_12m\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Trailing 12-month attrition rate for Sales in September 2026.\"}\n```",
+    "delivered": {
+     "answer": 0.2097,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Trailing 12-month attrition rate for Sales in September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Sales"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "attrition_rate_12m",
+      "label": "Attrition rate, trailing 12 months",
+      "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+      "unit": "share",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "department": "Sales"
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 0.2097
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3519,
+    "output_tokens": 168,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "attrition_company_jun",
+   "role": "people_manager",
+   "type": "number",
+   "question": "What was company-wide attrition over the 12 months to June 2026?",
+   "truth": 0.2045,
+   "delivered": {
+    "answer": 0.2045,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Company-wide trailing 12-month attrition rate for June 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was company-wide attrition over the 12 months to June 2026?",
+    "role": "people_manager",
+    "text": "Company-wide attrition over the 12 months to June 2026 was 0.2045.\n\n```json\n{\"answer\": 0.2045,\n \"unit\": \"share\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#attrition_rate_12m\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Company-wide trailing 12-month attrition rate for June 2026.\"}\n```",
+    "delivered": {
+     "answer": 0.2045,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Company-wide trailing 12-month attrition rate for June 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "attrition_rate_12m",
+       "start_month": "2026-06"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "attrition_rate_12m",
+      "label": "Attrition rate, trailing 12 months",
+      "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+      "unit": "share",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-06",
+        "value": 0.2045
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3503,
+    "output_tokens": 160,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "leavers_field_ops_aug",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many people left Field Operations in August 2026?",
+   "truth": 2,
+   "delivered": {
+    "answer": 2,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#terminations"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Retrieved terminations for Field Operations in August 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people left Field Operations in August 2026?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 2,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#terminations\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Retrieved terminations for Field Operations in August 2026.\"}\n```",
+    "delivered": {
+     "answer": 2,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#terminations"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Retrieved terminations for Field Operations in August 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "group_by": [
+        "department"
+       ],
+       "start_month": "2026-08",
+       "filters": {
+        "department": "Field Operations"
+       },
+       "metric": "terminations"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "terminations",
+      "label": "Leavers",
+      "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#terminations",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [
+       "department"
+      ],
+      "filters": {
+       "department": "Field Operations"
+      },
+      "rows": [
+       {
+        "month": "2026-08",
+        "department": "Field Operations",
+        "value": 2
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3462,
+    "output_tokens": 128,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "voluntary_mar",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many people resigned voluntarily in March 2026?",
+   "truth": 5,
+   "delivered": {
+    "answer": 5,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Voluntary terminations for March 2026 retrieved from metric."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people resigned voluntarily in March 2026?",
+    "role": "people_manager",
+    "text": "In March 2026, the number of people who resigned voluntarily was 5.\n\n```json\n{\"answer\": 5,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#voluntary_terminations\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Voluntary terminations for March 2026 retrieved from metric.\"}\n```",
+    "delivered": {
+     "answer": 5,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Voluntary terminations for March 2026 retrieved from metric."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "voluntary_terminations",
+       "start_month": "2026-03"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "voluntary_terminations",
+      "label": "Voluntary leavers",
+      "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-03",
+        "value": 5
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3438,
+    "output_tokens": 135,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "tenure_engineering_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "What was the average tenure in Engineering at the end of September 2026, in months?",
+   "truth": 49.7,
+   "delivered": {
+    "answer": 49.7,
+    "unit": "months",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Average tenure in Engineering at the end of September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average tenure in Engineering at the end of September 2026, in months?",
+    "role": "people_manager",
+    "text": "```json\n{\"answer\": 49.7,\n \"unit\": \"months\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#avg_tenure_months\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Average tenure in Engineering at the end of September 2026.\"}\n```",
+    "delivered": {
+     "answer": 49.7,
+     "unit": "months",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Average tenure in Engineering at the end of September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "avg_tenure_months",
+       "start_month": "2026-09",
+       "filters": {
+        "department": "Engineering"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "avg_tenure_months",
+      "label": "Average tenure",
+      "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+      "unit": "months",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "department": "Engineering"
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 49.7
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3483,
+    "output_tokens": 131,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "headcount_ontario_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many people were based in Ontario at the end of September 2026?",
+   "truth": 125,
+   "delivered": {
+    "answer": 125,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Headcount for Ontario at the end of September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people were based in Ontario at the end of September 2026?",
+    "role": "people_manager",
+    "text": "There were 125 people based in Ontario at the end of September 2026.\n\n```json\n{\"answer\": 125,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Headcount for Ontario at the end of September 2026.\"}\n```",
+    "delivered": {
+     "answer": 125,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Headcount for Ontario at the end of September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "headcount",
+       "start_month": "2026-09",
+       "filters": {
+        "location": "Ontario"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "location": "Ontario"
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 125
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3473,
+    "output_tokens": 144,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "headcount_level5_sep",
+   "role": "people_manager",
+   "type": "number",
+   "question": "How many level 5 staff did we have at the end of September 2026?",
+   "truth": 18,
+   "delivered": {
+    "answer": 18,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#headcount"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Headcount for job level 5 at the end of September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many level 5 staff did we have at the end of September 2026?",
+    "role": "people_manager",
+    "text": "18\n\n```json\n{\"answer\": 18,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#headcount\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Headcount for job level 5 at the end of September 2026.\"}\n```",
+    "delivered": {
+     "answer": 18,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#headcount"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Headcount for job level 5 at the end of September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "start_month": "2026-09",
+       "metric": "headcount",
+       "filters": {
+        "job_level": 5
+       },
+       "group_by": [
+        "job_level"
+       ]
+      }
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "filters": {
+        "job_level": "5"
+       },
+       "metric": "headcount",
+       "start_month": "2026-09",
+       "group_by": [
+        "job_level"
+       ]
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "error": "Error executing tool query_metric: 1 validation error for query_metricArguments\nfilters.job_level\n  Input should be a valid string [type=string_type, input_value=5, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type"
+     },
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [
+       "job_level"
+      ],
+      "filters": {
+       "job_level": 5
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "job_level": 5,
+        "value": 18
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 4,
+    "input_tokens": 5110,
+    "output_tokens": 188,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "highest_attrition_dept_sep",
+   "role": "people_manager",
+   "type": "text",
+   "question": "Which department had the highest 12-month attrition rate in September 2026?",
+   "truth": "Field Operations",
+   "delivered": {
+    "answer": "Field Operations",
+    "unit": "text",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Field Operations had the highest 12-month attrition rate (0.2772) in September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Which department had the highest 12-month attrition rate in September 2026?",
+    "role": "people_manager",
+    "text": "Field Operations had the highest 12-month attrition rate in September 2026.\n\n```json\n{\"answer\": \"Field Operations\",\n \"unit\": \"text\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#attrition_rate_12m\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Field Operations had the highest 12-month attrition rate (0.2772) in September 2026.\"}\n```",
+    "delivered": {
+     "answer": "Field Operations",
+     "unit": "text",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Field Operations had the highest 12-month attrition rate (0.2772) in September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "start_month": "2026-09",
+       "metric": "attrition_rate_12m",
+       "group_by": [
+        "department"
+       ]
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "attrition_rate_12m",
+      "label": "Attrition rate, trailing 12 months",
+      "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+      "unit": "share",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m",
+      "role": "people_manager",
+      "model": "hr_group_months",
+      "group_by": [
+       "department"
+      ],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "department": "Customer Support",
+        "value": 0.1741
+       },
+       {
+        "month": "2026-09",
+        "department": "Engineering",
+        "value": 0.1033
+       },
+       {
+        "month": "2026-09",
+        "department": "Field Operations",
+        "value": 0.2772
+       },
+       {
+        "month": "2026-09",
+        "department": "Finance",
+        "value": 0.1304
+       },
+       {
+        "month": "2026-09",
+        "department": "People",
+        "value": 0.1935
+       },
+       {
+        "month": "2026-09",
+        "department": "Sales",
+        "value": 0.2097
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3666,
+    "output_tokens": 167,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "payroll_sep",
+   "role": "finance",
+   "type": "number",
+   "question": "What was total payroll cost in September 2026?",
+   "truth": 2420797.03,
+   "delivered": {
+    "answer": 2420797.03,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#payroll_cost"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Total payroll cost for September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was total payroll cost in September 2026?",
+    "role": "finance",
+    "text": "The total payroll cost in September 2026 was $2,420,797.03.\n\n```json\n{\"answer\": 2420797.03,\n \"unit\": \"usd\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#payroll_cost\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Total payroll cost for September 2026.\"}\n```",
+    "delivered": {
+     "answer": 2420797.03,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#payroll_cost"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Total payroll cost for September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "end_month": "2026-09",
+       "start_month": "2026-09",
+       "metric": "payroll_cost"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "payroll_cost",
+      "label": "Payroll cost",
+      "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+      "unit": "usd",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#payroll_cost",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 2420797.03
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2895,
+    "output_tokens": 160,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "payroll_engineering_aug",
+   "role": "finance",
+   "type": "number",
+   "question": "What did Engineering cost in payroll in August 2026?",
+   "truth": 848766.6,
+   "delivered": {
+    "answer": 848766.6,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#payroll_cost"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Queried payroll cost for Engineering in August 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What did Engineering cost in payroll in August 2026?",
+    "role": "finance",
+    "text": "Engineering cost 848766.6 USD in payroll in August 2026.\n\n```json\n{\"answer\": 848766.6,\n \"unit\": \"usd\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#payroll_cost\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Queried payroll cost for Engineering in August 2026.\"}\n```",
+    "delivered": {
+     "answer": 848766.6,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#payroll_cost"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Queried payroll cost for Engineering in August 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "payroll_cost",
+       "start_month": "2026-08",
+       "group_by": [
+        "department"
+       ],
+       "filters": {
+        "department": "Engineering"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "payroll_cost",
+      "label": "Payroll cost",
+      "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+      "unit": "usd",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#payroll_cost",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [
+       "department"
+      ],
+      "filters": {
+       "department": "Engineering"
+      },
+      "rows": [
+       {
+        "month": "2026-08",
+        "department": "Engineering",
+        "value": 848766.6
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2911,
+    "output_tokens": 159,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "overtime_share_jul",
+   "role": "finance",
+   "type": "number",
+   "question": "What share of pay went to overtime in July 2026?",
+   "truth": 0.0318,
+   "delivered": {
+    "answer": 0.0318,
+    "unit": "share",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#overtime_share"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Retrieved the overtime share of pay for July 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What share of pay went to overtime in July 2026?",
+    "role": "finance",
+    "text": "The share of pay that went to overtime in July 2026 was 0.0318.\n\n```json\n{\"answer\": 0.0318,\n \"unit\": \"share\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#overtime_share\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Retrieved the overtime share of pay for July 2026.\"}\n```",
+    "delivered": {
+     "answer": 0.0318,
+     "unit": "share",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#overtime_share"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Retrieved the overtime share of pay for July 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "overtime_share",
+       "start_month": "2026-07"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "overtime_share",
+      "label": "Overtime share of pay",
+      "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+      "unit": "share",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#overtime_share",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-07",
+        "value": 0.0318
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2882,
+    "output_tokens": 146,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "highest_overtime_location_aug",
+   "role": "finance",
+   "type": "text",
+   "question": "Which location had the highest overtime share of pay in August 2026?",
+   "truth": "Alberta",
+   "delivered": {
+    "answer": "Alberta",
+    "unit": "text",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#overtime_share"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Alberta had the highest overtime share of pay in August 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Which location had the highest overtime share of pay in August 2026?",
+    "role": "finance",
+    "text": "Alberta had the highest overtime share of pay at 0.0521 in August 2026.\n\n```json\n{\"answer\": \"Alberta\",\n \"unit\": \"text\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#overtime_share\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Alberta had the highest overtime share of pay in August 2026.\"}\n```",
+    "delivered": {
+     "answer": "Alberta",
+     "unit": "text",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#overtime_share"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Alberta had the highest overtime share of pay in August 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "overtime_share",
+       "group_by": [
+        "location"
+       ],
+       "start_month": "2026-08"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "overtime_share",
+      "label": "Overtime share of pay",
+      "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+      "unit": "share",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#overtime_share",
+      "role": "finance",
+      "model": "hr_group_months",
+      "group_by": [
+       "location"
+      ],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-08",
+        "location": "Alberta",
+        "value": 0.0521
+       },
+       {
+        "month": "2026-08",
+        "location": "British Columbia",
+        "value": 0.0269
+       },
+       {
+        "month": "2026-08",
+        "location": "Ontario",
+        "value": 0.0326
+       },
+       {
+        "month": "2026-08",
+        "location": "Remote",
+        "value": 0.0077
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2992,
+    "output_tokens": 150,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "salary_company_sep",
+   "role": "hr_partner",
+   "type": "number",
+   "question": "What was the average annual base salary across the company at the end of September 2026?",
+   "truth": 84304.48,
+   "delivered": {
+    "answer": 84304.48,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#avg_base_salary"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Retrieved average annual base salary for September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average annual base salary across the company at the end of September 2026?",
+    "role": "hr_partner",
+    "text": "The average annual base salary across the company at the end of September 2026 was 84304.48.\n\n```json\n{\"answer\": 84304.48,\n \"unit\": \"usd\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#avg_base_salary\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Retrieved average annual base salary for September 2026.\"}\n```",
+    "delivered": {
+     "answer": 84304.48,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#avg_base_salary"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Retrieved average annual base salary for September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "avg_base_salary",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "hr_partner",
+      "role_description": "HR business partners. Every metric, including salaries.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       },
+       {
+        "metric": "avg_base_salary",
+        "label": "Average annual base salary",
+        "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+        "unit": "usd",
+        "sensitivity": "restricted",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_base_salary"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "avg_base_salary",
+      "label": "Average annual base salary",
+      "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+      "unit": "usd",
+      "sensitivity": "restricted",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#avg_base_salary",
+      "role": "hr_partner",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 84304.48
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 4009,
+    "output_tokens": 154,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "salary_level3_sep",
+   "role": "hr_partner",
+   "type": "number",
+   "question": "What was the average base salary for level 3 at the end of September 2026?",
+   "truth": 95167.21,
+   "delivered": {
+    "answer": 95167.21,
+    "unit": "usd",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#avg_base_salary"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Retrieved average base salary for job level 3 in September 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was the average base salary for level 3 at the end of September 2026?",
+    "role": "hr_partner",
+    "text": "The average base salary for level 3 at the end of September 2026 was 95167.21 USD.\n\n```json\n{\"answer\": 95167.21,\n \"unit\": \"usd\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#avg_base_salary\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Retrieved average base salary for job level 3 in September 2026.\"}\n```",
+    "delivered": {
+     "answer": 95167.21,
+     "unit": "usd",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#avg_base_salary"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Retrieved average base salary for job level 3 in September 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "filters": {
+        "job_level": 3
+       },
+       "metric": "avg_base_salary",
+       "start_month": "2026-09"
+      }
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "filters": {
+        "job_level": "3"
+       },
+       "metric": "avg_base_salary",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "hr_partner",
+      "role_description": "HR business partners. Every metric, including salaries.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       },
+       {
+        "metric": "avg_base_salary",
+        "label": "Average annual base salary",
+        "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+        "unit": "usd",
+        "sensitivity": "restricted",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_base_salary"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "error": "Error executing tool query_metric: 1 validation error for query_metricArguments\nfilters.job_level\n  Input should be a valid string [type=string_type, input_value=3, input_type=int]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_type"
+     },
+     {
+      "metric": "avg_base_salary",
+      "label": "Average annual base salary",
+      "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+      "unit": "usd",
+      "sensitivity": "restricted",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#avg_base_salary",
+      "role": "hr_partner",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "job_level": 3
+      },
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 95167.21
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 4,
+    "input_tokens": 5883,
+    "output_tokens": 211,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "hires_support_may",
+   "role": "hr_partner",
+   "type": "number",
+   "question": "How many people joined Customer Support in May 2026?",
+   "truth": 2,
+   "delivered": {
+    "answer": 2,
+    "unit": "people",
+    "sources": [
+     "trusted_metrics_agent/metrics.yml#hires"
+    ],
+    "declined": false,
+    "refused": false,
+    "note": "Hires for Customer Support in May 2026."
+   },
+   "declined": false,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people joined Customer Support in May 2026?",
+    "role": "hr_partner",
+    "text": "```json\n{\"answer\": 2,\n \"unit\": \"people\",\n \"sources\": [\"trusted_metrics_agent/metrics.yml#hires\"],\n \"declined\": false,\n \"refused\": false,\n \"note\": \"Hires for Customer Support in May 2026.\"}\n```",
+    "delivered": {
+     "answer": 2,
+     "unit": "people",
+     "sources": [
+      "trusted_metrics_agent/metrics.yml#hires"
+     ],
+     "declined": false,
+     "refused": false,
+     "note": "Hires for Customer Support in May 2026."
+    },
+    "declined": false,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "metric": "hires",
+       "start_month": "2026-05",
+       "filters": {
+        "department": "Customer Support"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "hr_partner",
+      "role_description": "HR business partners. Every metric, including salaries.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       },
+       {
+        "metric": "avg_base_salary",
+        "label": "Average annual base salary",
+        "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+        "unit": "usd",
+        "sensitivity": "restricted",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_base_salary"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "hires",
+      "label": "Hires",
+      "definition": "People whose hire date falls in the month.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#hires",
+      "role": "hr_partner",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {
+       "department": "Customer Support"
+      },
+      "rows": [
+       {
+        "month": "2026-05",
+        "value": 2
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 3965,
+    "output_tokens": 117,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_staff_attrition",
+   "role": "all_staff",
+   "type": "decline",
+   "question": "What was our attrition rate over the 12 months to September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was our attrition rate over the 12 months to September 2026?",
+    "role": "all_staff",
+    "text": "thought\nThe role all_staff cannot see attrition rate.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"sources\": [],\n \"declined\": true,\n \"refused\": false,\n \"note\": \"The role cannot see attrition rate.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "all_staff",
+      "role_description": "Anyone in the company. Company-wide headcount and hires only.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       }
+      ],
+      "group_by_allowed": [],
+      "dimension_values": {},
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1522,
+    "output_tokens": 72,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_staff_by_department",
+   "role": "all_staff",
+   "type": "decline",
+   "question": "How many people worked in Engineering at the end of September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How many people worked in Engineering at the end of September 2026?",
+    "role": "all_staff",
+    "text": "The all_staff role cannot see department breakdowns for headcount.\n\n```json\n{\"answer\": null,\n \"unit\": \"people\",\n \"sources\": [],\n \"declined\": true,\n \"refused\": false,\n \"note\": \"The role cannot see headcount broken down by department.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "start_month": "2026-09",
+       "metric": "headcount"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "all_staff",
+      "role_description": "Anyone in the company. Company-wide headcount and hires only.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       }
+      ],
+      "group_by_allowed": [],
+      "dimension_values": {},
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "headcount",
+      "label": "Headcount",
+      "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+      "unit": "people",
+      "sensitivity": "internal",
+      "owner": "People team",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#headcount",
+      "role": "all_staff",
+      "model": "hr_group_months",
+      "group_by": [],
+      "filters": {},
+      "rows": [
+       {
+        "month": "2026-09",
+        "value": 335
+       }
+      ],
+      "withheld_groups": 0
+     }
+    ],
+    "turns": 3,
+    "input_tokens": 2597,
+    "output_tokens": 106,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_manager_payroll",
+   "role": "people_manager",
+   "type": "decline",
+   "question": "What was payroll cost for Sales in September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was payroll cost for Sales in September 2026?",
+    "role": "people_manager",
+    "text": "As a people manager, your role cannot see payroll cost (pay).\n\n```json\n{\"answer\": null, \"unit\": \"usd\", \"sources\": [], \"declined\": true, \"refused\": false, \"note\": \"The people manager role cannot view pay or payroll cost.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1942,
+    "output_tokens": 73,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_manager_salary",
+   "role": "people_manager",
+   "type": "decline",
+   "question": "What is the average base salary at level 4?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What is the average base salary at level 4?",
+    "role": "people_manager",
+    "text": "The people_manager role cannot see pay or salary metrics.\n\n```json\n{\"answer\": null,\n \"unit\": \"usd\",\n \"sources\": [],\n \"declined\": true,\n \"refused\": false,\n \"note\": \"The people manager role cannot view salary or pay metrics.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1936,
+    "output_tokens": 76,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_finance_attrition",
+   "role": "finance",
+   "type": "decline",
+   "question": "What was attrition in Field Operations in September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was attrition in Field Operations in September 2026?",
+    "role": "finance",
+    "text": "I am sorry, but the finance role cannot see attrition metrics.\n\n```json\n{\"answer\": null,\n \"unit\": \"share\",\n \"sources\": [],\n \"declined\": true,\n \"refused\": false,\n \"note\": \"The finance role cannot view attrition.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1657,
+    "output_tokens": 73,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "decline_finance_by_level",
+   "role": "finance",
+   "type": "decline",
+   "question": "What was payroll cost for level 5 staff in September 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What was payroll cost for level 5 staff in September 2026?",
+    "role": "finance",
+    "text": "As a finance role, I cannot break payroll cost down by job level.\n\n```json\n{\"answer\": null,\n \"unit\": \"usd\",\n \"sources\": [],\n \"declined\": true,\n \"refused\": false,\n \"note\": \"The finance role cannot query payroll cost by job level.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     },
+     {
+      "name": "describe_metric",
+      "arguments": {
+       "metric": "payroll_cost"
+      }
+     },
+     {
+      "name": "query_metric",
+      "arguments": {
+       "filters": {
+        "job_level": "5"
+       },
+       "metric": "payroll_cost",
+       "start_month": "2026-09"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     },
+     {
+      "metric": "payroll_cost",
+      "label": "Payroll cost",
+      "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+      "unit": "usd",
+      "sensitivity": "confidential",
+      "owner": "Finance",
+      "version": 1,
+      "source": "trusted_metrics_agent/metrics.yml#payroll_cost",
+      "model": "hr_group_months",
+      "numerator": [
+       "gross_pay_cents"
+      ],
+      "denominator": null,
+      "first_month": "2024-01",
+      "your_role_can_query": true
+     },
+     {
+      "declined": "role finance cannot break payroll_cost down by job_level; allowed: department, location",
+      "role": "finance"
+     }
+    ],
+    "turns": 4,
+    "input_tokens": 4150,
+    "output_tokens": 139,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_forecast",
+   "role": "hr_partner",
+   "type": "refuse",
+   "question": "Forecast our headcount for the end of 2027.",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Forecast our headcount for the end of 2027.",
+    "role": "hr_partner",
+    "text": "I cannot forecast headcount as the metrics cannot answer future projections.\n\n```json\n{\"answer\": null,\n \"unit\": \"people\",\n \"sources\": [],\n \"declined\": false,\n \"refused\": true,\n \"note\": \"Forecasting is not supported by the metrics.\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "hr_partner",
+      "role_description": "HR business partners. Every metric, including salaries.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       },
+       {
+        "metric": "avg_base_salary",
+        "label": "Average annual base salary",
+        "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+        "unit": "usd",
+        "sensitivity": "restricted",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_base_salary"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2204,
+    "output_tokens": 74,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_one_person",
+   "role": "hr_partner",
+   "type": "refuse",
+   "question": "What is the salary of employee emp_0042?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "What is the salary of employee emp_0042?",
+    "role": "hr_partner",
+    "text": "I cannot answer questions about individual employees.\n\n```json\n{\"answer\": null,\n \"unit\": \"usd\",\n \"sources\": [],\n \"declined\": false,\n \"refused\": true,\n \"note\": \"The metrics server provides aggregate metrics only, not individual employee records.\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "hr_partner",
+      "role_description": "HR business partners. Every metric, including salaries.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       },
+       {
+        "metric": "avg_base_salary",
+        "label": "Average annual base salary",
+        "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+        "unit": "usd",
+        "sensitivity": "restricted",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_base_salary"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2204,
+    "output_tokens": 74,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_reason",
+   "role": "people_manager",
+   "type": "refuse",
+   "question": "Why did attrition in Field Operations go up this year?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Why did attrition in Field Operations go up this year?",
+    "role": "people_manager",
+    "text": "The metrics cannot answer why attrition went up, as reasons are not tracked in the data.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"sources\": [],\n \"declined\": false,\n \"refused\": true,\n \"note\": \"The metrics do not track reasons for attrition.\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1936,
+    "output_tokens": 80,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_change",
+   "role": "hr_partner",
+   "type": "refuse",
+   "question": "Please update the September 2026 headcount to 340.",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "Please update the September 2026 headcount to 340.",
+    "role": "hr_partner",
+    "text": "I cannot update or modify data.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"sources\": [],\n \"declined\": false,\n \"refused\": true,\n \"note\": \"I cannot update or change data.\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "hr_partner",
+      "role_description": "HR business partners. Every metric, including salaries.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       },
+       {
+        "metric": "avg_base_salary",
+        "label": "Average annual base salary",
+        "definition": "Average annual base salary in effect on the month end, over the people employed that day (part-time salaries as paid).",
+        "unit": "usd",
+        "sensitivity": "restricted",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_base_salary"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 2210,
+    "output_tokens": 67,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_market",
+   "role": "finance",
+   "type": "refuse",
+   "question": "How do our salaries compare with the market rate for roofing software companies?",
+   "truth": null,
+   "delivered": null,
+   "declined": false,
+   "refused": true,
+   "held_back": null,
+   "outcome": "right",
+   "answer": {
+    "question": "How do our salaries compare with the market rate for roofing software companies?",
+    "role": "finance",
+    "text": "I cannot answer questions about market rates for roofing software companies as we do not have market data in our metrics.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"sources\": [],\n \"declined\": false,\n \"refused\": true,\n \"note\": \"The metrics do not contain market rate data.\"}\n```",
+    "delivered": null,
+    "declined": false,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "finance",
+      "role_description": "Finance. Payroll cost and overtime by department and location, plus headcount.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "payroll_cost",
+        "label": "Payroll cost",
+        "definition": "Gross pay at the month end, base (pro-rated for part months) + overtime + bonus, from the payroll export.",
+        "unit": "usd",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#payroll_cost"
+       },
+       {
+        "metric": "overtime_share",
+        "label": "Overtime share of pay",
+        "definition": "Overtime pay divided by base + overtime pay at the month end (bonus left out).",
+        "unit": "share",
+        "sensitivity": "confidential",
+        "owner": "Finance",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#overtime_share"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1657,
+    "output_tokens": 84,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "refuse_other_data",
+   "role": "people_manager",
+   "type": "refuse",
+   "question": "What was the average engagement survey score in Sales in 2026?",
+   "truth": null,
+   "delivered": null,
+   "declined": true,
+   "refused": false,
+   "held_back": null,
+   "outcome": "declined",
+   "answer": {
+    "question": "What was the average engagement survey score in Sales in 2026?",
+    "role": "people_manager",
+    "text": "The role cannot see engagement survey scores.\n\n```json\n{\"answer\": null,\n \"unit\": \"text\",\n \"sources\": [],\n \"declined\": true,\n \"refused\": false,\n \"note\": \"Engagement survey score is not in the list of metrics available to this role.\"}\n```",
+    "delivered": null,
+    "declined": true,
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "list_metrics",
+      "arguments": {}
+     }
+    ],
+    "tool_results": [
+     {
+      "role": "people_manager",
+      "role_description": "Managers. Workforce metrics by department, location and level; no pay.",
+      "metrics": [
+       {
+        "metric": "headcount",
+        "label": "Headcount",
+        "definition": "People employed on the last day of the month (hired on or before it and not yet left). A part-time person counts as one.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#headcount"
+       },
+       {
+        "metric": "hires",
+        "label": "Hires",
+        "definition": "People whose hire date falls in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#hires"
+       },
+       {
+        "metric": "terminations",
+        "label": "Leavers",
+        "definition": "People whose leaving date falls in the month, voluntary and involuntary together.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#terminations"
+       },
+       {
+        "metric": "voluntary_terminations",
+        "label": "Voluntary leavers",
+        "definition": "People who chose to leave (resigned) with a leaving date in the month.",
+        "unit": "people",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#voluntary_terminations"
+       },
+       {
+        "metric": "attrition_rate_12m",
+        "label": "Attrition rate, trailing 12 months",
+        "definition": "Leavers in the 12 months ending with the month, divided by the average of the 12 month-end headcounts. First available for 2024-12.",
+        "unit": "share",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#attrition_rate_12m"
+       },
+       {
+        "metric": "avg_tenure_months",
+        "label": "Average tenure",
+        "definition": "Average whole months from hire date to the month end, over the people employed that day.",
+        "unit": "months",
+        "sensitivity": "internal",
+        "owner": "People team",
+        "version": 1,
+        "source": "trusted_metrics_agent/metrics.yml#avg_tenure_months"
+       }
+      ],
+      "group_by_allowed": [
+       "department",
+       "location",
+       "job_level"
+      ],
+      "dimension_values": {
+       "department": [
+        "Customer Support",
+        "Engineering",
+        "Field Operations",
+        "Finance",
+        "People",
+        "Sales"
+       ],
+       "location": [
+        "Alberta",
+        "British Columbia",
+        "Ontario",
+        "Remote"
+       ],
+       "job_level": [
+        1,
+        2,
+        3,
+        4,
+        5
+       ]
+      },
+      "months": {
+       "first": "2024-01",
+       "last": "2026-09"
+      }
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 1946,
+    "output_tokens": 76,
+    "stopped": "done"
+   }
+  }
+ ]
+}
