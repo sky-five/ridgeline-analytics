@@ -6,7 +6,7 @@ HR and payroll questions ("what was attrition in Field Operations last quarter?"
 
 ```bash
 python -m trusted_metrics_agent                      # load the exports, dbt build, print every metric for 2026-09
-pytest tests/trusted_metrics_agent -q                # 53 tests, about 35 seconds
+pytest tests/trusted_metrics_agent -q                # 54 tests, about 40 seconds
 claude mcp add hr-metrics -- .venv/bin/python -m trusted_metrics_agent.server --role people_manager
 ```
 
@@ -106,6 +106,7 @@ python -m trusted_metrics_agent.agent_eval --replay trusted_metrics_agent/agent_
 
 | Run | Answerable right | Wrong, delivered | Not for role: declined | Out of scope: refused | Leaked |
 |---|---|---|---|---|---|
+| gemini-3.5-flash-lite (Gemini API, free tier), recorded 2026-11-13 | 18 of 18 | 0 | 6 of 6 | 5 of 6 | 0 |
 | keyword baseline (no model) | 15 of 18 | 3 | 5 of 6 | 6 of 6 | 0 |
 
-The baseline's 3 wrong answers are the two "which group is highest" questions (it copies the company value) and Engineering payroll (it misses the department in "What did Engineering cost"). They show what the check does not catch: a real value of the wrong metric or group, cited correctly. Its one miss on declines is a refusal: "average base salary at level 4" names no month, so it never asks the server.
+The model run made 53 tool calls through the server over 83 model requests (about 93,000 tokens). Its one miss: asked for an engagement survey score as a manager, it said the role cannot see it instead of saying no metric covers it; no value either way. The recording was made by `.github/workflows/record-hr-agent.yml`; other models will score differently. The baseline's 3 wrong answers are the two "which group is highest" questions (it copies the company value) and Engineering payroll (it misses the department in "What did Engineering cost"). They show what the check does not catch: a real value of the wrong metric or group, cited correctly. Its one miss on declines is a refusal: "average base salary at level 4" names no month, so it never asks the server.
