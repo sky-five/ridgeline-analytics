@@ -140,6 +140,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(auction_tables())
 
+    # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
+    from report_reconciliation.dashboard import tables as recon_tables
+
+    tables.update(recon_tables())
+
     # account reviews (account_reviews/): one templated page per large account, from the governed metrics
     from account_reviews.reviews import build as build_reviews
 
