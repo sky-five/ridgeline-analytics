@@ -57,6 +57,8 @@ def items(summary: dict, repo: Path = REPO) -> list[tuple[bool, str, str]]:
     loads = summary["hash_merge"]["loads"]
     control = summary["event_time_watermark"]
     clean = trailing_clean_loads(loads)
+    totals = summary["hash_merge"]["totals"]
+    left = totals["aged_out"] + totals["deleted"] - totals["returned"]
     control_failed = sum(not ld["reconciliation"]["ok"] for ld in control["loads"])
     readers = legacy_readers(repo)
     unmapped = [c for c, t in LINEAGE.items() if t not in target_cols]
@@ -68,9 +70,9 @@ def items(summary: dict, repo: Path = REPO) -> list[tuple[bool, str, str]]:
         (control_failed > 0,
          "The reconciliation catches a broken loader (event-time watermark run fails)",
          f"failed on {control_failed} of {len(control['loads'])} loads"),
-        (summary["history_kept"] > 0 or summary["hash_merge"]["totals"]["aged_out"] == 0,
-         "Target keeps rows the legacy table loses",
-         f"{summary['history_kept']} events kept after leaving the feed"),
+        (summary["history_kept"] == left,
+         "Target keeps every row the legacy table loses",
+         f"{summary['history_kept']} kept of {left} that left the feed"),
         (not readers, "No code outside the kit reads legacy.earthquakes",
          "none found" if not readers else ", ".join(readers)),
     ]
