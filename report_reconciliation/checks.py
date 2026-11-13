@@ -2,7 +2,7 @@
 
   row_count     the mart has one row per grain key the source produces, and no other keys
   totals        every measure's total matches the source, and no key's value differs by more than a cent
-  refresh_age   each input was extracted within the report's SLA, and the mart was built from those extracts
+  refresh_age   each input was extracted within the report's SLA, and the mart was built after the newest extract
   lineage       every mart column is documented, and every source column it names exists
 """
 from datetime import datetime, timedelta
@@ -55,8 +55,9 @@ def check_report(con: duckdb.DuckDBPyConnection, rep: Report, src: dict, now: da
     ages = {t: round((now - log[t]) / timedelta(hours=1), 1) for t in rep.inputs}
     built_from = mart["source_extracted_at"].min().to_pydatetime()
     stale = [t for t, h in ages.items() if h > rep.refresh_sla_hours]
+    built_at = mart["built_at"].min().to_pydatetime()
     refresh = {"ok": not stale and built_from == min(log[t] for t in rep.inputs)
-               and mart["built_at"].min().to_pydatetime() >= built_from,
+               and built_at >= max(log[t] for t in rep.inputs),
                "sla_hours": rep.refresh_sla_hours, "input_age_hours": ages, "stale_inputs": stale}
 
     mart_cols = columns(con, *rep.mart.split("."))
