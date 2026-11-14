@@ -1,0 +1,577 @@
+{
+  "as_of": "2026-06-30",
+  "first_week": "2026-01-05",
+  "last_mature_week": "2026-05-25",
+  "funnel": [
+    {
+      "program": "business_expense",
+      "started": 3072,
+      "uploaded": 2384,
+      "submitted": 1952,
+      "kyc_passed": 1569,
+      "funded": 1202,
+      "activated": 1055,
+      "upload_rate": 0.776,
+      "submit_rate": 0.8188,
+      "kyc_pass_rate": 0.8038,
+      "funding_rate": 0.7661,
+      "first_transaction_rate": 0.8777,
+      "activation_rate": 0.3434
+    },
+    {
+      "program": "consumer_card",
+      "started": 8031,
+      "uploaded": 6969,
+      "submitted": 6410,
+      "kyc_passed": 5832,
+      "funded": 4237,
+      "activated": 3625,
+      "upload_rate": 0.8678,
+      "submit_rate": 0.9198,
+      "kyc_pass_rate": 0.9098,
+      "funding_rate": 0.7265,
+      "first_transaction_rate": 0.8556,
+      "activation_rate": 0.4514
+    },
+    {
+      "program": "cross_border",
+      "started": 4025,
+      "uploaded": 3359,
+      "submitted": 2927,
+      "kyc_passed": 2533,
+      "funded": 1649,
+      "activated": 1338,
+      "upload_rate": 0.8345,
+      "submit_rate": 0.8714,
+      "kyc_pass_rate": 0.8654,
+      "funding_rate": 0.651,
+      "first_transaction_rate": 0.8114,
+      "activation_rate": 0.3324
+    },
+    {
+      "program": "gig_payouts",
+      "started": 5000,
+      "uploaded": 4643,
+      "submitted": 4409,
+      "kyc_passed": 4172,
+      "funded": 3886,
+      "activated": 3674,
+      "upload_rate": 0.9286,
+      "submit_rate": 0.9496,
+      "kyc_pass_rate": 0.9462,
+      "funding_rate": 0.9314,
+      "first_transaction_rate": 0.9454,
+      "activation_rate": 0.7348
+    }
+  ],
+  "time_to_first_transaction": [
+    {
+      "program": "business_expense",
+      "activated": 1055,
+      "median_days": 8.37,
+      "p90_days": 17.2,
+      "share_within_1_day": 0.0,
+      "share_within_7_days": 0.39
+    },
+    {
+      "program": "consumer_card",
+      "activated": 3625,
+      "median_days": 2.87,
+      "p90_days": 6.45,
+      "share_within_1_day": 0.04,
+      "share_within_7_days": 0.92
+    },
+    {
+      "program": "cross_border",
+      "activated": 1338,
+      "median_days": 4.73,
+      "p90_days": 10.04,
+      "share_within_1_day": 0.0,
+      "share_within_7_days": 0.74
+    },
+    {
+      "program": "gig_payouts",
+      "activated": 3674,
+      "median_days": 2.01,
+      "p90_days": 4.62,
+      "share_within_1_day": 0.12,
+      "share_within_7_days": 0.97
+    }
+  ],
+  "drop_off_reasons": [
+    {
+      "program": "business_expense",
+      "drop_off_step": "document_upload",
+      "drop_off_reason": "left_before_document_upload",
+      "applicants": 688,
+      "share_of_drop_offs": 0.3411
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "submit",
+      "drop_off_reason": "left_after_document_upload",
+      "applicants": 432,
+      "share_of_drop_offs": 0.2142
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "funding",
+      "drop_off_reason": "not_funded",
+      "applicants": 367,
+      "share_of_drop_offs": 0.182
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "address_unverified",
+      "applicants": 190,
+      "share_of_drop_offs": 0.0942
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "no_first_transaction",
+      "applicants": 135,
+      "share_of_drop_offs": 0.0669
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "manual_review_declined",
+      "applicants": 110,
+      "share_of_drop_offs": 0.0545
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "document_unreadable",
+      "applicants": 54,
+      "share_of_drop_offs": 0.0268
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "watchlist_hit",
+      "applicants": 15,
+      "share_of_drop_offs": 0.0074
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "selfie_mismatch",
+      "applicants": 14,
+      "share_of_drop_offs": 0.0069
+    },
+    {
+      "program": "business_expense",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "first_transaction_after_window",
+      "applicants": 12,
+      "share_of_drop_offs": 0.0059
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "funding",
+      "drop_off_reason": "not_funded",
+      "applicants": 1595,
+      "share_of_drop_offs": 0.362
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "document_upload",
+      "drop_off_reason": "left_before_document_upload",
+      "applicants": 1062,
+      "share_of_drop_offs": 0.241
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "no_first_transaction",
+      "applicants": 611,
+      "share_of_drop_offs": 0.1387
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "submit",
+      "drop_off_reason": "left_after_document_upload",
+      "applicants": 559,
+      "share_of_drop_offs": 0.1269
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "document_unreadable",
+      "applicants": 176,
+      "share_of_drop_offs": 0.0399
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "address_unverified",
+      "applicants": 140,
+      "share_of_drop_offs": 0.0318
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "selfie_mismatch",
+      "applicants": 123,
+      "share_of_drop_offs": 0.0279
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "manual_review_declined",
+      "applicants": 111,
+      "share_of_drop_offs": 0.0252
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "watchlist_hit",
+      "applicants": 28,
+      "share_of_drop_offs": 0.0064
+    },
+    {
+      "program": "consumer_card",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "first_transaction_after_window",
+      "applicants": 1,
+      "share_of_drop_offs": 0.0002
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "funding",
+      "drop_off_reason": "not_funded",
+      "applicants": 884,
+      "share_of_drop_offs": 0.329
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "document_upload",
+      "drop_off_reason": "left_before_document_upload",
+      "applicants": 666,
+      "share_of_drop_offs": 0.2479
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "submit",
+      "drop_off_reason": "left_after_document_upload",
+      "applicants": 432,
+      "share_of_drop_offs": 0.1608
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "no_first_transaction",
+      "applicants": 309,
+      "share_of_drop_offs": 0.115
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "document_unreadable",
+      "applicants": 127,
+      "share_of_drop_offs": 0.0473
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "address_unverified",
+      "applicants": 95,
+      "share_of_drop_offs": 0.0354
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "manual_review_declined",
+      "applicants": 68,
+      "share_of_drop_offs": 0.0253
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "selfie_mismatch",
+      "applicants": 62,
+      "share_of_drop_offs": 0.0231
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "watchlist_hit",
+      "applicants": 42,
+      "share_of_drop_offs": 0.0156
+    },
+    {
+      "program": "cross_border",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "first_transaction_after_window",
+      "applicants": 2,
+      "share_of_drop_offs": 0.0007
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "document_upload",
+      "drop_off_reason": "left_before_document_upload",
+      "applicants": 357,
+      "share_of_drop_offs": 0.2692
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "funding",
+      "drop_off_reason": "not_funded",
+      "applicants": 286,
+      "share_of_drop_offs": 0.2157
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "submit",
+      "drop_off_reason": "left_after_document_upload",
+      "applicants": 234,
+      "share_of_drop_offs": 0.1765
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "first_transaction",
+      "drop_off_reason": "no_first_transaction",
+      "applicants": 212,
+      "share_of_drop_offs": 0.1599
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "document_unreadable",
+      "applicants": 91,
+      "share_of_drop_offs": 0.0686
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "address_unverified",
+      "applicants": 43,
+      "share_of_drop_offs": 0.0324
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "manual_review_declined",
+      "applicants": 40,
+      "share_of_drop_offs": 0.0302
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "selfie_mismatch",
+      "applicants": 38,
+      "share_of_drop_offs": 0.0287
+    },
+    {
+      "program": "gig_payouts",
+      "drop_off_step": "kyc",
+      "drop_off_reason": "watchlist_hit",
+      "applicants": 25,
+      "share_of_drop_offs": 0.0189
+    }
+  ],
+  "checks": {
+    "redelivery": {
+      "delivered_rows": 114999,
+      "distinct_events": 113293,
+      "redelivered": 1706,
+      "staged": 113293,
+      "copies_that_differ": 0,
+      "passed": true
+    },
+    "person_key": {
+      "true_people": 24000,
+      "applications": 24000,
+      "application_ids": 24326,
+      "normalised_key": {
+        "people_split": 0,
+        "people_merged": 0
+      },
+      "raw_email_key": {
+        "people_split": 165,
+        "people_merged": 0
+      },
+      "passed": true
+    },
+    "ids_per_person": {
+      "limit": 1.02,
+      "programs": {
+        "business_expense": {
+          "weeks_over_limit": 0,
+          "first_week_over": null,
+          "max": 1.0
+        },
+        "consumer_card": {
+          "weeks_over_limit": 0,
+          "first_week_over": null,
+          "max": 1.0
+        },
+        "cross_border": {
+          "weeks_over_limit": 12,
+          "first_week_over": "2026-04-06",
+          "max": 1.176
+        },
+        "gig_payouts": {
+          "weeks_over_limit": 0,
+          "first_week_over": null,
+          "max": 1.0
+        }
+      },
+      "passed": false,
+      "programs_over": [
+        "cross_border"
+      ]
+    }
+  },
+  "steps": [
+    {
+      "program": "business_expense",
+      "rate": "activation_rate_per_id",
+      "week": "2026-03-16",
+      "before": 0.3585,
+      "after": 0.3303,
+      "t": -2.0,
+      "shift": false
+    },
+    {
+      "program": "business_expense",
+      "rate": "activation_rate",
+      "week": "2026-03-16",
+      "before": 0.3585,
+      "after": 0.3303,
+      "t": -2.0,
+      "shift": false
+    },
+    {
+      "program": "business_expense",
+      "rate": "kyc_pass_rate",
+      "week": "2026-03-30",
+      "before": 0.8171,
+      "after": 0.7868,
+      "t": -2.5,
+      "shift": false
+    },
+    {
+      "program": "consumer_card",
+      "rate": "activation_rate_per_id",
+      "week": "2026-02-02",
+      "before": 0.4803,
+      "after": 0.4447,
+      "t": -2.1,
+      "shift": false
+    },
+    {
+      "program": "consumer_card",
+      "rate": "activation_rate",
+      "week": "2026-02-02",
+      "before": 0.4803,
+      "after": 0.4447,
+      "t": -2.1,
+      "shift": false
+    },
+    {
+      "program": "consumer_card",
+      "rate": "kyc_pass_rate",
+      "week": "2026-05-11",
+      "before": 0.915,
+      "after": 0.8791,
+      "t": -5.4,
+      "shift": true,
+      "reading": "real"
+    },
+    {
+      "program": "cross_border",
+      "rate": "activation_rate_per_id",
+      "week": "2026-04-06",
+      "before": 0.3358,
+      "after": 0.2877,
+      "t": -3.1,
+      "shift": true,
+      "reading": "counting artefact"
+    },
+    {
+      "program": "cross_border",
+      "rate": "activation_rate",
+      "week": "2026-05-04",
+      "before": 0.3277,
+      "after": 0.3526,
+      "t": 1.2,
+      "shift": false
+    },
+    {
+      "program": "cross_border",
+      "rate": "kyc_pass_rate",
+      "week": "2026-02-16",
+      "before": 0.8497,
+      "after": 0.8672,
+      "t": 1.6,
+      "shift": false
+    },
+    {
+      "program": "gig_payouts",
+      "rate": "activation_rate_per_id",
+      "week": "2026-02-16",
+      "before": 0.7169,
+      "after": 0.7418,
+      "t": 2.0,
+      "shift": false
+    },
+    {
+      "program": "gig_payouts",
+      "rate": "activation_rate",
+      "week": "2026-02-16",
+      "before": 0.7169,
+      "after": 0.7418,
+      "t": 2.0,
+      "shift": false
+    },
+    {
+      "program": "gig_payouts",
+      "rate": "kyc_pass_rate",
+      "week": "2026-02-16",
+      "before": 0.9322,
+      "after": 0.9518,
+      "t": 2.9,
+      "shift": false
+    }
+  ],
+  "counting_breaks": [
+    {
+      "program": "cross_border",
+      "from_week": "2026-04-06",
+      "mature_weeks_before": 13,
+      "mature_weeks_after": 8,
+      "per_application_id": {
+        "before": 0.3358,
+        "after": 0.2877,
+        "change_pp": -4.8,
+        "ci_pp": [
+          -7.6,
+          -2.0
+        ]
+      },
+      "per_person": {
+        "before": 0.3362,
+        "after": 0.3265,
+        "change_pp": -1.0,
+        "ci_pp": [
+          -4.0,
+          2.0
+        ]
+      },
+      "share_of_drop_from_counting": 0.8
+    }
+  ],
+  "kyc_reason_shifts": [
+    {
+      "program": "consumer_card",
+      "from_week": "2026-05-11",
+      "reason": "selfie_mismatch",
+      "before": 0.0285,
+      "after": 0.0893
+    }
+  ]
+}
