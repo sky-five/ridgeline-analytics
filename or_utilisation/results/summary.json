@@ -1,0 +1,259 @@
+{
+  "policy_start": "2026-04-06",
+  "rooms": 12,
+  "block_days": 130,
+  "blocks": 1560,
+  "releases": 129,
+  "auto_releases": 48,
+  "cases_booked": 5145,
+  "cases_completed": 4741,
+  "periods": {
+    "after_all": {
+      "block_utilisation": 0.5639,
+      "adjusted_block_utilisation": 0.6301,
+      "block_utilisation_with_turnover": 0.6992,
+      "room_utilisation": 0.5951,
+      "released_time_rate": 0.1051,
+      "released_time_reuse_rate": 0.2742,
+      "same_day_cancellation_rate": 0.061,
+      "blocks": 780,
+      "completed_cases": 2495
+    },
+    "after_owner_booked": {
+      "block_utilisation": 0.6545,
+      "adjusted_block_utilisation": 0.6545,
+      "block_utilisation_with_turnover": 0.8116,
+      "room_utilisation": 0.6545,
+      "released_time_rate": 0.0,
+      "same_day_cancellation_rate": 0.062,
+      "blocks": 672,
+      "completed_cases": 2360
+    },
+    "before_all": {
+      "block_utilisation": 0.5231,
+      "adjusted_block_utilisation": 0.5477,
+      "block_utilisation_with_turnover": 0.6467,
+      "room_utilisation": 0.5365,
+      "released_time_rate": 0.0449,
+      "released_time_reuse_rate": 0.2612,
+      "same_day_cancellation_rate": 0.0973,
+      "blocks": 780,
+      "completed_cases": 2246
+    },
+    "before_owner_booked": {
+      "block_utilisation": 0.6248,
+      "adjusted_block_utilisation": 0.6248,
+      "block_utilisation_with_turnover": 0.7725,
+      "room_utilisation": 0.6248,
+      "released_time_rate": 0.0,
+      "same_day_cancellation_rate": 0.0961,
+      "blocks": 653,
+      "completed_cases": 2191
+    }
+  },
+  "claims": [
+    {
+      "metric": "adjusted_block_utilisation",
+      "before": 0.5477,
+      "after": 0.6301,
+      "change_pp": 8.24,
+      "checks": [
+        {
+          "check": "denominator_moved",
+          "flagged": true,
+          "size_pp": 3.98,
+          "detail": "denominator per day 5,502 -> 5,154 minutes (-6.3%); with the before denominator the change is +4.3 pp, not +8.2 pp"
+        },
+        {
+          "check": "counts_turnover",
+          "flagged": false,
+          "size_pp": 0.0,
+          "detail": "turnover is not counted as used time"
+        },
+        {
+          "check": "misses_the_gain",
+          "flagged": true,
+          "size_pp": null,
+          "detail": "counts only the owning service's minutes; the rule adds minutes for other services in released blocks"
+        },
+        {
+          "check": "moved_where_rule_cannot_act",
+          "flagged": true,
+          "size_pp": 2.96,
+          "detail": "on blocks the owner booked (the rule cannot act there) it moved +3.0 pp; same-day cancellations 9.6% -> 6.2%"
+        },
+        {
+          "check": "unequal_windows",
+          "flagged": false,
+          "size_pp": null,
+          "detail": "65 vs 65 block days, weekday mix the same"
+        }
+      ],
+      "flags": [
+        "denominator_moved",
+        "misses_the_gain",
+        "moved_where_rule_cannot_act"
+      ]
+    },
+    {
+      "metric": "block_utilisation_with_turnover",
+      "before": 0.6467,
+      "after": 0.6992,
+      "change_pp": 5.24,
+      "checks": [
+        {
+          "check": "denominator_moved",
+          "flagged": false,
+          "size_pp": 0.0,
+          "detail": "denominator per day 5,760 -> 5,760 minutes (+0.0%); with the before denominator the change is +5.2 pp, not +5.2 pp"
+        },
+        {
+          "check": "counts_turnover",
+          "flagged": true,
+          "size_pp": 13.53,
+          "detail": "turnover adds 13.5 pp to the after-period rate; without it: owner_in_block_minutes"
+        },
+        {
+          "check": "misses_the_gain",
+          "flagged": true,
+          "size_pp": null,
+          "detail": "counts only the owning service's minutes; the rule adds minutes for other services in released blocks"
+        },
+        {
+          "check": "moved_where_rule_cannot_act",
+          "flagged": true,
+          "size_pp": 3.9,
+          "detail": "on blocks the owner booked (the rule cannot act there) it moved +3.9 pp; same-day cancellations 9.6% -> 6.2%"
+        },
+        {
+          "check": "unequal_windows",
+          "flagged": false,
+          "size_pp": null,
+          "detail": "65 vs 65 block days, weekday mix the same"
+        }
+      ],
+      "flags": [
+        "counts_turnover",
+        "misses_the_gain",
+        "moved_where_rule_cannot_act"
+      ]
+    },
+    {
+      "metric": "block_utilisation",
+      "before": 0.5231,
+      "after": 0.5639,
+      "change_pp": 4.08,
+      "checks": [
+        {
+          "check": "denominator_moved",
+          "flagged": false,
+          "size_pp": 0.0,
+          "detail": "denominator per day 5,760 -> 5,760 minutes (+0.0%); with the before denominator the change is +4.1 pp, not +4.1 pp"
+        },
+        {
+          "check": "counts_turnover",
+          "flagged": false,
+          "size_pp": 0.0,
+          "detail": "turnover is not counted as used time"
+        },
+        {
+          "check": "misses_the_gain",
+          "flagged": true,
+          "size_pp": null,
+          "detail": "counts only the owning service's minutes; the rule adds minutes for other services in released blocks"
+        },
+        {
+          "check": "moved_where_rule_cannot_act",
+          "flagged": true,
+          "size_pp": 2.96,
+          "detail": "on blocks the owner booked (the rule cannot act there) it moved +3.0 pp; same-day cancellations 9.6% -> 6.2%"
+        },
+        {
+          "check": "unequal_windows",
+          "flagged": false,
+          "size_pp": null,
+          "detail": "65 vs 65 block days, weekday mix the same"
+        }
+      ],
+      "flags": [
+        "misses_the_gain",
+        "moved_where_rule_cannot_act"
+      ]
+    },
+    {
+      "metric": "room_utilisation",
+      "before": 0.5365,
+      "after": 0.5951,
+      "change_pp": 5.86,
+      "checks": [
+        {
+          "check": "denominator_moved",
+          "flagged": false,
+          "size_pp": 0.0,
+          "detail": "denominator per day 5,760 -> 5,760 minutes (+0.0%); with the before denominator the change is +5.9 pp, not +5.9 pp"
+        },
+        {
+          "check": "counts_turnover",
+          "flagged": false,
+          "size_pp": 0.0,
+          "detail": "turnover is not counted as used time"
+        },
+        {
+          "check": "misses_the_gain",
+          "flagged": false,
+          "size_pp": null,
+          "detail": "counts every patient minute in the block window, released blocks included"
+        },
+        {
+          "check": "moved_where_rule_cannot_act",
+          "flagged": true,
+          "size_pp": 2.96,
+          "detail": "on blocks the owner booked (the rule cannot act there) it moved +3.0 pp; same-day cancellations 9.6% -> 6.2%"
+        },
+        {
+          "check": "unequal_windows",
+          "flagged": false,
+          "size_pp": null,
+          "detail": "65 vs 65 block days, weekday mix the same"
+        }
+      ],
+      "flags": [
+        "moved_where_rule_cannot_act"
+      ]
+    }
+  ],
+  "roi": {
+    "claimed": {
+      "added_minutes": 30857,
+      "ci_low": null,
+      "ci_high": null,
+      "net_usd": 746417
+    },
+    "before_after": {
+      "added_minutes": 21956,
+      "ci_low": null,
+      "ci_high": null,
+      "net_usd": 523900
+    },
+    "defended": {
+      "added_minutes": 6699,
+      "ci_low": 2798,
+      "ci_high": 10455,
+      "net_usd": 142475
+    },
+    "true_added_minutes": 6332,
+    "true_net_usd": 133300,
+    "defended_ci_covers_truth": true,
+    "claimed_over_truth": 4.9
+  },
+  "assumptions": {
+    "margin_per_patient_hour_usd": 1500,
+    "rule_cost_usd": 25000
+  },
+  "truth": {
+    "in_block_minutes_with_rule": 222824,
+    "in_block_minutes_without_rule": 216492,
+    "added_in_block_minutes": 6332,
+    "added_completed_cases": 73
+  }
+}
