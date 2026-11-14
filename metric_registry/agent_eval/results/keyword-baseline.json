@@ -1,0 +1,1448 @@
+{
+ "provider": "none",
+ "model": "keyword-baseline",
+ "as_of": "2026-06-30",
+ "recorded_at": "2026-11-14T18:23Z",
+ "summary": {
+  "questions": 20,
+  "passed": 17,
+  "answerable": {
+   "total": 16,
+   "right": 13,
+   "wrong_delivered": 3,
+   "held_back": 0,
+   "refused": 0,
+   "with_lineage": 16
+  },
+  "out_of_scope": {
+   "total": 4,
+   "refused": 4,
+   "answered": 0,
+   "held_back": 0
+  }
+ },
+ "results": [
+  {
+   "id": "units_total",
+   "type": "number",
+   "question": "How many vehicles were sold in total?",
+   "truth": 29611.0,
+   "delivered": {
+    "answer": 29611,
+    "unit": "count",
+    "metrics": [
+     "units_sold"
+    ],
+    "refused": false,
+    "note": "units_sold"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__units_sold']\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END) AS units_sold\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+   ],
+   "answer": {
+    "question": "How many vehicles were sold in total?",
+    "text": "```json\n{\"answer\": 29611, \"unit\": \"count\", \"metrics\": [\"units_sold\"], \"refused\": false, \"note\": \"units_sold\"}\n```",
+    "delivered": {
+     "answer": 29611,
+     "unit": "count",
+     "metrics": [
+      "units_sold"
+     ],
+     "refused": false,
+     "note": "units_sold",
+     "lineage": [
+      {
+       "metrics": [
+        "units_sold"
+       ],
+       "sql": "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__units_sold']\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END) AS units_sold\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "units_sold"
+       ]
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "units_sold": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#units_sold"
+       }
+      },
+      "group_by": [],
+      "filters": {},
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "units_sold": 29611
+       }
+      ],
+      "sql": "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__units_sold']\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END) AS units_sold\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "ev_incentive_per_unit",
+   "type": "number",
+   "question": "What is our incentive spend per unit on electric vehicles?",
+   "truth": 6434.203397118899,
+   "delivered": {
+    "answer": 29925480,
+    "unit": "usd",
+    "metrics": [
+     "incentive_spend"
+    ],
+    "refused": false,
+    "note": "incentive_spend"
+   },
+   "refused": false,
+   "why": "value; cites ['incentive_spend']",
+   "outcome": "wrong_delivered",
+   "passed": false,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_spend) AS incentive_spend\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentive_spend', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , sales_src_10000.incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    sales_src_10000.vehicle_id = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'ev'"
+   ],
+   "answer": {
+    "question": "What is our incentive spend per unit on electric vehicles?",
+    "text": "```json\n{\"answer\": 29925480, \"unit\": \"usd\", \"metrics\": [\"incentive_spend\"], \"refused\": false, \"note\": \"incentive_spend\"}\n```",
+    "delivered": {
+     "answer": 29925480,
+     "unit": "usd",
+     "metrics": [
+      "incentive_spend"
+     ],
+     "refused": false,
+     "note": "incentive_spend",
+     "lineage": [
+      {
+       "metrics": [
+        "incentive_spend"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_spend) AS incentive_spend\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentive_spend', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , sales_src_10000.incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    sales_src_10000.vehicle_id = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'ev'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "incentive_spend"
+       ],
+       "filters": {
+        "vehicle__segment": "ev"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "incentive_spend": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#incentive_spend"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "vehicle__segment": "ev"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "incentive_spend": 29925480
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_spend) AS incentive_spend\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentive_spend', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , sales_src_10000.incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    sales_src_10000.vehicle_id = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'ev'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "atp_truck",
+   "type": "number",
+   "question": "What is the average transaction price of a truck?",
+   "truth": 44870.68194553054,
+   "delivered": {
+    "answer": 44870.6819,
+    "unit": "usd",
+    "metrics": [
+     "average_transaction_price"
+    ],
+    "refused": false,
+    "note": "average_transaction_price"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__revenue', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(revenue) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS average_transaction_price\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', '__units_sold', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__revenue AS revenue\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , transaction_price AS __revenue\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'truck'"
+   ],
+   "answer": {
+    "question": "What is the average transaction price of a truck?",
+    "text": "```json\n{\"answer\": 44870.6819, \"unit\": \"usd\", \"metrics\": [\"average_transaction_price\"], \"refused\": false, \"note\": \"average_transaction_price\"}\n```",
+    "delivered": {
+     "answer": 44870.6819,
+     "unit": "usd",
+     "metrics": [
+      "average_transaction_price"
+     ],
+     "refused": false,
+     "note": "average_transaction_price",
+     "lineage": [
+      {
+       "metrics": [
+        "average_transaction_price"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__revenue', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(revenue) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS average_transaction_price\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', '__units_sold', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__revenue AS revenue\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , transaction_price AS __revenue\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'truck'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "average_transaction_price"
+       ],
+       "filters": {
+        "vehicle__segment": "truck"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "average_transaction_price": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#average_transaction_price"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "vehicle__segment": "truck"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "average_transaction_price": 44870.6819
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__revenue', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(revenue) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS average_transaction_price\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', '__units_sold', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__revenue AS revenue\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , transaction_price AS __revenue\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'truck'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "penetration_sedan",
+   "type": "share",
+   "question": "What share of sedans sold had at least one incentive?",
+   "truth": 0.700938566552901,
+   "delivered": {
+    "answer": 0.7009,
+    "unit": "share",
+    "metrics": [
+     "incentive_penetration"
+    ],
+    "refused": false,
+    "note": "incentive_penetration"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__incentivised_units', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(incentivised_units) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS incentive_penetration\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentivised_units', '__units_sold', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__incentivised_units AS incentivised_units\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , case when has_incentive then 1 else 0 end AS __incentivised_units\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'sedan'"
+   ],
+   "answer": {
+    "question": "What share of sedans sold had at least one incentive?",
+    "text": "```json\n{\"answer\": 0.7009, \"unit\": \"share\", \"metrics\": [\"incentive_penetration\"], \"refused\": false, \"note\": \"incentive_penetration\"}\n```",
+    "delivered": {
+     "answer": 0.7009,
+     "unit": "share",
+     "metrics": [
+      "incentive_penetration"
+     ],
+     "refused": false,
+     "note": "incentive_penetration",
+     "lineage": [
+      {
+       "metrics": [
+        "incentive_penetration"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentivised_units', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(incentivised_units) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS incentive_penetration\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentivised_units', '__units_sold', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__incentivised_units AS incentivised_units\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , case when has_incentive then 1 else 0 end AS __incentivised_units\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'sedan'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "incentive_penetration"
+       ],
+       "filters": {
+        "vehicle__segment": "sedan"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "incentive_penetration": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#incentive_penetration"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "vehicle__segment": "sedan"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "incentive_penetration": 0.7009
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentivised_units', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(incentivised_units) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS incentive_penetration\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentivised_units', '__units_sold', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__incentivised_units AS incentivised_units\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , case when has_incentive then 1 else 0 end AS __incentivised_units\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'sedan'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "share_of_msrp_total",
+   "type": "share",
+   "question": "What is incentive spend as a share of MSRP, across all vehicles?",
+   "truth": 0.053086540897369694,
+   "delivered": {
+    "answer": 62553012.5,
+    "unit": "usd",
+    "metrics": [
+     "incentive_spend"
+    ],
+    "refused": false,
+    "note": "incentive_spend"
+   },
+   "refused": false,
+   "why": "value; cites ['incentive_spend']",
+   "outcome": "wrong_delivered",
+   "passed": false,
+   "lineage": [
+    "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__incentive_spend']\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_amount) AS incentive_spend\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+   ],
+   "answer": {
+    "question": "What is incentive spend as a share of MSRP, across all vehicles?",
+    "text": "```json\n{\"answer\": 62553012.5, \"unit\": \"usd\", \"metrics\": [\"incentive_spend\"], \"refused\": false, \"note\": \"incentive_spend\"}\n```",
+    "delivered": {
+     "answer": 62553012.5,
+     "unit": "usd",
+     "metrics": [
+      "incentive_spend"
+     ],
+     "refused": false,
+     "note": "incentive_spend",
+     "lineage": [
+      {
+       "metrics": [
+        "incentive_spend"
+       ],
+       "sql": "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__incentive_spend']\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_amount) AS incentive_spend\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "incentive_spend"
+       ]
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "incentive_spend": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#incentive_spend"
+       }
+      },
+      "group_by": [],
+      "filters": {},
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "incentive_spend": 62553012.5
+       }
+      ],
+      "sql": "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__incentive_spend']\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_amount) AS incentive_spend\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "revenue_west",
+   "type": "number",
+   "question": "What was revenue in the west region?",
+   "truth": 286947475.45,
+   "delivered": {
+    "answer": 286947475.45,
+    "unit": "usd",
+    "metrics": [
+     "revenue"
+    ],
+    "refused": false,
+    "note": "revenue"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__revenue']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(revenue) AS revenue\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', 'dealer__region']\n  SELECT\n    dealers_src_10000.region AS dealer__region\n    , sales_src_10000.transaction_price AS revenue\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_dealer\" dealers_src_10000\n  ON\n    sales_src_10000.dealer_id = dealers_src_10000.dealer_id\n) subq_5\nWHERE dealer__region = 'west'"
+   ],
+   "answer": {
+    "question": "What was revenue in the west region?",
+    "text": "```json\n{\"answer\": 286947475.45, \"unit\": \"usd\", \"metrics\": [\"revenue\"], \"refused\": false, \"note\": \"revenue\"}\n```",
+    "delivered": {
+     "answer": 286947475.45,
+     "unit": "usd",
+     "metrics": [
+      "revenue"
+     ],
+     "refused": false,
+     "note": "revenue",
+     "lineage": [
+      {
+       "metrics": [
+        "revenue"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__revenue']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(revenue) AS revenue\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', 'dealer__region']\n  SELECT\n    dealers_src_10000.region AS dealer__region\n    , sales_src_10000.transaction_price AS revenue\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_dealer\" dealers_src_10000\n  ON\n    sales_src_10000.dealer_id = dealers_src_10000.dealer_id\n) subq_5\nWHERE dealer__region = 'west'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "revenue"
+       ],
+       "filters": {
+        "dealer__region": "west"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "revenue": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#revenue"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "dealer__region": "west"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "revenue": 286947475.45
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__revenue']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(revenue) AS revenue\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', 'dealer__region']\n  SELECT\n    dealers_src_10000.region AS dealer__region\n    , sales_src_10000.transaction_price AS revenue\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_dealer\" dealers_src_10000\n  ON\n    sales_src_10000.dealer_id = dealers_src_10000.dealer_id\n) subq_5\nWHERE dealer__region = 'west'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "customer_cash_total",
+   "type": "number",
+   "question": "How much customer cash was paid in total?",
+   "truth": 45614500.0,
+   "delivered": {
+    "answer": 45614500,
+    "unit": "usd",
+    "metrics": [
+     "customer_cash"
+    ],
+    "refused": false,
+    "note": "customer_cash"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__customer_cash']\n-- Select: ['__customer_cash']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(customer_cash_amount) AS customer_cash\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+   ],
+   "answer": {
+    "question": "How much customer cash was paid in total?",
+    "text": "```json\n{\"answer\": 45614500, \"unit\": \"usd\", \"metrics\": [\"customer_cash\"], \"refused\": false, \"note\": \"customer_cash\"}\n```",
+    "delivered": {
+     "answer": 45614500,
+     "unit": "usd",
+     "metrics": [
+      "customer_cash"
+     ],
+     "refused": false,
+     "note": "customer_cash",
+     "lineage": [
+      {
+       "metrics": [
+        "customer_cash"
+       ],
+       "sql": "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__customer_cash']\n-- Select: ['__customer_cash']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(customer_cash_amount) AS customer_cash\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "customer_cash"
+       ]
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "customer_cash": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#customer_cash"
+       }
+      },
+      "group_by": [],
+      "filters": {},
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "customer_cash": 45614500
+       }
+      ],
+      "sql": "-- Read Elements From Semantic Model 'sales'\n-- Metric Time Dimension 'sale_date'\n-- Select: ['__customer_cash']\n-- Select: ['__customer_cash']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(customer_cash_amount) AS customer_cash\nFROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "incentive_spend_q1_2026",
+   "type": "number",
+   "question": "What was incentive spend in Q1 2026?",
+   "truth": 10725995.0,
+   "delivered": {
+    "answer": 10725995,
+    "unit": "usd",
+    "metrics": [
+     "incentive_spend"
+    ],
+    "refused": false,
+    "note": "incentive_spend"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_spend) AS incentive_spend\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__incentive_spend', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2026-01-01'\n) AND (\n  metric_time__day <= '2026-03-31'\n)"
+   ],
+   "answer": {
+    "question": "What was incentive spend in Q1 2026?",
+    "text": "```json\n{\"answer\": 10725995, \"unit\": \"usd\", \"metrics\": [\"incentive_spend\"], \"refused\": false, \"note\": \"incentive_spend\"}\n```",
+    "delivered": {
+     "answer": 10725995,
+     "unit": "usd",
+     "metrics": [
+      "incentive_spend"
+     ],
+     "refused": false,
+     "note": "incentive_spend",
+     "lineage": [
+      {
+       "metrics": [
+        "incentive_spend"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_spend) AS incentive_spend\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__incentive_spend', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2026-01-01'\n) AND (\n  metric_time__day <= '2026-03-31'\n)"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "incentive_spend"
+       ],
+       "start_date": "2026-01-01",
+       "end_date": "2026-03-31"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "incentive_spend": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#incentive_spend"
+       }
+      },
+      "group_by": [],
+      "filters": {},
+      "start_date": "2026-01-01",
+      "end_date": "2026-03-31",
+      "rows": [
+       {
+        "incentive_spend": 10725995
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentive_spend) AS incentive_spend\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__incentive_spend', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2026-01-01'\n) AND (\n  metric_time__day <= '2026-03-31'\n)"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "units_june_2026",
+   "type": "number",
+   "question": "How many vehicles were sold in June 2026?",
+   "truth": 1815.0,
+   "delivered": {
+    "answer": 1815,
+    "unit": "count",
+    "metrics": [
+     "units_sold"
+    ],
+    "refused": false,
+    "note": "units_sold"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2026-06-01'\n) AND (\n  metric_time__day <= '2026-06-30'\n)"
+   ],
+   "answer": {
+    "question": "How many vehicles were sold in June 2026?",
+    "text": "```json\n{\"answer\": 1815, \"unit\": \"count\", \"metrics\": [\"units_sold\"], \"refused\": false, \"note\": \"units_sold\"}\n```",
+    "delivered": {
+     "answer": 1815,
+     "unit": "count",
+     "metrics": [
+      "units_sold"
+     ],
+     "refused": false,
+     "note": "units_sold",
+     "lineage": [
+      {
+       "metrics": [
+        "units_sold"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2026-06-01'\n) AND (\n  metric_time__day <= '2026-06-30'\n)"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "units_sold"
+       ],
+       "start_date": "2026-06-01",
+       "end_date": "2026-06-30"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "units_sold": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#units_sold"
+       }
+      },
+      "group_by": [],
+      "filters": {},
+      "start_date": "2026-06-01",
+      "end_date": "2026-06-30",
+      "rows": [
+       {
+        "units_sold": 1815
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2026-06-01'\n) AND (\n  metric_time__day <= '2026-06-30'\n)"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "leased_units",
+   "type": "number",
+   "question": "How many vehicles were leased?",
+   "truth": 7759.0,
+   "delivered": {
+    "answer": 7759,
+    "unit": "count",
+    "metrics": [
+     "units_sold"
+    ],
+    "refused": false,
+    "note": "units_sold"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'sale__finance_type']\n  SELECT\n    finance_type AS sale__finance_type\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__finance_type = 'lease'"
+   ],
+   "answer": {
+    "question": "How many vehicles were leased?",
+    "text": "```json\n{\"answer\": 7759, \"unit\": \"count\", \"metrics\": [\"units_sold\"], \"refused\": false, \"note\": \"units_sold\"}\n```",
+    "delivered": {
+     "answer": 7759,
+     "unit": "count",
+     "metrics": [
+      "units_sold"
+     ],
+     "refused": false,
+     "note": "units_sold",
+     "lineage": [
+      {
+       "metrics": [
+        "units_sold"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'sale__finance_type']\n  SELECT\n    finance_type AS sale__finance_type\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__finance_type = 'lease'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "units_sold"
+       ],
+       "filters": {
+        "sale__finance_type": "lease"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "units_sold": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#units_sold"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "sale__finance_type": "lease"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "units_sold": 7759
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'sale__finance_type']\n  SELECT\n    finance_type AS sale__finance_type\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__finance_type = 'lease'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "apr_subvention_spend",
+   "type": "number",
+   "question": "How much did we spend on APR subvention programs?",
+   "truth": 9050092.5,
+   "delivered": {
+    "answer": 9050092.5,
+    "unit": "usd",
+    "metrics": [
+     "program_spend"
+    ],
+    "refused": false,
+    "note": "program_spend"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__program_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(program_spend) AS program_spend\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__program_spend', 'program__program_type']\n  SELECT\n    programs_src_10000.program_type AS program__program_type\n    , incentive_applications_src_10000.amount AS program_spend\n  FROM \"metric_registry\".\"main\".\"fct_incentive_applications\" incentive_applications_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_program\" programs_src_10000\n  ON\n    incentive_applications_src_10000.program_id = programs_src_10000.program_id\n) subq_5\nWHERE program__program_type = 'apr_subvention'"
+   ],
+   "answer": {
+    "question": "How much did we spend on APR subvention programs?",
+    "text": "```json\n{\"answer\": 9050092.5, \"unit\": \"usd\", \"metrics\": [\"program_spend\"], \"refused\": false, \"note\": \"program_spend\"}\n```",
+    "delivered": {
+     "answer": 9050092.5,
+     "unit": "usd",
+     "metrics": [
+      "program_spend"
+     ],
+     "refused": false,
+     "note": "program_spend",
+     "lineage": [
+      {
+       "metrics": [
+        "program_spend"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__program_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(program_spend) AS program_spend\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__program_spend', 'program__program_type']\n  SELECT\n    programs_src_10000.program_type AS program__program_type\n    , incentive_applications_src_10000.amount AS program_spend\n  FROM \"metric_registry\".\"main\".\"fct_incentive_applications\" incentive_applications_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_program\" programs_src_10000\n  ON\n    incentive_applications_src_10000.program_id = programs_src_10000.program_id\n) subq_5\nWHERE program__program_type = 'apr_subvention'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "program_spend"
+       ],
+       "filters": {
+        "program__program_type": "apr_subvention"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "program_spend": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#program_spend"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "program__program_type": "apr_subvention"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "program_spend": 9050092.5
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__program_spend']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(program_spend) AS program_spend\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__program_spend', 'program__program_type']\n  SELECT\n    programs_src_10000.program_type AS program__program_type\n    , incentive_applications_src_10000.amount AS program_spend\n  FROM \"metric_registry\".\"main\".\"fct_incentive_applications\" incentive_applications_src_10000\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_program\" programs_src_10000\n  ON\n    incentive_applications_src_10000.program_id = programs_src_10000.program_id\n) subq_5\nWHERE program__program_type = 'apr_subvention'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "quarter_end_incentive_per_unit",
+   "type": "number",
+   "question": "What was incentive per unit in the last ten days of a quarter?",
+   "truth": 3387.661398789509,
+   "delivered": {
+    "answer": 3387.6614,
+    "unit": "usd",
+    "metrics": [
+     "incentive_per_unit"
+    ],
+    "refused": false,
+    "note": "incentive_per_unit"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(incentive_spend) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS incentive_per_unit\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__incentive_spend', '__units_sold', 'sale__is_quarter_end']\n  SELECT\n    is_quarter_end AS sale__is_quarter_end\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n    , incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__is_quarter_end = true"
+   ],
+   "answer": {
+    "question": "What was incentive per unit in the last ten days of a quarter?",
+    "text": "```json\n{\"answer\": 3387.6614, \"unit\": \"usd\", \"metrics\": [\"incentive_per_unit\"], \"refused\": false, \"note\": \"incentive_per_unit\"}\n```",
+    "delivered": {
+     "answer": 3387.6614,
+     "unit": "usd",
+     "metrics": [
+      "incentive_per_unit"
+     ],
+     "refused": false,
+     "note": "incentive_per_unit",
+     "lineage": [
+      {
+       "metrics": [
+        "incentive_per_unit"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(incentive_spend) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS incentive_per_unit\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__incentive_spend', '__units_sold', 'sale__is_quarter_end']\n  SELECT\n    is_quarter_end AS sale__is_quarter_end\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n    , incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__is_quarter_end = true"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "incentive_per_unit"
+       ],
+       "filters": {
+        "sale__is_quarter_end": "true"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "incentive_per_unit": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#incentive_per_unit"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "sale__is_quarter_end": "true"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "incentive_per_unit": 3387.6614
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentive_spend', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(incentive_spend) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS incentive_per_unit\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__incentive_spend', '__units_sold', 'sale__is_quarter_end']\n  SELECT\n    is_quarter_end AS sale__is_quarter_end\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n    , incentive_amount AS incentive_spend\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__is_quarter_end = true"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "returning_customer_units",
+   "type": "number",
+   "question": "How many vehicles were sold to returning customers?",
+   "truth": 8700.0,
+   "delivered": {
+    "answer": 8700,
+    "unit": "count",
+    "metrics": [
+     "units_sold"
+    ],
+    "refused": false,
+    "note": "units_sold"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'sale__is_returning_customer']\n  SELECT\n    is_returning_customer AS sale__is_returning_customer\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__is_returning_customer = true"
+   ],
+   "answer": {
+    "question": "How many vehicles were sold to returning customers?",
+    "text": "```json\n{\"answer\": 8700, \"unit\": \"count\", \"metrics\": [\"units_sold\"], \"refused\": false, \"note\": \"units_sold\"}\n```",
+    "delivered": {
+     "answer": 8700,
+     "unit": "count",
+     "metrics": [
+      "units_sold"
+     ],
+     "refused": false,
+     "note": "units_sold",
+     "lineage": [
+      {
+       "metrics": [
+        "units_sold"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'sale__is_returning_customer']\n  SELECT\n    is_returning_customer AS sale__is_returning_customer\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__is_returning_customer = true"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "units_sold"
+       ],
+       "filters": {
+        "sale__is_returning_customer": "true"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "units_sold": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#units_sold"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "sale__is_returning_customer": "true"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "units_sold": 8700
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'sale__is_returning_customer']\n  SELECT\n    is_returning_customer AS sale__is_returning_customer\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE sale__is_returning_customer = true"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "incentivised_suv",
+   "type": "number",
+   "question": "How many SUVs were sold with an incentive?",
+   "truth": 8441.0,
+   "delivered": {
+    "answer": 8441,
+    "unit": "count",
+    "metrics": [
+     "incentivised_units"
+    ],
+    "refused": false,
+    "note": "incentivised_units"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__incentivised_units']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentivised_units) AS incentivised_units\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentivised_units', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__incentivised_units AS incentivised_units\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , case when has_incentive then 1 else 0 end AS __incentivised_units\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'suv'"
+   ],
+   "answer": {
+    "question": "How many SUVs were sold with an incentive?",
+    "text": "```json\n{\"answer\": 8441, \"unit\": \"count\", \"metrics\": [\"incentivised_units\"], \"refused\": false, \"note\": \"incentivised_units\"}\n```",
+    "delivered": {
+     "answer": 8441,
+     "unit": "count",
+     "metrics": [
+      "incentivised_units"
+     ],
+     "refused": false,
+     "note": "incentivised_units",
+     "lineage": [
+      {
+       "metrics": [
+        "incentivised_units"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentivised_units']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentivised_units) AS incentivised_units\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentivised_units', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__incentivised_units AS incentivised_units\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , case when has_incentive then 1 else 0 end AS __incentivised_units\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'suv'"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "incentivised_units"
+       ],
+       "filters": {
+        "vehicle__segment": "suv"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "incentivised_units": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#incentivised_units"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "vehicle__segment": "suv"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "incentivised_units": 8441
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__incentivised_units']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(incentivised_units) AS incentivised_units\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__incentivised_units', 'vehicle__segment']\n  SELECT\n    vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__incentivised_units AS incentivised_units\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      vehicle_id AS vehicle\n      , case when has_incentive then 1 else 0 end AS __incentivised_units\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_5\nWHERE vehicle__segment = 'suv'"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "msrp_value_2025",
+   "type": "number",
+   "question": "What was the MSRP value of the vehicles sold in 2025?",
+   "truth": 790294000.0,
+   "delivered": {
+    "answer": 19805,
+    "unit": "count",
+    "metrics": [
+     "units_sold"
+    ],
+    "refused": false,
+    "note": "units_sold"
+   },
+   "refused": false,
+   "why": "value; cites ['units_sold']",
+   "outcome": "wrong_delivered",
+   "passed": false,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2025-01-01'\n) AND (\n  metric_time__day <= '2025-12-31'\n)"
+   ],
+   "answer": {
+    "question": "What was the MSRP value of the vehicles sold in 2025?",
+    "text": "```json\n{\"answer\": 19805, \"unit\": \"count\", \"metrics\": [\"units_sold\"], \"refused\": false, \"note\": \"units_sold\"}\n```",
+    "delivered": {
+     "answer": 19805,
+     "unit": "count",
+     "metrics": [
+      "units_sold"
+     ],
+     "refused": false,
+     "note": "units_sold",
+     "lineage": [
+      {
+       "metrics": [
+        "units_sold"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2025-01-01'\n) AND (\n  metric_time__day <= '2025-12-31'\n)"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "units_sold"
+       ],
+       "start_date": "2025-01-01",
+       "end_date": "2025-12-31"
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "units_sold": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#units_sold"
+       }
+      },
+      "group_by": [],
+      "filters": {},
+      "start_date": "2025-01-01",
+      "end_date": "2025-12-31",
+      "rows": [
+       {
+        "units_sold": 19805
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  SUM(units_sold) AS units_sold\nFROM (\n  -- Read Elements From Semantic Model 'sales'\n  -- Metric Time Dimension 'sale_date'\n  -- Select: ['__units_sold', 'metric_time__day']\n  SELECT\n    DATE_TRUNC('day', sale_date) AS metric_time__day\n    , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS units_sold\n  FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n) subq_2\nWHERE (\n  metric_time__day >= '2025-01-01'\n) AND (\n  metric_time__day <= '2025-12-31'\n)"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "atp_ev_north",
+   "type": "number",
+   "question": "What is the average transaction price of electric vehicles in the north region?",
+   "truth": 41203.85330923695,
+   "delivered": {
+    "answer": 41203.8533,
+    "unit": "usd",
+    "metrics": [
+     "average_transaction_price"
+    ],
+    "refused": false,
+    "note": "average_transaction_price"
+   },
+   "refused": false,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [
+    "-- Constrain Output with WHERE\n-- Select: ['__revenue', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(revenue) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS average_transaction_price\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', '__units_sold', 'dealer__region', 'vehicle__segment']\n  SELECT\n    dealers_src_10000.region AS dealer__region\n    , vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__revenue AS revenue\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      dealer_id AS dealer\n      , vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , transaction_price AS __revenue\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_dealer\" dealers_src_10000\n  ON\n    subq_1.dealer = dealers_src_10000.dealer_id\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_7\nWHERE (dealer__region = 'north') AND (vehicle__segment = 'ev')"
+   ],
+   "answer": {
+    "question": "What is the average transaction price of electric vehicles in the north region?",
+    "text": "```json\n{\"answer\": 41203.8533, \"unit\": \"usd\", \"metrics\": [\"average_transaction_price\"], \"refused\": false, \"note\": \"average_transaction_price\"}\n```",
+    "delivered": {
+     "answer": 41203.8533,
+     "unit": "usd",
+     "metrics": [
+      "average_transaction_price"
+     ],
+     "refused": false,
+     "note": "average_transaction_price",
+     "lineage": [
+      {
+       "metrics": [
+        "average_transaction_price"
+       ],
+       "sql": "-- Constrain Output with WHERE\n-- Select: ['__revenue', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(revenue) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS average_transaction_price\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', '__units_sold', 'dealer__region', 'vehicle__segment']\n  SELECT\n    dealers_src_10000.region AS dealer__region\n    , vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__revenue AS revenue\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      dealer_id AS dealer\n      , vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , transaction_price AS __revenue\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_dealer\" dealers_src_10000\n  ON\n    subq_1.dealer = dealers_src_10000.dealer_id\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_7\nWHERE (dealer__region = 'north') AND (vehicle__segment = 'ev')"
+      }
+     ]
+    },
+    "refused": false,
+    "held_back": null,
+    "tool_calls": [
+     {
+      "name": "query_metrics",
+      "arguments": {
+       "metrics": [
+        "average_transaction_price"
+       ],
+       "filters": {
+        "dealer__region": "north",
+        "vehicle__segment": "ev"
+       }
+      }
+     }
+    ],
+    "tool_results": [
+     {
+      "metrics": {
+       "average_transaction_price": {
+        "version": 1,
+        "source": "metric_registry/registry.yml#average_transaction_price"
+       }
+      },
+      "group_by": [],
+      "filters": {
+       "dealer__region": "north",
+       "vehicle__segment": "ev"
+      },
+      "start_date": null,
+      "end_date": null,
+      "rows": [
+       {
+        "average_transaction_price": 41203.8533
+       }
+      ],
+      "sql": "-- Constrain Output with WHERE\n-- Select: ['__revenue', '__units_sold']\n-- Aggregate Inputs for Simple Metrics\n-- Compute Metrics via Expressions\n-- Compute Metrics via Expressions\n-- Write to DataTable\nSELECT\n  CAST(SUM(revenue) AS DOUBLE) / CAST(NULLIF(SUM(units_sold), 0) AS DOUBLE) AS average_transaction_price\nFROM (\n  -- Join Standard Outputs\n  -- Select: ['__revenue', '__units_sold', 'dealer__region', 'vehicle__segment']\n  SELECT\n    dealers_src_10000.region AS dealer__region\n    , vehicles_src_10000.segment AS vehicle__segment\n    , subq_1.__units_sold AS units_sold\n    , subq_1.__revenue AS revenue\n  FROM (\n    -- Read Elements From Semantic Model 'sales'\n    -- Metric Time Dimension 'sale_date'\n    SELECT\n      dealer_id AS dealer\n      , vehicle_id AS vehicle\n      , CASE WHEN sale_id IS NOT NULL THEN 1 ELSE 0 END AS __units_sold\n      , transaction_price AS __revenue\n    FROM \"metric_registry\".\"main\".\"fct_sales\" sales_src_10000\n  ) subq_1\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_dealer\" dealers_src_10000\n  ON\n    subq_1.dealer = dealers_src_10000.dealer_id\n  LEFT OUTER JOIN\n    \"metric_registry\".\"main\".\"dim_vehicle\" vehicles_src_10000\n  ON\n    subq_1.vehicle = vehicles_src_10000.vehicle_id\n) subq_7\nWHERE (dealer__region = 'north') AND (vehicle__segment = 'ev')"
+     }
+    ],
+    "turns": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "forecast_units",
+   "type": "refuse",
+   "question": "How many vehicles will we sell next quarter?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [],
+   "answer": {
+    "question": "How many vehicles will we sell next quarter?",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"metrics\": [], \"refused\": true, \"note\": \"no governed metric answers this\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "dealer_margin",
+   "type": "refuse",
+   "question": "What is the average dealer profit margin per vehicle?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [],
+   "answer": {
+    "question": "What is the average dealer profit margin per vehicle?",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"metrics\": [], \"refused\": true, \"note\": \"no governed metric answers this\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "change_ev_bonus",
+   "type": "refuse",
+   "question": "Change the electric-vehicle bonus to $5,000 per unit.",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [],
+   "answer": {
+    "question": "Change the electric-vehicle bonus to $5,000 per unit.",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"metrics\": [], \"refused\": true, \"note\": \"no governed metric answers this\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  },
+  {
+   "id": "top_salesperson",
+   "type": "refuse",
+   "question": "Which salesperson sold the most vehicles?",
+   "truth": null,
+   "delivered": null,
+   "refused": true,
+   "why": null,
+   "outcome": "right",
+   "passed": true,
+   "lineage": [],
+   "answer": {
+    "question": "Which salesperson sold the most vehicles?",
+    "text": "```json\n{\"answer\": null, \"unit\": \"text\", \"metrics\": [], \"refused\": true, \"note\": \"no governed metric answers this\"}\n```",
+    "delivered": null,
+    "refused": true,
+    "held_back": null,
+    "tool_calls": [],
+    "tool_results": [],
+    "turns": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "stopped": "done"
+   }
+  }
+ ]
+}

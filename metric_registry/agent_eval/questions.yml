@@ -1,0 +1,163 @@
+# The metric-registry analyst's golden questions: 16 the governed metrics answer and 4 they don't.
+#
+# truth_sql runs straight on the dbt tables (fct_sales, dim_*), not through MetricFlow or the agent's tools,
+# on the seeded build as of 2026-06-30. An answer is right when the check delivered it, its value matches
+# the truth (dollars to the cent or rounded to the dollar, shares to 4 places or as a percent), it cites
+# `metric`, and its lineage (the SQL MetricFlow ran for the cited query) reads every table in `tables` and
+# names everything in `sql_has` (the dimensions the question cuts by; a list there means any one of them,
+# e.g. a date filter or the matching time grain). The value of the right group is checked by the truth.
+# A refuse question is right when the agent refused.
+
+- id: units_total
+  question: How many vehicles were sold in total?
+  type: number
+  metric: units_sold
+  tables: [fct_sales]
+  truth_sql: select count(*) from fct_sales
+
+- id: ev_incentive_per_unit
+  question: What is our incentive spend per unit on electric vehicles?
+  type: number
+  metric: incentive_per_unit
+  tables: [fct_sales, dim_vehicle]
+  sql_has: [vehicle__segment]
+  truth_sql: >-
+    select sum(s.incentive_amount) / count(*) from fct_sales s join dim_vehicle v using (vehicle_id)
+    where v.segment = 'ev'
+
+- id: atp_truck
+  question: What is the average transaction price of a truck?
+  type: number
+  metric: average_transaction_price
+  tables: [fct_sales, dim_vehicle]
+  sql_has: [vehicle__segment]
+  truth_sql: >-
+    select avg(s.transaction_price) from fct_sales s join dim_vehicle v using (vehicle_id)
+    where v.segment = 'truck'
+
+- id: penetration_sedan
+  question: What share of sedans sold had at least one incentive?
+  type: share
+  metric: incentive_penetration
+  tables: [fct_sales, dim_vehicle]
+  sql_has: [vehicle__segment]
+  truth_sql: >-
+    select avg(case when s.has_incentive then 1.0 else 0.0 end) from fct_sales s
+    join dim_vehicle v using (vehicle_id) where v.segment = 'sedan'
+
+- id: share_of_msrp_total
+  question: What is incentive spend as a share of MSRP, across all vehicles?
+  type: share
+  metric: incentive_share_of_msrp
+  tables: [fct_sales]
+  truth_sql: select sum(incentive_amount) / sum(msrp) from fct_sales
+
+- id: revenue_west
+  question: What was revenue in the west region?
+  type: number
+  metric: revenue
+  tables: [fct_sales, dim_dealer]
+  sql_has: [dealer__region]
+  truth_sql: >-
+    select sum(s.transaction_price) from fct_sales s join dim_dealer d using (dealer_id) where d.region = 'west'
+
+- id: customer_cash_total
+  question: How much customer cash was paid in total?
+  type: number
+  metric: customer_cash
+  tables: [fct_sales]
+  truth_sql: select sum(customer_cash_amount) from fct_sales
+
+- id: incentive_spend_q1_2026
+  question: What was incentive spend in Q1 2026?
+  type: number
+  metric: incentive_spend
+  tables: [fct_sales]
+  sql_has: [["2026-03-31", metric_time__quarter]]
+  truth_sql: >-
+    select sum(incentive_amount) from fct_sales where sale_date between date '2026-01-01' and date '2026-03-31'
+
+- id: units_june_2026
+  question: How many vehicles were sold in June 2026?
+  type: number
+  metric: units_sold
+  tables: [fct_sales]
+  sql_has: [["2026-06-01", metric_time__month]]
+  truth_sql: select count(*) from fct_sales where sale_date between date '2026-06-01' and date '2026-06-30'
+
+- id: leased_units
+  question: How many vehicles were leased?
+  type: number
+  metric: units_sold
+  tables: [fct_sales]
+  sql_has: [sale__finance_type]
+  truth_sql: select count(*) from fct_sales where finance_type = 'lease'
+
+- id: apr_subvention_spend
+  question: How much did we spend on APR subvention programs?
+  type: number
+  metric: program_spend
+  tables: [fct_incentive_applications, dim_program]
+  sql_has: [program__program_type]
+  truth_sql: >-
+    select sum(a.amount) from fct_incentive_applications a join dim_program p using (program_id)
+    where p.program_type = 'apr_subvention'
+
+- id: quarter_end_incentive_per_unit
+  question: What was incentive per unit in the last ten days of a quarter?
+  type: number
+  metric: incentive_per_unit
+  tables: [fct_sales]
+  sql_has: [sale__is_quarter_end]
+  truth_sql: select sum(incentive_amount) / count(*) from fct_sales where is_quarter_end
+
+- id: returning_customer_units
+  question: How many vehicles were sold to returning customers?
+  type: number
+  metric: units_sold
+  tables: [fct_sales]
+  sql_has: [sale__is_returning_customer]
+  truth_sql: select count(*) from fct_sales where is_returning_customer
+
+- id: incentivised_suv
+  question: How many SUVs were sold with an incentive?
+  type: number
+  metric: incentivised_units
+  tables: [fct_sales, dim_vehicle]
+  sql_has: [vehicle__segment]
+  truth_sql: >-
+    select count(*) from fct_sales s join dim_vehicle v using (vehicle_id) where v.segment = 'suv' and s.has_incentive
+
+- id: msrp_value_2025
+  question: What was the MSRP value of the vehicles sold in 2025?
+  type: number
+  metric: msrp_value
+  tables: [fct_sales]
+  sql_has: [["2025-12-31", metric_time__year]]
+  truth_sql: select sum(msrp) from fct_sales where year(sale_date) = 2025
+
+- id: atp_ev_north
+  question: What is the average transaction price of electric vehicles in the north region?
+  type: number
+  metric: average_transaction_price
+  tables: [fct_sales, dim_vehicle, dim_dealer]
+  sql_has: [vehicle__segment, dealer__region]
+  truth_sql: >-
+    select avg(s.transaction_price) from fct_sales s join dim_vehicle v using (vehicle_id)
+    join dim_dealer d using (dealer_id) where v.segment = 'ev' and d.region = 'north'
+
+- id: forecast_units
+  question: How many vehicles will we sell next quarter?
+  type: refuse
+
+- id: dealer_margin
+  question: What is the average dealer profit margin per vehicle?
+  type: refuse
+
+- id: change_ev_bonus
+  question: Change the electric-vehicle bonus to $5,000 per unit.
+  type: refuse
+
+- id: top_salesperson
+  question: Which salesperson sold the most vehicles?
+  type: refuse

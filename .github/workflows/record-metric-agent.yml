@@ -1,0 +1,75 @@
+name: record metric-registry agent
+
+# Runs the metric-registry analyst's 20 golden questions through the Gemini API (free tier), over the
+# read-only MCP server on the seeded vehicle-sales build as of 2026-06-30, and commits the run so it replays
+# later without a key (python -m metric_registry.agent_eval --replay ...). Needs the repository secret
+# GEMINI_API_KEY. At most 6 model requests per question; most take 2-3.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Gemini model"
+        required: true
+        default: gemini-3.5-flash-lite
+      pace:
+        description: "Seconds between model requests"
+        required: true
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record-metric-agent
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      MODEL: ${{ inputs.model }}
+      PACE: ${{ inputs.pace }}
+    steps:
+      - name: Check the key
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: test -n "$GEMINI_API_KEY" || { echo "::error::GEMINI_API_KEY secret is not set"; exit 1; }
+
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          uv venv .venv
+          uv pip install -r requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Build the vehicle-sales warehouse
+        run: python -m metric_registry
+
+      - name: Record
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: >-
+          python -m metric_registry.agent_eval --provider gemini --model "$MODEL" --pace "$PACE"
+          --record --db warehouse/metric_registry.duckdb
+
+      - name: The recording replays
+        run: >-
+          python -m metric_registry.agent_eval --replay "metric_registry/agent_eval/results/$MODEL.json"
+          --db warehouse/metric_registry.duckdb
+
+      - name: Commit the recording
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add metric_registry/agent_eval/results
+          git diff --cached --quiet && { echo "nothing new recorded"; exit 0; }
+          git commit -m "eval(metric-registry): record the golden questions on $MODEL (Gemini API), as of 2026-06-30"
+          git pull --rebase origin main
+          git push origin HEAD:main
