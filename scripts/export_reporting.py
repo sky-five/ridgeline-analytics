@@ -145,6 +145,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(quote_funnel_tables())
 
+    # the operating-room auto-release rule's return (or_utilisation/), on the "Operating-room ROI" page
+    from or_utilisation.report import tables as or_roi_tables
+
+    tables.update(or_roi_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
