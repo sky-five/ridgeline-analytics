@@ -44,6 +44,20 @@ def query(metrics: list[str], group_by: list[str] | None = None, where: list[str
     return pd.DataFrame(list(table.rows), columns=[c.column_name.lower() for c in table.column_descriptions])
 
 
+def run(metrics: list[str], group_by: list[str] | None = None, where: list[str] | None = None,
+        db: Path = DEFAULT_DB) -> dict:
+    """{"df": the result as query() returns it, "sql": the SQL MetricFlow ran to get it}."""
+    from metricflow.engine.metricflow_engine import MetricFlowQueryRequest
+
+    group_by = group_by or []
+    request = MetricFlowQueryRequest.create(metric_names=metrics, group_by_names=group_by,
+                                            where_constraints=where, order_by_names=group_by)
+    result = _engine(str(Path(db).resolve())).query(request)
+    table = result.result_df
+    df = pd.DataFrame(list(table.rows), columns=[c.column_name.lower() for c in table.column_descriptions])
+    return {"df": df, "sql": result.sql}
+
+
 def explain(metrics: list[str], group_by: list[str] | None = None, where: list[str] | None = None,
                   db: Path = DEFAULT_DB) -> str:
     """The SQL MetricFlow runs for exactly this query, filters included: the lineage of an answer."""
