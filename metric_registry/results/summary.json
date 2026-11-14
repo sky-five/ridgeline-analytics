@@ -1,0 +1,221 @@
+{
+  "as_of": "2026-06-30",
+  "rows": {
+    "dealers": 40,
+    "vehicles": 12,
+    "programs": 15,
+    "sales": 29611,
+    "incentive_applications": 32721
+  },
+  "metrics": {
+    "average_transaction_price": 1,
+    "customer_cash": 1,
+    "incentive_penetration": 1,
+    "incentive_per_unit": 1,
+    "incentive_share_of_msrp": 1,
+    "incentive_spend": 1,
+    "incentivised_units": 1,
+    "msrp_value": 1,
+    "program_spend": 1,
+    "revenue": 1,
+    "units_sold": 1
+  },
+  "totals": {
+    "units_sold": 29611,
+    "revenue": 1091561631.53,
+    "incentive_spend": 62553012.5,
+    "customer_cash": 45614500,
+    "program_spend": 62553012.5
+  },
+  "headline": {
+    "units_sold": 29611,
+    "average_transaction_price": 36863.3829,
+    "incentive_per_unit": 2112.4924,
+    "incentive_share_of_msrp": 0.0531,
+    "incentive_penetration": 0.7616
+  },
+  "by": {
+    "segment": [
+      {
+        "segment": "ev",
+        "units_sold": 4651,
+        "average_transaction_price": 41228.2801,
+        "incentive_per_unit": 6434.2034,
+        "incentive_share_of_msrp": 0.133,
+        "incentive_penetration": 1
+      },
+      {
+        "segment": "sedan",
+        "units_sold": 7032,
+        "average_transaction_price": 27631.8582,
+        "incentive_per_unit": 1231.0068,
+        "incentive_share_of_msrp": 0.0418,
+        "incentive_penetration": 0.7009
+      },
+      {
+        "segment": "suv",
+        "units_sold": 10511,
+        "average_transaction_price": 35457.6945,
+        "incentive_per_unit": 1436.297,
+        "incentive_share_of_msrp": 0.0382,
+        "incentive_penetration": 0.8031
+      },
+      {
+        "segment": "truck",
+        "units_sold": 7417,
+        "average_transaction_price": 44870.6819,
+        "incentive_per_unit": 1196.4642,
+        "incentive_share_of_msrp": 0.0253,
+        "incentive_penetration": 0.6108
+      }
+    ],
+    "region": [
+      {
+        "region": "east",
+        "units_sold": 7103,
+        "average_transaction_price": 36845.4363,
+        "incentive_per_unit": 2102.1442,
+        "incentive_share_of_msrp": 0.0529,
+        "incentive_penetration": 0.7573
+      },
+      {
+        "region": "north",
+        "units_sold": 7744,
+        "average_transaction_price": 36928.6769,
+        "incentive_per_unit": 2131.4405,
+        "incentive_share_of_msrp": 0.0535,
+        "incentive_penetration": 0.7632
+      },
+      {
+        "region": "south",
+        "units_sold": 6977,
+        "average_transaction_price": 36824.6163,
+        "incentive_per_unit": 2111.5906,
+        "incentive_share_of_msrp": 0.0531,
+        "incentive_penetration": 0.7616
+      },
+      {
+        "region": "west",
+        "units_sold": 7787,
+        "average_transaction_price": 36849.5538,
+        "incentive_per_unit": 2103.8962,
+        "incentive_share_of_msrp": 0.0529,
+        "incentive_penetration": 0.7638
+      }
+    ],
+    "finance_type": [
+      {
+        "finance_type": "cash",
+        "units_sold": 6544,
+        "average_transaction_price": 36844.1689,
+        "incentive_per_unit": 1553.6751,
+        "incentive_share_of_msrp": 0.0391,
+        "incentive_penetration": 0.6328
+      },
+      {
+        "finance_type": "finance",
+        "units_sold": 15308,
+        "average_transaction_price": 36991.501,
+        "incentive_per_unit": 2133.237,
+        "incentive_share_of_msrp": 0.0534,
+        "incentive_penetration": 0.8294
+      },
+      {
+        "finance_type": "lease",
+        "units_sold": 7759,
+        "average_transaction_price": 36626.8196,
+        "incentive_per_unit": 2542.8754,
+        "incentive_share_of_msrp": 0.0643,
+        "incentive_penetration": 0.7364
+      }
+    ]
+  },
+  "quarter_end": [
+    {
+      "is_quarter_end": false,
+      "units_sold": 25150,
+      "incentive_per_unit": 1886.3083
+    },
+    {
+      "is_quarter_end": true,
+      "units_sold": 4461,
+      "incentive_per_unit": 3387.6614
+    }
+  ],
+  "program_spend": [
+    {
+      "program_type": "apr_subvention",
+      "program_spend": 9050092.5
+    },
+    {
+      "program_type": "cash_rebate",
+      "program_spend": 9143000
+    },
+    {
+      "program_type": "ev_bonus",
+      "program_spend": 23255000
+    },
+    {
+      "program_type": "lease_support",
+      "program_spend": 7888420
+    },
+    {
+      "program_type": "loyalty",
+      "program_spend": 6525000
+    },
+    {
+      "program_type": "quarter_end_cash",
+      "program_spend": 6691500
+    }
+  ],
+  "quarterly": [
+    {
+      "quarter": "2025-Q1",
+      "units_sold": 4820,
+      "average_transaction_price": 37108.3828,
+      "incentive_per_unit": 2041.1587,
+      "incentive_share_of_msrp": 0.0511,
+      "incentive_penetration": 0.7473
+    },
+    {
+      "quarter": "2025-Q2",
+      "units_sold": 4818,
+      "average_transaction_price": 36931.4944,
+      "incentive_per_unit": 2077.1176,
+      "incentive_share_of_msrp": 0.0522,
+      "incentive_penetration": 0.7408
+    },
+    {
+      "quarter": "2025-Q3",
+      "units_sold": 5118,
+      "average_transaction_price": 36749.2515,
+      "incentive_per_unit": 2294.959,
+      "incentive_share_of_msrp": 0.0576,
+      "incentive_penetration": 0.7923
+    },
+    {
+      "quarter": "2025-Q4",
+      "units_sold": 5049,
+      "average_transaction_price": 37341.4814,
+      "incentive_per_unit": 1813.0877,
+      "incentive_share_of_msrp": 0.0454,
+      "incentive_penetration": 0.6431
+    },
+    {
+      "quarter": "2026-Q1",
+      "units_sold": 4825,
+      "average_transaction_price": 36658.0413,
+      "incentive_per_unit": 2223.0041,
+      "incentive_share_of_msrp": 0.056,
+      "incentive_penetration": 0.8255
+    },
+    {
+      "quarter": "2026-Q2",
+      "units_sold": 4981,
+      "average_transaction_price": 36391.9751,
+      "incentive_per_unit": 2224.6938,
+      "incentive_share_of_msrp": 0.0564,
+      "incentive_penetration": 0.8221
+    }
+  ]
+}

@@ -17,6 +17,8 @@ select
     s.vehicle_id,
     s.finance_type,
     s.is_returning_customer,
+    -- the last ten days of the calendar quarter, when the quarter-end cash program runs
+    s.sale_date > cast(date_trunc('quarter', s.sale_date) + interval 3 month - interval 11 day as date) as is_quarter_end,
     s.msrp,
     s.dealer_discount,
     s.transaction_price,

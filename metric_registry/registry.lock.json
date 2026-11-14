@@ -1,0 +1,46 @@
+{
+  "average_transaction_price": {
+    "fingerprint": "8f216dbd8a0feef4",
+    "version": 1
+  },
+  "customer_cash": {
+    "fingerprint": "31e08e189887699e",
+    "version": 1
+  },
+  "incentive_penetration": {
+    "fingerprint": "585dcb7396b8b1ee",
+    "version": 1
+  },
+  "incentive_per_unit": {
+    "fingerprint": "f659d27d037252cf",
+    "version": 1
+  },
+  "incentive_share_of_msrp": {
+    "fingerprint": "c12fd009c29187b6",
+    "version": 1
+  },
+  "incentive_spend": {
+    "fingerprint": "8d004fc898a871a5",
+    "version": 1
+  },
+  "incentivised_units": {
+    "fingerprint": "f6bf0db42e8867ab",
+    "version": 1
+  },
+  "msrp_value": {
+    "fingerprint": "ed8882ef3c6a6fd2",
+    "version": 1
+  },
+  "program_spend": {
+    "fingerprint": "482058a9ee58a739",
+    "version": 1
+  },
+  "revenue": {
+    "fingerprint": "13983dbf94716c7e",
+    "version": 1
+  },
+  "units_sold": {
+    "fingerprint": "539c3172a9f3b3da",
+    "version": 1
+  }
+}

@@ -1,0 +1,154 @@
+# The metric registry: the only place a vehicle-sales metric is defined.
+#
+# `python -m metric_registry.compile` turns this file into the MetricFlow semantic models and metrics in
+# dbt/models/semantic/ and into GLOSSARY.md. Never edit those by hand. A change to how a metric is computed
+# (its numerator or denominator, or the model, time column, aggregation or expression of a measure it reads)
+# needs a version bump on that metric and a changelog line for the new version: registry.lock.json records
+# each metric's version and a fingerprint of what it computes, and the compiler refuses a changed
+# fingerprint under an old version. Wording changes to labels and definitions need no bump.
+
+glossary:
+  MSRP: The manufacturer's suggested retail price of a vehicle model, fixed for the whole period.
+  Dealer discount: What the dealer takes off MSRP on its own margin, before any incentive program.
+  Incentive program: A manufacturer-funded offer with a type, an eligible segment, a start and end date and an amount per unit.
+  Customer cash: Incentives paid off the price at the point of sale (cash rebates, loyalty cash, the electric-vehicle bonus, quarter-end cash).
+  Financing support: Incentives paid to the lender to lower a loan rate (APR subvention) or a lease payment (lease support). They cost the same as cash but never show in the transaction price.
+  Incentive spend: Customer cash plus financing support. What the programs cost, whichever way they are paid.
+  Transaction price: What the buyer pays for the vehicle, MSRP less the dealer discount and the customer cash. Excludes taxes, fees and trade-ins.
+  Quarter end: The last ten days of a calendar quarter, when a quarter-end cash program runs on every segment.
+
+semantic_models:
+  sales:
+    model: fct_sales
+    description: One row per vehicle sold.
+    time: sale_date
+    entities: {sale: primary sale_id, dealer: foreign dealer_id, vehicle: foreign vehicle_id}
+    dimensions: [finance_type, is_returning_customer, is_quarter_end]
+    measures:
+      units: {agg: count, expr: sale_id}
+      msrp_amount: {agg: sum, expr: msrp}
+      transaction_price_amount: {agg: sum, expr: transaction_price}
+      incentive_amount: {agg: sum, expr: incentive_amount}
+      customer_cash_amount: {agg: sum, expr: customer_cash_amount}
+      incentivised_units: {agg: sum, expr: "case when has_incentive then 1 else 0 end"}
+
+  incentive_applications:
+    model: fct_incentive_applications
+    description: One row per incentive program applied to a sale.
+    time: sale_date
+    entities: {application: primary application_id, program: foreign program_id, dealer: foreign dealer_id, vehicle: foreign vehicle_id}
+    dimensions: []
+    measures:
+      program_amount: {agg: sum, expr: amount}
+      applications: {agg: count, expr: application_id}
+
+  dealers:
+    model: dim_dealer
+    description: One row per dealer.
+    entities: {dealer: primary dealer_id}
+    dimensions: [region]
+
+  vehicles:
+    model: dim_vehicle
+    description: One row per vehicle model.
+    entities: {vehicle: primary vehicle_id}
+    dimensions: [segment, is_electric]
+
+  programs:
+    model: dim_program
+    description: One row per incentive program.
+    entities: {program: primary program_id}
+    dimensions: [program_type, is_customer_cash]
+
+metrics:
+  units_sold:
+    label: Units sold
+    definition: Vehicles sold, counted on the sale date. One row in the sales table is one vehicle.
+    measure: sales.units
+    owner: Sales operations
+    version: 1
+    changelog: {1: First definition.}
+
+  msrp_value:
+    label: MSRP value
+    definition: MSRP summed over the vehicles sold.
+    measure: sales.msrp_amount
+    owner: Sales operations
+    version: 1
+    changelog: {1: First definition.}
+
+  revenue:
+    label: Revenue
+    definition: Transaction price summed over the vehicles sold. Financing support is not taken off it, because the buyer never sees it in the price.
+    measure: sales.transaction_price_amount
+    owner: Finance
+    version: 1
+    changelog: {1: First definition.}
+
+  incentive_spend:
+    label: Incentive spend
+    definition: Customer cash plus financing support on the vehicles sold, counted on the sale date.
+    measure: sales.incentive_amount
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
+
+  customer_cash:
+    label: Customer cash
+    definition: The part of incentive spend paid off the price at the point of sale.
+    measure: sales.customer_cash_amount
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
+
+  incentivised_units:
+    label: Incentivised units
+    definition: Vehicles sold with at least one incentive program applied.
+    measure: sales.incentivised_units
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
+
+  program_spend:
+    label: Program spend
+    definition: Incentive spend counted per program, so it can be cut by program type. Over all programs it equals incentive spend.
+    measure: incentive_applications.program_amount
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
+
+  average_transaction_price:
+    label: Average transaction price
+    definition: Revenue divided by units sold.
+    numerator: revenue
+    denominator: units_sold
+    owner: Finance
+    version: 1
+    changelog: {1: First definition.}
+
+  incentive_per_unit:
+    label: Incentive per unit
+    definition: Incentive spend divided by units sold, over every vehicle sold, not only the ones with an incentive.
+    numerator: incentive_spend
+    denominator: units_sold
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
+
+  incentive_share_of_msrp:
+    label: Incentive share of MSRP
+    definition: Incentive spend as a share of MSRP value, the usual way to compare incentive levels across segments with different prices.
+    numerator: incentive_spend
+    denominator: msrp_value
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
+
+  incentive_penetration:
+    label: Incentive penetration
+    definition: Incentivised units as a share of units sold.
+    numerator: incentivised_units
+    denominator: units_sold
+    owner: Incentives team
+    version: 1
+    changelog: {1: First definition.}
