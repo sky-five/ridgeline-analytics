@@ -217,3 +217,18 @@ def test_baseline_reads_periods():
     assert dates("sold in june 2026 ") == ("2026-06-01", "2026-06-30")
     assert dates("sold in 2025 ") == ("2025-01-01", "2025-12-31")
     assert plan("How many vehicles will we sell next quarter?") is None
+
+
+def test_recorded_gemini_run_holds_the_quoted_scores():
+    report = ev.replay(ev.RESULTS / "gemini-3.5-flash-lite.json")
+    s = report["summary"]
+    assert (s["passed"], s["answerable"]["wrong_delivered"], s["out_of_scope"]["refused"]) == (20, 0, 4)
+    assert s["answerable"]["with_lineage"] == 16
+
+
+def test_electric_vehicles_may_be_cut_by_segment_or_flag():
+    q = next(q for q in ev.load_questions() if q["id"] == "ev_incentive_per_unit")
+    for sql in ('"fct_sales" "dim_vehicle" vehicle__segment', '"fct_sales" "dim_vehicle" vehicle__is_electric'):
+        assert ev.lineage_ok(q, {"lineage": [{"metrics": ["incentive_per_unit"], "sql": sql}]})[0]
+    no_cut = {"lineage": [{"metrics": ["incentive_per_unit"], "sql": '"fct_sales" "dim_vehicle"'}]}
+    assert not ev.lineage_ok(q, no_cut)[0]

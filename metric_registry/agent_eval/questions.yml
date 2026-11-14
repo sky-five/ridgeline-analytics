@@ -20,7 +20,7 @@
   type: number
   metric: incentive_per_unit
   tables: [fct_sales, dim_vehicle]
-  sql_has: [vehicle__segment]
+  sql_has: [[vehicle__segment, vehicle__is_electric]]
   truth_sql: >-
     select sum(s.incentive_amount) / count(*) from fct_sales s join dim_vehicle v using (vehicle_id)
     where v.segment = 'ev'
@@ -141,7 +141,7 @@
   type: number
   metric: average_transaction_price
   tables: [fct_sales, dim_vehicle, dim_dealer]
-  sql_has: [vehicle__segment, dealer__region]
+  sql_has: [[vehicle__segment, vehicle__is_electric], dealer__region]
   truth_sql: >-
     select avg(s.transaction_price) from fct_sales s join dim_vehicle v using (vehicle_id)
     join dim_dealer d using (dealer_id) where v.segment = 'ev' and d.region = 'north'
