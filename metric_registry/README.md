@@ -99,7 +99,49 @@ only the metrics that read it), a new metric not at version 1, a removed metric 
 and lets wording changes through; that invalid registries are rejected; that `explain` returns the SQL
 behind a filtered answer; and that the committed results are current.
 
-## Next
+## The analyst over the registry
 
-The second half puts a read-only MCP server over this semantic layer (list metrics, explain, query, with
-the SQL MetricFlow ran returned as lineage) and scores an AI analyst on 20 golden questions through it.
+A read-only MCP server puts three tools over the semantic layer, and an analyst agent answers questions
+through it. There is no SQL tool: a query names registry metrics, group-bys and filters, every name and
+value is checked against the registry and the data before MetricFlow builds the SQL, and each result carries
+the SQL MetricFlow ran.
+
+```bash
+python -m metric_registry.server                                   # stdio MCP server (claude mcp add ...)
+python -m metric_registry.agent --sql "What is the average transaction price of electric vehicles in the north region?"
+python -m metric_registry.agent_eval                               # the 20 golden questions, no-model baseline
+python -m metric_registry.agent_eval --replay metric_registry/agent_eval/results/<model>.json --db warehouse/metric_registry.duckdb
+pytest tests/metric_registry/test_agent.py -q                      # 26 tests, about 20 seconds
+```
+
+| Tool | Returns |
+|---|---|
+| `list_metrics` | the 11 metrics with version, owner and allowed group-bys; the values every filter takes; the date range |
+| `explain_metric` | the registry entry: definition, formula, changelog, fingerprint, glossary terms |
+| `query_metrics` | rows from MetricFlow and the SQL it ran (filters by `{dimension: value}`, sale-date range, month/quarter/year) |
+
+A bad metric, a group-by the metric does not allow, a filter value that is not in the data (including an
+attempt to inject SQL through one) or an impossible date comes back as an error the model can read.
+
+After the model answers, a check delivers the answer only if it cites registry metrics that a query in the
+same conversation returned and every number in it appears in a tool result (rounded to the dollar or given
+as a percent is accepted). A delivered answer carries its lineage: the SQL of each query behind it.
+
+### Golden questions
+
+[`agent_eval/questions.yml`](agent_eval/questions.yml) holds 20 questions: 16 the metrics answer (by segment,
+region, finance type, program type, quarter end, returning customers, a month, a quarter, a year, and two
+filters at once) and 4 they don't (a forecast, dealer margin, a change to a program, a salesperson). Each
+truth is SQL straight on the dbt tables, not MetricFlow; a test checks each one equals the governed metric's
+MetricFlow value. An answer passes when it was delivered, the value matches, it cites the expected metric,
+and its lineage reads the expected tables and names the dimension the question cuts by.
+
+| Run | Passed | Answerable right | Wrong, delivered | Refused out of scope |
+|---|---|---|---|---|
+| keyword baseline (no model) | 17 / 20 | 13 / 16 | 3 | 4 / 4 |
+
+The baseline's three misses are worth reading: "incentive spend per unit", "incentive spend as a share of
+MSRP" and "MSRP value of the vehicles sold" each match a longer, wrong phrase, so it returns a real number
+for the wrong metric. The number check cannot catch that, because the number did come from a tool; the
+golden questions do, by the metric and the value. Recordings live in [`agent_eval/results/`](agent_eval/results/)
+and replay with no key; with `--db`, every recorded tool call is rerun and must give the same result.
