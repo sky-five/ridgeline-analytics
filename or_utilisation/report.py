@@ -62,15 +62,16 @@ def tables() -> dict[str, pd.DataFrame]:
     metrics = spec.metrics()
     claims = pd.DataFrame([{
         "sort": i, "metric": c["metric"], "metric_label": metrics[c["metric"]]["label"],
-        "before": c["before"], "after": c["after"], "change": round(c["change_pp"] / 100, 4),
+        "before": c["before"], "after": c["after"], "change_pp": c["change_pp"],
         "n_flags": len(c["flags"]), "flags": ", ".join(CHECK_LABELS[f].lower() for f in c["flags"]) or "none",
     } for i, c in enumerate(s["claims"])])
 
     checks = pd.DataFrame([{
-        "claim_sort": i, "metric_label": metrics[c["metric"]]["label"], "check": k["check"],
+        "claim_sort": i, "check_sort": j, "metric_label": metrics[c["metric"]]["label"], "check_name": k["check"],
         "check_label": CHECK_LABELS[k["check"]], "flagged": k["flagged"],
-        "size": None if k["size_pp"] is None else round(k["size_pp"] / 100, 4), "detail": k["detail"],
-    } for i, c in enumerate(s["claims"]) for k in c["checks"]])
+        "result": "flagged" if k["flagged"] else "passes",
+        "size_pp": k["size_pp"], "detail": k["detail"],
+    } for i, c in enumerate(s["claims"]) for j, k in enumerate(c["checks"])])
 
     weekly = pd.read_csv(WEEKLY, parse_dates=["block_week"])
     weekly["block_week"] = weekly["block_week"].dt.date
@@ -83,6 +84,7 @@ def tables() -> dict[str, pd.DataFrame]:
         "includes_turnover": m["includes_turnover"],
         "denominator_excludes_released_time": m["denominator_excludes_released_time"],
         "before": before.get(name), "after": after.get(name),
+        "before_text": f"{before[name]:.1%}", "after_text": f"{after[name]:.1%}",  # for the page's text panels
     } for i, (name, m) in enumerate(metrics.items())])
 
     return {"or_roi_summary": summary, "or_roi_framings": framings, "or_roi_claims": claims,
