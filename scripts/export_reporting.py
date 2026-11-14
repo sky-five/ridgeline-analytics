@@ -140,6 +140,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(auction_tables())
 
+    # the quote-to-bind funnel teardown (quote_funnel/), on the "Quote funnel" page
+    from quote_funnel.report import tables as quote_funnel_tables
+
+    tables.update(quote_funnel_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
