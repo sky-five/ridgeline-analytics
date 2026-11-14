@@ -52,6 +52,9 @@ jobs:
       - name: Claims semantic layer answers match the committed files
         run: python -m claims_self_service --check
 
+      - name: Onboarding funnel results, accuracy checks and findings note match the committed files
+        run: python -m onboarding_funnel --check
+
       - name: Metric registry compiles to the committed semantic layer, no metric changed without a version bump
         run: python -m metric_registry --check
 
