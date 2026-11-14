@@ -1,0 +1,153 @@
+{
+  "weeks": "2026-01-05 to the week of 2026-06-29",
+  "source_rows": {
+    "sessions": 38929,
+    "quote_requests": 47780,
+    "carrier_quotes": 131697,
+    "clicks": 20382,
+    "binds": 4589
+  },
+  "funnel": {
+    "sessions": 38929.0,
+    "quote_rate": 0.98469,
+    "click_rate": 0.531709,
+    "bind_rate": 0.22515,
+    "quote_to_bind": 0.119714,
+    "commission": 413955.0
+  },
+  "by_segment": [
+    {
+      "segment": "auto_non_standard",
+      "sessions": 6570,
+      "quotes_per_session": 1.71857,
+      "quote_rate": 0.945205,
+      "click_rate": 0.293559,
+      "bind_rate": 0.136588,
+      "quote_to_bind": 0.0400966,
+      "bound_sessions": 249,
+      "commission": 25930.0
+    },
+    {
+      "segment": "auto_standard",
+      "sessions": 20511,
+      "quotes_per_session": 4.15455,
+      "quote_rate": 0.999951,
+      "click_rate": 0.602487,
+      "bind_rate": 0.231691,
+      "quote_to_bind": 0.13959,
+      "bound_sessions": 2863,
+      "commission": 256225.0
+    },
+    {
+      "segment": "home_non_standard",
+      "sessions": 1977,
+      "quotes_per_session": 1.32018,
+      "quote_rate": 0.883156,
+      "click_rate": 0.318442,
+      "bind_rate": 0.152878,
+      "quote_to_bind": 0.0486827,
+      "bound_sessions": 85,
+      "commission": 8550.0
+    },
+    {
+      "segment": "home_standard",
+      "sessions": 9871,
+      "quotes_per_session": 3.30078,
+      "quote_rate": 0.999595,
+      "click_rate": 0.57221,
+      "bind_rate": 0.246546,
+      "quote_to_bind": 0.141076,
+      "bound_sessions": 1392,
+      "commission": 123250.0
+    }
+  ],
+  "definitions": {
+    "sessions": "Shopping sessions with at least one logged quote request.",
+    "quote_rate": "Quoted sessions / sessions. Quoted = at least one carrier returned a price.",
+    "click_rate": "Sessions that clicked through to a carrier / quoted sessions.",
+    "bind_rate": "Bound sessions / clicked sessions. Bound = the carrier reported a policy for the session.",
+    "quote_to_bind": "Bound sessions / quoted sessions. The headline conversion rate.",
+    "commission_per_session": "Commission earned on binds / sessions.",
+    "quote_to_bind_per_request": "Binds / quote requests in quoted sessions. Old dashboard version; moves when the request log changes. Do not use.",
+    "requests_per_session": "Logged quote requests / sessions. A logging health check, not a shopper metric."
+  },
+  "counting_change": {
+    "logging_break": {
+      "week": "2026-04-06",
+      "requests_per_session_before": 1.0,
+      "requests_per_session_after": 1.45596,
+      "sessions_per_week_before": 1501.31,
+      "sessions_per_week_after": 1493.23,
+      "binds_per_week_before": 177.769,
+      "binds_per_week_after": 175.231
+    },
+    "weeks_before": 13,
+    "weeks_after": 13,
+    "quote_to_bind_per_request": {
+      "before": 0.120189,
+      "after": 0.0818924,
+      "diff_pp": -3.82969,
+      "ci_pp": [
+        -4.39103,
+        -3.26835
+      ],
+      "p_value": 4.25249e-43
+    },
+    "quote_to_bind_per_session": {
+      "before": 0.120189,
+      "after": 0.119236,
+      "diff_pp": -0.0953505,
+      "ci_pp": [
+        -0.745302,
+        0.554601
+      ],
+      "p_value": 0.773702
+    },
+    "relative_drop_per_request_pct": -31.8638,
+    "share_of_drop_from_request_count_pct": 97.924
+  },
+  "true_logging_change": "2026-04-06",
+  "new_carrier": {
+    "estimate": {
+      "sample_sessions": 3000,
+      "sample_quoted_by_candidate": 2302,
+      "auto_sessions": 27081,
+      "choice_price_coefficient": -8.16096,
+      "candidate_binds": 967.043,
+      "added_binds": 561.145,
+      "added_commission": 58988.5,
+      "added_binds_ci": [
+        515.111,
+        620.89
+      ],
+      "added_commission_ci": [
+        54404.5,
+        64865.9
+      ],
+      "lost_by_panel": {
+        "carrier_a": 92.3328,
+        "carrier_b": 82.298,
+        "carrier_c": 94.1244,
+        "carrier_d": 37.2792,
+        "carrier_e": 56.8101,
+        "carrier_f": 43.0536
+      }
+    },
+    "truth": {
+      "candidate_binds": 866,
+      "added_binds": 534,
+      "added_commission": 56060.0,
+      "lost_by_panel": {
+        "carrier_a": 64,
+        "carrier_c": 98,
+        "carrier_b": 65,
+        "carrier_d": 32,
+        "carrier_f": 31,
+        "carrier_e": 42
+      }
+    },
+    "onboarding_cost_assumed": 25000.0,
+    "added_commission_per_year": 117977.0,
+    "payback_months": 2.54287
+  }
+}

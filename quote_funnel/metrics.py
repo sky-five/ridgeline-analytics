@@ -54,9 +54,9 @@ create or replace table mart.funnel_weekly as
 select
     week,
     count(*) as sessions,
-    sum(n_requests) as requests,
+    cast(sum(n_requests) as bigint) as requests,
     count(*) filter (where quoted) as quoted_sessions,
-    sum(n_requests) filter (where quoted) as quoted_requests,
+    cast(sum(n_requests) filter (where quoted) as bigint) as quoted_requests,
     count(*) filter (where clicked) as clicked_sessions,
     count(*) filter (where bound) as bound_sessions,
     sum(commission) as commission,
