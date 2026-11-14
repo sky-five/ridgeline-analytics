@@ -202,7 +202,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Quote-to-bind funnel
 
-`quote_funnel/` takes apart the funnel of a simulated insurance quote-comparison site (38,929 shopping sessions over 26 weeks, six carriers, all in DuckDB). The metrics count sessions, not form submits: quote-to-bind is 12.0% over the half. When the site starts logging every resubmit as a new quote request, the old per-request rate falls from 12.0% to 8.2%, while the session rate stays at 11.9% (-0.1 points, 95% CI -0.7 to +0.6); a detector finds the logging break without being told the date. It then sizes adding a candidate carrier from a rating sample and click, choice and bind models fitted on the history: about 561 more binds a half-year (95% CI 515 to 621), against 534 when the simulator replays the same shoppers with the carrier on the panel. A generated [one-page decision memo](quote_funnel/results/memo.md) sums up both. Details: [quote_funnel/README.md](quote_funnel/README.md).
+`quote_funnel/` takes apart the funnel of a simulated insurance quote-comparison site (38,929 shopping sessions over 26 weeks, six carriers, all in DuckDB). The metrics count sessions, not form submits: quote-to-bind is 12.0% over the half. When the site starts logging every resubmit as a new quote request, the old per-request rate falls from 12.0% to 8.2%, while the session rate stays at 11.9% (-0.1 points, 95% CI -0.7 to +0.6); a detector finds the logging break without being told the date. It then sizes adding a candidate carrier from a rating sample and click, choice and bind models fitted on the history: about 561 more binds a half-year (95% CI 515 to 621), against 534 when the simulator replays the same shoppers with the carrier on the panel. A generated [one-page decision memo](quote_funnel/results/memo.md) sums up both. The site's [Quote funnel page](https://sky-five.github.io/ridgeline-analytics/quote-funnel/) charts weekly quote-to-bind per session against per request with the logging break marked, the funnel by segment, and the carrier sizing next to the replayed truth. Details: [quote_funnel/README.md](quote_funnel/README.md).
 
 ## Customer health scoring
 
@@ -254,7 +254,7 @@ experiments/ simulated A/B test: sample size, readout, SRM check, peeking demo (
 crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velocity, forecast back-test (learning project)
 migration_kit/ full reload to incremental merge on a public feed, reconciled after every load, retirement checklist
 report_reconciliation/ three reports checked against their sources (rows, totals, refresh, lineage), planted faults, UAT checklist
-quote_funnel/ simulated quote-comparison funnel: session-level metrics, a fake drop from a logging change, new-carrier sizing, memo
+quote_funnel/ simulated quote-comparison funnel: session-level metrics, a fake drop from a logging change, new-carrier sizing, memo, dashboard page
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI

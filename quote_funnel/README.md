@@ -83,6 +83,16 @@ one-off onboarding cost (a placeholder for the real figure), the added commissio
 months. The interval covers sampling noise only, not model error; the memo says to launch on a share of auto
 traffic first.
 
+## Dashboard
+
+The site's [Quote funnel page](https://sky-five.github.io/ridgeline-analytics/quote-funnel/) is built from the
+committed results. `report.py` turns `summary.json` and `funnel_weekly.csv` into five `reporting.quote_funnel_*`
+tables (called from `scripts/export_reporting.py`): weekly quote-to-bind per session and per request with the
+2026-04-06 logging break marked, sessions against logged requests, the funnel by segment, and the carrier estimate
+with its interval next to the replayed truth, including which current carriers lose binds to the newcomer. The page
+links to the memo. Because the inputs are committed, these numbers do not move with the nightly build; the nightly
+smoke test checks the page loads.
+
 ## Files
 
 | File | What it does |
@@ -92,7 +102,10 @@ traffic first.
 | `counting.py` | Finds the logging break and tests both rates either side of it |
 | `carrier.py` | Rating sample, click / choice / bind models, the estimate and the replayed truth |
 | `memo.py` | Writes `results/memo.md` from the summary, so no number in it is typed by hand |
+| `report.py` | The dashboard tables for the Quote funnel page, from `results/` |
 | `results/` | `summary.json`, `funnel_weekly.csv` (26 rows) and `memo.md`, checked by `--check` |
 
-Tests: `tests/quote_funnel/` (11 tests: the metric rules on hand-made rows, the planted logging change, the
-sizing against the replay, the memo against the summary, committed results up to date).
+Tests: `tests/quote_funnel/` (23 tests: the metric rules on hand-made rows, the planted logging change, the
+sizing against the replay, the memo against the summary, committed results up to date, and 12 for the dashboard
+tables and the page: weeks add up to the source rows, the two rates match before the break and part after it,
+the page reads only exported tables and columns).
