@@ -1,0 +1,60 @@
+# The utilisation metrics: what each one counts, and what question it is fit for.
+# The SQL is the macro in dbt/macros/utilisation_columns.sql; validate.py reads the flags below.
+# Minutes are always inside the block window (07:30-15:30): an overrun is not extra capacity.
+metrics:
+  - name: block_utilisation
+    label: Block utilisation
+    numerator: owner_in_block_minutes
+    denominator: allocated_minutes
+    definition: Minutes the owning service's patients were in the room inside its blocks, over the blocks' minutes.
+    includes_turnover: false
+    denominator_excludes_released_time: false
+    fit_for: How well a service uses the time it was given.
+  - name: adjusted_block_utilisation
+    label: Adjusted block utilisation
+    numerator: owner_in_block_minutes
+    denominator: allocated_minutes - credited_released_minutes
+    definition: As block utilisation, but time released 72 hours or more ahead leaves the denominator.
+    includes_turnover: false
+    denominator_excludes_released_time: true
+    fit_for: Fair block reviews (a service is not penalised for time it gave back). Not for before/after claims about a release rule, because the rule moves its denominator.
+  - name: block_utilisation_with_turnover
+    label: Block utilisation with turnover
+    numerator: owner_in_block_minutes + owner_turnover_minutes
+    denominator: allocated_minutes
+    definition: As block utilisation, but the cleaning and set-up time between cases counts as used.
+    includes_turnover: true
+    denominator_excludes_released_time: false
+    fit_for: Staffing views of how busy a room is. Not for value claims, because turnover produces no case.
+  - name: room_utilisation
+    label: Room utilisation
+    numerator: owner_in_block_minutes + reused_in_block_minutes
+    denominator: allocated_minutes
+    definition: Minutes any patient was in the room inside the block window, over all staffed block minutes.
+    includes_turnover: false
+    denominator_excludes_released_time: false
+    fit_for: What the suite produced with the time it paid for. The base for any return-on-investment claim.
+  - name: released_time_rate
+    label: Released-time rate
+    numerator: credited_released_minutes
+    denominator: allocated_minutes
+    definition: Block minutes released 72 hours or more ahead, over all block minutes.
+    includes_turnover: false
+    denominator_excludes_released_time: false
+    fit_for: Whether services give back time early enough for someone else to use it.
+  - name: released_time_reuse_rate
+    label: Released-time reuse rate
+    numerator: reused_in_block_minutes
+    denominator: released_minutes
+    definition: Minutes another service's patients were in released blocks, over all released minutes (any notice).
+    includes_turnover: false
+    denominator_excludes_released_time: false
+    fit_for: Whether released time turns into cases.
+  - name: same_day_cancellation_rate
+    label: Same-day cancellation rate
+    numerator: cancelled_cases
+    denominator: completed_cases + cancelled_cases
+    definition: Cases cancelled on the day, over cases booked for the day.
+    includes_turnover: false
+    denominator_excludes_released_time: false
+    fit_for: A cause of idle time that a release rule does not touch.
