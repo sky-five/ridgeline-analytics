@@ -3,8 +3,7 @@ title: Claims self-service
 ---
 
 A self-service claims dashboard on **simulated** data, separate from the roofing-software company on the rest of
-this site: a book of <Value data={summary} column=policies fmt=num0/> one-year insurance policies and the
-<Value data={summary} column=claims fmt=num0/> claims reported against them up to <Value data={summary} column=as_of/>.
+this site: a book of <Value data={summary} column=policies fmt=num0/> one-year insurance policies and the <Value data={summary} column=claims fmt=num0/> claims reported against them up to <Value data={summary} column=as_of/>.
 Loss ratio, claim cycle time and approval rate are defined once in a MetricFlow semantic layer; every number here is
 summed from that layer's additive metrics and divided the same way, so a drill-down cannot drift from the definition.
 
@@ -117,25 +116,22 @@ select month, loss_ratio, claims_reported, is_hail_month from ridgeline.claims_s
   colorPalette={['#C2410C']}/>
 
 In <Value data={summary} column=hail_month_label/>, homeowners losses in the <Value data={summary} column=hail_region/>
-region came to <Value data={summary} column=hail_loss_ratio fmt=num1/> times that month's earned premium, from
-<Value data={summary} column=hail_claims fmt=num0/> claims, against <Value data={summary} column=other_months_min_claims fmt=num0/>
-to <Value data={summary} column=other_months_max_claims fmt=num0/> in every other month. That one storm is why the
-<Value data={summary} column=hail_region/> region has the highest loss ratio over the whole period
-(<Value data={summary} column=south_loss_ratio fmt=pct1/>). Pick Homeowners and South above to see it in the monthly chart.
+region came to <Value data={summary} column=hail_loss_ratio fmt=num1/> times that month's earned premium, from <Value data={summary} column=hail_claims fmt=num0/> claims, against <Value data={summary} column=other_months_min_claims fmt=num0/>
+to <Value data={summary} column=other_months_max_claims fmt=num0/> in every other month. That one storm is why the <Value data={summary} column=hail_region/> region has the highest loss ratio over the whole period (<Value data={summary} column=south_loss_ratio fmt=pct1/>). Pick Homeowners and South above to see it in the monthly chart.
 
 ## Direct-channel denials
 
 ```sql channel_quarterly
-select quarter, channel_label, denial_rate, denied_claims, decided_claims
+select quarter, quarter_start, channel_label, denial_rate, denied_claims, decided_claims
 from ridgeline.claims_ss_channel_quarterly
 order by quarter, channel_label
 ```
 
-<LineChart data={channel_quarterly} x=quarter y=denial_rate series=channel_label yFmt=pct0 yMin=0
-  title="Denial rate by channel, by quarter closed" colorPalette={['#9CA3AF', '#6B7280', '#C2410C']}/>
+<LineChart data={channel_quarterly} x=quarter_start y=denial_rate series=channel_label yFmt=pct0 yMin=0
+  title="Denial rate by channel, by quarter closed"
+  seriesColors={{'Direct': '#C2410C', 'Agent': '#9CA3AF', 'Broker': '#6B7280'}}/>
 
-Direct-channel claims are approved <Value data={summary} column=direct_approval_rate fmt=pct1/> of the time, against
-<Value data={summary} column=agent_approval_rate fmt=pct1/> for agent and <Value data={summary} column=broker_approval_rate fmt=pct1/>
+Direct-channel claims are approved <Value data={summary} column=direct_approval_rate fmt=pct1/> of the time, against <Value data={summary} column=agent_approval_rate fmt=pct1/> for agent and <Value data={summary} column=broker_approval_rate fmt=pct1/>
 for broker, and the gap holds in every quarter rather than coming from one bad month. The metric says where to look;
 it does not say why (the simulator plants the gap, a real team would read the denial reasons next).
 

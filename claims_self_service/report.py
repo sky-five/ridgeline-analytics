@@ -59,11 +59,14 @@ def tables() -> dict[str, pd.DataFrame]:
     others = hail[~hail["is_hail_month"]]
 
     by = {k: {r[k]: r for r in rows} for k, rows in s["by"].items()}
+    cube = pd.read_csv(CUBE)
+    # the whole-book ratios from the summed parts, unrounded, so the headline and the unfiltered drill-down agree
+    whole = ratios(cube.sum(numeric_only=True).to_frame().T).iloc[0]
     summary = pd.DataFrame([{
         "as_of": pd.Timestamp(s["as_of"]).date(), "policies": s["policies"], "claims": s["claims"],
         **{f"claims_{k}": v for k, v in s["claims_by_status"].items()},
-        "loss_ratio": h["loss_ratio"], "claim_cycle_time_days": h["claim_cycle_time_days"],
-        "approval_rate": h["approval_rate"], "earned_premium": h["earned_premium"],
+        **{m: whole[m] for m in ("loss_ratio", "claim_cycle_time_days", "approval_rate")},
+        "earned_premium": h["earned_premium"],
         "incurred_losses": h["incurred_losses"], "n_metrics": len(s["metrics"]),
         "hail_region": _label(s["hail"]["region"]), "hail_month": s["hail"]["month"],
         "hail_month_label": pd.Timestamp(s["hail"]["month"]).strftime("%B %Y"),
@@ -76,7 +79,6 @@ def tables() -> dict[str, pd.DataFrame]:
         "broker_approval_rate": by["channel"]["broker"]["approval_rate"],
     }])
 
-    cube = pd.read_csv(CUBE)
     cube["month"] = pd.to_datetime(cube["month"]).dt.date
     for col in ("line_of_business", "region", "channel"):
         cube[f"{col}_label"] = cube[col].map(_label)
@@ -90,6 +92,7 @@ def tables() -> dict[str, pd.DataFrame]:
     q = cube.assign(quarter=pd.to_datetime(cube["month"]).dt.to_period("Q").astype(str))
     q = q.groupby(["quarter", "channel", "channel_label"], as_index=False)[["approved_claims", "decided_claims"]].sum()
     q = q[q["decided_claims"] > 0]
+    q["quarter_start"] = pd.PeriodIndex(q["quarter"], freq="Q").start_time.date
     q["denied_claims"] = q["decided_claims"] - q["approved_claims"]
     q["approval_rate"] = q["approved_claims"] / q["decided_claims"]
     q["denial_rate"] = 1 - q["approval_rate"]
