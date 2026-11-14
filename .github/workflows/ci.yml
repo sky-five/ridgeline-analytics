@@ -46,6 +46,9 @@ jobs:
       - name: Quote funnel results, teardown and memo match the committed files
         run: python -m quote_funnel --check
 
+      - name: Operating-room utilisation results, claim reviews and return match the committed files
+        run: python -m or_utilisation --check
+
       - name: Pick as-of date (yesterday, UTC)
         run: echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
 
