@@ -150,6 +150,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(or_roi_tables())
 
+    # the claims semantic layer's answers (claims_self_service/), on the "Claims self-service" page
+    from claims_self_service.report import tables as claims_ss_tables
+
+    tables.update(claims_ss_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
