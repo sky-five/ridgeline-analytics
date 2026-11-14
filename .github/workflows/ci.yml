@@ -49,6 +49,9 @@ jobs:
       - name: Operating-room utilisation results, claim reviews and return match the committed files
         run: python -m or_utilisation --check
 
+      - name: Claims semantic layer answers match the committed files
+        run: python -m claims_self_service --check
+
       - name: Pick as-of date (yesterday, UTC)
         run: echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
 
