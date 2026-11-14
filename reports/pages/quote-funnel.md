@@ -46,15 +46,16 @@ order by week
   <ReferenceLine data={summary} x=break_week label="Resubmits logged from here" color="#6B7280"/>
 </LineChart>
 
-<BigValue data={summary} value=per_request_diff title="Old rate, change" fmt=pct1/>
-<BigValue data={summary} value=per_session_diff title="Session rate, change" fmt=pct1/>
+Before the break the two rates are the same number, so the lines overlap; after it they part.
+
+<BigValue data={summary} value=per_request_diff title="Old rate, change (points)" fmt=pct1/>
+<BigValue data={summary} value=per_session_diff title="Session rate, change (points)" fmt=pct1/>
 <BigValue data={summary} value=share_of_drop_from_request_count title="Drop explained by request count" fmt=pct0/>
 
 Comparing the 13 weeks either side of the break, binds per request fall from <Value data={summary} column=per_request_before fmt=pct1/>
 to <Value data={summary} column=per_request_after fmt=pct1/>, a <Value data={summary} column=relative_drop_per_request fmt=pct0/> relative
 drop that a significance test would call real. Bound sessions per quoted session go from <Value data={summary} column=per_session_before fmt=pct1/>
-to <Value data={summary} column=per_session_after fmt=pct1/> (95% CI <Value data={summary} column=per_session_ci_low fmt=pct1/> to
-<Value data={summary} column=per_session_ci_high fmt=pct1/>, p = <Value data={summary} column=per_session_p fmt=num2/>): no change.
+to <Value data={summary} column=per_session_after fmt=pct1/>, a change of <Value data={summary} column=per_session_diff fmt=pct1/> points (95% CI <Value data={summary} column=per_session_ci_low fmt=pct1/> to <Value data={summary} column=per_session_ci_high fmt=pct1/>, p = <Value data={summary} column=per_session_p fmt=num2/>): no change.
 
 ```sql weekly_counts
 select week, sessions as "Sessions", requests as "Logged requests"
@@ -81,7 +82,6 @@ select * from ridgeline.quote_funnel_segments order by sort
   <Column id=click_rate title="Click rate" fmt=pct1/>
   <Column id=bind_rate title="Bind rate" fmt=pct1/>
   <Column id=quote_to_bind title="Quote-to-bind" fmt=pct1/>
-  <Column id=commission title="Commission" fmt=usd0/>
 </DataTable>
 
 <BarChart data={segments} x=segment_label y=quote_to_bind yFmt=pct0 sort=false title="Quote-to-bind by segment"/>
@@ -132,7 +132,7 @@ from ridgeline.quote_funnel_lost_binds
 order by carrier, source
 ```
 
-<BarChart data={lost} x=carrier y=binds_lost series=source type=grouped title="Binds the current panel would lose to the candidate"
+<BarChart data={lost} x=carrier y=binds_lost series=source type=grouped yFmt=num0 title="Binds the current panel would lose to the candidate"
   colorPalette={['#C2410C', '#111827']}/>
 
 Not every policy the candidate writes is new: some shoppers would have bound with another carrier anyway. With an
