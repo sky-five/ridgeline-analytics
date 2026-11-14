@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 from claims_self_service.load import DEFAULT_DB, dbt_build, load
-from claims_self_service.run import SUMMARY, summary, to_json
+from claims_self_service.run import CUBE, SUMMARY, cube, summary, to_csv, to_json
 from claims_self_service.simulate import simulate
 
 p = argparse.ArgumentParser(prog="python -m claims_self_service")
@@ -15,12 +15,14 @@ book = simulate()
 for table, n in load(args.db, book).items():
     print(f"{table:10}{n:>8,}")
 dbt_build(args.db)
-fresh = to_json(summary(args.db, book))
+fresh = {SUMMARY: to_json(summary(args.db, book)), CUBE: to_csv(cube(args.db))}
 if args.check:
-    if not SUMMARY.exists() or SUMMARY.read_text() != fresh:
-        sys.exit(f"{SUMMARY} is out of date: run python -m claims_self_service")
-    print("results/summary.json matches")
+    for path, text in fresh.items():
+        if not path.exists() or path.read_text() != text:
+            sys.exit(f"{path} is out of date: run python -m claims_self_service")
+        print(f"results/{path.name} matches")
 else:
     SUMMARY.parent.mkdir(exist_ok=True)
-    SUMMARY.write_text(fresh)
-    print(fresh)
+    for path, text in fresh.items():
+        path.write_text(text)
+    print(fresh[SUMMARY])

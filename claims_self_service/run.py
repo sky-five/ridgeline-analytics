@@ -10,6 +10,12 @@ from claims_self_service.simulate import AS_OF, HAIL_REGION, HAIL_START, Book
 
 RESULTS = Path(__file__).resolve().parent / "results"
 SUMMARY = RESULTS / "summary.json"
+CUBE = RESULTS / "metrics_monthly.csv"
+
+# The additive metrics under the three ratios. Summed over any slice and then divided, they give the same
+# ratio MetricFlow returns for that slice, so the dashboard can drill down without redefining a metric.
+CUBE_METRICS = ["earned_premium", "incurred_losses", "claims_reported", "closed_claims", "cycle_days",
+                "approved_claims", "decided_claims"]
 
 
 def _rows(df, keys: list[str]) -> list[dict]:
@@ -45,3 +51,22 @@ def summary(db: Path, book: Book) -> dict:
 
 def to_json(s: dict) -> str:
     return json.dumps(s, indent=2, default=str) + "\n"
+
+
+def cube(db: Path) -> pd.DataFrame:
+    """The additive metrics by month, line of business, region and channel, straight from MetricFlow.
+
+    Rows with no month are open claims on the closed-date measures (they carry no closed counts) and are dropped."""
+    keys = ["metric_time__month"] + metrics.SLICES
+    df = metrics.query(CUBE_METRICS, keys, db=db).dropna(subset=keys)
+    df = df.rename(columns={k: k.split("__")[-1] for k in keys})
+    df["month"] = pd.to_datetime(df["month"]).dt.strftime("%Y-%m")
+    df[CUBE_METRICS] = df[CUBE_METRICS].fillna(0)
+    counts = [m for m in CUBE_METRICS if m not in ("earned_premium", "incurred_losses")]
+    df[counts] = df[counts].astype(int)
+    df[["earned_premium", "incurred_losses"]] = df[["earned_premium", "incurred_losses"]].round(2)
+    return df.sort_values(["month", "line_of_business", "region", "channel"]).reset_index(drop=True)
+
+
+def to_csv(df: pd.DataFrame) -> str:
+    return df.to_csv(index=False, lineterminator="\n")
