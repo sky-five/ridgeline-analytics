@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: raw_onboarding
+    description: The simulated onboarding event log (onboarding_funnel/simulate.py) as the apps export it.
+    tables:
+      - name: events
+        description: >
+          One row per delivered event. Some events arrive twice with the same event_id. The cross-border app
+          opens a new application_id when a person resumes or retries from 2026-04-06, often with the email
+          typed in a different case.

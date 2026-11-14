@@ -1,0 +1,30 @@
+version: 2
+models:
+  - name: fct_applications
+    description: One row per person and program; all of a person's application ids in a program count once.
+    columns:
+      - name: application_key
+        data_tests: [unique, not_null]
+      - name: started_at
+        data_tests: [not_null]
+      - name: drop_off_step
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [document_upload, submit, kyc, funding, first_transaction]
+  - name: fct_application_ids
+    description: One row per application id (what counting ids sees); not used for the funnel metrics.
+    columns:
+      - name: application_id
+        data_tests: [unique, not_null]
+  - name: funnel_weekly
+    description: Program x cohort week, activation per application id and per person, and the KYC pass rate.
+  - name: funnel_by_program
+    description: People reaching each step per program on mature cohorts, with step rates.
+    columns:
+      - name: program
+        data_tests: [unique, not_null]
+  - name: drop_off_reasons
+    description: Mature-cohort people who did not activate, by program, step and reason.
+  - name: time_to_first_transaction
+    description: Days from first start to first transaction for activated people in mature cohorts.

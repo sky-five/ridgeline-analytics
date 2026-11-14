@@ -1,0 +1,15 @@
+version: 2
+models:
+  - name: stg_onboarding__events
+    description: Onboarding events with redeliveries removed and a person key from the normalised email and date of birth.
+    columns:
+      - name: event_id
+        data_tests: [unique, not_null]
+      - name: applicant_key
+        data_tests: [not_null]
+      - name: event_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [application_started, application_resumed, document_uploaded, application_submitted,
+                         kyc_result, kyc_review_result, account_funded, first_transaction]

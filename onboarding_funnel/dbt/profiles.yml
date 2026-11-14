@@ -1,0 +1,7 @@
+onboarding_funnel:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('ONBOARDING_DUCKDB_PATH', '../../warehouse/onboarding_funnel.duckdb') }}"
+      threads: 4
