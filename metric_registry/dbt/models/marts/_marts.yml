@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: dim_dealer
+    description: One row per dealer.
+    columns:
+      - {name: dealer_id, data_tests: [unique, not_null]}
+  - name: dim_vehicle
+    description: One row per vehicle model, with its segment and MSRP.
+    columns:
+      - {name: vehicle_id, data_tests: [unique, not_null]}
+  - name: dim_program
+    description: One row per incentive program.
+    columns:
+      - {name: program_id, data_tests: [unique, not_null]}
+  - name: fct_sales
+    description: One row per vehicle sold, with the incentives applied to it rolled up.
+    columns:
+      - {name: sale_id, data_tests: [unique, not_null]}
+      - {name: dealer_id, data_tests: [{relationships: {to: ref('dim_dealer'), field: dealer_id}}]}
+      - {name: vehicle_id, data_tests: [{relationships: {to: ref('dim_vehicle'), field: vehicle_id}}]}
+  - name: fct_incentive_applications
+    description: One row per incentive program applied to a sale.
+    columns:
+      - {name: application_id, data_tests: [unique, not_null]}
+      - {name: sale_id, data_tests: [{relationships: {to: ref('fct_sales'), field: sale_id}}]}
+      - {name: program_id, data_tests: [{relationships: {to: ref('dim_program'), field: program_id}}]}

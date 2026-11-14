@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_vehicles__dealers
+    columns:
+      - {name: dealer_id, data_tests: [unique, not_null]}
+      - {name: region, data_tests: [{accepted_values: {values: [north, south, east, west]}}]}
+  - name: stg_vehicles__vehicles
+    columns:
+      - {name: vehicle_id, data_tests: [unique, not_null]}
+      - {name: segment, data_tests: [{accepted_values: {values: [sedan, suv, truck, ev]}}]}
+  - name: stg_vehicles__programs
+    columns:
+      - {name: program_id, data_tests: [unique, not_null]}
+      - name: program_type
+        data_tests:
+          - accepted_values:
+              values: [cash_rebate, apr_subvention, lease_support, loyalty, ev_bonus, quarter_end_cash]
+  - name: stg_vehicles__sales
+    columns:
+      - {name: sale_id, data_tests: [unique, not_null]}
+      - {name: finance_type, data_tests: [{accepted_values: {values: [cash, finance, lease]}}]}
+  - name: stg_vehicles__incentives
+    columns:
+      - {name: application_id, data_tests: [unique, not_null]}
+      - {name: sale_id, data_tests: [{relationships: {to: ref('stg_vehicles__sales'), field: sale_id}}]}
+      - {name: program_id, data_tests: [{relationships: {to: ref('stg_vehicles__programs'), field: program_id}}]}

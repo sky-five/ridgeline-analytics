@@ -1,0 +1,18 @@
+name: metric_registry
+version: "1.0.0"
+profile: metric_registry
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  metric_registry:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+    semantic:
+      +materialized: table

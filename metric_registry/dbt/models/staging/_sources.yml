@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw_vehicles
+    description: The simulated vehicle network, loaded by metric_registry/load.py.
+    schema: raw_vehicles
+    tables:
+      - name: dealers
+      - name: vehicles
+      - name: programs
+      - name: sales
+      - name: incentives

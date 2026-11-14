@@ -1,0 +1,7 @@
+metric_registry:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('METRIC_REGISTRY_DUCKDB_PATH', '../../warehouse/metric_registry.duckdb') }}"
+      threads: 4
