@@ -8,7 +8,7 @@ way. Everything runs on seeded synthetic data; no real insurer, policy or claim 
 
 ```bash
 python -m claims_self_service           # simulate, load, dbt build, query the semantic layer, write results/
-python -m claims_self_service --check   # fail if results/summary.json is out of date (CI)
+python -m claims_self_service --check   # fail if the committed results are out of date (CI)
 ```
 
 ## The data
@@ -64,10 +64,27 @@ South homeowners losses in July 2025 come to 9.4 times that month's earned premi
 17 in every other month), which lifts the south region to the highest loss ratio, 64.8%. All the numbers
 are in [results/summary.json](results/summary.json).
 
+## Dashboard and handover
+
+The [Claims self-service page](https://sky-five.github.io/ridgeline-analytics/claims-self-service/) has dropdowns for
+line of business, region and channel. It does not compute any metric itself: `run.py` also writes the seven additive
+metrics under the three ratios (earned premium, incurred losses, claims reported, closed claims, cycle days, approved
+and decided claims) from MetricFlow by month, line, region and channel to
+[results/metrics_monthly.csv](results/metrics_monthly.csv) (648 rows), and the page sums the selected rows and
+divides. Because each headline metric is a ratio of sums, that gives the semantic layer's own answer for any
+selection. `report.py` turns the two result files into six `reporting.claims_ss_*` tables. The page also charts the
+hail month (82 south homeowners claims in July 2025) and the denial rate by channel and quarter closed: the direct
+channel has the highest denial rate in all six quarters. The nightly smoke test opens it.
+
+[HANDOVER.md](HANDOVER.md) is the one page for whoever takes this over: how to query a metric from the command line
+or Python, how to add one, and what each headline metric is not fit for.
+
 ## Tests
 
 `tests/claims_self_service/` builds the warehouse once (about 10 seconds) and recomputes each headline
 metric in pandas straight from the simulated rows: loss ratio by line and for the hail month, cycle time
 and approval rate by channel, closed claims by close month. It also checks the monthly premium rows add up
 to each policy's days in force, that the loss-ratio-by-peril slice is refused, and that the committed
-results are current.
+results are current. `test_report.py` checks the dashboard tables: the drill-down rows sum back to MetricFlow's
+answer for every line, region, channel and month, the hail month and the direct-channel gap hold in that table, and
+the page reads only tables and columns the export writes.

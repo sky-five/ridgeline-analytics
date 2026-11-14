@@ -210,7 +210,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Self-service claims metrics
 
-`claims_self_service/` is a star schema and a MetricFlow semantic layer for a simulated property and casualty insurance book (20,000 policies, 2,203 claims through 2026-06-30), in dbt on DuckDB. Loss ratio, claim cycle time and approval rate are defined once and can be sliced by month, line of business, region or channel; loss ratio by peril is refused because premium is not earned by peril. The first queries find a planted July 2025 hailstorm (south homeowners losses at 9.4 times that month's premium) and a direct channel approved 80.3% of the time against 90.3% through agents. Tests recompute every headline metric in pandas from the raw rows. Details: [claims_self_service/README.md](claims_self_service/README.md).
+`claims_self_service/` is a star schema and a MetricFlow semantic layer for a simulated property and casualty insurance book (20,000 policies, 2,203 claims through 2026-06-30), in dbt on DuckDB. Loss ratio, claim cycle time and approval rate are defined once and can be sliced by month, line of business, region or channel; loss ratio by peril is refused because premium is not earned by peril. The first queries find a planted July 2025 hailstorm (south homeowners losses at 9.4 times that month's premium) and a direct channel approved 80.3% of the time against 90.3% through agents. Tests recompute every headline metric in pandas from the raw rows. The site's [Claims self-service page](https://sky-five.github.io/ridgeline-analytics/claims-self-service/) drills down by line, region and channel from the layer's additive metrics (a test checks they sum back to MetricFlow's answer for every slice and month), and charts the hail month and direct-channel denials by quarter; a [handover doc](claims_self_service/HANDOVER.md) covers how to query a metric, how to add one, and what each is not fit for. Details: [claims_self_service/README.md](claims_self_service/README.md).
 
 ## Customer health scoring
 
@@ -264,7 +264,7 @@ migration_kit/ full reload to incremental merge on a public feed, reconciled aft
 report_reconciliation/ three reports checked against their sources (rows, totals, refresh, lineage), planted faults, UAT checklist
 quote_funnel/ simulated quote-comparison funnel: session-level metrics, a fake drop from a logging change, new-carrier sizing, memo, dashboard page
 or_utilisation/ simulated operating-room blocks in dbt: metric spec, checks for misleading before/after claims, a release rule's return vs the truth, dashboard page
-claims_self_service/ simulated insurance claims star schema in dbt with a MetricFlow layer: loss ratio, cycle time, approval rate
+claims_self_service/ simulated insurance claims star schema in dbt with a MetricFlow layer: loss ratio, cycle time, approval rate, handover doc, dashboard page
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI
