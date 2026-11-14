@@ -206,7 +206,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Operating-room utilisation ROI
 
-`or_utilisation/` asks what a 72-hour auto-release rule for idle operating-room blocks really returned, on a simulated surgical suite (12 rooms, 26 weeks, 1,560 blocks, 5,145 booked cases) modelled in a small dbt project on DuckDB. A [metric spec](or_utilisation/metric_spec.yml) defines block, adjusted block and room utilisation, released-time and reuse rates, and what each is fit for. A validation suite reviews before/after claims for a moved denominator, turnover counted as use, a numerator that misses the rule's gain, and change on blocks the rule cannot touch. The usual claim (adjusted block utilisation up 8.2 points) trips three of those checks and implies 30,857 added patient minutes; counting only minutes in released blocks above the old rate gives 6,699 (95% CI 2,798 to 10,455), against 6,332 when the simulator replays the half-year without the rule. Details: [or_utilisation/README.md](or_utilisation/README.md).
+`or_utilisation/` asks what a 72-hour auto-release rule for idle operating-room blocks really returned, on a simulated surgical suite (12 rooms, 26 weeks, 1,560 blocks, 5,145 booked cases) modelled in a small dbt project on DuckDB. A [metric spec](or_utilisation/metric_spec.yml) defines block, adjusted block and room utilisation, released-time and reuse rates, and what each is fit for. A validation suite reviews before/after claims for a moved denominator, turnover counted as use, a numerator that misses the rule's gain, and change on blocks the rule cannot touch. The usual claim (adjusted block utilisation up 8.2 points) trips three of those checks and implies 30,857 added patient minutes; counting only minutes in released blocks above the old rate gives 6,699 (95% CI 2,798 to 10,455), against 6,332 when the simulator replays the half-year without the rule. The site's [Operating-room ROI page](https://sky-five.github.io/ridgeline-analytics/or-utilisation/) puts the four answers side by side, lists the checks each claim trips, charts weekly utilisation with the rule's start marked, and shows how each metric is computed from the spec. Details: [or_utilisation/README.md](or_utilisation/README.md).
 
 ## Customer health scoring
 
@@ -259,7 +259,7 @@ crm_pipeline/ sales CRM objects in dbt: dedupe, close-date fixes, coverage, velo
 migration_kit/ full reload to incremental merge on a public feed, reconciled after every load, retirement checklist
 report_reconciliation/ three reports checked against their sources (rows, totals, refresh, lineage), planted faults, UAT checklist
 quote_funnel/ simulated quote-comparison funnel: session-level metrics, a fake drop from a logging change, new-carrier sizing, memo, dashboard page
-or_utilisation/ simulated operating-room blocks in dbt: metric spec, checks for misleading before/after claims, a release rule's return vs the truth
+or_utilisation/ simulated operating-room blocks in dbt: metric spec, checks for misleading before/after claims, a release rule's return vs the truth, dashboard page
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
 metric_contract/ versioned governed metrics, checked on a fixed snapshot in CI

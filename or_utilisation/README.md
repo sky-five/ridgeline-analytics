@@ -82,6 +82,17 @@ minutes. Its interval comes from resampling days in each period, and it covers t
 times the truth. The interval is wide because the rule only released 48 blocks; the minutes are what the
 analysis stands behind, the dollars move with the two assumptions.
 
+## Dashboard
+
+The site's [Operating-room ROI page](https://sky-five.github.io/ridgeline-analytics/or-utilisation/) is built
+from the committed results. `report.py` turns `summary.json`, `utilisation_weekly.csv` and `metric_spec.yml` into
+six `reporting.or_roi_*` tables (called from `scripts/export_reporting.py`): the four answers (claimed,
+before/after, defended with its interval, replayed truth) in minutes and dollars, the four claim reviews and the
+checks that fired, weekly utilisation under three definitions with the rule's start on 2026-04-06 marked, and a
+"how each number is computed" panel listing every metric's numerator, denominator and fit, read from the spec.
+Because the inputs are committed, these numbers do not move with the nightly build; the nightly smoke test checks
+the page loads.
+
 ## Files
 
 ```
@@ -91,5 +102,6 @@ dbt/             staging views, fct_cases, fct_blocks, weekly / by-period / by-s
 metric_spec.yml  the metric definitions; spec.py evaluates them from minute sums
 validate.py      the five framing checks
 roi.py           claimed vs before/after vs defended, against the truth
+report.py        the dashboard tables for the Operating-room ROI page
 results/         summary.json and utilisation_weekly.csv (CI checks they are current)
 ```
