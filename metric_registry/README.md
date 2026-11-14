@@ -111,7 +111,7 @@ python -m metric_registry.server                                   # stdio MCP s
 python -m metric_registry.agent --sql "What is the average transaction price of electric vehicles in the north region?"
 python -m metric_registry.agent_eval                               # the 20 golden questions, no-model baseline
 python -m metric_registry.agent_eval --replay metric_registry/agent_eval/results/<model>.json --db warehouse/metric_registry.duckdb
-pytest tests/metric_registry/test_agent.py -q                      # 26 tests, about 20 seconds
+pytest tests/metric_registry/test_agent.py -q                      # 29 tests, about 30 seconds
 ```
 
 | Tool | Returns |
@@ -139,9 +139,18 @@ and its lineage reads the expected tables and names the dimension the question c
 | Run | Passed | Answerable right | Wrong, delivered | Refused out of scope |
 |---|---|---|---|---|
 | keyword baseline (no model) | 17 / 20 | 13 / 16 | 3 | 4 / 4 |
+| gemini-3.5-flash-lite (Gemini API, free tier) | 20 / 20 | 16 / 16 | 0 | 4 / 4 |
 
 The baseline's three misses are worth reading: "incentive spend per unit", "incentive spend as a share of
 MSRP" and "MSRP value of the vehicles sold" each match a longer, wrong phrase, so it returns a real number
 for the wrong metric. The number check cannot catch that, because the number did come from a tool; the
 golden questions do, by the metric and the value. Recordings live in [`agent_eval/results/`](agent_eval/results/)
 and replay with no key; with `--db`, every recorded tool call is rerun and must give the same result.
+
+The Gemini run was recorded by [`record-metric-agent.yml`](../.github/workflows/record-metric-agent.yml) on
+2026-11-14: 62 model requests, 42 tool calls (every question started with `list_metrics`), 116,523 input and
+2,202 output tokens. Every answer it delivered carries the SQL MetricFlow ran. It first scored 18 / 20: for
+the two electric-vehicle questions it filtered on `vehicle__is_electric` rather than `vehicle__segment`,
+which gives the same rows, and the scoring rule only accepted the segment. The rule now accepts either; the
+recorded replies were not changed. This is one small free-tier model on 20 questions; other models will
+score differently.
