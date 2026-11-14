@@ -1,0 +1,27 @@
+version: 2
+models:
+  - name: fct_cases
+    description: One row per booked case, with in-room, in-block and turnover minutes.
+    columns:
+      - name: case_id
+        data_tests: [unique, not_null]
+  - name: fct_blocks
+    description: One row per block (room-day) with every minute count the metrics use.
+    columns:
+      - name: block_id
+        data_tests: [unique, not_null]
+      - name: period
+        data_tests: [{accepted_values: {arguments: {values: [before, after]}}}]
+  - name: utilisation_weekly
+    description: The metrics in metric_spec.yml per week, whole suite.
+    columns:
+      - name: block_week
+        data_tests: [unique, not_null]
+  - name: utilisation_by_period
+    description: The metrics before and after the rule, on all blocks and on blocks the owning service booked.
+    data_tests:
+      - unique_combination: {arguments: {columns: [period, blocks_in_scope]}}
+  - name: utilisation_by_service
+    description: The metrics per owning service, before and after the rule.
+    data_tests:
+      - unique_combination: {arguments: {columns: [owner_service_id, period]}}

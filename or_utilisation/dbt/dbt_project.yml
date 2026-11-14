@@ -1,0 +1,19 @@
+name: or_utilisation
+version: "1.0.0"
+profile: or_utilisation
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  or_utilisation:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  policy_start: "2026-04-06"  # or_utilisation/simulate.py POLICY_START

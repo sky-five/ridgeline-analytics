@@ -1,0 +1,7 @@
+or_utilisation:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('OR_DUCKDB_PATH', '../../warehouse/or_utilisation.duckdb') }}"
+      threads: 4

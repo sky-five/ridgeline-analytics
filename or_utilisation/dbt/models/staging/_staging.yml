@@ -1,0 +1,20 @@
+version: 2
+models:
+  - name: stg_or__blocks
+    columns:
+      - name: block_id
+        data_tests: [unique, not_null]
+  - name: stg_or__releases
+    columns:
+      - name: block_id
+        data_tests: [unique, not_null, {relationships: {arguments: {to: ref('stg_or__blocks'), field: block_id}}}]
+      - name: release_type
+        data_tests: [{accepted_values: {arguments: {values: [voluntary, auto]}}}]
+  - name: stg_or__cases
+    columns:
+      - name: case_id
+        data_tests: [unique, not_null]
+      - name: block_id
+        data_tests: [{relationships: {arguments: {to: ref('stg_or__blocks'), field: block_id}}}]
+      - name: status
+        data_tests: [{accepted_values: {arguments: {values: [completed, cancelled]}}}]

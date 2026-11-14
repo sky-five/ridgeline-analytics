@@ -1,0 +1,13 @@
+version: 2
+sources:
+  - name: raw_or
+    description: The simulated surgical suite (or_utilisation/simulate.py) as a scheduling system would export it. The replay without the auto-release rule is not loaded.
+    tables:
+      - name: services
+        description: One row per surgical service.
+      - name: blocks
+        description: One row per room-day; each is an 8-hour block owned by one service on the weekly template.
+      - name: releases
+        description: One row per released block, with when it was released and whether by the service or the 72-hour rule.
+      - name: cases
+        description: One row per booked case, completed or cancelled on the day; a case in a released block belongs to the service that picked it up.
