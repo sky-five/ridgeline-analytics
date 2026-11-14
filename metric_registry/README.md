@@ -148,7 +148,8 @@ golden questions do, by the metric and the value. Recordings live in [`agent_eva
 and replay with no key; with `--db`, every recorded tool call is rerun and must give the same result.
 
 The Gemini run was recorded by [`record-metric-agent.yml`](../.github/workflows/record-metric-agent.yml) on
-2026-11-14: 62 model requests, 42 tool calls (every question started with `list_metrics`), 116,523 input and
+2026-11-14: 62 model requests, 42 tool calls (it opened 19 of the 20 questions with `list_metrics`; the forecast it refused
+without a call), 116,523 input and
 2,202 output tokens. Every answer it delivered carries the SQL MetricFlow ran. It first scored 18 / 20: for
 the two electric-vehicle questions it filtered on `vehicle__is_electric` rather than `vehicle__segment`,
 which gives the same rows, and the scoring rule only accepted the segment. The rule now accepts either; the
