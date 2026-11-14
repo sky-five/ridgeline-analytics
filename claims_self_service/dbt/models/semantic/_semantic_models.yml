@@ -1,0 +1,84 @@
+version: 2
+
+# The semantic layer: entities, dimensions and measures over the star schema.
+# Metrics are defined once in _metrics.yml; the dashboard and any self-service query go through them.
+
+models:
+  - name: metricflow_time_spine
+    description: Daily calendar for MetricFlow.
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        granularity: day
+
+semantic_models:
+  - name: policies
+    description: One row per policy; the dimensions claims and premium share.
+    model: ref('dim_policy')
+    defaults: {agg_time_dimension: policy_start}
+    entities:
+      - {name: policy, type: primary, expr: policy_id}
+    dimensions:
+      - {name: policy_start, type: time, expr: start_date, type_params: {time_granularity: day}}
+      - {name: line_of_business, type: categorical}
+      - {name: region, type: categorical}
+      - {name: channel, type: categorical}
+    measures:
+      - {name: policies_written, agg: count, expr: policy_id}
+
+  - name: perils
+    description: One row per peril (cause of loss).
+    model: ref('dim_peril')
+    entities:
+      - {name: peril, type: primary, expr: peril_id}
+    dimensions:
+      - {name: peril_group, type: categorical}
+
+  - name: claims
+    description: One row per reported claim.
+    model: ref('fct_claims')
+    defaults: {agg_time_dimension: loss_date}
+    entities:
+      - {name: claim, type: primary, expr: claim_id}
+      - {name: policy, type: foreign, expr: policy_id}
+      - {name: peril, type: foreign, expr: peril_id}
+    dimensions:
+      - {name: loss_date, type: time, type_params: {time_granularity: day}}
+      - {name: reported_date, type: time, type_params: {time_granularity: day}}
+      - {name: closed_date, type: time, type_params: {time_granularity: day}}
+      - {name: status, type: categorical}
+    measures:
+      # Loss-date measures: a claim counts in the month the loss happened (accident-month basis).
+      - {name: claims_reported, agg: count, expr: claim_id}
+      - {name: incurred_losses_amount, agg: sum, expr: incurred_amount}
+      - {name: paid_losses_amount, agg: sum, expr: paid_amount}
+      # Closed-date measures: a claim counts in the month it was closed.
+      - name: closed_claims_count
+        agg: sum
+        expr: "case when is_closed then 1 else 0 end"
+        agg_time_dimension: closed_date
+      - name: cycle_days_total
+        agg: sum
+        expr: "case when is_closed then cycle_days else 0 end"
+        agg_time_dimension: closed_date
+      - name: approved_claims_count
+        agg: sum
+        expr: "case when is_approved then 1 else 0 end"
+        agg_time_dimension: closed_date
+      - name: decided_claims_count
+        agg: sum
+        expr: "case when is_decided then 1 else 0 end"
+        agg_time_dimension: closed_date
+
+  - name: earned_premium
+    description: One row per policy and month in force.
+    model: ref('fct_premium_monthly')
+    defaults: {agg_time_dimension: earned_month}
+    entities:
+      - {name: policy_month, type: primary, expr: policy_month_id}
+      - {name: policy, type: foreign, expr: policy_id}
+    dimensions:
+      - {name: earned_month, type: time, type_params: {time_granularity: month}}
+    measures:
+      - {name: earned_premium_amount, agg: sum, expr: earned_premium}

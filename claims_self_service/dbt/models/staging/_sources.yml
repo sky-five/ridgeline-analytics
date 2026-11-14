@@ -1,0 +1,11 @@
+version: 2
+sources:
+  - name: raw_claims
+    description: The simulated book (claims_self_service/simulate.py) as a policy and claims system would export it.
+    tables:
+      - name: policies
+        description: One row per one-year policy, with its line of business, region, sales channel and annual premium.
+      - name: perils
+        description: One row per peril (cause of loss) a line of business covers.
+      - name: claims
+        description: One row per reported claim; open claims have no closed_date and carry a case reserve as incurred.

@@ -1,0 +1,7 @@
+claims_self_service:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('CLAIMS_DUCKDB_PATH', '../../warehouse/claims_self_service.duckdb') }}"
+      threads: 4

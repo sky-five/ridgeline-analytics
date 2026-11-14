@@ -1,0 +1,28 @@
+version: 2
+models:
+  - name: dim_policy
+    description: Policy dimension (line of business, region, channel, term, annual premium).
+    columns:
+      - name: policy_id
+        data_tests: [unique, not_null]
+  - name: dim_peril
+    description: Peril dimension (cause of loss and its group).
+    columns:
+      - name: peril_id
+        data_tests: [unique, not_null]
+  - name: fct_claims
+    description: Claims fact, one row per reported claim, keyed to dim_policy and dim_peril.
+    columns:
+      - name: claim_id
+        data_tests: [unique, not_null]
+      - name: policy_id
+        data_tests: [{relationships: {arguments: {to: ref('dim_policy'), field: policy_id}}}]
+      - name: peril_id
+        data_tests: [{relationships: {arguments: {to: ref('dim_peril'), field: peril_id}}}]
+  - name: fct_premium_monthly
+    description: Earned premium fact, one row per policy and month in force.
+    columns:
+      - name: policy_month_id
+        data_tests: [unique, not_null]
+      - name: policy_id
+        data_tests: [{relationships: {arguments: {to: ref('dim_policy'), field: policy_id}}}]

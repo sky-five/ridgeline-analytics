@@ -1,0 +1,36 @@
+version: 2
+
+# The three headline metrics are ratios; the simple metrics under them are queryable on their own.
+# Group any of them by metric_time, policy__line_of_business, policy__region or policy__channel.
+
+metrics:
+  - name: loss_ratio
+    label: Loss ratio
+    description: >
+      Incurred losses (paid on closed claims, case reserves on open ones) as a share of earned premium,
+      on an accident-month basis: losses count in the month they happened, premium in the month it was earned.
+      Claims not yet reported are not in it, so recent months read low.
+    type: ratio
+    type_params: {numerator: incurred_losses, denominator: earned_premium}
+
+  - name: claim_cycle_time_days
+    label: Claim cycle time (days)
+    description: Average days from report to close, over claims closed in the period (approved, denied or withdrawn).
+    type: ratio
+    type_params: {numerator: cycle_days, denominator: closed_claims}
+
+  - name: approval_rate
+    label: Approval rate
+    description: Approved claims as a share of decided claims (approved or denied) closed in the period. Withdrawn claims are left out.
+    type: ratio
+    type_params: {numerator: approved_claims, denominator: decided_claims}
+
+  - {name: incurred_losses, label: Incurred losses, description: "Paid on closed claims plus case reserves on open ones, by loss date.", type: simple, type_params: {measure: incurred_losses_amount}}
+  - {name: paid_losses, label: Paid losses, description: "Paid to date, by loss date.", type: simple, type_params: {measure: paid_losses_amount}}
+  - {name: earned_premium, label: Earned premium, description: "Annual premium spread evenly over the term, by month earned.", type: simple, type_params: {measure: earned_premium_amount}}
+  - {name: claims_reported, label: Claims reported, description: "Reported claims, by loss date.", type: simple, type_params: {measure: claims_reported}}
+  - {name: closed_claims, label: Closed claims, description: "Claims closed in the period.", type: simple, type_params: {measure: closed_claims_count}}
+  - {name: cycle_days, label: Cycle days, description: "Sum of report-to-close days over claims closed in the period.", type: simple, type_params: {measure: cycle_days_total}}
+  - {name: approved_claims, label: Approved claims, description: "Claims approved in the period.", type: simple, type_params: {measure: approved_claims_count}}
+  - {name: decided_claims, label: Decided claims, description: "Claims approved or denied in the period.", type: simple, type_params: {measure: decided_claims_count}}
+  - {name: policies_written, label: Policies written, description: "Policies by start date.", type: simple, type_params: {measure: policies_written}}

@@ -1,0 +1,21 @@
+name: claims_self_service
+version: "1.0.0"
+profile: claims_self_service
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  claims_self_service:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+    semantic:
+      +materialized: table
+
+vars:
+  as_of_date: "2026-06-30"  # claims_self_service/simulate.py AS_OF
