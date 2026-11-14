@@ -51,7 +51,7 @@ WITHDRAW = 0.04
 OPEN_RESERVE = 1.15  # an open claim's case reserve, as a multiple of its eventual severity
 OPEN_PAID_SHARE = 0.35  # share of an open claim's severity already paid
 HAIL_REGION, HAIL_START, HAIL_DAYS = "south", date(2025, 7, 14), 6
-HAIL_CLAIM_RATE = 0.22  # extra wind/hail claims per south homeowners policy in force during the storm
+HAIL_CLAIM_RATE = 0.10  # extra wind/hail claims per south homeowners policy in force during the storm
 
 
 @dataclass

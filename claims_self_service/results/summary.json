@@ -1,0 +1,300 @@
+{
+  "as_of": "2026-06-30",
+  "policies": 20000,
+  "claims": 2203,
+  "claims_by_status": {
+    "approved": 1756,
+    "denied": 251,
+    "open": 111,
+    "withdrawn": 85
+  },
+  "metrics": [
+    "approval_rate",
+    "approved_claims",
+    "claim_cycle_time_days",
+    "claims_reported",
+    "closed_claims",
+    "cycle_days",
+    "decided_claims",
+    "earned_premium",
+    "incurred_losses",
+    "loss_ratio",
+    "paid_losses",
+    "policies_written"
+  ],
+  "headline": {
+    "loss_ratio": 0.5315,
+    "claim_cycle_time_days": 26.4245,
+    "approval_rate": 0.8749,
+    "earned_premium": 42981153.2504,
+    "incurred_losses": 22846080.23
+  },
+  "by": {
+    "line_of_business": [
+      {
+        "line_of_business": "commercial_property",
+        "loss_ratio": 0.478,
+        "claim_cycle_time_days": 52.7607,
+        "approval_rate": 0.8603
+      },
+      {
+        "line_of_business": "homeowners",
+        "loss_ratio": 0.5467,
+        "claim_cycle_time_days": 29.5456,
+        "approval_rate": 0.8715
+      },
+      {
+        "line_of_business": "personal_auto",
+        "loss_ratio": 0.5891,
+        "claim_cycle_time_days": 19.7489,
+        "approval_rate": 0.8793
+      }
+    ],
+    "region": [
+      {
+        "region": "east",
+        "loss_ratio": 0.3979,
+        "claim_cycle_time_days": 25.9175,
+        "approval_rate": 0.8803
+      },
+      {
+        "region": "north",
+        "loss_ratio": 0.5674,
+        "claim_cycle_time_days": 26.996,
+        "approval_rate": 0.878
+      },
+      {
+        "region": "south",
+        "loss_ratio": 0.6481,
+        "claim_cycle_time_days": 25.3019,
+        "approval_rate": 0.8885
+      },
+      {
+        "region": "west",
+        "loss_ratio": 0.516,
+        "claim_cycle_time_days": 27.7659,
+        "approval_rate": 0.8488
+      }
+    ],
+    "channel": [
+      {
+        "channel": "agent",
+        "loss_ratio": 0.5294,
+        "claim_cycle_time_days": 25.3205,
+        "approval_rate": 0.9029
+      },
+      {
+        "channel": "broker",
+        "loss_ratio": 0.4777,
+        "claim_cycle_time_days": 27.8008,
+        "approval_rate": 0.8934
+      },
+      {
+        "channel": "direct",
+        "loss_ratio": 0.5894,
+        "claim_cycle_time_days": 27.3456,
+        "approval_rate": 0.8031
+      }
+    ]
+  },
+  "monthly": [
+    {
+      "month": "2025-01",
+      "loss_ratio": 0.1623
+    },
+    {
+      "month": "2025-02",
+      "loss_ratio": 1.1368,
+      "claim_cycle_time_days": 12.8889,
+      "approval_rate": 0.7222
+    },
+    {
+      "month": "2025-03",
+      "loss_ratio": 0.6487,
+      "claim_cycle_time_days": 18.1034,
+      "approval_rate": 0.8077
+    },
+    {
+      "month": "2025-04",
+      "loss_ratio": 0.4242,
+      "claim_cycle_time_days": 20.7188,
+      "approval_rate": 0.9355
+    },
+    {
+      "month": "2025-05",
+      "loss_ratio": 0.3474,
+      "claim_cycle_time_days": 19.0923,
+      "approval_rate": 0.8167
+    },
+    {
+      "month": "2025-06",
+      "loss_ratio": 0.5172,
+      "claim_cycle_time_days": 23.4875,
+      "approval_rate": 0.8718
+    },
+    {
+      "month": "2025-07",
+      "loss_ratio": 1.0889,
+      "claim_cycle_time_days": 21.1735,
+      "approval_rate": 0.828
+    },
+    {
+      "month": "2025-08",
+      "loss_ratio": 0.4634,
+      "claim_cycle_time_days": 22.2883,
+      "approval_rate": 0.9226
+    },
+    {
+      "month": "2025-09",
+      "loss_ratio": 0.4669,
+      "claim_cycle_time_days": 27.1983,
+      "approval_rate": 0.8364
+    },
+    {
+      "month": "2025-10",
+      "loss_ratio": 0.5283,
+      "claim_cycle_time_days": 26.803,
+      "approval_rate": 0.896
+    },
+    {
+      "month": "2025-11",
+      "loss_ratio": 0.4598,
+      "claim_cycle_time_days": 27.8588,
+      "approval_rate": 0.9102
+    },
+    {
+      "month": "2025-12",
+      "loss_ratio": 0.6004,
+      "claim_cycle_time_days": 25.1081,
+      "approval_rate": 0.8708
+    },
+    {
+      "month": "2026-01",
+      "loss_ratio": 0.4868,
+      "claim_cycle_time_days": 25.199,
+      "approval_rate": 0.8744
+    },
+    {
+      "month": "2026-02",
+      "loss_ratio": 0.5013,
+      "claim_cycle_time_days": 27.8779,
+      "approval_rate": 0.8571
+    },
+    {
+      "month": "2026-03",
+      "loss_ratio": 0.4323,
+      "claim_cycle_time_days": 30.4663,
+      "approval_rate": 0.8798
+    },
+    {
+      "month": "2026-04",
+      "loss_ratio": 0.4818,
+      "claim_cycle_time_days": 30.5926,
+      "approval_rate": 0.8974
+    },
+    {
+      "month": "2026-05",
+      "loss_ratio": 0.5169,
+      "claim_cycle_time_days": 31.5232,
+      "approval_rate": 0.8231
+    },
+    {
+      "month": "2026-06",
+      "loss_ratio": 0.527,
+      "claim_cycle_time_days": 28.1333,
+      "approval_rate": 0.925
+    }
+  ],
+  "hail": {
+    "region": "south",
+    "month": "2025-07",
+    "homeowners_by_month": [
+      {
+        "month": "2025-01"
+      },
+      {
+        "month": "2025-02"
+      },
+      {
+        "month": "2025-03",
+        "loss_ratio": 0.3614,
+        "claims_reported": 3.0
+      },
+      {
+        "month": "2025-04",
+        "loss_ratio": 0.0,
+        "claims_reported": 1.0
+      },
+      {
+        "month": "2025-05",
+        "loss_ratio": 0.1704,
+        "claims_reported": 3.0
+      },
+      {
+        "month": "2025-06",
+        "loss_ratio": 0.282,
+        "claims_reported": 5.0
+      },
+      {
+        "month": "2025-07",
+        "loss_ratio": 9.4043,
+        "claims_reported": 82.0
+      },
+      {
+        "month": "2025-08",
+        "loss_ratio": 0.8233,
+        "claims_reported": 5.0
+      },
+      {
+        "month": "2025-09",
+        "loss_ratio": 0.3665,
+        "claims_reported": 6.0
+      },
+      {
+        "month": "2025-10",
+        "loss_ratio": 0.2558,
+        "claims_reported": 5.0
+      },
+      {
+        "month": "2025-11",
+        "loss_ratio": 0.2958,
+        "claims_reported": 8.0
+      },
+      {
+        "month": "2025-12",
+        "loss_ratio": 0.3719,
+        "claims_reported": 14.0
+      },
+      {
+        "month": "2026-01",
+        "loss_ratio": 0.3773,
+        "claims_reported": 17.0
+      },
+      {
+        "month": "2026-02",
+        "loss_ratio": 0.4867,
+        "claims_reported": 9.0
+      },
+      {
+        "month": "2026-03",
+        "loss_ratio": 0.5102,
+        "claims_reported": 12.0
+      },
+      {
+        "month": "2026-04",
+        "loss_ratio": 0.2747,
+        "claims_reported": 5.0
+      },
+      {
+        "month": "2026-05",
+        "loss_ratio": 0.2179,
+        "claims_reported": 6.0
+      },
+      {
+        "month": "2026-06",
+        "loss_ratio": 0.4766,
+        "claims_reported": 6.0
+      }
+    ]
+  }
+}
