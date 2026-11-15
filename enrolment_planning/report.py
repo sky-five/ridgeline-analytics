@@ -45,13 +45,14 @@ def ratio_choices(bridge: pd.DataFrame) -> pd.DataFrame:
     mean = round(float(bridge["enrolments_per_new_permit"].mean()), 3)
     first, final = int(bridge["fall_year"].min()), int(bridge["fall_year"].max())
     rows = [
-        (f"As in fall {int(last.fall_year)}", last.enrolments_per_new_permit),
-        (f"Lowest (fall {int(low.fall_year)})", low.enrolments_per_new_permit),
-        (f"Mean of falls {first}-{final}", mean),
-        (f"Highest (fall {int(high.fall_year)})", high.enrolments_per_new_permit),
+        ("last", f"As in fall {int(last.fall_year)}", last.enrolments_per_new_permit),
+        ("low", f"Lowest (fall {int(low.fall_year)})", low.enrolments_per_new_permit),
+        ("mean", f"Mean of falls {first}-{final}", mean),
+        ("high", f"Highest (fall {int(high.fall_year)})", high.enrolments_per_new_permit),
     ]
-    return pd.DataFrame([{"sort": i, "choice": f"{label}: {r:.2f}", "ratio": float(r)}
-                         for i, (label, r) in enumerate(rows)])
+    # a text key for the page's dropdown: Evidence matches a dropdown's default by value, which a float may miss
+    return pd.DataFrame([{"sort": i, "ratio_key": key, "choice": f"{label}: {r:.2f}", "ratio": float(r)}
+                         for i, (key, label, r) in enumerate(rows)])
 
 
 def tables() -> dict[str, pd.DataFrame]:
@@ -63,7 +64,8 @@ def tables() -> dict[str, pd.DataFrame]:
     e, src, bt = s["enrolments"], s["sources"], s["backtest"]
 
     share = pd.read_csv(SHARE)
-    share.insert(2, "region_name", share["region_code"].map(REGION_NAMES))
+    share.insert(1, "fall", share["fall_year"].astype(str))  # a label: the site's charts treat numbers as values
+    share.insert(3, "region_name", share["region_code"].map(REGION_NAMES))
     share["group_label"] = share["program_group"].map(GROUP_LABELS)
 
     scores = pd.read_csv(SCORES)
@@ -79,6 +81,7 @@ def tables() -> dict[str, pd.DataFrame]:
                              series_name=monthly["series"].map(SERIES_NAMES))
 
     bridge = pd.DataFrame(s["intake_to_enrolment"])
+    bridge.insert(1, "fall", bridge["fall_year"].astype(str))
     ratios = ratio_choices(bridge)
     next_fall = int(bridge["fall_year"].max()) + 1
     next_intake = intake_window(monthly, next_fall)
