@@ -58,6 +58,9 @@ jobs:
       - name: ED wait-time results (weekly 8-hour breaches, public ICU file checks) match the committed files
         run: python -m ed_wait_times --check
 
+      - name: Enrolment planning results (public enrolments, intake rules back-test) match the committed files
+        run: python -m enrolment_planning --check
+
       - name: Metric registry compiles to the committed semantic layer, no metric changed without a version bump
         run: python -m metric_registry --check
 
