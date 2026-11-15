@@ -1,0 +1,16 @@
+name: enrolment_planning
+version: "1.0.0"
+profile: enrolment_planning
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  enrolment_planning:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table

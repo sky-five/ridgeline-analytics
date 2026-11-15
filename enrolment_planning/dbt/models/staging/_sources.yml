@@ -1,0 +1,16 @@
+version: 2
+sources:
+  - name: raw_public
+    description: Public data, loaded as committed (enrolment_planning/public.py). Open Government Licence - Canada.
+    tables:
+      - name: statcan_enrolments
+        description: >
+          Statistics Canada table 37-10-0163, fall-snapshot postsecondary enrolments (program counts, not
+          students), all ages and genders, leaf categories only, 2010/2011 to 2024/2025. Counts are randomly
+          rounded to a multiple of 3; empty where StatCan shows '..'.
+      - name: statcan_totals
+        description: Published totals per fall year, region and status (all levels, institutions, programs).
+      - name: ircc_study_permits
+        description: >
+          IRCC study permit holders by the month the permit became effective, region and study level,
+          January 2015 to August 2026. Rounded to a multiple of 5; 1 to 4 shown as no number (suppressed).

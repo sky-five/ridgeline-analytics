@@ -1,0 +1,25 @@
+version: 2
+models:
+  - name: stg_statcan__enrolments
+    columns:
+      - name: status_code
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [CAN, INT, NR]
+  - name: stg_statcan__totals
+    columns:
+      - name: status_code
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [ALL, CAN, INT, NR]
+  - name: stg_ircc__study_permits
+    columns:
+      - name: study_level
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [secondary_or_less, post_secondary, other, not_stated]
+      - name: permits
+        description: Empty only where IRCC suppressed a count of 1 to 4.

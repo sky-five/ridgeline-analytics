@@ -1,0 +1,7 @@
+enrolment_planning:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('ENROLMENT_PLANNING_DUCKDB_PATH', '../../warehouse/enrolment_planning.duckdb') }}"
+      threads: 4

@@ -1,0 +1,64 @@
+version: 2
+models:
+  - name: dim_program
+    columns:
+      - name: program_code
+        data_tests: [unique, not_null]
+  - name: dim_level
+    columns:
+      - name: isced_code
+        data_tests: [unique, not_null]
+  - name: dim_institution
+    columns:
+      - name: institution_code
+        data_tests: [unique, not_null]
+  - name: dim_status
+    columns:
+      - name: status_code
+        data_tests: [unique, not_null]
+  - name: dim_region
+    columns:
+      - name: region_code
+        data_tests: [unique, not_null]
+  - name: dim_term
+    columns:
+      - name: fall_year
+        data_tests: [unique, not_null]
+  - name: fct_enrolment
+    description: Fall-snapshot enrolments; one row per term, region, level, institution type, program, status.
+    columns:
+      - name: fall_year
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_term'), field: fall_year}
+      - name: region_code
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_region'), field: region_code}
+      - name: isced_code
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_level'), field: isced_code}
+      - name: institution_code
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_institution'), field: institution_code}
+      - name: program_code
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_program'), field: program_code}
+      - name: status_code
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_status'), field: status_code}
+  - name: enrolment_region_year
+    description: Enrolments by status per region and fall year, with the published totals and international share.
+  - name: fct_study_permits_month
+    description: New study permits per month, region and study level.
+    columns:
+      - name: region_code
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_region'), field: region_code}
+  - name: study_permits_canada_month
+    description: IRCC's all-Canada new study permits per month and study level.

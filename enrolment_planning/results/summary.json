@@ -1,0 +1,411 @@
+{
+  "sources": {
+    "enrolments": {
+      "table": "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710016301",
+      "licence": "Open Government Licence - Canada",
+      "first_fall": 2010,
+      "last_fall": 2024,
+      "fact_rows": 22949,
+      "cells_not_published": 491
+    },
+    "study_permits": {
+      "dataset": "https://open.canada.ca/data/en/dataset/90115b00-f9b8-49e8-afa3-b4cff8facaee",
+      "licence": "Open Government Licence - Canada",
+      "first_month": "2015-01",
+      "last_month": "2026-08",
+      "cells": 7560,
+      "cells_suppressed": 932
+    },
+    "sha256": {
+      "statcan_enrolments.csv": "b7f465507889c8f7f1facf6c50a68d0c7285b374e7b8767764d405c4da58c4c0",
+      "statcan_totals.csv": "1d2151495d11b4dbc61fa2e16f699e07402a2e81cd474b75dec98bd0de8fb072",
+      "ircc_study_permits_monthly.xlsx": "b047f434bd34a508071330b199ba18b37dd13a6b6fc28115be5eabbce7997076"
+    }
+  },
+  "enrolments": {
+    "last_fall": 2024,
+    "total": 2345775,
+    "international": 533382,
+    "international_share": 0.2274,
+    "peak_international_fall": 2023,
+    "peak_international": 572967,
+    "first_fall_international_share": 0.0723,
+    "international_by_region_last_fall": [
+      {
+        "region": "ON",
+        "international": 286539,
+        "share": 0.285
+      },
+      {
+        "region": "QC",
+        "international": 75975,
+        "share": 0.1355
+      },
+      {
+        "region": "BC",
+        "international": 73938,
+        "share": 0.2533
+      },
+      {
+        "region": "AB",
+        "international": 41004,
+        "share": 0.1806
+      },
+      {
+        "region": "MB",
+        "international": 14058,
+        "share": 0.2091
+      },
+      {
+        "region": "NS",
+        "international": 13920,
+        "share": 0.2257
+      },
+      {
+        "region": "SK",
+        "international": 11289,
+        "share": 0.1809
+      },
+      {
+        "region": "NB",
+        "international": 8670,
+        "share": 0.2698
+      },
+      {
+        "region": "NL",
+        "international": 5145,
+        "share": 0.1985
+      },
+      {
+        "region": "PE",
+        "international": 2790,
+        "share": 0.2921
+      },
+      {
+        "region": "TR",
+        "international": 21,
+        "share": 0.0136
+      }
+    ],
+    "international_by_program_group_last_fall": {
+      "BHASE": 345594,
+      "STEM": 177042,
+      "Unclassified": 10713
+    }
+  },
+  "new_post_secondary_permits_by_year": {
+    "2015": 146860,
+    "2016": 184705,
+    "2017": 220780,
+    "2018": 254940,
+    "2019": 297795,
+    "2020": 204335,
+    "2021": 359085,
+    "2022": 440950,
+    "2023": 538210,
+    "2024": 380370,
+    "2025": 257220,
+    "2026": 147690
+  },
+  "intake_to_enrolment": [
+    {
+      "fall_year": 2016,
+      "international_enrolments": 256563,
+      "new_permits_oct_to_sep": 172100,
+      "enrolments_per_new_permit": 1.491
+    },
+    {
+      "fall_year": 2017,
+      "international_enrolments": 296559,
+      "new_permits_oct_to_sep": 206665,
+      "enrolments_per_new_permit": 1.435
+    },
+    {
+      "fall_year": 2018,
+      "international_enrolments": 341985,
+      "new_permits_oct_to_sep": 253570,
+      "enrolments_per_new_permit": 1.349
+    },
+    {
+      "fall_year": 2019,
+      "international_enrolments": 389097,
+      "new_permits_oct_to_sep": 297390,
+      "enrolments_per_new_permit": 1.308
+    },
+    {
+      "fall_year": 2020,
+      "international_enrolments": 374265,
+      "new_permits_oct_to_sep": 223170,
+      "enrolments_per_new_permit": 1.677
+    },
+    {
+      "fall_year": 2021,
+      "international_enrolments": 403569,
+      "new_permits_oct_to_sep": 320415,
+      "enrolments_per_new_permit": 1.26
+    },
+    {
+      "fall_year": 2022,
+      "international_enrolments": 469011,
+      "new_permits_oct_to_sep": 407650,
+      "enrolments_per_new_permit": 1.151
+    },
+    {
+      "fall_year": 2023,
+      "international_enrolments": 572967,
+      "new_permits_oct_to_sep": 523970,
+      "enrolments_per_new_permit": 1.094
+    },
+    {
+      "fall_year": 2024,
+      "international_enrolments": 533382,
+      "new_permits_oct_to_sep": 430105,
+      "enrolments_per_new_permit": 1.24
+    }
+  ],
+  "backtest": {
+    "series": [
+      "CA",
+      "ON",
+      "BC",
+      "QC",
+      "AB"
+    ],
+    "rules": [
+      "same_month_last_year",
+      "last_year_with_trend",
+      "three_year_mean"
+    ],
+    "first_origin": "2017-12",
+    "last_origin": "2026-07",
+    "monthly_forecasts": 17730,
+    "next_12_months_best_rule": [
+      {
+        "series": "AB",
+        "period": "2018-2019 steady growth",
+        "rule": "last_year_with_trend",
+        "wape": 0.0845,
+        "bias": 0.0156
+      },
+      {
+        "series": "AB",
+        "period": "2020-2021 pandemic",
+        "rule": "three_year_mean",
+        "wape": 0.2134,
+        "bias": -0.0143
+      },
+      {
+        "series": "AB",
+        "period": "2022-2023 fast growth",
+        "rule": "same_month_last_year",
+        "wape": 0.2484,
+        "bias": -0.2484
+      },
+      {
+        "series": "AB",
+        "period": "2024-2026 after the cap",
+        "rule": "same_month_last_year",
+        "wape": 0.305,
+        "bias": 0.0895
+      },
+      {
+        "series": "BC",
+        "period": "2018-2019 steady growth",
+        "rule": "same_month_last_year",
+        "wape": 0.0766,
+        "bias": -0.0759
+      },
+      {
+        "series": "BC",
+        "period": "2020-2021 pandemic",
+        "rule": "three_year_mean",
+        "wape": 0.1226,
+        "bias": -0.0217
+      },
+      {
+        "series": "BC",
+        "period": "2022-2023 fast growth",
+        "rule": "same_month_last_year",
+        "wape": 0.196,
+        "bias": -0.196
+      },
+      {
+        "series": "BC",
+        "period": "2024-2026 after the cap",
+        "rule": "same_month_last_year",
+        "wape": 0.2962,
+        "bias": 0.2046
+      },
+      {
+        "series": "CA",
+        "period": "2018-2019 steady growth",
+        "rule": "same_month_last_year",
+        "wape": 0.1155,
+        "bias": -0.1155
+      },
+      {
+        "series": "CA",
+        "period": "2020-2021 pandemic",
+        "rule": "three_year_mean",
+        "wape": 0.1803,
+        "bias": -0.0526
+      },
+      {
+        "series": "CA",
+        "period": "2022-2023 fast growth",
+        "rule": "same_month_last_year",
+        "wape": 0.2426,
+        "bias": -0.2426
+      },
+      {
+        "series": "CA",
+        "period": "2024-2026 after the cap",
+        "rule": "same_month_last_year",
+        "wape": 0.352,
+        "bias": 0.2453
+      },
+      {
+        "series": "ON",
+        "period": "2018-2019 steady growth",
+        "rule": "same_month_last_year",
+        "wape": 0.0893,
+        "bias": -0.0893
+      },
+      {
+        "series": "ON",
+        "period": "2020-2021 pandemic",
+        "rule": "three_year_mean",
+        "wape": 0.1915,
+        "bias": -0.0601
+      },
+      {
+        "series": "ON",
+        "period": "2022-2023 fast growth",
+        "rule": "same_month_last_year",
+        "wape": 0.2823,
+        "bias": -0.2823
+      },
+      {
+        "series": "ON",
+        "period": "2024-2026 after the cap",
+        "rule": "same_month_last_year",
+        "wape": 0.4437,
+        "bias": 0.3258
+      },
+      {
+        "series": "QC",
+        "period": "2018-2019 steady growth",
+        "rule": "last_year_with_trend",
+        "wape": 0.0683,
+        "bias": -0.0537
+      },
+      {
+        "series": "QC",
+        "period": "2020-2021 pandemic",
+        "rule": "three_year_mean",
+        "wape": 0.19,
+        "bias": -0.1297
+      },
+      {
+        "series": "QC",
+        "period": "2022-2023 fast growth",
+        "rule": "same_month_last_year",
+        "wape": 0.1249,
+        "bias": -0.119
+      },
+      {
+        "series": "QC",
+        "period": "2024-2026 after the cap",
+        "rule": "same_month_last_year",
+        "wape": 0.1755,
+        "bias": 0.1093
+      }
+    ],
+    "canada_next_12_months": [
+      {
+        "period": "2018-2019 steady growth",
+        "rule": "same_month_last_year",
+        "forecasts": 13,
+        "wape": 0.1155,
+        "bias": -0.1155
+      },
+      {
+        "period": "2018-2019 steady growth",
+        "rule": "last_year_with_trend",
+        "forecasts": 13,
+        "wape": 0.1202,
+        "bias": 0.1183
+      },
+      {
+        "period": "2018-2019 steady growth",
+        "rule": "three_year_mean",
+        "forecasts": 13,
+        "wape": 0.2715,
+        "bias": -0.2715
+      },
+      {
+        "period": "2020-2021 pandemic",
+        "rule": "same_month_last_year",
+        "forecasts": 24,
+        "wape": 0.2267,
+        "bias": 0.0118
+      },
+      {
+        "period": "2020-2021 pandemic",
+        "rule": "last_year_with_trend",
+        "forecasts": 24,
+        "wape": 0.3234,
+        "bias": 0.0557
+      },
+      {
+        "period": "2020-2021 pandemic",
+        "rule": "three_year_mean",
+        "forecasts": 24,
+        "wape": 0.1803,
+        "bias": -0.0526
+      },
+      {
+        "period": "2022-2023 fast growth",
+        "rule": "same_month_last_year",
+        "forecasts": 24,
+        "wape": 0.2426,
+        "bias": -0.2426
+      },
+      {
+        "period": "2022-2023 fast growth",
+        "rule": "last_year_with_trend",
+        "forecasts": 24,
+        "wape": 0.3047,
+        "bias": 0.034
+      },
+      {
+        "period": "2022-2023 fast growth",
+        "rule": "three_year_mean",
+        "forecasts": 24,
+        "wape": 0.347,
+        "bias": -0.347
+      },
+      {
+        "period": "2024-2026 after the cap",
+        "rule": "same_month_last_year",
+        "forecasts": 32,
+        "wape": 0.352,
+        "bias": 0.2453
+      },
+      {
+        "period": "2024-2026 after the cap",
+        "rule": "last_year_with_trend",
+        "forecasts": 32,
+        "wape": 0.3827,
+        "bias": 0.3023
+      },
+      {
+        "period": "2024-2026 after the cap",
+        "rule": "three_year_mean",
+        "forecasts": 32,
+        "wape": 0.4234,
+        "bias": 0.1834
+      }
+    ]
+  }
+}
