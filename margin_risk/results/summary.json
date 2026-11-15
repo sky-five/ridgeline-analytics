@@ -27,7 +27,7 @@
   "shock_sector": {
     "sector": "semiconductors",
     "share": 0.1926,
-    "concentrated": 24.0
+    "concentrated": 24
   },
   "shock": {
     "from": "2026-03-16",
@@ -40,6 +40,8 @@
   "margin_calls": {
     "calls": 69,
     "on_a_break": 7,
+    "accounts": 18,
+    "before_shock": 0,
     "concentrated": 62,
     "top_in_semiconductors": 62,
     "deficit_at_call": 91566.69,
@@ -52,7 +54,7 @@
     }
   },
   "worst_day": {
-    "as_of_date": "2026-06-15 00:00:00",
+    "as_of_date": "2026-06-15",
     "market_pnl": -935643.3
   },
   "pnl": {
@@ -63,14 +65,14 @@
   "flagged_days": [
     {
       "date": "2026-04-15",
-      "market_value_drift": "-418102.89",
-      "cash_drift": "0.00",
+      "market_value_drift": -418102.89,
+      "cash_drift": 0.0,
       "accounts_broken": 77
     },
     {
       "date": "2026-05-29",
-      "market_value_drift": "0.00",
-      "cash_drift": "80589.39",
+      "market_value_drift": 0.0,
+      "cash_drift": 80589.39,
       "accounts_broken": 175
     }
   ],

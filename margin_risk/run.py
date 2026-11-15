@@ -37,7 +37,7 @@ def summary(db: Path) -> dict:
             select symbol, sector, share_of_borrower_value, borrowers_holding, borrowers_concentrated
             from concentration_by_symbol where as_of_date = '{a}' order by share_of_borrower_value desc limit 1""")
         sector = _one(con, f"""
-            select sum(share_of_borrower_value) as share, sum(borrowers_concentrated) as concentrated
+            select sum(share_of_borrower_value) as share, sum(borrowers_concentrated)::int as concentrated
             from concentration_by_symbol where as_of_date = '{a}' and sector = '{SHOCK_SECTOR}'""")
         shock = _one(con, f"""
             with p as (
@@ -50,9 +50,11 @@ def summary(db: Path) -> dict:
                    (select round(sum(market_pnl), 2) from daily_firm_summary
                     where as_of_date between '{SHOCK_FROM}' and '{SHOCK_TO}') as market_pnl_week
             from p""")
-        calls = con.sql("""
+        calls = con.sql(f"""
             select count(*) as calls,
                    count(*) filter (where starts_on_break) as on_a_break,
+                   count(distinct account_id) filter (where not starts_on_break) as accounts,
+                   count(*) filter (where not starts_on_break and call_date < '{SHOCK_FROM}') as before_shock,
                    count(*) filter (where not starts_on_break and was_concentrated) as concentrated,
                    count(*) filter (where not starts_on_break and top_symbol like 'SEM%') as top_in_semiconductors,
                    round(sum(deficit_at_call) filter (where not starts_on_break), 2) as deficit_at_call,
@@ -62,11 +64,13 @@ def summary(db: Path) -> dict:
                                      group by 1 order by 1""").fetchall())
         shock_calls = con.sql(f"""select count(*) from margin_calls where not starts_on_break
                                   and call_date between '{SHOCK_FROM}' and date '{SHOCK_TO}' + 7""").fetchone()[0]
-        worst_day = _one(con, """select as_of_date, round(market_pnl, 2) as market_pnl from daily_firm_summary
+        worst_day = _one(con, """select as_of_date::varchar as as_of_date, round(market_pnl, 2) as market_pnl
+                                 from daily_firm_summary
                                  where market_pnl is not null order by market_pnl limit 1""")
         pnl = _one(con, """select round(sum(market_pnl), 2) as market_pnl, round(sum(interest_income), 2) as
                            interest_income, round(sum(deposits), 2) as deposits from daily_firm_summary""")
-        flagged = [{"date": r[0].isoformat(), "market_value_drift": r[1], "cash_drift": r[2], "accounts_broken": r[3]}
+        flagged = [{"date": r[0].isoformat(), "market_value_drift": float(r[1]), "cash_drift": float(r[2]),
+                    "accounts_broken": r[3]}
                    for r in con.sql("""select as_of_date, market_value_drift, cash_drift, accounts_broken
                                        from reconciliation_daily where is_flagged order by 1""").fetchall()]
     calls = {k: (int(v) if k not in ("deficit_at_call", "median_weekdays") else float(v)) for k, v in calls.items()}
@@ -96,7 +100,7 @@ def to_json(s: dict) -> str:
 
 
 def _usd(x: float) -> str:
-    return f"${x:,.0f}"
+    return f"-${-x:,.0f}" if x < -0.5 else f"${x:,.0f}"
 
 
 def _pct(x: float) -> str:
@@ -130,8 +134,9 @@ def findings(s: dict) -> str:
         f"- {sh['from']} to {sh['to']}: {s['shock_sector']['sector']} fell {_pct(-sh['mildest_drop'])} to "
         f"{_pct(-sh['worst_drop'])}; market P&L for the week {_usd(sh['market_pnl_week'])}. "
         f"{sh['real_calls_within_a_week']} calls started that week or the next.",
-        f"- {c['calls'] - c['on_a_break']} real calls over the period ({c['concentrated']} in concentrated "
-        f"accounts, {c['top_in_semiconductors']} with a semiconductor as the largest holding), "
+        f"- {c['calls'] - c['on_a_break']} real calls from {c['accounts']} accounts, {c['before_shock']} before the "
+        f"sell-off; {c['concentrated']} in concentrated "
+        f"accounts, {c['top_in_semiconductors']} with a semiconductor as the largest holding; "
         f"{_usd(c['deficit_at_call'])} short on the day of the call, median {c['median_weekdays']:.0f} "
         f"weekday(s) in call. Ended by deposit {r.get('deposit', 0)}, liquidation {r.get('liquidated', 0)}, the "
         f"market {r.get('market', 0)}, still open {r.get('open', 0)}.",
