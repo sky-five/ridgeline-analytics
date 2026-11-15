@@ -160,6 +160,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(onboarding_tables())
 
+    # ED wait times and bed occupancy by site (ed_wait_times/), on the "ED wait times" page
+    from ed_wait_times.report import tables as ed_tables
+
+    tables.update(ed_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
