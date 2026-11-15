@@ -155,6 +155,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(claims_ss_tables())
 
+    # the onboarding funnel monitor's results (onboarding_funnel/), on the "Onboarding funnel" page
+    from onboarding_funnel.report import tables as onboarding_tables
+
+    tables.update(onboarding_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
