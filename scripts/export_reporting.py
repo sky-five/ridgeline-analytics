@@ -165,6 +165,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(ed_tables())
 
+    # public enrolment and study-permit data, the intake back-test and the what-if (enrolment_planning/)
+    from enrolment_planning.report import tables as enrolment_tables
+
+    tables.update(enrolment_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 

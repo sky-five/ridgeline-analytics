@@ -1,6 +1,8 @@
 """Write the results: results/summary.json (the enrolment headline, yearly new permits, the back-test's 12-month
-scores and which rule did best in each period, and the permits-to-enrolment ratio a what-if starts from) and
-results/backtest_scores.csv (every series, rule, period and horizon). Every number comes from the dbt marts."""
+scores and which rule did best in each period, and the permits-to-enrolment ratio a what-if starts from),
+results/backtest_scores.csv (every series, rule, period and horizon), results/international_share.csv (region x
+fall x program group) and results/permits_monthly.csv (the five back-tested series). Every number comes from the
+dbt marts; the dashboard (report.py) reads only these files."""
 import json
 from pathlib import Path
 
@@ -12,6 +14,8 @@ from enrolment_planning import forecast, public
 RESULTS = Path(__file__).resolve().parent / "results"
 SUMMARY = RESULTS / "summary.json"
 SCORES = RESULTS / "backtest_scores.csv"
+SHARE = RESULTS / "international_share.csv"
+PERMITS_MONTHLY = RESULTS / "permits_monthly.csv"
 SERIES = ("CA", "ON", "BC", "QC", "AB")  # Canada and the four provinces with the most new permits
 
 
@@ -117,6 +121,46 @@ def scores_csv(db: Path) -> str:
     with duckdb.connect(str(db), read_only=True) as con:
         monthly, yearly = backtests(con)
     return scores_frame(monthly, yearly).to_csv(index=False, lineterminator="\n")
+
+
+def share_csv(db: Path) -> str:
+    """International enrolments over all enrolments per region (CA = every region added up), fall year and
+    program group (ALL = every group). Cells StatCan did not publish count as nothing on both sides."""
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql("""
+            with f as (
+                select f.fall_year, f.region_code, p.program_group, f.status_code, f.enrolments
+                from fct_enrolment as f join dim_program as p using (program_code)
+            )
+            select fall_year,
+                   coalesce(region_code, 'CA') as region_code,
+                   coalesce(program_group, 'ALL') as program_group,
+                   sum(enrolments) filter (where status_code = 'INT')::bigint as international,
+                   sum(enrolments)::bigint as total
+            from f
+            group by cube (region_code, program_group), fall_year
+            order by fall_year, region_code, program_group
+        """).df()
+    df["international_share"] = (df["international"] / df["total"]).round(4)
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def permits_monthly_csv(db: Path) -> str:
+    """New post-secondary study permits per month for the five back-tested series."""
+    with duckdb.connect(str(db), read_only=True) as con:
+        frames = [permit_series(con, s).rename("permits").rename_axis("month").reset_index().assign(series=s)
+                  for s in SERIES]
+    df = pd.concat(frames, ignore_index=True)[["series", "month", "permits"]]
+    df["month"] = df["month"].astype(str)
+    df["permits"] = df["permits"].astype(int)
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def results(db: Path) -> tuple[dict, dict[Path, str]]:
+    """The summary and every results file's fresh text."""
+    s = summary(db)
+    return s, {SUMMARY: to_json(s), SCORES: scores_csv(db), SHARE: share_csv(db),
+               PERMITS_MONTHLY: permits_monthly_csv(db)}
 
 
 def to_json(s: dict) -> str:

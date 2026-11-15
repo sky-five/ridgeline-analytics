@@ -4,7 +4,7 @@ from pathlib import Path
 
 from enrolment_planning import public
 from enrolment_planning.load import DEFAULT_DB, dbt_build, load
-from enrolment_planning.run import SCORES, SUMMARY, scores_csv, summary, to_json
+from enrolment_planning.run import results
 
 p = argparse.ArgumentParser(prog="python -m enrolment_planning")
 p.add_argument("--db", type=Path, default=DEFAULT_DB)
@@ -17,15 +17,14 @@ if args.refresh:
 for table, n in load(args.db).items():
     print(f"{table:36}{n:>9,}")
 dbt_build(args.db)
-s = summary(args.db)
-fresh = {SUMMARY: to_json(s), SCORES: scores_csv(args.db)}
+s, fresh = results(args.db)
 if args.check:
     for path, text in fresh.items():
         if not path.exists() or path.read_text() != text:
             sys.exit(f"{path} is out of date: run python -m enrolment_planning")
         print(f"results/{path.name} matches")
 else:
-    SUMMARY.parent.mkdir(exist_ok=True)
+    next(iter(fresh)).parent.mkdir(exist_ok=True)
     for path, text in fresh.items():
         path.write_text(text)
 e = s["enrolments"]
