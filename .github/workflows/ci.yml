@@ -55,6 +55,9 @@ jobs:
       - name: Onboarding funnel results, accuracy checks and findings note match the committed files
         run: python -m onboarding_funnel --check
 
+      - name: ED wait-time results (weekly 8-hour breaches, public ICU file checks) match the committed files
+        run: python -m ed_wait_times --check
+
       - name: Metric registry compiles to the committed semantic layer, no metric changed without a version bump
         run: python -m metric_registry --check
 

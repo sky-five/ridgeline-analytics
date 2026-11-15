@@ -1,0 +1,345 @@
+{
+  "simulated": {
+    "first_day": "2026-01-05",
+    "last_day": "2026-11-08",
+    "sites": 10,
+    "visits": 475391,
+    "admitted": 64014,
+    "p90_admitted_hours_all": 7.43
+  },
+  "last_week": {
+    "week_start": "2026-11-02",
+    "week_end": "2026-11-08",
+    "patient_group": "admitted",
+    "target_hours": 8,
+    "breached": [
+      "ED07",
+      "ED03",
+      "ED06"
+    ],
+    "not_reported": [
+      "ED10"
+    ],
+    "sites": [
+      {
+        "site_id": "ED07",
+        "site_type": "large community",
+        "region": "East",
+        "patients": 117,
+        "p90_hours": 11.51,
+        "share_within_target": 0.7521,
+        "mean_bed_occupancy": 1.0,
+        "reported": true,
+        "breached": true
+      },
+      {
+        "site_id": "ED03",
+        "site_type": "teaching",
+        "region": "Central",
+        "patients": 298,
+        "p90_hours": 10.43,
+        "share_within_target": 0.7718,
+        "mean_bed_occupancy": 0.9926,
+        "reported": true,
+        "breached": true
+      },
+      {
+        "site_id": "ED06",
+        "site_type": "large community",
+        "region": "Toronto",
+        "patients": 172,
+        "p90_hours": 8.34,
+        "share_within_target": 0.8837,
+        "mean_bed_occupancy": 0.9494,
+        "reported": true,
+        "breached": true
+      },
+      {
+        "site_id": "ED01",
+        "site_type": "teaching",
+        "region": "Toronto",
+        "patients": 301,
+        "p90_hours": 7.87,
+        "share_within_target": 0.9103,
+        "mean_bed_occupancy": 0.9426,
+        "reported": true,
+        "breached": false
+      },
+      {
+        "site_id": "ED04",
+        "site_type": "large community",
+        "region": "West",
+        "patients": 191,
+        "p90_hours": 6.75,
+        "share_within_target": 0.9424,
+        "mean_bed_occupancy": 0.9325,
+        "reported": true,
+        "breached": false
+      },
+      {
+        "site_id": "ED02",
+        "site_type": "teaching",
+        "region": "East",
+        "patients": 219,
+        "p90_hours": 6.24,
+        "share_within_target": 0.9726,
+        "mean_bed_occupancy": 0.9196,
+        "reported": true,
+        "breached": false
+      },
+      {
+        "site_id": "ED05",
+        "site_type": "large community",
+        "region": "Central",
+        "patients": 133,
+        "p90_hours": 5.97,
+        "share_within_target": 0.985,
+        "mean_bed_occupancy": 0.9205,
+        "reported": true,
+        "breached": false
+      },
+      {
+        "site_id": "ED08",
+        "site_type": "small community",
+        "region": "North",
+        "patients": 56,
+        "p90_hours": 5.43,
+        "share_within_target": 1.0,
+        "mean_bed_occupancy": 0.8698,
+        "reported": true,
+        "breached": false
+      },
+      {
+        "site_id": "ED09",
+        "site_type": "small community",
+        "region": "West",
+        "patients": 30,
+        "p90_hours": 4.82,
+        "share_within_target": 1.0,
+        "mean_bed_occupancy": 0.8648,
+        "reported": true,
+        "breached": false
+      },
+      {
+        "site_id": "ED10",
+        "site_type": "small community",
+        "region": "North",
+        "patients": 12,
+        "p90_hours": 3.82,
+        "share_within_target": 1.0,
+        "mean_bed_occupancy": 0.8321,
+        "reported": false,
+        "breached": false
+      }
+    ]
+  },
+  "admitted_weeks_by_site": [
+    {
+      "site_id": "ED01",
+      "weeks": 44,
+      "breached_weeks": 11,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 6.93,
+      "mean_bed_occupancy": 0.9247
+    },
+    {
+      "site_id": "ED02",
+      "weeks": 44,
+      "breached_weeks": 0,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 6.3,
+      "mean_bed_occupancy": 0.906
+    },
+    {
+      "site_id": "ED03",
+      "weeks": 44,
+      "breached_weeks": 39,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 9.59,
+      "mean_bed_occupancy": 0.9783
+    },
+    {
+      "site_id": "ED04",
+      "weeks": 44,
+      "breached_weeks": 2,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 6.25,
+      "mean_bed_occupancy": 0.9144
+    },
+    {
+      "site_id": "ED05",
+      "weeks": 44,
+      "breached_weeks": 0,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 5.69,
+      "mean_bed_occupancy": 0.8961
+    },
+    {
+      "site_id": "ED06",
+      "weeks": 44,
+      "breached_weeks": 10,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 6.53,
+      "mean_bed_occupancy": 0.9253
+    },
+    {
+      "site_id": "ED07",
+      "weeks": 44,
+      "breached_weeks": 3,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 5.68,
+      "mean_bed_occupancy": 0.9003
+    },
+    {
+      "site_id": "ED08",
+      "weeks": 44,
+      "breached_weeks": 0,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 4.94,
+      "mean_bed_occupancy": 0.8563
+    },
+    {
+      "site_id": "ED09",
+      "weeks": 44,
+      "breached_weeks": 0,
+      "unreported_weeks": 0,
+      "median_weekly_p90_hours": 4.55,
+      "mean_bed_occupancy": 0.8444
+    },
+    {
+      "site_id": "ED10",
+      "weeks": 44,
+      "breached_weeks": 0,
+      "unreported_weeks": 43,
+      "median_weekly_p90_hours": 4.29,
+      "mean_bed_occupancy": 0.8254
+    }
+  ],
+  "bed_closure": {
+    "site_id": "ED07",
+    "from": "2026-10-26",
+    "before": {
+      "weeks": 42,
+      "breached_weeks": 1,
+      "median_p90_hours": 5.66,
+      "mean_bed_occupancy": 0.8956
+    },
+    "after": {
+      "weeks": 2,
+      "breached_weeks": 2,
+      "median_p90_hours": 10.74,
+      "mean_bed_occupancy": 0.9985
+    }
+  },
+  "public_icu": {
+    "source": "https://data.ontario.ca/dataset/availability-of-adult-icu-beds-and-occupancy-for-covid-related-critical-illness-crci",
+    "licence": "Open Government Licence - Ontario",
+    "sha256": "ac0273990f51967e32881c332930e70bf7f82a252c58fb498efb31b3a241b5b4",
+    "first_day": "2020-05-01",
+    "last_day": "2024-11-20",
+    "days": 1665,
+    "mean_adult_occupancy": 0.743,
+    "median_adult_occupancy": 0.7418,
+    "odd_days": [
+      {
+        "date": "2022-11-09T00:00:00",
+        "adult_patients": 1780,
+        "adult_beds": 2341,
+        "ped_patients": 122,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-10T00:00:00",
+        "adult_patients": 1731,
+        "adult_beds": 2341,
+        "ped_patients": 117,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-11T00:00:00",
+        "adult_patients": 1707,
+        "adult_beds": 2341,
+        "ped_patients": 115,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-12T00:00:00",
+        "adult_patients": 1664,
+        "adult_beds": 2341,
+        "ped_patients": 113,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-16T00:00:00",
+        "adult_patients": 1781,
+        "adult_beds": 2341,
+        "ped_patients": 114,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-17T00:00:00",
+        "adult_patients": 1756,
+        "adult_beds": 2341,
+        "ped_patients": 113,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-18T00:00:00",
+        "adult_patients": 1729,
+        "adult_beds": 2341,
+        "ped_patients": 115,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-19T00:00:00",
+        "adult_patients": 1721,
+        "adult_beds": 2341,
+        "ped_patients": 118,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2022-11-20T00:00:00",
+        "adult_patients": 1737,
+        "adult_beds": 2341,
+        "ped_patients": 116,
+        "ped_beds": 112,
+        "over_capacity": true,
+        "adult_patients_outlier": false
+      },
+      {
+        "date": "2023-09-09T00:00:00",
+        "adult_patients": 560,
+        "adult_beds": 2358,
+        "ped_patients": 29,
+        "ped_beds": 131,
+        "over_capacity": false,
+        "adult_patients_outlier": true
+      },
+      {
+        "date": "2023-10-20T00:00:00",
+        "adult_patients": 2870,
+        "adult_beds": 2421,
+        "ped_patients": 186,
+        "ped_beds": 131,
+        "over_capacity": true,
+        "adult_patients_outlier": true
+      }
+    ]
+  }
+}
