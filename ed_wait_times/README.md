@@ -87,15 +87,50 @@ and listed in `results/summary.json`:
 The two single days look like reporting errors; the November 2022 days may be real. The test warns rather than
 fails because the rows are the source's, not this project's.
 
+## The dashboard page
+
+The site's [ED wait times page](https://sky-five.github.io/ridgeline-analytics/ed-wait-times/) reads seven
+`reporting.ed_*` tables that `report.py` builds from `results/` and the pinned public file (no warehouse needed):
+
+- last week's 90th percentile for admitted patients by site against the 8-hour target, and the breach table;
+- a site picker for weekly visits, admitted patients, the admitted 90th percentile and bed occupancy, with ED07's
+  bed closure marked and the latest weeks first in the table (ED07's staffed beds drop from 260 to 236);
+- a site-by-week heatmap of the 90th percentile for each patient group, and each site's weeks over target;
+- the public ICU file by day, adult and paediatric occupancy, with the 11 odd days marked and listed with the reason.
+
+A week with fewer than 20 patients has no 90th percentile in the tables, so a chart shows a gap, never a pass.
+
+## Ask it from an AI assistant (MCP)
+
+`server.py` is a read-only MCP server over the same marts. Build the warehouse first, then register it:
+
+```
+python -m ed_wait_times
+claude mcp add ed-wait-times -- .venv/bin/python -m ed_wait_times.server
+```
+
+| tool | what it returns |
+|---|---|
+| `list_weeks` | the weeks with data (Monday starts), the last full week, the three patient groups and their targets, the ten sites |
+| `site_breaches(week_start, patient_group)` | `breaches()` for that week: sites over target worst first, sites not reported, and every site's 90th percentile, patient count, share within target and bed occupancy |
+
+Both arguments are optional: with none it answers last week for admitted patients, the same as the table above.
+Any day picks the week it falls in, so "the week of 2026-10-29" gives 2026-10-26 to 2026-11-01 (ED07 and ED03
+over 8 hours). An unknown group or a week outside the data comes back as an error naming what is valid. There is
+no SQL tool, and the warehouse is opened read-only on every call.
+
 ## Tests
 
-`tests/ed_wait_times/` (12 tests) builds the warehouse once and checks: the simulation is seeded and every arrival
+`tests/ed_wait_times/` (24 tests) builds the warehouse once and checks: the simulation is seeded and every arrival
 falls inside its day; the weekly 90th percentile, patient counts and share within target match a pandas count from
 the raw visits for all 440 site-weeks; daily visit counts in the long table match; the planted patterns; the
 breach list for last week against pandas, for an earlier week and for another patient group; the breach rule on a
 hand-made week (8.01 hours breaches, 8.00 does not, 19 patients is not reported); the public file matches its pin
-and a changed byte is refused; the 11 odd days; and that `results/` is current. The dbt project has 24 data tests,
+and a changed byte is refused; the 11 odd days; and that `results/` is current. For the page: weekly visits and
+admissions add back to 475,391 and 64,014, an unreported week never carries a 90th percentile, ED07's staffed
+beds drop only in the two weeks after the closure, the ICU table is the public file row for row, the page reads
+only exported tables and columns, and the nightly smoke test opens it. For the MCP server: over stdio it lists
+exactly two tools, answers last week exactly as `results/summary.json`, matches `breaches()` for every patient
+group, refuses a bad week, date or group, and cannot write to the warehouse. The dbt project has 24 data tests,
 one of them warn-level (keys, accepted values, every site-day-metric present once, weeks add up to visits, stays between 0 and 48
 hours, the public file's parts add up and has no missing day).
-
-Next: an Evidence page of throughput by site, and a read-only MCP tool on `breaches()`.
