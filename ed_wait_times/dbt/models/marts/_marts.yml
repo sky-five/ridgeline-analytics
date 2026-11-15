@@ -1,0 +1,34 @@
+version: 2
+models:
+  - name: dim_sites
+    columns:
+      - name: site_id
+        data_tests: [unique, not_null]
+  - name: fct_site_day_metric
+    description: One row per site, day and metric (long shape).
+    columns:
+      - name: metric
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [ed_visits, admitted_visits, p90_los_admitted_hours, share_admitted_within_8h,
+                         p90_los_low_urgency_hours, staffed_beds, occupied_beds, bed_occupancy_rate]
+  - name: site_week
+    description: Weekly 90th percentile hours in the ED per site and patient group, against its target.
+    columns:
+      - name: patient_group
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [admitted, high_urgency_sent_home, low_urgency_sent_home]
+      - name: target_hours
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [4, 8]
+  - name: icu_province_day
+    description: The public ICU file per day with over-capacity and patient-count outlier flags.
+    columns:
+      - name: census_date
+        data_tests: [unique, not_null]

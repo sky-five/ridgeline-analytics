@@ -2,3 +2,4 @@
 *.jpg binary
 *.png binary
 *.duckdb binary
+ed_wait_times/data/*.csv -text

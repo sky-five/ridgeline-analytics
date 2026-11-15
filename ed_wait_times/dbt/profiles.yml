@@ -1,0 +1,7 @@
+ed_wait_times:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('ED_WAIT_TIMES_DUCKDB_PATH', '../../warehouse/ed_wait_times.duckdb') }}"
+      threads: 4

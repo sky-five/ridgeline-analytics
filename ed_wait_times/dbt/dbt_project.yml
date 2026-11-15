@@ -1,0 +1,19 @@
+name: ed_wait_times
+version: "1.0.0"
+profile: ed_wait_times
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  ed_wait_times:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  min_weekly_patients: 20  # fewer patients than this in a group and week: too few to report a 90th percentile

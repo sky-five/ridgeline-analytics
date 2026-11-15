@@ -1,0 +1,36 @@
+version: 2
+models:
+  - name: stg_ed__visits
+    description: ED visits with hours in the ED, the patient group and its target.
+    columns:
+      - name: visit_id
+        data_tests: [unique, not_null]
+      - name: site_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: source('raw_ed', 'sites')
+                field: site_id
+      - name: triage_level
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+      - name: disposition
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [admitted, discharged]
+      - name: los_hours
+        description: Hours from triage to leaving the ED.
+        data_tests: [not_null]
+  - name: stg_ed__bed_census
+    columns:
+      - name: occupancy_rate
+        description: Occupied over staffed beds at midnight; can pass 1 when patients wait in hallways.
+        data_tests: [not_null]
+  - name: stg_public__ontario_icu_beds
+    columns:
+      - name: census_date
+        data_tests: [unique, not_null]

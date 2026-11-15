@@ -1,0 +1,18 @@
+version: 2
+sources:
+  - name: raw_ed
+    description: Simulated ED visits and midnight bed census for ten sites (ed_wait_times/simulate.py).
+    tables:
+      - name: visits
+        description: One row per ED visit, from triage to leaving the ED (sent home or moved to a ward bed).
+      - name: bed_census
+        description: Staffed and occupied inpatient beds per site at midnight.
+      - name: sites
+        description: Site type and region.
+  - name: raw_public
+    description: Public data, loaded as published.
+    tables:
+      - name: ontario_icu_beds
+        description: >
+          Ontario's daily adult and paediatric ICU beds and patients, province-wide, 2020-05-01 to 2024-11-20
+          (data.ontario.ca, Open Government Licence - Ontario). No longer updated.
