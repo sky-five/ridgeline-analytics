@@ -222,7 +222,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Enrolment planning
 
-`enrolment_planning/` is a small dbt star schema on DuckDB over public data only: Statistics Canada's fall-snapshot postsecondary enrolments (table 37-10-0163, fall 2010 to fall 2024, by term, region, ISCED level, institution type, STEM/BHASE program group and status of student) and IRCC's monthly new study permits (January 2015 to August 2026), both committed and pinned by SHA-256. In fall 2024 there were 533,382 international enrolments of 2,345,775 (22.7%), down from 572,967 in fall 2023. Three simple rules for next year's intake (same month last year, with last year's trend, three-year mean) are back-tested from every month-end since 2017-12: no rule wins every period, and after the 2024 cap on study permits every rule forecast too many for Canada, by 18% to 30% on the 12-month total. Details: [enrolment_planning/README.md](enrolment_planning/README.md).
+`enrolment_planning/` is a small dbt star schema on DuckDB over public data only: Statistics Canada's fall-snapshot postsecondary enrolments (table 37-10-0163, fall 2010 to fall 2024, by term, region, ISCED level, institution type, STEM/BHASE program group and status of student) and IRCC's monthly new study permits (January 2015 to August 2026), both committed and pinned by SHA-256. In fall 2024 there were 533,382 international enrolments of 2,345,775 (22.7%), down from 572,967 in fall 2023. Three simple rules for next year's intake (same month last year, with last year's trend, three-year mean) are back-tested from every month-end since 2017-12: no rule wins every period, and after the 2024 cap on study permits every rule forecast too many for Canada, by 18% to 30% on the 12-month total. The site's [Enrolment planning page](https://sky-five.github.io/ridgeline-analytics/enrolment-planning/) shows the international share by region and program group, the back-test by period and rule, and a what-if that turns a year of new permits into a fall enrolment figure with the published enrolments-per-permit ratios (1.09 to 1.68). Details: [enrolment_planning/README.md](enrolment_planning/README.md).
 
 ## Metric registry
 
@@ -283,7 +283,7 @@ or_utilisation/ simulated operating-room blocks in dbt: metric spec, checks for 
 claims_self_service/ simulated insurance claims star schema in dbt with a MetricFlow layer: loss ratio, cycle time, approval rate, handover doc, dashboard page
 onboarding_funnel/ simulated onboarding events in dbt: funnel per person, drop-off reasons, time to first transaction, a check that catches double-counted applications, dashboard page
 ed_wait_times/ ED wait times per site and day next to bed occupancy (simulated sites, public Ontario ICU file) in dbt, weekly 8-hour breach query, dashboard page, read-only MCP server
-enrolment_planning/ public enrolment and study-permit data in a dbt star schema, three intake rules back-tested monthly
+enrolment_planning/ public enrolment and study-permit data in a dbt star schema, three intake rules back-tested monthly, dashboard page with an intake what-if
 metric_registry/ one registry file compiled to a MetricFlow layer and a glossary for simulated vehicle sales and incentives; no metric changes without a version bump
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics

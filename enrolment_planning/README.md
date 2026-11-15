@@ -86,8 +86,7 @@ What the back-test says:
 - After the federal cap on study permit applications (announced 2024-01-22), every rule forecast too many for
   Canada, by 18% to 30% on the 12-month total. Across the five series and three rules, 14 of 15 were too high;
   the exception is Alberta's three-year mean (bias -5.6%). Rules built on past months cannot see a policy change;
-  a plan in 2024 needed the cap as an explicit input, which is what the what-if slider in the dashboard half
-  (5.17b) is for.
+  a plan in 2024 needed the cap as an explicit input, which is what the what-if on the dashboard page is for.
 - The provinces tell the same story: the best rule after the cap misses by 17.6% (Quebec) to 44.4% (Ontario).
 
 `results/summary.json` also holds, for each fall from 2016, international enrolments over the new post-secondary
@@ -95,14 +94,35 @@ permits of the 12 months to September (1.09 to 1.68 enrolments per new permit; 1
 the starting point for turning an intake what-if into a fall enrolment figure.
 
 `results/backtest_scores.csv` has every series, rule, period and horizon (1 to 12 months, and the 12-month
-total).
+total). `results/international_share.csv` has international and all enrolments per region (and Canada), fall and
+program group; `results/permits_monthly.csv` the five monthly permit series. `--check` covers all four files.
+
+## The dashboard page
+
+The site's [Enrolment planning page](https://sky-five.github.io/ridgeline-analytics/enrolment-planning/) shows
+the international share by region and program group (fall 2024, and every fall for Canada and the four largest
+provinces), the back-test by period and rule for any of the five series, and a what-if.
+`report.py` turns the committed results into seven `reporting.enrol_*` tables (no warehouse needed), so the page
+does not move with the nightly build.
+
+The what-if multiplies a year of new post-secondary permits (October to September) by enrolments per new permit.
+That ratio is a stock over a flow: the fall count holds every year of study, the permits only the new arrivals, so
+it rises when intake falls (1.31 in fall 2019, 1.68 in fall 2020 when intake dropped, 1.09 at the fall 2023 peak).
+The page offers four published values (fall 2024, lowest, mean, highest) and shows the whole range. The last
+complete window, October 2024 to September 2025, had 263,845 new permits, down from 430,105 a year earlier; at
+1.24 that is 328,600 international enrolments in fall 2025 (-38.4%), at 1.68 it is 444,405 (-16.7%). StatCan has
+not published fall 2025 yet. It is arithmetic on published ratios, not a forecast.
 
 ## Tests
 
-`tests/enrolment_planning/` (14 tests) checks the committed files against their pins and refuses a changed one;
+`tests/enrolment_planning/` (25 tests) checks the committed files against their pins and refuses a changed one;
 `build_extract` on hand-made rows in StatCan's layout (only leaves kept, Canada rows and age groups dropped, `..`
 kept as empty); the IRCC parser (suppressed cells, every region, the months against the sheet's own yearly
 totals); the fact against the raw extract and every fact row joining every dim; the territories added up; the
 three rules on a hand-made series, and that no rule changes when months after the origin change; the back-test's
-origins, horizons and scores on a short series; and the committed results and the numbers quoted here. The dbt
+origins, horizons and scores on a short series; and the committed results and the numbers quoted here.
+`test_report.py` checks the dashboard: the new results files equal what the marts give, regions add up to Canada
+and program groups to all programs, months add up to the yearly permit counts, every October-to-September window
+is recomputed, the page's own what-if SQL (run in DuckDB with the slider and dropdown filled in) gives intake
+times ratio, and the page reads only exported tables and columns. The dbt
 project has 27 data tests, including the rounding bounds above.
