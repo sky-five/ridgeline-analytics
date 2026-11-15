@@ -1,0 +1,16 @@
+version: 2
+models:
+  - name: stg_margin__positions
+    description: The positions file with repeat loads removed (latest load kept).
+    columns:
+      - name: quantity
+        data_tests: [not_null]
+  - name: stg_margin__prices
+    columns:
+      - name: close
+        data_tests: [not_null]
+  - name: stg_margin__cash
+    columns:
+      - name: cash_balance
+        data_tests: [not_null]
+  - name: stg_margin__ledger

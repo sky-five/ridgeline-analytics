@@ -1,0 +1,7 @@
+margin_risk:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('MARGIN_RISK_DUCKDB_PATH', '../../warehouse/margin_risk.duckdb') }}"
+      threads: 4

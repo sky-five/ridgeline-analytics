@@ -1,0 +1,21 @@
+version: 2
+sources:
+  - name: raw_margin
+    description: The simulated margin book (margin_risk/simulate.py) as the back office delivers it each evening.
+    tables:
+      - name: accounts
+      - name: securities
+        description: One row per security with its base maintenance rate.
+      - name: prices
+        description: Closing price per security and weekday, not adjusted for splits.
+      - name: corporate_actions
+      - name: positions
+        description: >
+          The end-of-day positions file, one row per account, security and day. The file for 2026-02-11 was
+          loaded twice. On a split's ex-date the file can still carry the old quantity.
+      - name: cash
+        description: The end-of-day cash balance file; negative is a margin loan (debit balance).
+      - name: cash_activity
+        description: Deposits and margin interest postings (interest is negative).
+      - name: ledger
+        description: The books of record, end-of-day market value and cash per account. The reconciliation target.

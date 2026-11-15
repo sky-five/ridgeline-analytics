@@ -9,7 +9,7 @@ balance file, the price file, the corporate-action file and the cash activity fi
 
 Planted for the marts and the reconciliation to find:
 
-- semiconductors fall about 22% over the week of 2026-03-16, so concentrated accounts go into margin call;
+- semiconductors fall 27% to 36% over the week of 2026-03-16, so concentrated accounts go into margin call;
 - SEM03 splits 2-for-1 on 2026-04-15, and the positions file applies the split one day late (still the old
   quantity on the ex-date), so the mart undervalues SEM03 holders that day;
 - May's margin interest posts to the ledger on 2026-05-29 but is missing from that day's cash balance file;
@@ -35,7 +35,7 @@ SECTORS = {  # sector -> (daily volatility, maintenance rate)
     "retail": (0.015, 0.25),
 }
 PER_SECTOR = 5
-SHOCK_SECTOR, SHOCK_DAYS, SHOCK_DAILY = "semiconductors", pd.bdate_range("2026-03-16", "2026-03-20"), -0.05
+SHOCK_SECTOR, SHOCK_DAYS, SHOCK_DAILY = "semiconductors", pd.bdate_range("2026-03-16", "2026-03-20"), -0.07
 SPLIT_SYMBOL, SPLIT_DATE, SPLIT_RATIO = "SEM03", date(2026, 4, 15), 2
 INTEREST_GAP_DATE = date(2026, 5, 29)  # May interest missing from this day's cash file
 DUPLICATE_FILE_DATE = date(2026, 2, 11)

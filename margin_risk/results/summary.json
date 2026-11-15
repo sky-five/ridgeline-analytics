@@ -1,0 +1,129 @@
+{
+  "first_day": "2026-01-02",
+  "as_of": "2026-06-30",
+  "book": {
+    "accounts": 240,
+    "margin_accounts": 181,
+    "position_rows": 255330,
+    "weekdays": 128
+  },
+  "last_day": {
+    "borrowers": 179,
+    "market_value": 38078684.34,
+    "loan": 14116049.02,
+    "equity": 24402325.77,
+    "collateral_coverage": 1.576,
+    "margin_utilisation": 0.9061,
+    "concentrated_borrowers": 42,
+    "accounts_in_call": 1
+  },
+  "largest_holding": {
+    "symbol": "SOF02",
+    "sector": "software",
+    "share_of_borrower_value": 0.071,
+    "borrowers_holding": 58,
+    "borrowers_concentrated": 3
+  },
+  "shock_sector": {
+    "sector": "semiconductors",
+    "share": 0.1926,
+    "concentrated": 24.0
+  },
+  "shock": {
+    "from": "2026-03-16",
+    "to": "2026-03-20",
+    "worst_drop": -0.3567,
+    "mildest_drop": -0.2672,
+    "market_pnl_week": -2902480.8,
+    "real_calls_within_a_week": 10
+  },
+  "margin_calls": {
+    "calls": 69,
+    "on_a_break": 7,
+    "concentrated": 62,
+    "top_in_semiconductors": 62,
+    "deficit_at_call": 91566.15,
+    "median_weekdays": 2.0,
+    "resolution": {
+      "deposit": 18,
+      "liquidated": 24,
+      "market": 19,
+      "open": 1
+    }
+  },
+  "worst_day": {
+    "as_of_date": "2026-06-15 00:00:00",
+    "market_pnl": -935643.3
+  },
+  "pnl": {
+    "market_pnl": 366825.44,
+    "interest_income": 462770.27,
+    "deposits": 70483.88
+  },
+  "flagged_days": [
+    {
+      "date": "2026-04-15",
+      "market_value_drift": -418102.89,
+      "cash_drift": 0.0,
+      "accounts_broken": 77
+    },
+    {
+      "date": "2026-05-29",
+      "market_value_drift": 0.0,
+      "cash_drift": 80589.39,
+      "accounts_broken": 175
+    }
+  ],
+  "checks": {
+    "reconciliation": {
+      "account_days_flagged": 252,
+      "faults": {
+        "interest_missing_from_cash_file": {
+          "planted": 175,
+          "flagged": 175,
+          "days": [
+            "2026-05-29"
+          ]
+        },
+        "split_applied_late": {
+          "planted": 77,
+          "flagged": 77,
+          "days": [
+            "2026-04-15"
+          ]
+        }
+      },
+      "missed": 0,
+      "false_alarms": 0
+    },
+    "repeated_positions_file": {
+      "date": "2026-02-11",
+      "loads": 2,
+      "raw_rows": 3594,
+      "rows_kept": 1797,
+      "drift_if_counted_twice": 35103999.41
+    },
+    "unexplained_pnl_days": [
+      {
+        "date": "2026-04-15",
+        "accounts": 77,
+        "unexplained": -418102.89
+      },
+      {
+        "date": "2026-04-16",
+        "accounts": 77,
+        "unexplained": 408723.03
+      },
+      {
+        "date": "2026-05-29",
+        "accounts": 175,
+        "unexplained": 80589.39
+      },
+      {
+        "date": "2026-06-01",
+        "accounts": 175,
+        "unexplained": -80589.39
+      }
+    ]
+  }
+}

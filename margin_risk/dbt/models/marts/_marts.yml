@@ -1,0 +1,45 @@
+version: 2
+models:
+  - name: fct_position_day
+    description: Account x security x day, marked at the close, with the applied maintenance rate and requirement.
+    columns:
+      - name: market_value
+        data_tests: [not_null]
+      - name: applied_rate
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [0.25, 0.30, 0.40]
+  - name: fct_account_day
+    description: Risk mart. Account x day; equity, requirement, excess, collateral coverage, utilisation, calls.
+    columns:
+      - name: account_id
+        data_tests: [not_null]
+      - name: equity
+        data_tests: [not_null]
+  - name: fct_account_pnl_day
+    description: Finance mart. Account x day; market P&L, deposits, interest and what is left unexplained.
+  - name: margin_calls
+    description: One row per margin call (a run of weekdays below requirement) and how it ended.
+    columns:
+      - name: resolution
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [deposit, liquidated, market, open]
+      - name: starts_on_break
+        description: The call's first day does not reconcile to the ledger.
+  - name: concentration_by_symbol
+    description: Security x day; share of the collateral behind margin loans and concentrated borrowers.
+  - name: daily_firm_summary
+    description: One row per weekday for the whole book.
+    columns:
+      - name: as_of_date
+        data_tests: [unique, not_null]
+  - name: reconciliation_account_day
+    description: Account x day, the marts against the ledger.
+  - name: reconciliation_daily
+    description: One row per weekday, mart totals against ledger totals; flagged days have at least one break.
+    columns:
+      - name: as_of_date
+        data_tests: [unique, not_null]
