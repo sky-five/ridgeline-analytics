@@ -12,7 +12,8 @@ things are planted:
 
 - the teaching site ED03 runs above 98% of its staffed beds, so its admitted patients breach 8 hours most weeks;
 - ED07 closes 24 staffed beds from 2026-10-26: it is fine before and breaches after;
-- the small site ED10 admits about 2 patients a day, under the 20 a week Ontario needs to report a figure.
+- the small site ED10 admits about 2 patients a day, so most weeks it has fewer than the 20 patients needed to
+  report a 90th percentile.
 """
 from dataclasses import dataclass
 from datetime import date, timedelta
@@ -106,7 +107,7 @@ def simulate(seed: int = SEED) -> World:
         admitted = rng.random(total) < weight * s.admit / 0.17
         care = s.care_hours * rng.lognormal(0, 0.40, total) * np.where(triage >= 4, 0.55, 1.0)
         los = care + np.where(admitted, _boarding_hours(rng, occ[day_idx]), 0)
-        arrived = (pd.to_datetime(d.date[day_idx]) + pd.to_timedelta(rng.uniform(0, 24 * 60, total).round(), "min"))
+        arrived = (pd.to_datetime(d.date[day_idx]) + pd.to_timedelta(np.floor(rng.uniform(0, 24 * 60, total)), "min"))
         visits.append(pd.DataFrame({
             "site_id": site_id,
             "triage_at": arrived,

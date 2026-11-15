@@ -64,12 +64,15 @@ def summary(db: Path) -> dict:
         },
         "public_icu": {
             "source": public.DATASET, "licence": public.LICENCE, "sha256": public.SHA256,
-            "first_day": icu[0].isoformat(), "last_day": icu[1].isoformat(), "days": int(icu[2]),
+            "first_day": str(icu[0]), "last_day": str(icu[1]), "days": int(icu[2]),
             "mean_adult_occupancy": _round(icu[3]), "median_adult_occupancy": _round(icu[4]),
             "odd_days": [
-                {"date": r.census_date.isoformat(), "adult_patients": int(r.total_adult_icu_patients),
-                 "adult_beds": int(r.total_adult_icu_beds), "ped_patients": int(r.total_ped_icu_patients),
-                 "ped_beds": int(r.total_ped_icu_beds), "over_capacity": bool(r.over_capacity),
+                {"date": pd.Timestamp(r.census_date).date().isoformat(),
+                 "adult_patients": int(r.total_adult_icu_patients),
+                 "adult_beds": int(r.total_adult_icu_beds),
+                 "ped_patients": int(r.total_ped_icu_patients),
+                 "ped_beds": int(r.total_ped_icu_beds),
+                 "over_capacity": bool(r.over_capacity),
                  "adult_patients_outlier": bool(r.adult_patients_outlier)}
                 for r in odd.itertuples()
             ],

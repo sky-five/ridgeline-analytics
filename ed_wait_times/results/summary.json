@@ -242,7 +242,7 @@
     "median_adult_occupancy": 0.7418,
     "odd_days": [
       {
-        "date": "2022-11-09T00:00:00",
+        "date": "2022-11-09",
         "adult_patients": 1780,
         "adult_beds": 2341,
         "ped_patients": 122,
@@ -251,7 +251,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-10T00:00:00",
+        "date": "2022-11-10",
         "adult_patients": 1731,
         "adult_beds": 2341,
         "ped_patients": 117,
@@ -260,7 +260,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-11T00:00:00",
+        "date": "2022-11-11",
         "adult_patients": 1707,
         "adult_beds": 2341,
         "ped_patients": 115,
@@ -269,7 +269,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-12T00:00:00",
+        "date": "2022-11-12",
         "adult_patients": 1664,
         "adult_beds": 2341,
         "ped_patients": 113,
@@ -278,7 +278,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-16T00:00:00",
+        "date": "2022-11-16",
         "adult_patients": 1781,
         "adult_beds": 2341,
         "ped_patients": 114,
@@ -287,7 +287,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-17T00:00:00",
+        "date": "2022-11-17",
         "adult_patients": 1756,
         "adult_beds": 2341,
         "ped_patients": 113,
@@ -296,7 +296,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-18T00:00:00",
+        "date": "2022-11-18",
         "adult_patients": 1729,
         "adult_beds": 2341,
         "ped_patients": 115,
@@ -305,7 +305,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-19T00:00:00",
+        "date": "2022-11-19",
         "adult_patients": 1721,
         "adult_beds": 2341,
         "ped_patients": 118,
@@ -314,7 +314,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2022-11-20T00:00:00",
+        "date": "2022-11-20",
         "adult_patients": 1737,
         "adult_beds": 2341,
         "ped_patients": 116,
@@ -323,7 +323,7 @@
         "adult_patients_outlier": false
       },
       {
-        "date": "2023-09-09T00:00:00",
+        "date": "2023-09-09",
         "adult_patients": 560,
         "adult_beds": 2358,
         "ped_patients": 29,
@@ -332,7 +332,7 @@
         "adult_patients_outlier": true
       },
       {
-        "date": "2023-10-20T00:00:00",
+        "date": "2023-10-20",
         "adult_patients": 2870,
         "adult_beds": 2421,
         "ped_patients": 186,
