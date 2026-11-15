@@ -86,7 +86,7 @@ def firm_daily_csv(db: Path) -> str:
             order by as_of_date""").df()
     money = ["market_value", "loan", "equity", "requirement", "total_deficit", "market_pnl", "deposits",
              "interest_income", "unexplained"]
-    df[money] = df[money].round(2)
+    df[money] = df[money].round(2) + 0.0  # no -0.0
     df[["collateral_coverage", "margin_utilisation"]] = df[["collateral_coverage", "margin_utilisation"]].round(4)
     return df.to_csv(index=False, lineterminator="\n")
 

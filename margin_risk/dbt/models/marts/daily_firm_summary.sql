@@ -23,7 +23,7 @@ pnl as (
         as_of_date,
         sum(market_pnl) as market_pnl,
         sum(deposits) as deposits,
-        -sum(interest) as interest_income,
+        0 - sum(interest) as interest_income,
         sum(unexplained) as unexplained
     from {{ ref('fct_account_pnl_day') }}
     group by as_of_date

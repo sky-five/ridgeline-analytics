@@ -42,7 +42,7 @@
     "on_a_break": 7,
     "concentrated": 62,
     "top_in_semiconductors": 62,
-    "deficit_at_call": 91566.15,
+    "deficit_at_call": 91566.69,
     "median_weekdays": 2.0,
     "resolution": {
       "deposit": 18,
@@ -63,14 +63,14 @@
   "flagged_days": [
     {
       "date": "2026-04-15",
-      "market_value_drift": -418102.89,
-      "cash_drift": 0.0,
+      "market_value_drift": "-418102.89",
+      "cash_drift": "0.00",
       "accounts_broken": 77
     },
     {
       "date": "2026-05-29",
-      "market_value_drift": 0.0,
-      "cash_drift": 80589.39,
+      "market_value_drift": "0.00",
+      "cash_drift": "80589.39",
       "accounts_broken": 175
     }
   ],

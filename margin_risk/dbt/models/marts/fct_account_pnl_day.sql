@@ -10,7 +10,7 @@ market as (
     select
         d.as_of_date,
         y.account_id,
-        sum(y.quantity * coalesce(ca.ratio, 1) * px.close - y.market_value) as market_pnl
+        sum(y.quantity * coalesce(ca.ratio, 1)::decimal(9, 4) * px.close - y.market_value) as market_pnl
     from days as d
     inner join {{ ref('fct_position_day') }} as y on d.prior_date = y.as_of_date
     inner join {{ ref('stg_margin__prices') }} as px on d.as_of_date = px.price_date and y.symbol = px.symbol
@@ -23,8 +23,8 @@ activity as (
     select
         as_of_date,
         account_id,
-        sum(amount) filter (where kind = 'deposit') as deposits,
-        sum(amount) filter (where kind = 'interest') as interest
+        sum(amount::decimal(18, 2)) filter (where kind = 'deposit') as deposits,
+        sum(amount::decimal(18, 2)) filter (where kind = 'interest') as interest
     from {{ source('raw_margin', 'cash_activity') }}
     group by as_of_date, account_id
 ),

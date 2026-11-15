@@ -57,7 +57,7 @@ class Book:
     cash: pd.DataFrame  # the cash balance file as delivered (faults included)
     cash_activity: pd.DataFrame
     ledger: pd.DataFrame  # true end-of-day market value and cash per account
-    labels: pd.DataFrame  # account-days where a feed is wrong on purpose, and why
+    labels: pd.DataFrame  # account-days where a feed is wrong on purpose, why, and the true quantity or cash
 
 
 def securities() -> pd.DataFrame:
@@ -189,16 +189,16 @@ def simulate(seed: int = SEED) -> Book:
         held = np.argwhere(q > 0)
         fq = q.copy()
         if d.date() == SPLIT_DATE:
-            fq[:, split_j] = q[:, split_j] / SPLIT_RATIO
+            fq[:, split_j] = np.floor(q[:, split_j] / SPLIT_RATIO)  # the old basis, whole shares
             for a in np.flatnonzero(q[:, split_j] > 0):
-                lab_rows.append((d, acc_ids[a], "split_applied_late"))
+                lab_rows.append((d, acc_ids[a], "split_applied_late", SPLIT_SYMBOL, q[a, split_j]))
         for a, j in held:
             pos_rows.append((d, acc_ids[a], syms[j], fq[a, j]))
         fcash = cash.copy()
         if d.date() == INTEREST_GAP_DATE:
             fcash = cash + posted
             for a in np.flatnonzero(posted > 0):
-                lab_rows.append((d, acc_ids[a], "interest_missing_from_cash_file"))
+                lab_rows.append((d, acc_ids[a], "interest_missing_from_cash_file", None, cash[a]))
         cash_rows += [(d, acc_ids[a], fcash[a]) for a in range(n_acc)]
         led_rows += [(d, acc_ids[a], mv[a].sum(), cash[a]) for a in range(n_acc)]
 
@@ -230,5 +230,5 @@ def simulate(seed: int = SEED) -> Book:
         cash=frame(cash_rows, ["as_of_date", "account_id", "cash_balance"]).round({"cash_balance": 2}),
         cash_activity=frame(act_rows, ["as_of_date", "account_id", "kind", "amount"]),
         ledger=frame(led_rows, ["as_of_date", "account_id", "market_value", "cash_balance"]).round(2),
-        labels=frame(lab_rows, ["as_of_date", "account_id", "fault"]),
+        labels=frame(lab_rows, ["as_of_date", "account_id", "fault", "symbol", "true_value"]),
     )

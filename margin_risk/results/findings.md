@@ -11,7 +11,7 @@ Simulated data. 240 accounts (181 allowed to borrow), 128 weekdays from 2026-01-
 ## Margin calls
 
 - 2026-03-16 to 2026-03-20: semiconductors fell 26.7% to 35.7%; market P&L for the week $-2,902,481. 10 calls started that week or the next.
-- 62 real calls over the period (62 in concentrated accounts, 62 with a semiconductor as the largest holding), $91,566 short on the day of the call, median 2 weekday(s) in call. Ended by deposit 18, liquidation 24, the market 19, still open 1.
+- 62 real calls over the period (62 in concentrated accounts, 62 with a semiconductor as the largest holding), $91,567 short on the day of the call, median 2 weekday(s) in call. Ended by deposit 18, liquidation 24, the market 19, still open 1.
 - 7 more calls start on an account-day that does not reconcile to the ledger. They are not real (see below) and are left out of the numbers above.
 
 ## Does the mart agree with the ledger
