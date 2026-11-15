@@ -105,4 +105,15 @@ weekly table (100 rows).
 - that the check finds both planted moves on the simulated log and reads them correctly, and that the committed
   results are current.
 
-Not in this half: the dashboard page.
+`tests/onboarding_funnel/test_report.py` checks the dashboard tables: they come from the committed results, no
+funnel step has more people than the one before, the drop-off reasons add up to everyone who did not activate, and
+the two activation counts agree until the counting break and split after it.
+
+## The dashboard
+
+The site's [Onboarding funnel page](https://sky-five.github.io/ridgeline-analytics/onboarding-funnel/) reads the
+committed results through `report.py` (eight `reporting.onb_*` tables written by `scripts/export_reporting.py`). It
+shows the funnel and drop-off reasons for a picked program, time to first transaction, cross-border weekly activation
+counted per application id and per person with the break week marked, application ids per person against the 1.02
+limit, the consumer-card KYC drop, and the accuracy checks with every step reading. The numbers come from one fixed
+run and do not move with the nightly build; the nightly smoke test opens the page.
