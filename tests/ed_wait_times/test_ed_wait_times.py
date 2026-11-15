@@ -1,5 +1,5 @@
-"""Builds the ED warehouse once (simulate + load + dbt build, about 10 s) and checks the dbt numbers against an
-independent pandas count from the raw visits, the planted patterns, the breach query on a hand-made week, the
+"""Checks the warehouse built once in conftest.py (simulate + load + dbt build, about 10 s): the dbt numbers against
+an independent pandas count from the raw visits, the planted patterns, the breach query on a hand-made week, the
 public ICU file as published, and the committed results."""
 from datetime import date
 
@@ -10,7 +10,6 @@ import pytest
 
 from ed_wait_times import public
 from ed_wait_times.breaches import breaches, last_full_week
-from ed_wait_times.load import dbt_build, load
 from ed_wait_times.run import SITE_WEEK, SUMMARY, site_week_csv, summary, to_json
 from ed_wait_times.simulate import (
     CHRONIC_SITE,
@@ -23,19 +22,6 @@ from ed_wait_times.simulate import (
     SMALL_SITE,
     simulate,
 )
-
-
-@pytest.fixture(scope="module")
-def world():
-    return simulate()
-
-
-@pytest.fixture(scope="module")
-def db(tmp_path_factory, world):
-    path = tmp_path_factory.mktemp("ed") / "ed.duckdb"
-    load(path, world)
-    dbt_build(path)
-    return path
 
 
 @pytest.fixture(scope="module")
