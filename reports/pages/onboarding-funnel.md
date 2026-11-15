@@ -4,8 +4,7 @@ title: Onboarding funnel
 
 An account-onboarding funnel monitor on **simulated** data, separate from the roofing-software company on the rest
 of this site: <Value data={summary} column=people fmt=num0/> people starting an application in one of four account
-programs between <Value data={summary} column=first_week/> and <Value data={summary} column=as_of/>, from
-<Value data={summary} column=delivered_events fmt=num0/> delivered events. An application is a person in a program
+programs between <Value data={summary} column=first_week/> and <Value data={summary} column=as_of/>, from <Value data={summary} column=delivered_events fmt=num0/> delivered events. An application is a person in a program
 (keyed on the trimmed, lower-case email and date of birth), not an application id, and a check watches for the
 day those two stop agreeing.
 
@@ -24,8 +23,7 @@ select * from ridgeline.onb_summary
 <BigValue data={summary} value=break_max_ids_per_person title="Worst ids per person" fmt=num3/>
 
 Activated means a first transaction within 30 days of the first start. The funnel, drop-off and time tables use
-mature cohorts only: people who started from <Value data={summary} column=first_week/> to the week of
-<Value data={summary} column=last_mature_week/>, who all had the full 30 days by the cut-off.
+mature cohorts only: people who started from <Value data={summary} column=first_week/> to the week of <Value data={summary} column=last_mature_week/>, who all had the full 30 days by the cut-off.
 
 ## Funnel by program
 
@@ -61,8 +59,8 @@ order by program_label, step_sort
 <LineChart data={all_programs} x=step y=share_of_started series=program_label yFmt=pct0 yMin=0 sort=false
   title="Share of starters still in, by step"/>
 
-Gig payouts keep the most people at every step. The business program loses the most at KYC; consumer card and
-cross-border lose the most after it, to people who pass and never fund the account.
+Gig payouts keep the most people at every step. The business program has the lowest KYC pass rate; in consumer card
+and cross-border the biggest single loss comes after KYC, from people who pass and never fund the account.
 
 ## Why people drop off
 
@@ -116,15 +114,14 @@ order by cohort_week, counted
   <ReferenceLine data={summary} x=break_week label="Second ids start" color="#6B7280"/>
 </LineChart>
 
-From the week of <Value data={summary} column=break_week/>, a resume or retry in the
-<Value data={summary} column=break_program_label/> app opens a new application id. A dashboard counting ids sees
-activation fall from <Value data={summary} column=per_id_before fmt=pct1/> to
-<Value data={summary} column=per_id_after fmt=pct1/> (<Value data={summary} column=per_id_change_pp fmt=num1/>
+From the week of <Value data={summary} column=break_week/>, a resume or retry in the <Value data={summary} column=break_program_label/> app opens a new application id. A dashboard counting ids sees
+activation fall from <Value data={summary} column=per_id_before fmt=pct1/> to <Value data={summary} column=per_id_after fmt=pct1/> (<Value data={summary} column=per_id_change_pp fmt=num1/>
 points, 95% CI <Value data={summary} column=per_id_ci_low fmt=num1/> to <Value data={summary} column=per_id_ci_high fmt=num1/>).
-Counted per person it goes from <Value data={summary} column=per_person_before fmt=pct1/> to
-<Value data={summary} column=per_person_after fmt=pct1/> (<Value data={summary} column=per_person_change_pp fmt=num1/>
+Counted per person it goes from <Value data={summary} column=per_person_before fmt=pct1/> to <Value data={summary} column=per_person_after fmt=pct1/> (<Value data={summary} column=per_person_change_pp fmt=num1/>
 points, 95% CI <Value data={summary} column=per_person_ci_low fmt=num1/> to +<Value data={summary} column=per_person_ci_high fmt=num1/>):
-about <Value data={summary} column=share_from_counting fmt=pct0/> of the drop is people counted twice.
+about <Value data={summary} column=share_from_counting fmt=pct0/> of the drop is people counted twice. The two
+lines match until the bug, apart from a small gap the week before it (people who started then and resumed after
+the bug).
 
 ```sql ids_weekly
 select cohort_week, program_label, application_ids_per_applicant
@@ -132,15 +129,12 @@ from ridgeline.onb_weekly
 order by cohort_week, program_label
 ```
 
-<LineChart data={ids_weekly} x=cohort_week y=application_ids_per_applicant series=program_label yFmt=num2
+<LineChart data={ids_weekly} x=cohort_week y=application_ids_per_applicant series=program_label yFmt=num2 yMin=0.95
   title="Application ids per person, every cohort week">
   <ReferenceLine data={summary} y=ids_limit label="Check limit" color="#6B7280"/>
 </LineChart>
 
-The other three programs stay at exactly 1.000. <Value data={summary} column=break_program_label/> goes over
-<Value data={summary} column=ids_limit fmt=num2/> in the break week and stays over for all
-<Value data={summary} column=break_weeks_over fmt=num0/> weeks after, up to
-<Value data={summary} column=break_max_ids_per_person fmt=num3/>.
+The other three programs stay at exactly 1.000. <Value data={summary} column=break_program_label/> goes over <Value data={summary} column=ids_limit fmt=num2/> in the break week and stays over for all <Value data={summary} column=break_weeks_over fmt=num0/> weeks after, up to <Value data={summary} column=break_max_ids_per_person fmt=num3/>.
 
 ## A real drop: consumer-card KYC
 
@@ -156,8 +150,7 @@ order by cohort_week
   <ReferenceLine data={summary} x=real_week label="Pass rate steps down" color="#6B7280"/>
 </LineChart>
 
-The <Value data={summary} column=real_program_label/> KYC pass rate drops from
-<Value data={summary} column=real_before fmt=pct1/> to <Value data={summary} column=real_after fmt=pct1/> from the
+The <Value data={summary} column=real_program_label/> KYC pass rate drops from <Value data={summary} column=real_before fmt=pct1/> to <Value data={summary} column=real_after fmt=pct1/> from the
 week of <Value data={summary} column=real_week/> (t = <Value data={summary} column=real_t fmt=num1/>) while ids per
 person stay at 1.000, so it is read as real. <Value data={summary} column=real_reason/> is the fail reason that grew,
 from <Value data={summary} column=real_reason_before fmt=pct1/> to <Value data={summary} column=real_reason_after fmt=pct1/>
