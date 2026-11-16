@@ -53,7 +53,8 @@ def _event_on(site: str, line: str, day) -> str | None:
 
 def backcheck(con) -> dict:
     """How fast the rule found each planted event, and how often it flagged a team with nothing wrong."""
-    flags = con.sql("select day, site, line, metric, score from ops_flags where flagged").df()
+    flags = con.sql("select day, site, line, metric, score from ops_flags where flagged "
+                    "order by day, abs(score) desc, metric").df()
     flags["day"] = pd.to_datetime(flags["day"]).dt.date
     watch = con.sql("select day, site, line from ops_watchlist").df()
     watch["day"] = pd.to_datetime(watch["day"]).dt.date
@@ -61,7 +62,7 @@ def backcheck(con) -> dict:
                          where baseline_days = 6""").fetchone()
     events = []
     for name, site, line, start, cause in EVENTS:
-        hit = flags[(flags["site"] == site) & (flags["line"] == line) & (flags["day"] >= start)].sort_values("day")
+        hit = flags[(flags["site"] == site) & (flags["line"] == line) & (flags["day"] >= start)]
         first, on_cause = hit.iloc[0], hit[hit["metric"] == cause].iloc[0]
         on_list = watch[(watch["site"] == site) & (watch["line"] == line) & (watch["day"] >= start)]
         events.append({"event": name, "site": site, "line": line, "from": start.isoformat(),
@@ -169,7 +170,7 @@ def today(db: Path, s: dict) -> str:
     for m in METRICS:
         d = defs[m]
         v, base = op.loc[AS_OF, m], float(np.median(op.loc[same_wd, m]))
-        hit = recent[recent["metric"] == m].sort_values("days", ascending=False)
+        hit = recent[recent["metric"] == m].sort_values(["days", "site", "line"], ascending=[False, True, True])
         if hit.empty:
             flagged = "No team was flagged on it in the last seven days, so nothing to do today."
         else:

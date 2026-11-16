@@ -49,7 +49,7 @@
         "from": "2026-06-08",
         "first_flag": "2026-06-12",
         "days_to_flag": 4,
-        "first_metric": "abandon_rate",
+        "first_metric": "service_level",
         "cause_metric": "avg_handle_minutes",
         "days_to_flag_cause": 4,
         "metrics_flagged": [
@@ -67,7 +67,7 @@
         "from": "2026-06-18",
         "first_flag": "2026-06-18",
         "days_to_flag": 0,
-        "first_metric": "service_level",
+        "first_metric": "calls_offered",
         "cause_metric": "claims_opened",
         "days_to_flag_cause": 0,
         "metrics_flagged": [
