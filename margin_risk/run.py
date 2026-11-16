@@ -1,9 +1,11 @@
-"""Write the margin book results: results/summary.json, results/firm_daily.csv and the findings note
-results/findings.md. Every number comes from the dbt marts or check.py."""
+"""Write the margin book results: results/summary.json, results/firm_daily.csv, the findings note
+results/findings.md, and for the dashboard results/margin_calls.csv, results/sector_daily.csv and
+results/concentration.csv. Every number comes from the dbt marts or check.py."""
 import json
 from pathlib import Path
 
 import duckdb
+import pandas as pd
 
 from margin_risk import check
 from margin_risk.simulate import AS_OF, FIRST_DAY, SHOCK_DAYS, SHOCK_SECTOR
@@ -12,6 +14,9 @@ RESULTS = Path(__file__).resolve().parent / "results"
 SUMMARY = RESULTS / "summary.json"
 FIRM_DAILY = RESULTS / "firm_daily.csv"
 FINDINGS = RESULTS / "findings.md"
+MARGIN_CALLS = RESULTS / "margin_calls.csv"
+SECTOR_DAILY = RESULTS / "sector_daily.csv"
+CONCENTRATION = RESULTS / "concentration.csv"
 SHOCK_FROM, SHOCK_TO = SHOCK_DAYS[0].date(), SHOCK_DAYS[-1].date()
 
 
@@ -92,6 +97,53 @@ def firm_daily_csv(db: Path) -> str:
              "interest_income", "unexplained"]
     df[money] = df[money].round(2) + 0.0  # no -0.0
     df[["collateral_coverage", "margin_utilisation"]] = df[["collateral_coverage", "margin_utilisation"]].round(4)
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def margin_calls_csv(db: Path) -> str:
+    """Every margin call, real or not: starts_on_break marks the ones that start on a day the mart is wrong."""
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql("""
+            select c.*, s.sector as top_sector
+            from margin_calls as c left join raw_margin.securities as s on c.top_symbol = s.symbol
+            order by call_date, account_id""").df()
+    df[["deficit_at_call", "max_deficit"]] = df[["deficit_at_call", "max_deficit"]].astype(float).round(2)
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def sector_daily_csv(db: Path) -> str:
+    """Per weekday and sector: the borrowers' securities in it and its share of them."""
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql("""
+            select as_of_date, sector, sum(borrower_market_value) as borrower_market_value,
+                   sum(share_of_borrower_value) as share_of_borrower_value,
+                   sum(borrowers_concentrated)::int as borrowers_concentrated
+            from concentration_by_symbol group by 1, 2 order by 1, 2""").df()
+    df["borrower_market_value"] = df["borrower_market_value"].astype(float).round(2) + 0.0
+    df["share_of_borrower_value"] = df["share_of_borrower_value"].astype(float).round(4)
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def snapshot_days() -> dict[str, str]:
+    """The days the page shows concentration by security: the start, the last day before the sell-off, its last
+    day and the as-of day."""
+    before = pd.bdate_range(end=SHOCK_FROM, periods=2)[0].date()
+    return {"first day": FIRST_DAY.isoformat(), "before the sell-off": before.isoformat(),
+            "end of the sell-off": SHOCK_TO.isoformat(), "last day": AS_OF.isoformat()}
+
+
+def concentration_csv(db: Path) -> str:
+    """Concentration by security on the snapshot days."""
+    days = snapshot_days()
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql(f"""
+            select as_of_date, symbol, sector, borrower_market_value, share_of_borrower_value, borrowers_holding,
+                   borrowers_concentrated
+            from concentration_by_symbol where as_of_date in ({", ".join(f"'{d}'" for d in days.values())})
+            order by as_of_date, symbol""").df()
+    df.insert(1, "snapshot", df["as_of_date"].astype(str).map({d: k for k, d in days.items()}))
+    df["borrower_market_value"] = df["borrower_market_value"].astype(float).round(2) + 0.0
+    df["share_of_borrower_value"] = df["share_of_borrower_value"].astype(float).round(4)
     return df.to_csv(index=False, lineterminator="\n")
 
 

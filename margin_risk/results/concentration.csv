@@ -1,0 +1,121 @@
+as_of_date,snapshot,symbol,sector,borrower_market_value,share_of_borrower_value,borrowers_holding,borrowers_concentrated
+2026-01-02,first day,BAN01,banks,458876.88,0.0165,41,0
+2026-01-02,first day,BAN02,banks,689603.04,0.0248,41,0
+2026-01-02,first day,BAN03,banks,970508.17,0.035,45,3
+2026-01-02,first day,BAN04,banks,555522.46,0.02,33,4
+2026-01-02,first day,BAN05,banks,733393.04,0.0264,46,1
+2026-01-02,first day,ENE01,energy,1086161.05,0.0391,43,1
+2026-01-02,first day,ENE02,energy,510541.44,0.0184,38,1
+2026-01-02,first day,ENE03,energy,678518.36,0.0244,39,0
+2026-01-02,first day,ENE04,energy,702575.04,0.0253,36,1
+2026-01-02,first day,ENE05,energy,1210026.78,0.0436,39,3
+2026-01-02,first day,RET01,retail,596152.48,0.0215,43,1
+2026-01-02,first day,RET02,retail,505830.08,0.0182,36,2
+2026-01-02,first day,RET03,retail,542879.19,0.0196,39,1
+2026-01-02,first day,RET04,retail,706303.72,0.0254,43,2
+2026-01-02,first day,RET05,retail,1146800.8,0.0413,48,1
+2026-01-02,first day,SEM01,semiconductors,1511388.9,0.0544,36,6
+2026-01-02,first day,SEM02,semiconductors,2002046.28,0.0721,43,10
+2026-01-02,first day,SEM03,semiconductors,1357886.72,0.0489,51,7
+2026-01-02,first day,SEM04,semiconductors,2336775.68,0.0842,42,7
+2026-01-02,first day,SEM05,semiconductors,1576231.89,0.0568,56,11
+2026-01-02,first day,SOF01,software,823733.22,0.0297,41,3
+2026-01-02,first day,SOF02,software,975788.64,0.0352,33,2
+2026-01-02,first day,SOF03,software,254820.8,0.0092,33,1
+2026-01-02,first day,SOF04,software,680361.0,0.0245,40,0
+2026-01-02,first day,SOF05,software,666287.52,0.024,45,0
+2026-01-02,first day,UTI01,utilities,672031.92,0.0242,40,0
+2026-01-02,first day,UTI02,utilities,849213.55,0.0306,41,1
+2026-01-02,first day,UTI03,utilities,941424.12,0.0339,38,1
+2026-01-02,first day,UTI04,utilities,1140072.12,0.0411,48,2
+2026-01-02,first day,UTI05,utilities,876606.84,0.0316,53,0
+2026-03-13,before the sell-off,BAN01,banks,740496.08,0.0224,57,0
+2026-03-13,before the sell-off,BAN02,banks,940316.74,0.0285,55,0
+2026-03-13,before the sell-off,BAN03,banks,1094273.18,0.0331,55,2
+2026-03-13,before the sell-off,BAN04,banks,776209.0,0.0235,41,3
+2026-03-13,before the sell-off,BAN05,banks,926911.1,0.0281,54,1
+2026-03-13,before the sell-off,ENE01,energy,1273009.5,0.0385,51,0
+2026-03-13,before the sell-off,ENE02,energy,700338.02,0.0212,48,1
+2026-03-13,before the sell-off,ENE03,energy,890456.64,0.0269,51,1
+2026-03-13,before the sell-off,ENE04,energy,848579.12,0.0257,50,0
+2026-03-13,before the sell-off,ENE05,energy,1279833.8,0.0387,45,2
+2026-03-13,before the sell-off,RET01,retail,743040.72,0.0225,54,1
+2026-03-13,before the sell-off,RET02,retail,505804.5,0.0153,44,1
+2026-03-13,before the sell-off,RET03,retail,670964.58,0.0203,49,0
+2026-03-13,before the sell-off,RET04,retail,888750.0,0.0269,47,2
+2026-03-13,before the sell-off,RET05,retail,1319878.56,0.0399,54,1
+2026-03-13,before the sell-off,SEM01,semiconductors,1840535.84,0.0557,46,5
+2026-03-13,before the sell-off,SEM02,semiconductors,2123024.28,0.0643,52,9
+2026-03-13,before the sell-off,SEM03,semiconductors,1236830.85,0.0374,58,7
+2026-03-13,before the sell-off,SEM04,semiconductors,2962561.55,0.0897,50,6
+2026-03-13,before the sell-off,SEM05,semiconductors,1772908.8,0.0537,63,8
+2026-03-13,before the sell-off,SOF01,software,982044.05,0.0297,53,2
+2026-03-13,before the sell-off,SOF02,software,1707139.17,0.0517,49,2
+2026-03-13,before the sell-off,SOF03,software,486512.95,0.0147,44,0
+2026-03-13,before the sell-off,SOF04,software,782093.58,0.0237,52,0
+2026-03-13,before the sell-off,SOF05,software,866433.0,0.0262,57,0
+2026-03-13,before the sell-off,UTI01,utilities,754386.43,0.0228,47,0
+2026-03-13,before the sell-off,UTI02,utilities,857395.68,0.0259,50,0
+2026-03-13,before the sell-off,UTI03,utilities,1030811.09,0.0312,45,1
+2026-03-13,before the sell-off,UTI04,utilities,1107394.25,0.0335,53,1
+2026-03-13,before the sell-off,UTI05,utilities,934221.6,0.0283,63,0
+2026-03-20,end of the sell-off,BAN01,banks,775293.96,0.0261,58,0
+2026-03-20,end of the sell-off,BAN02,banks,966494.76,0.0325,55,0
+2026-03-20,end of the sell-off,BAN03,banks,1086227.7,0.0366,55,3
+2026-03-20,end of the sell-off,BAN04,banks,771523.5,0.026,41,2
+2026-03-20,end of the sell-off,BAN05,banks,988290.72,0.0333,55,1
+2026-03-20,end of the sell-off,ENE01,energy,1003503.3,0.0338,52,0
+2026-03-20,end of the sell-off,ENE02,energy,694970.36,0.0234,49,2
+2026-03-20,end of the sell-off,ENE03,energy,915580.32,0.0308,51,2
+2026-03-20,end of the sell-off,ENE04,energy,857487.74,0.0289,51,1
+2026-03-20,end of the sell-off,ENE05,energy,1372633.44,0.0462,46,2
+2026-03-20,end of the sell-off,RET01,retail,767500.84,0.0258,54,1
+2026-03-20,end of the sell-off,RET02,retail,535053.6,0.018,44,1
+2026-03-20,end of the sell-off,RET03,retail,623086.62,0.021,48,0
+2026-03-20,end of the sell-off,RET04,retail,880307.1,0.0296,48,2
+2026-03-20,end of the sell-off,RET05,retail,1222967.54,0.0412,54,1
+2026-03-20,end of the sell-off,SEM01,semiconductors,1350113.52,0.0454,47,4
+2026-03-20,end of the sell-off,SEM02,semiconductors,1529234.06,0.0515,52,7
+2026-03-20,end of the sell-off,SEM03,semiconductors,877129.11,0.0295,59,6
+2026-03-20,end of the sell-off,SEM04,semiconductors,2118232.48,0.0713,53,4
+2026-03-20,end of the sell-off,SEM05,semiconductors,1180301.85,0.0397,66,6
+2026-03-20,end of the sell-off,SOF01,software,1030150.42,0.0347,53,2
+2026-03-20,end of the sell-off,SOF02,software,1766879.52,0.0595,50,2
+2026-03-20,end of the sell-off,SOF03,software,515088.8,0.0173,45,0
+2026-03-20,end of the sell-off,SOF04,software,807831.36,0.0272,53,0
+2026-03-20,end of the sell-off,SOF05,software,913956.75,0.0308,57,0
+2026-03-20,end of the sell-off,UTI01,utilities,656251.2,0.0221,47,0
+2026-03-20,end of the sell-off,UTI02,utilities,843154.44,0.0284,50,0
+2026-03-20,end of the sell-off,UTI03,utilities,1036651.44,0.0349,46,1
+2026-03-20,end of the sell-off,UTI04,utilities,692032.8,0.0233,52,0
+2026-03-20,end of the sell-off,UTI05,utilities,935086.62,0.0315,63,0
+2026-06-30,last day,BAN01,banks,656767.65,0.0211,66,0
+2026-06-30,last day,BAN02,banks,1090905.12,0.035,68,0
+2026-06-30,last day,BAN03,banks,1081842.3,0.0347,63,1
+2026-06-30,last day,BAN04,banks,742339.65,0.0238,52,2
+2026-06-30,last day,BAN05,banks,786511.75,0.0252,70,1
+2026-06-30,last day,ENE01,energy,1144918.86,0.0367,63,0
+2026-06-30,last day,ENE02,energy,676816.91,0.0217,60,0
+2026-06-30,last day,ENE03,energy,1069746.58,0.0343,57,0
+2026-06-30,last day,ENE04,energy,937635.6,0.0301,69,0
+2026-06-30,last day,ENE05,energy,1340402.4,0.043,56,2
+2026-06-30,last day,RET01,retail,758812.7,0.0244,66,1
+2026-06-30,last day,RET02,retail,583483.36,0.0187,50,1
+2026-06-30,last day,RET03,retail,646940.64,0.0208,66,0
+2026-06-30,last day,RET04,retail,893660.04,0.0287,61,2
+2026-06-30,last day,RET05,retail,1548640.61,0.0497,65,1
+2026-06-30,last day,SEM01,semiconductors,924747.66,0.0297,61,3
+2026-06-30,last day,SEM02,semiconductors,1249572.72,0.0401,68,6
+2026-06-30,last day,SEM03,semiconductors,767491.14,0.0246,74,6
+2026-06-30,last day,SEM04,semiconductors,1960175.48,0.0629,62,4
+2026-06-30,last day,SEM05,semiconductors,1098508.85,0.0353,76,5
+2026-06-30,last day,SOF01,software,1688151.5,0.0542,63,3
+2026-06-30,last day,SOF02,software,2213672.74,0.071,58,3
+2026-06-30,last day,SOF03,software,577677.15,0.0185,60,0
+2026-06-30,last day,SOF04,software,939767.55,0.0302,66,0
+2026-06-30,last day,SOF05,software,1414740.69,0.0454,74,0
+2026-06-30,last day,UTI01,utilities,644354.74,0.0207,56,0
+2026-06-30,last day,UTI02,utilities,984358.2,0.0316,57,0
+2026-06-30,last day,UTI03,utilities,1140050.55,0.0366,57,1
+2026-06-30,last day,UTI04,utilities,783286.4,0.0251,61,0
+2026-06-30,last day,UTI05,utilities,813472.1,0.0261,69,0

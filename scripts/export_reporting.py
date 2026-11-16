@@ -170,6 +170,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(enrolment_tables())
 
+    # the simulated margin book: risk, margin calls, concentration, P&L and the ledger reconciliation (margin_risk/)
+    from margin_risk.report import tables as margin_tables
+
+    tables.update(margin_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
