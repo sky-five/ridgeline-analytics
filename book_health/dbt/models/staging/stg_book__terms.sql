@@ -12,8 +12,8 @@ with terms as (
         t.start_date::date as start_date,
         t.end_date::date as end_date,
         t.written_premium::decimal(18, 2) as written_premium,
-        t.rate_change,
-        t.renewal_offer_change
+        t.rate_change::decimal(9, 4) as rate_change,
+        t.renewal_offer_change::decimal(9, 4) as renewal_offer_change
     from {{ source('raw_book', 'terms') }} as t
     inner join {{ source('raw_book', 'policies') }} as p using (policy_id)
 )

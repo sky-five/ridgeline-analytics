@@ -1,6 +1,7 @@
 -- One row per month, province, product and channel from the first month to the as-of month: policies in force at
 -- month end, new policies, written and earned premium, claims by loss month, renewals due and renewed.
 -- Earned premium is spread over the days of the term; a month earns the days of the term that fall in it.
+-- Money and rate changes are decimals: float sums moved results in the fourth place between builds.
 with months as (
     select m::date as month_start, (m + interval 1 month)::date as next_month
     from generate_series(
@@ -22,9 +23,11 @@ term_month as (
         t.province,
         t.product,
         t.channel,
-        t.written_premium
-        * (least(t.end_date, m.next_month) - greatest(t.start_date, m.month_start))
-        / (t.end_date - t.start_date) as earned,
+        (
+            t.written_premium
+            * (least(t.end_date, m.next_month) - greatest(t.start_date, m.month_start))
+            / (t.end_date - t.start_date)
+        )::decimal(18, 6) as earned,  -- decimal, so sums do not move between builds
         t.start_date < m.next_month and t.end_date >= m.next_month as in_force_at_end
     from {{ ref('stg_book__terms') }} as t
     inner join months as m on t.start_date < m.next_month and t.end_date > m.month_start
@@ -94,7 +97,7 @@ select
     coalesce(l.incurred, 0)::decimal(18, 2) as incurred,
     coalesce(r.renewals_due, 0) as renewals_due,
     coalesce(r.renewed, 0) as renewed,
-    coalesce(r.sum_rate_change, 0) as sum_rate_change
+    coalesce(r.sum_rate_change, 0)::decimal(18, 4) as sum_rate_change
 from grid as g
 left join exposure as e using (month_start, province, product, channel)
 left join written as w using (month_start, province, product, channel)
