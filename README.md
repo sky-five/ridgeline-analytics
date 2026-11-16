@@ -228,7 +228,7 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 ## Provincial book health
 
-`book_health/` models a simulated home and auto insurance book (32,758 policies in eight provinces, 2022-01 to 2026-06) in a small dbt project on DuckDB: growth, loss ratio and retention by province, product and channel. It back-tests three simple monthly retention forecasts: the 12-month average misses by 1.80 points on average, but after a 14% rate increase in Ontario auto it was 4.1 points too hopeful for six months. A one-page [brief](book_health/results/brief.md) says what to do about it, and shows that claims not yet reported make the last quarter's loss ratio look 19 points better than it is. Details: [book_health/README.md](book_health/README.md).
+`book_health/` models a simulated home and auto insurance book (32,758 policies in eight provinces, 2022-01 to 2026-06) in a small dbt project on DuckDB: growth, loss ratio and retention by province, product and channel. It back-tests three simple monthly retention forecasts: the 12-month average misses by 1.80 points on average, but after a 14% rate increase in Ontario auto it was 4.1 points too hopeful for six months. A one-page [brief](book_health/results/brief.md) says what to do about it, and shows that claims not yet reported make the last quarter's loss ratio look 19 points better than it is. The site's [Provincial book health page](https://sky-five.github.io/ridgeline-analytics/book-health/) shows growth, loss ratio and retention by province, the hail month and the two rate increases, the retention back-test with the next three months' forecast, the late-claims caution and the brief. Details: [book_health/README.md](book_health/README.md).
 
 ## Metric registry
 

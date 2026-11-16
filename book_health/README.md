@@ -66,4 +66,20 @@ From [the brief](results/brief.md), last 12 months to 2026-06-30:
 - 165 claims ($2.3M) from April to June were not reported by 2026-06-30. With them the last three months' loss ratio
   is 63.1%, not the 43.8% the reported claims show.
 
-A dashboard page is the next step.
+## The dashboard
+
+The site's [Provincial book health page](https://sky-five.github.io/ridgeline-analytics/book-health/) shows growth,
+loss ratio and retention by province, Alberta home's claims with the hail month and its rate increase marked, both
+rate increases month by month, retention by channel, each rule's one-month-ahead miss by province and its forecast
+against what happened (pick a province), the next three months' forecast, the monthly loss ratio with the
+unfinished months marked, and the brief.
+
+`report.py` builds the page's 10 `reporting.book_*` tables from the committed results only, so the page does not
+move with the nightly build. Two results files exist for it: [segment_watch.csv](results/segment_watch.csv)
+(Alberta home and Ontario auto by month) and [backtest_path.csv](results/backtest_path.csv) (each rule's
+one-month-ahead forecast and what happened, 1,134 rows).
+
+`tests/book_health/test_report.py` checks that the tables add up: provinces to the book, the two segments to the
+rate actions' before/after retention, the one-month-ahead path to its scores, the forecast to the summary, the
+page's brief to brief.md. It also runs every query on the page against the exported tables, checks every column a
+chart or table names, and ties the page's marked dates and fixed words to the simulation's constants.
