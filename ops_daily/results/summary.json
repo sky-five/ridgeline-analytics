@@ -1,0 +1,129 @@
+{
+  "as_of": "2026-06-30",
+  "first_day": "2026-01-01",
+  "sites": [
+    "central",
+    "east",
+    "west"
+  ],
+  "lines": [
+    "auto",
+    "home"
+  ],
+  "operation": {
+    "calls_offered": 299673,
+    "service_level": 0.8234,
+    "abandon_rate": 0.0307,
+    "avg_handle_minutes": 8.17,
+    "claims_opened": 25548,
+    "claims_closed": 25219,
+    "open_backlog_as_of": 715,
+    "open_backlog_median": 363.0
+  },
+  "flag_rule": {
+    "scored_from": "2026-02-12",
+    "scored_days": 139,
+    "scored_values": 5838,
+    "events": [
+      {
+        "event": "staff_cut",
+        "site": "west",
+        "line": "auto",
+        "from": "2026-06-22",
+        "first_flag": "2026-06-22",
+        "days_to_flag": 0,
+        "first_metric": "abandon_rate",
+        "cause_metric": "service_level",
+        "days_to_flag_cause": 0,
+        "metrics_flagged": [
+          "abandon_rate",
+          "service_level"
+        ],
+        "days_on_watchlist": 9,
+        "days_since_start": 9
+      },
+      {
+        "event": "handle_time_creep",
+        "site": "east",
+        "line": "home",
+        "from": "2026-06-08",
+        "first_flag": "2026-06-12",
+        "days_to_flag": 4,
+        "first_metric": "abandon_rate",
+        "cause_metric": "avg_handle_minutes",
+        "days_to_flag_cause": 4,
+        "metrics_flagged": [
+          "abandon_rate",
+          "avg_handle_minutes",
+          "service_level"
+        ],
+        "days_on_watchlist": 18,
+        "days_since_start": 23
+      },
+      {
+        "event": "storm",
+        "site": "central",
+        "line": "home",
+        "from": "2026-06-18",
+        "first_flag": "2026-06-18",
+        "days_to_flag": 0,
+        "first_metric": "service_level",
+        "cause_metric": "claims_opened",
+        "days_to_flag_cause": 0,
+        "metrics_flagged": [
+          "abandon_rate",
+          "calls_offered",
+          "claims_opened",
+          "open_backlog",
+          "service_level"
+        ],
+        "days_on_watchlist": 13,
+        "days_since_start": 13
+      }
+    ],
+    "false_flags": 47,
+    "false_flags_by_metric": {
+      "calls_offered": 0,
+      "service_level": 10,
+      "abandon_rate": 5,
+      "avg_handle_minutes": 3,
+      "claims_opened": 8,
+      "claims_closed": 7,
+      "open_backlog": 14
+    },
+    "false_flag_rate": 0.0081,
+    "days_with_a_false_watchlist_item": 36
+  },
+  "watchlist_as_of": [
+    {
+      "rank": 1,
+      "site": "central",
+      "line": "home",
+      "metric": "open_backlog",
+      "value": 384.0,
+      "baseline": 84.0,
+      "score": 31.1,
+      "other_flags": null
+    },
+    {
+      "rank": 2,
+      "site": "west",
+      "line": "auto",
+      "metric": "abandon_rate",
+      "value": 0.1095,
+      "baseline": 0.0253,
+      "score": 8.4,
+      "other_flags": "service_level"
+    },
+    {
+      "rank": 3,
+      "site": "east",
+      "line": "home",
+      "metric": "abandon_rate",
+      "value": 0.1496,
+      "baseline": 0.0414,
+      "score": 3.4,
+      "other_flags": null
+    }
+  ]
+}
