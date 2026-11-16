@@ -1,4 +1,4 @@
-"""Builds the margin warehouse once (simulate + load + dbt build, about 10 s) and checks the simulator's planted
+"""On the margin warehouse built once in conftest.py, checks the simulator's planted
 patterns, the risk mart against an independent pandas recomputation from the raw feeds, the reconciliation
 against the planted feed faults, and the committed results."""
 from datetime import date
@@ -8,7 +8,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from margin_risk.load import dbt_build, load
 from margin_risk.run import FINDINGS, FIRM_DAILY, SUMMARY, findings, firm_daily_csv, summary, to_json
 from margin_risk.simulate import (
     CONCENTRATION_RATE,
@@ -20,19 +19,6 @@ from margin_risk.simulate import (
     requirement,
     simulate,
 )
-
-
-@pytest.fixture(scope="module")
-def book():
-    return simulate()
-
-
-@pytest.fixture(scope="module")
-def db(tmp_path_factory, book):
-    path = tmp_path_factory.mktemp("margin") / "margin.duckdb"
-    load(path, book)
-    dbt_build(path)
-    return path
 
 
 @pytest.fixture(scope="module")
