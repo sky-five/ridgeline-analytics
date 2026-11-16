@@ -1,0 +1,201 @@
+{
+  "as_of": "2026-06-30",
+  "first_month": "2022-01-01",
+  "book": {
+    "policies": 32758,
+    "terms": 118035,
+    "claims": 9944,
+    "months": 54,
+    "in_force": 22110,
+    "written_premium_12m": 48386759.55,
+    "earned_premium_12m": 46749722.23,
+    "loss_ratio_12m": 0.6417,
+    "retention_12m": 0.8749
+  },
+  "provinces": [
+    {
+      "province": "ON",
+      "policies_in_force": 7457,
+      "in_force_growth_yoy": -0.0248,
+      "written_premium_growth_12m": 0.0495,
+      "written_premium_12m": 19088987.5,
+      "loss_ratio_12m": 0.5618,
+      "retention_12m": 0.8448
+    },
+    {
+      "province": "AB",
+      "policies_in_force": 3405,
+      "in_force_growth_yoy": 0.0526,
+      "written_premium_growth_12m": 0.1196,
+      "written_premium_12m": 8297924.13,
+      "loss_ratio_12m": 0.5928,
+      "retention_12m": 0.8668
+    },
+    {
+      "province": "QC",
+      "policies_in_force": 4748,
+      "in_force_growth_yoy": 0.0017,
+      "written_premium_growth_12m": 0.0442,
+      "written_premium_12m": 8083976.47,
+      "loss_ratio_12m": 0.706,
+      "retention_12m": 0.8977
+    },
+    {
+      "province": "BC",
+      "policies_in_force": 3525,
+      "in_force_growth_yoy": 0.0529,
+      "written_premium_growth_12m": 0.0967,
+      "written_premium_12m": 7508474.99,
+      "loss_ratio_12m": 0.7487,
+      "retention_12m": 0.8984
+    },
+    {
+      "province": "MB",
+      "policies_in_force": 864,
+      "in_force_growth_yoy": 0.0237,
+      "written_premium_growth_12m": 0.0628,
+      "written_premium_12m": 1601605.59,
+      "loss_ratio_12m": 0.6381,
+      "retention_12m": 0.9028
+    },
+    {
+      "province": "NS",
+      "policies_in_force": 816,
+      "in_force_growth_yoy": 0.0238,
+      "written_premium_growth_12m": 0.0647,
+      "written_premium_12m": 1474554.46,
+      "loss_ratio_12m": 0.8703,
+      "retention_12m": 0.8996
+    },
+    {
+      "province": "SK",
+      "policies_in_force": 790,
+      "in_force_growth_yoy": 0.0167,
+      "written_premium_growth_12m": 0.0564,
+      "written_premium_12m": 1448746.78,
+      "loss_ratio_12m": 0.8387,
+      "retention_12m": 0.8958
+    },
+    {
+      "province": "NB",
+      "policies_in_force": 505,
+      "in_force_growth_yoy": 0.0161,
+      "written_premium_growth_12m": 0.0618,
+      "written_premium_12m": 882489.63,
+      "loss_ratio_12m": 0.6363,
+      "retention_12m": 0.8954
+    }
+  ],
+  "channels": [
+    {
+      "channel": "broker",
+      "renewals_due": 14252,
+      "retention_12m": 0.8934
+    },
+    {
+      "channel": "direct",
+      "renewals_due": 5798,
+      "retention_12m": 0.8584
+    },
+    {
+      "channel": "digital",
+      "renewals_due": 1835,
+      "retention_12m": 0.7831
+    }
+  ],
+  "hail": {
+    "date": "2024-07-22",
+    "province": "AB",
+    "claims": 61,
+    "incurred": 1424691.26,
+    "home_loss_ratio_that_month": 5.508,
+    "home_loss_ratio_that_year": 1.0748,
+    "home_loss_ratio_year_before": 0.5117
+  },
+  "rate_actions": [
+    {
+      "province": "AB",
+      "product": "home",
+      "from": "2025-01-01",
+      "before": {
+        "renewals_due": 1563,
+        "retention": 0.9091,
+        "mean_rate_change": 0.0401
+      },
+      "after": {
+        "renewals_due": 1659,
+        "retention": 0.8511,
+        "mean_rate_change": 0.0998
+      }
+    },
+    {
+      "province": "ON",
+      "product": "auto",
+      "from": "2025-04-01",
+      "before": {
+        "renewals_due": 3601,
+        "retention": 0.8725,
+        "mean_rate_change": 0.04
+      },
+      "after": {
+        "renewals_due": 3673,
+        "retention": 0.7672,
+        "mean_rate_change": 0.1401
+      }
+    }
+  ],
+  "late_claims": {
+    "late_claims": 165,
+    "late_incurred": 2311466.29,
+    "loss_ratio_3m_reported": 0.4378,
+    "loss_ratio_3m_with_late": 0.631
+  },
+  "retention_forecast": {
+    "rule": "trailing_12",
+    "horizons": 3,
+    "scores": [
+      {
+        "rule": "last_month",
+        "forecasts": 984,
+        "mae_points": 2.25,
+        "bias_points": 0.12
+      },
+      {
+        "rule": "trailing_3",
+        "forecasts": 984,
+        "mae_points": 1.82,
+        "bias_points": 0.17
+      },
+      {
+        "rule": "trailing_12",
+        "forecasts": 984,
+        "mae_points": 1.8,
+        "bias_points": 0.39
+      }
+    ],
+    "ontario_first_6_months_after_rate_action": [
+      {
+        "rule": "last_month",
+        "forecasts": 18,
+        "mae_points": 3.05,
+        "bias_points": 1.53
+      },
+      {
+        "rule": "trailing_3",
+        "forecasts": 18,
+        "mae_points": 2.48,
+        "bias_points": 2.35
+      },
+      {
+        "rule": "trailing_12",
+        "forecasts": 18,
+        "mae_points": 4.12,
+        "bias_points": 4.12
+      }
+    ],
+    "next_3_months": {
+      "renewals_due": 5475,
+      "expected_renewed": 4793.6
+    }
+  }
+}

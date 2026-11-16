@@ -4,8 +4,8 @@ select
     province,
     product,
     channel,
-    sum(renewals_due) as renewals_due,
-    sum(renewed) as renewed,
+    sum(renewals_due)::int as renewals_due,
+    sum(renewed)::int as renewed,
     round(sum(renewed) / nullif(sum(renewals_due), 0), 4)::double as retention,
     round(sum(sum_rate_change) / nullif(sum(renewals_due), 0), 4)::double as mean_rate_change
 from {{ ref('fct_segment_month') }}

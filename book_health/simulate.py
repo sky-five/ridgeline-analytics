@@ -64,7 +64,7 @@ HAIL_REPORT_LAG_DAYS = 40
 @dataclass
 class Book:
     policies: pd.DataFrame  # one row per policy: province, product, channel
-    terms: pd.DataFrame  # one row per 12-month term with its written premium and rate change
+    terms: pd.DataFrame  # one row per 12-month term: written premium, its rate change, the change offered at its end
     claims: pd.DataFrame  # the claims feed: losses reported on or before AS_OF
     late_claims: pd.DataFrame  # losses on or before AS_OF reported after it (kept out of the feed)
 
@@ -121,6 +121,7 @@ def _opening_book(rng) -> list[dict]:
 def _terms(rng) -> tuple[pd.DataFrame, pd.DataFrame]:
     policies, terms = [], []
     due: dict[pd.Period, list[dict]] = {}  # month a term ends -> terms ending then
+    offered: dict[str, float] = {}  # term_id -> rate change offered at its renewal, taken up or not
     for p in _opening_book(rng):
         policies.append({k: p[k] for k in ("policy_id", "province", "product", "channel")})
         term = {"policy_id": p["policy_id"], "term_number": p["term_number"], "start_date": p["start_date"],
@@ -138,6 +139,7 @@ def _terms(rng) -> tuple[pd.DataFrame, pd.DataFrame]:
         for old in due.pop(month, []):
             end = old["start_date"].replace(year=old["start_date"].year + 1)
             change = rate_change(old["province"], old["product"], end, rng.normal(0, 0.015))
+            offered[f"{old['policy_id']}-{old['term_number']}"] = change
             nxt = old["term_number"] + 1
             if rng.random() < renew_chance(old["channel"], old["product"], nxt, change):
                 term = {"policy_id": old["policy_id"], "term_number": nxt, "start_date": end,
@@ -149,7 +151,9 @@ def _terms(rng) -> tuple[pd.DataFrame, pd.DataFrame]:
     t = pd.DataFrame(terms)
     t["end_date"] = [d.replace(year=d.year + 1) for d in t["start_date"]]
     t.insert(0, "term_id", t["policy_id"] + "-" + t["term_number"].astype(str))
-    t = t[["term_id", "policy_id", "term_number", "start_date", "end_date", "written_premium", "rate_change"]]
+    t["renewal_offer_change"] = t["term_id"].map(offered)
+    t = t[["term_id", "policy_id", "term_number", "start_date", "end_date", "written_premium", "rate_change",
+           "renewal_offer_change"]]
     return pol, t
 
 

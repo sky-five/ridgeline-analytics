@@ -62,7 +62,7 @@ renewals as (
         channel,
         count(*) as renewals_due,
         count(*) filter (where outcome = 'renewed') as renewed,
-        sum(next_rate_change) as sum_rate_change
+        sum(renewal_offer_change) as sum_rate_change
     from {{ ref('stg_book__terms') }}
     where outcome != 'not_due'
     group by all

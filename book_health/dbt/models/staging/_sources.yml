@@ -8,7 +8,8 @@ sources:
       - name: terms
         description: >
           One row per 12-month policy term. A renewal is a new term of the same policy starting the day the last
-          one ends; rate_change is the premium change at that renewal (empty for a first term).
+          one ends; rate_change is the premium change at that renewal (empty for a first term) and
+          renewal_offer_change the change offered for the next term, taken up or not (empty until it is due).
       - name: claims
         description: >
           Claims reported on or before the as-of date, with loss date, report date and incurred amount. Losses from

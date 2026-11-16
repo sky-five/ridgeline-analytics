@@ -4,14 +4,14 @@ with p as (
     select
         month_start,
         province,
-        sum(policies_in_force) as policies_in_force,
-        sum(new_policies) as new_policies,
+        sum(policies_in_force)::int as policies_in_force,
+        sum(new_policies)::int as new_policies,
         sum(written_premium) as written_premium,
         sum(earned_premium) as earned_premium,
-        sum(claims) as claims,
+        sum(claims)::int as claims,
         sum(incurred) as incurred,
-        sum(renewals_due) as renewals_due,
-        sum(renewed) as renewed,
+        sum(renewals_due)::int as renewals_due,
+        sum(renewed)::int as renewed,
         sum(sum_rate_change) as sum_rate_change
     from {{ ref('fct_segment_month') }}
     group by all
