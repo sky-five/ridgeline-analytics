@@ -1,0 +1,7 @@
+book_health:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('BOOK_HEALTH_DUCKDB_PATH', '../../warehouse/book_health.duckdb') }}"
+      threads: 4

@@ -1,0 +1,15 @@
+version: 2
+sources:
+  - name: raw_book
+    description: The simulated home and auto book (book_health/simulate.py) as the policy and claims systems deliver it.
+    tables:
+      - name: policies
+        description: One row per policy with its province, product (home, auto) and channel (broker, direct, digital).
+      - name: terms
+        description: >
+          One row per 12-month policy term. A renewal is a new term of the same policy starting the day the last
+          one ends; rate_change is the premium change at that renewal (empty for a first term).
+      - name: claims
+        description: >
+          Claims reported on or before the as-of date, with loss date, report date and incurred amount. Losses from
+          the last weeks are mostly not reported yet.

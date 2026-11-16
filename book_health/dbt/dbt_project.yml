@@ -1,0 +1,20 @@
+name: book_health
+version: "1.0.0"
+profile: book_health
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  book_health:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  first_month: "2022-01-01"  # the feeds cover terms running on or after this day (book_health/simulate.py)
+  as_of: "2026-06-30"  # last day of data; a term ending after it has no renewal outcome yet

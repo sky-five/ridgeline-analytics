@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: stg_book__terms
+    description: Policy terms with the policy's province, product and channel, and what happened at the term's end.
+    columns:
+      - name: term_id
+        data_tests: [unique, not_null]
+      - name: outcome
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [renewed, lapsed, not_due]
+  - name: stg_book__claims
+    columns:
+      - name: claim_id
+        data_tests: [unique, not_null]
+      - name: term_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('stg_book__terms')
+                field: term_id

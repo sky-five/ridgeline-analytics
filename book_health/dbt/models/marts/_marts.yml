@@ -1,0 +1,17 @@
+version: 2
+models:
+  - name: fct_segment_month
+    description: Month x province x product x channel; in force, new, written and earned premium, claims, renewals.
+    columns:
+      - name: earned_premium
+        data_tests: [not_null]
+  - name: province_month
+    description: Month x province; growth, loss ratio and retention for the dashboard and the forecast.
+    columns:
+      - name: province
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["AB", "BC", "MB", "NB", "NS", "ON", "QC", "SK"]  # quoted: YAML reads ON as true
+  - name: retention_by_segment
+    description: Retention over the last 12 months by province, product and channel.
