@@ -85,6 +85,17 @@ reversed, the next weekday. It can say something moved; only the ledger says whi
 [findings note](results/findings.md) has the same numbers; `results/firm_daily.csv` is the firm summary by day
 with the reconciliation flag.
 
+## The dashboard page
+
+The site's [Margin risk page](https://sky-five.github.io/ridgeline-analytics/margin-risk/) shows the book on
+2026-06-30 ($14,116,049 lent against $38,078,684 of securities, coverage 1.58, utilisation 90.6%), coverage and
+utilisation by weekday with the sell-off marked, margin calls started per day with the 7 split-day calls shown
+apart, how the 62 real calls ended, each sector's share of borrowers' securities over time and each security's on
+four days (start, the Friday before the sell-off, its last day, the as-of day), daily and unexplained P&L, and the
+two flagged days with their cause. `run.py` also writes `results/margin_calls.csv`, `results/sector_daily.csv`
+and `results/concentration.csv` (all in `--check`); `report.py` turns the committed results into eight
+`reporting.margin_*` tables (no warehouse needed), so the page does not move with the nightly build.
+
 ## Tests
 
 `tests/margin_risk/` builds the warehouse once and checks: the concentration rule on a hand-made account; the
@@ -93,4 +104,8 @@ only by market P&L, deposits and interest, recomputed in pandas from the feeds a
 mart's market value, requirement and calls match a pandas recomputation from the raw feeds on all 30,720
 account-days; the reconciliation flags exactly the labelled account-days; the repeated file counts once; calls
 that start on a break all come from the late split, and every deposit-ended call has its deposit; P&L is
-unexplained only around the two faults; and the committed results are current.
+unexplained only around the two faults; and the committed results are current. `test_report.py` checks the dashboard: the new
+results files are what the marts give; calls add up to the summary, sectors to the whole book each day, the
+snapshot securities to their sectors and the flagged days to the planted faults; every SQL block on the page runs
+against the exported tables (the day dropdown set to each snapshot) and every column a chart or table names
+exists; and the rates and sell-off dates written on the page are the simulation's.
