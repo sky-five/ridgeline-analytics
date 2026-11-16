@@ -1,0 +1,31 @@
+name: ops_daily
+version: "1.0.0"
+profile: ops_daily
+config-version: 2
+
+model-paths: ["models"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+target-path: "target"
+clean-targets: ["target"]
+
+models:
+  ops_daily:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  ops_daily:
+    metric_definitions:
+      +column_types:
+        min_change_abs: double
+        min_change_rel: double
+        min_spread: double
+
+vars:
+  first_day: "2026-01-01"  # first day of the phone feed (ops_daily/simulate.py)
+  as_of: "2026-06-30"  # last day of data
+  baseline_weeks: 6  # the flag rule compares a day with the same weekday in the weeks before
+  flag_score: 3  # flag at this many robust standard deviations from the baseline

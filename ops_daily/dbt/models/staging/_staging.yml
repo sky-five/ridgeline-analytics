@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: stg_ops__calls
+    description: Daily phone figures per site and line.
+    columns:
+      - name: site
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [east, central, west]
+      - name: line
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [home, auto]
+  - name: stg_ops__claims
+    description: Claims with their open and close days.
+    columns:
+      - name: claim_id
+        data_tests: [unique, not_null]
+      - name: opened_date
+        data_tests: [not_null]

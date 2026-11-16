@@ -1,0 +1,11 @@
+version: 2
+sources:
+  - name: raw_ops
+    description: The simulated claims operation (ops_daily/simulate.py) as the phone and claims systems deliver it.
+    tables:
+      - name: calls
+        description: >
+          One row per day, site and line from the phone system: calls offered, answered, abandoned, answered within
+          60 seconds, total handle seconds (talk, hold, after-call work) and staffed hours.
+      - name: claims
+        description: One row per claim with the day it was opened and the day it was closed (empty while open).

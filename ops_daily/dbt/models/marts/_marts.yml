@@ -1,0 +1,33 @@
+version: 2
+models:
+  - name: fct_claims_day
+    description: Day x site x line; claims opened, closed and still open at the end of the day.
+  - name: fct_ops_day
+    description: Day x site x line; the phone and claims figures and the seven daily metrics.
+    columns:
+      - name: service_level
+        data_tests: [not_null]
+  - name: ops_metric_day
+    description: Day x site x line x metric, long form, for the flag rule.
+    columns:
+      - name: metric
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('metric_definitions')
+                field: metric
+  - name: ops_flags
+    description: Every metric value with its same-weekday baseline, spread, score and whether it is flagged.
+  - name: ops_watchlist
+    description: Up to three flagged items a day, one per site and line, furthest from baseline first.
+seeds:
+  - name: metric_definitions
+    description: The metric definitions sheet; ops_flags reads each metric's direction and thresholds from it.
+    columns:
+      - name: metric
+        data_tests: [unique, not_null]
+      - name: good_direction
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [up, down, none]

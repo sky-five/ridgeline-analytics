@@ -1,0 +1,7 @@
+ops_daily:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('OPS_DAILY_DUCKDB_PATH', '../../warehouse/ops_daily.duckdb') }}"
+      threads: 4
