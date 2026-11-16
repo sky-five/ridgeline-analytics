@@ -1,6 +1,8 @@
 """Write the book health results: results/summary.json, results/province_month.csv, the retention back-test
 (results/retention_backtest.csv) and forecast (results/retention_forecast.csv), and the one-page brief
-results/brief.md. Every number comes from the dbt marts, the back-test, or labels.late_claims."""
+results/brief.md; for the dashboard, the two watched segments by month (results/segment_watch.csv) and the
+one-month-ahead back-test path (results/backtest_path.csv). Every number comes from the dbt marts, the
+back-test, or labels.late_claims."""
 import json
 from pathlib import Path
 
@@ -17,6 +19,8 @@ PROVINCE_MONTH = RESULTS / "province_month.csv"
 BACKTEST = RESULTS / "retention_backtest.csv"
 FORECAST = RESULTS / "retention_forecast.csv"
 BRIEF = RESULTS / "brief.md"
+SEGMENT_WATCH = RESULTS / "segment_watch.csv"
+BACKTEST_PATH = RESULTS / "backtest_path.csv"
 LAST_12 = f"month_start > date '{AS_OF}' - interval 12 month"
 NAMES = {"AB": "Alberta", "BC": "British Columbia", "MB": "Manitoba", "NB": "New Brunswick", "NS": "Nova Scotia",
          "ON": "Ontario", "QC": "Quebec", "SK": "Saskatchewan"}
@@ -152,6 +156,35 @@ def forecast_csv(db: Path, bt: pd.DataFrame) -> str:
         upcoming = con.sql("""select province, renewal_month, count(*) as renewals_due from stg_book__terms
                               where outcome = 'not_due' group by all""").df()
     return fc.next_months(pm, upcoming, fc.best_rule(bt)).to_csv(index=False, lineterminator="\n")
+
+
+def segment_watch_csv(db: Path) -> str:
+    """Month by month for the segments the planted events hit (Alberta home: the hail and its rate increase;
+    Ontario auto: its rate increase): earned premium, incurred, loss ratio, renewals, retention, mean rate change."""
+    segs = " or ".join(f"(province = '{p}' and product = '{prod}')" for p, prod, _, _ in RATE_ACTIONS)
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql(f"""
+            select province, product, month_start,
+                   sum(earned_premium)::double as earned_premium, sum(incurred)::double as incurred,
+                   round(sum(incurred) / nullif(sum(earned_premium), 0), 4)::double as loss_ratio,
+                   sum(renewals_due)::int as renewals_due, sum(renewed)::int as renewed,
+                   round(sum(renewed) / nullif(sum(renewals_due), 0), 4)::double as retention,
+                   round(sum(sum_rate_change) / nullif(sum(renewals_due), 0), 4)::double as mean_rate_change
+            from fct_segment_month where {segs}
+            group by all order by province, product, month_start""").df()
+    for c in ("earned_premium", "incurred"):
+        df[c] = df[c].round(2) + 0.0
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def backtest_path_csv(bt: pd.DataFrame) -> str:
+    """The one-month-ahead forecasts behind the back-test: each rule's forecast and what happened, per province
+    (and the whole book, 'all') and target month."""
+    df = bt[bt["horizon"] == 1].assign(month_start=lambda d: d["target"].dt.start_time.dt.date)
+    df = df[["province", "month_start", "rule", "forecast", "actual", "due"]].rename(columns={"due": "renewals_due"})
+    df["forecast"], df["actual"] = df["forecast"].round(4), df["actual"].round(4)
+    df["renewals_due"] = df["renewals_due"].astype(int)
+    return df.sort_values(["province", "month_start", "rule"]).to_csv(index=False, lineterminator="\n")
 
 
 def to_json(s: dict) -> str:

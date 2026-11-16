@@ -175,6 +175,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(margin_tables())
 
+    # the simulated home and auto book: growth, loss ratio, retention, the back-test and the brief (book_health/)
+    from book_health.report import tables as book_tables
+
+    tables.update(book_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 

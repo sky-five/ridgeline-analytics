@@ -5,15 +5,19 @@ from pathlib import Path
 from book_health.load import DEFAULT_DB, dbt_build, load
 from book_health.run import (
     BACKTEST,
+    BACKTEST_PATH,
     BRIEF,
     FORECAST,
     PROVINCE_MONTH,
+    SEGMENT_WATCH,
     SUMMARY,
     backtest,
     backtest_csv,
+    backtest_path_csv,
     brief,
     forecast_csv,
     province_month_csv,
+    segment_watch_csv,
     summary,
     to_json,
 )
@@ -29,7 +33,8 @@ dbt_build(args.db)
 bt = backtest(args.db)
 s = summary(args.db, bt)
 fresh = {SUMMARY: to_json(s), PROVINCE_MONTH: province_month_csv(args.db), BACKTEST: backtest_csv(bt),
-         FORECAST: forecast_csv(args.db, bt), BRIEF: brief(s)}
+         FORECAST: forecast_csv(args.db, bt), BRIEF: brief(s),
+         SEGMENT_WATCH: segment_watch_csv(args.db), BACKTEST_PATH: backtest_path_csv(bt)}
 if args.check:
     for path, text in fresh.items():
         if not path.exists() or path.read_text() != text:
