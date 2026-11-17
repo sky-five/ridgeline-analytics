@@ -185,6 +185,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(ops_tables())
 
+    # simulated lead-generation exports: cost per issued lead, attribution, load audit, planted faults (lead_cost/)
+    from lead_cost.report import tables as lead_cost_tables
+
+    tables.update(lead_cost_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
