@@ -7,12 +7,18 @@ from lead_cost.run import (
     CAMPAIGN_COST,
     CLIENT_COST,
     FAULTS_FILE,
+    LEAD_MIX,
+    LOAD_AUDIT,
     SUMMARY,
+    WEEKLY_COST,
     campaign_cost_csv,
     client_cost_csv,
     faults,
+    lead_mix_csv,
+    load_audit_csv,
     summary,
     to_json,
+    weekly_cost_csv,
 )
 from lead_cost.simulate import simulate
 
@@ -27,7 +33,8 @@ for table, n in load(args.db, w.deliveries).items():
 dbt_build(args.db)
 s = summary(args.db, w)
 fresh = {SUMMARY: to_json(s), CAMPAIGN_COST: campaign_cost_csv(args.db), CLIENT_COST: client_cost_csv(args.db),
-         FAULTS_FILE: to_json(faults(w, s["headline"]))}
+         FAULTS_FILE: to_json(faults(w, s["headline"])), LOAD_AUDIT: load_audit_csv(args.db),
+         LEAD_MIX: lead_mix_csv(args.db), WEEKLY_COST: weekly_cost_csv(args.db)}
 if args.check:
     for path, text in fresh.items():
         if not path.exists() or path.read_text() != text:

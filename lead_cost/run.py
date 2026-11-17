@@ -1,8 +1,10 @@
 """Write the lead-cost results: results/summary.json (what arrived, what Bronze/Silver/Gold did with it, how the
 leads were attributed, the pipeline against the simulator's truth, the headline cost figures),
 results/campaign_cost.csv and results/client_cost.csv (Gold as built), and results/faults.json (each planted
-silent failure, the tests that caught it, and what the cost figures would have shown). Every number comes from the
-warehouse, except the truth check, which compares it with the simulator."""
+silent failure, the tests that caught it, and what the cost figures would have shown), and for the dashboard
+results/load_audit.csv (Bronze's audit, one row per file), results/lead_mix.csv (leads by client, how they came in
+and how they were attributed) and results/weekly_cost.csv (spend and attributed leads by client and week). Every
+number comes from the warehouse, except the truth check, which compares it with the simulator."""
 import json
 from pathlib import Path
 
@@ -18,6 +20,9 @@ SUMMARY = RESULTS / "summary.json"
 CAMPAIGN_COST = RESULTS / "campaign_cost.csv"
 CLIENT_COST = RESULTS / "client_cost.csv"
 FAULTS_FILE = RESULTS / "faults.json"
+LOAD_AUDIT = RESULTS / "load_audit.csv"
+LEAD_MIX = RESULTS / "lead_mix.csv"
+WEEKLY_COST = RESULTS / "weekly_cost.csv"
 
 
 def to_json(obj) -> str:
@@ -100,6 +105,46 @@ def campaign_cost_csv(db: Path) -> str:
 
 def client_cost_csv(db: Path) -> str:
     return _csv(db, "gold_client_cost")
+
+
+def _query_csv(db: Path, sql: str) -> str:
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql(sql).df()
+    return df.to_csv(index=False, lineterminator="\n")
+
+
+def load_audit_csv(db: Path) -> str:
+    """bronze.load_audit as landed: declared vs loaded rows per file, and which earlier batch a file repeats."""
+    return _query_csv(db, """
+        select batch_id, source, file, delivered_at, declared_rows, loaded_rows, checksum,
+               min(batch_id) over (partition by checksum) as first_batch_with_checksum
+        from bronze.load_audit order by batch_id""")
+
+
+def lead_mix_csv(db: Path) -> str:
+    """Leads by client, how they came in (form or call) and how Gold found their campaign."""
+    return _query_csv(db, """
+        select client, came_by, attributed_by, count(*)::int as leads,
+               (count(*) filter (where issued))::int as issued_leads, (count(*) filter (where demo))::int as demos
+        from gold_leads group by all order by all""")
+
+
+def weekly_cost_csv(db: Path) -> str:
+    """Spend and attributed leads by client and week (Monday), each counted on the day it happened."""
+    return _query_csv(db, """
+        with spend as (
+            select client, date_trunc('week', day)::date as week, sum(spend) as spend
+            from slv_ad_spend where campaign_id is not null group by all
+        ),
+        leads as (
+            select l.client, date_trunc('week', l.lead_day)::date as week, count(*)::int as paid_leads,
+                   (count(*) filter (where l.issued))::int as issued_leads,
+                   (count(*) filter (where l.demo))::int as demos
+            from gold_leads as l where l.campaign_id is not null group by all
+        )
+        select s.client, s.week, round(s.spend, 2)::double as spend, coalesce(l.paid_leads, 0) as paid_leads,
+               coalesce(l.issued_leads, 0) as issued_leads, coalesce(l.demos, 0) as demos
+        from spend as s left join leads as l using (client, week) order by s.client, s.week""")
 
 
 def faults(w: World, clean: dict) -> list[dict]:
