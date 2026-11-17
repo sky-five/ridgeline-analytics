@@ -1,13 +1,20 @@
 name: nightly
 
-# Simulates the new day, rebuilds the warehouse and publishes the Evidence site to GitHub Pages.
-# If any step fails, Pages keeps serving the last good build.
+# Simulates the new day, loads it into the warehouse incrementally, rebuilds the dbt models and publishes
+# the Evidence site to GitHub Pages. If any step fails, Pages keeps serving the last good build.
+# The warehouse and dlt state carry over between runs in the Actions cache; once a week (Sunday's scheduled
+# run, or a manual run with full_check) a second warehouse is rebuilt from scratch and must match it.
 on:
   schedule:
     - cron: "0 9 * * *"
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      full_check:
+        description: "Also rebuild from scratch and check it matches the incremental warehouse"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -38,6 +45,10 @@ jobs:
           echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
           echo "AS_OF=$(date -u -d yesterday +%F)" >> "$GITHUB_ENV"
 
+      - name: Day of the week (7 is Sunday, the weekly full check)
+        id: day
+        run: echo "weekday=$(date -u +%u)" >> "$GITHUB_OUTPUT"
+
       - name: Cache simulated history
         uses: actions/cache@v4
         with:
@@ -47,8 +58,20 @@ jobs:
       - name: Month-end close as of the same date (revrec parallel run)
         run: python -m revrec --as-of "$AS_OF"
 
-      - name: Load + dbt build
-        run: python scripts/run_all.py --fresh --as-of "$AS_OF"
+      # Yesterday's warehouse and dlt cursors. The key changes with the engine pin or the pipeline code,
+      # and then the run starts from scratch.
+      - name: Restore warehouse and pipeline state
+        id: warehouse
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            warehouse
+            .dlt_pipelines
+          key: warehouse-${{ hashFiles('requirements.txt', 'pipelines/**') }}-${{ github.run_id }}
+          restore-keys: warehouse-${{ hashFiles('requirements.txt', 'pipelines/**') }}-
+
+      - name: Load (incremental) + dbt build
+        run: python scripts/run_all.py --as-of "$AS_OF"
 
       - name: Every governed metric matches its independent check, month by month
         run: python -m metric_glossary
@@ -75,6 +98,25 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: reports/build
+
+      # Only when the warehouse was built on top of an earlier one: a run without a cache hit is already
+      # a full rebuild. A mismatch fails the run, so the site is not deployed and the state is not saved.
+      - name: Weekly check, a rebuild from scratch gives the same warehouse
+        if: >-
+          steps.warehouse.outputs.cache-matched-key != '' &&
+          (inputs.full_check || (github.event_name == 'schedule' && steps.day.outputs.weekday == '7'))
+        run: |
+          python scripts/run_all.py --fresh --as-of "$AS_OF" \
+            --warehouse warehouse_full/ridgeline.duckdb --dlt-dir .dlt_pipelines_full
+          python -m pipelines.parity warehouse/ridgeline.duckdb warehouse_full/ridgeline.duckdb
+
+      - name: Save warehouse and pipeline state for tomorrow
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            warehouse
+            .dlt_pipelines
+          key: warehouse-${{ hashFiles('requirements.txt', 'pipelines/**') }}-${{ github.run_id }}
 
   deploy:
     needs: build
