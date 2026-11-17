@@ -97,12 +97,24 @@ def false_flag_rows(s: dict, defs: dict) -> pd.DataFrame:
                          for i, m in enumerate(METRICS)])
 
 
+def min_change_text(d: dict) -> str:
+    """The sheet's minimum move in words: 10 points of service level, 0.5 minutes, 25% of the usual count."""
+    parts = []
+    if float(d["min_change_abs"]):
+        a = float(d["min_change_abs"])
+        parts.append(f"{a:g} minutes" if d["unit"] == "minutes" else f"{100 * a:g} points")
+    if float(d["min_change_rel"]):
+        parts.append(f"{float(d['min_change_rel']):.0%} of the usual")
+    return " and ".join(parts)
+
+
 def definition_rows(defs: dict) -> pd.DataFrame:
     df = pd.DataFrame(defs.values())
+    df["min_change"] = [min_change_text(d) for d in defs.values()]
     df.insert(0, "metric_sort", _sort(df["metric"]))
     for c in ("min_change_abs", "min_change_rel", "min_spread"):
         df[c] = df[c].astype(float)
-    df["good_direction"] = df["good_direction"].map({"up": "higher", "down": "lower", "none": "either way flagged"})
+    df["good_direction"] = df["good_direction"].map({"up": "higher", "down": "lower", "none": "neither: flagged either way"})
     return df.sort_values("metric_sort").reset_index(drop=True)
 
 
