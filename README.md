@@ -287,12 +287,20 @@ uv pip install --python .venv/Scripts/python.exe -r requirements.txt   # macOS/L
 .venv/Scripts/python -m pytest -m "not e2e"                              # Python tests
 ```
 
-`run_all.py` loads data as of yesterday by default. `--as-of YYYY-MM-DD` picks a date between 2024-03-01 (before that, some systems have no rows yet) and 2027-12-31 (the end of the simulated history). The same date always gives the same data. Use `--fresh` when moving to an earlier date. The first run simulates the full history (about a minute) and caches it in `.cache/`.
+`run_all.py` loads data as of yesterday by default. `--as-of YYYY-MM-DD` picks a date between 2024-03-01 (before that, some systems have no rows yet) and 2027-12-31 (the end of the simulated history). The same date always gives the same data. Runs build on the warehouse already there: only rows past each table's `updated_at` cursor are loaded. Use `--fresh` to start over; an earlier date than the warehouse holds is refused without it. The first run simulates the full history (about a minute) and caches it in `.cache/`.
+
+### Nightly incremental load, checked weekly against a rebuild
+
+The nightly job used to delete the warehouse and reload every row (`--fresh`). It now restores yesterday's warehouse and dlt cursors from the GitHub Actions cache and loads only the new day, then runs the dbt build as before. Two guards in `scripts/run_all.py`: a marker next to the warehouse records the last as-of date, and a run for an earlier date stops; dlt state without its warehouse file is thrown away, so a lost warehouse is rebuilt rather than left empty. The cache key includes the engine pin and the pipeline code, so changing either starts from scratch.
+
+Once a week (Sunday's scheduled run, or a manual run with `full_check`) the job also rebuilds a second warehouse from scratch for the same date and runs `python -m pipelines.parity` on the two. It compares every table, raw loads, dbt models and reporting tables: same columns, same row count, and the same rows by an order-free fingerprint (one hash per row, summed; doubles rounded to 6 decimals). dlt bookkeeping, the load-count table and build timestamps are left out. A mismatch fails the run before the site deploys and before the state is saved.
+
+Local check, as of 2026-10-01 then 2026-10-09: the second run loaded 19,566 rows instead of 1,182,491, and all 148 tables matched the rebuild. The subscription snapshot is compared on current rows only: the incremental warehouse kept 31 earlier versions from those eight days, which a rebuild from scratch cannot have (it is why the snapshot exists, and `--fresh` every night threw them away).
 
 ## Repo map
 
 ```
-pipelines/   dlt sources + load CLI; engine.py imports the pinned saas-world-sim package
+pipelines/   dlt sources + load CLI; engine.py imports the pinned saas-world-sim package; parity.py (incremental vs rebuild)
 dbt/         models/{staging,intermediate,marts/*}, tests/, seeds/, macros/ (cross-database helpers)
 semantic_eval/ business questions, governed-metric answer key, raw-vs-governed eval and its recorded run
 orchestration/ Airflow DAG for the nightly build, failure alerts, last-good marker (learning project)
