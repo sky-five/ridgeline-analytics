@@ -6,6 +6,7 @@ import duckdb
 import pytest
 import yaml
 
+import scripts.run_all as run_all
 from pipelines.parity import compare
 from pipelines.run import load
 from scripts.run_all import loaded_as_of_path, prepare
@@ -148,3 +149,12 @@ def test_nightly_loads_incrementally_and_checks_a_rebuild_weekly():
     assert wf["jobs"]["deploy"]["needs"] == "build"
     dispatch = wf.get("on", wf.get(True))["workflow_dispatch"]
     assert dispatch["inputs"]["full_check"]["type"] == "boolean"
+
+
+def test_dbt_gets_an_absolute_warehouse_path(monkeypatch, tmp_path):
+    # dbt runs from dbt/, so a relative --warehouse (as in the weekly check) must not be passed on as is
+    seen = {}
+    monkeypatch.setattr(run_all.subprocess, "run", lambda cmd, cwd, env, check: seen.update(env=env, cwd=cwd))
+    monkeypatch.chdir(tmp_path)
+    run_all._dbt("build", as_of=date(2026, 10, 1), warehouse=Path("warehouse_full/ridgeline.duckdb"))
+    assert seen["env"]["RIDGELINE_DUCKDB_PATH"] == str(tmp_path / "warehouse_full" / "ridgeline.duckdb")

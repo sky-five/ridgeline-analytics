@@ -28,7 +28,7 @@ DLT_DIR = ROOT / ".dlt_pipelines"
 def _dbt(*args: str, as_of: date, warehouse: Path) -> None:
     exe = Path(sys.executable).parent / ("dbt.exe" if os.name == "nt" else "dbt")
     cmd = [str(exe), *args, "--profiles-dir", ".", "--vars", f"{{as_of_date: '{as_of}'}}"]
-    env = {**os.environ, "RIDGELINE_DUCKDB_PATH": str(warehouse)}
+    env = {**os.environ, "RIDGELINE_DUCKDB_PATH": str(warehouse.resolve())}  # dbt runs from dbt/
     print("+", " ".join(cmd[1:]), flush=True)
     subprocess.run(cmd, cwd=DBT_DIR, env=env, check=True)
 
@@ -63,6 +63,7 @@ def main() -> None:
     p.add_argument("--warehouse", type=Path, default=DUCKDB_PATH, help="DuckDB file")
     p.add_argument("--dlt-dir", type=Path, default=DLT_DIR, help="dlt pipeline state folder")
     args = p.parse_args()
+    args.warehouse, args.dlt_dir = args.warehouse.resolve(), args.dlt_dir.resolve()
 
     args.warehouse.parent.mkdir(parents=True, exist_ok=True)
 
