@@ -80,12 +80,28 @@ known target (handle time against plan) needs that target as a second check.
   auto's abandon rate, east home's abandon rate) and a so-what paragraph per metric;
 - [results/summary.json](results/summary.json): the operation's totals, the back-check, the watchlist;
 - [results/flags.csv](results/flags.csv): every flagged day, site, line and metric (130 rows);
-- [results/ops_day.csv](results/ops_day.csv): the daily figures and metrics per site and line, for the dashboard.
+- [results/ops_day.csv](results/ops_day.csv): the daily figures and metrics per site and line, for the dashboard;
+- [results/metric_day.csv](results/metric_day.csv): every day, team and metric with its baseline, spread, score and
+  flag (7,602 rows), for the dashboard's charts.
+
+## The dashboard
+
+The site's [Operations speed-to-decision page](https://sky-five.github.io/ridgeline-analytics/ops-daily/) shows the
+half-year's totals, today's three things with what to check first, the seven metrics for one team at a time (pick a
+team: each day against its same-weekday median, flagged days as dots, and the team's flag list), the back-check
+with the false flags by metric and where the rule is weak, the so-what paragraphs, and the definitions sheet.
+
+`report.py` builds the page's 8 `reporting.ops_*` tables from the committed results only, so the page does not move
+with the nightly build.
 
 ## Tests
 
-`tests/ops_daily/` (12 tests) checks that the simulation is seeded and its feeds hold together, that the planted
-events are in the feeds, the claims and phone marts against the raw feeds, the whole flag rule written again in
-pandas (same baseline and same flag on all 5,838 scored values), that each planted event is flagged on its cause
-within four days and quiet teams on under 1% of their values, that the as-of watchlist names the three planted
-teams, that the definitions sheet covers exactly the seven metrics, and that the committed results are current.
+`tests/ops_daily/` (24 tests). `test_ops_daily.py` checks that the simulation is seeded and its feeds hold
+together, that the planted events are in the feeds, the claims and phone marts against the raw feeds, the whole flag
+rule written again in pandas (same baseline and same flag on all 5,838 scored values), that each planted event is
+flagged on its cause within four days and quiet teams on under 1% of their values, that the as-of watchlist names
+the three planted teams, that the definitions sheet covers exactly the seven metrics, and that the committed results
+are current. `test_report.py` checks the dashboard: the flag list is exactly the flagged rows of the metric table,
+the false flags agree with the back-check, today's three things match results/today.md, every query on the page
+runs for every team, every column a chart or table names exists, and the page's fixed words (the handle-time
+creep no longer flagged on the last day) hold in the data.
