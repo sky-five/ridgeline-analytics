@@ -73,6 +73,9 @@ jobs:
       - name: Lead cost results (Gold cost per issued lead, truth check, each planted silent failure caught) match the committed files
         run: python -m lead_cost --check
 
+      - name: Insurance KPI results (profile, checks against planted faults, KPI tree and change split) match the committed files
+        run: python -m insurance_kpi --check
+
       - name: Metric registry compiles to the committed semantic layer, no metric changed without a version bump
         run: python -m metric_registry --check
 

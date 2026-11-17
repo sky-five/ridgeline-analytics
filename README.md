@@ -246,6 +246,10 @@ python -m funnel_ask "What was CAC for Google Ads in March 2026?"
 
 The 11 dbt staging models and their 46 column tests are written by `staging_codegen/` from one YAML spec per source: each column's type (timestamp, date, numeric, int, JSON number or text), an optional rename, and its tests. The specs reproduce the earlier hand-written SQL line for line, and `dbt parse` lists the same 91 test ids as before the move. CI runs `python -m staging_codegen --check`, which fails on a hand-edited, missing or orphan staging file, and `--draft <source>` starts a spec for a new source from its raw tables in DuckDB. Details: [staging_codegen/README.md](staging_codegen/README.md).
 
+## Insurance KPI starter
+
+`insurance_kpi/` is a starting kit for an insurance book's numbers, on simulated policy and claims exports (auto and home, four provinces, 63,000 policies and 4,182 claims, valued 2026-06-30). A column profile and 14 SQL data-quality checks run on the exports; 135 planted faults (duplicate claim rows, orphan claims, losses outside the policy term, sign errors, swapped dates, empty provinces, test policies) are all caught with no false flags, and the cleaned tables equal the true book row for row. A KPI tree goes from combined ratio to loss and expense ratio, then frequency, severity and average earned premium, and splits the 2024 to 2025 change exactly across them: home's loss ratio rose 14.9 points, 12.7 of them from frequency, and the province drill puts the jump in AB (the planted hail); auto's rose 5.8 points, mostly from severity. Results: [kpi_tree.md](insurance_kpi/results/kpi_tree.md). Details: [insurance_kpi/README.md](insurance_kpi/README.md).
+
 ## Customer health scoring
 
 `customer_health/` is a learning project on simulated data. It takes a monthly snapshot of every live subscriber's usage, tickets, re-measure requests, late invoices and plan, using only data from before the snapshot date. It then compares a hand-weighted health score with a logistic-regression model at predicting a cancel in the next 60 days, on 280 held-out accounts. Both are only a little better than chance (ROC AUC 0.594 for the score, 0.599 for the model), because churn in this simulation is mostly random and crew size is the main driver. The site's [Renewals at risk page](https://sky-five.github.io/ridgeline-analytics/renewals-at-risk/) lists the 683 live subscriptions on 2026-07-01 with the riskiest fifth by each method and the reasons behind each score. Details: [customer_health/README.md](customer_health/README.md).
@@ -306,6 +310,7 @@ margin_risk/ simulated brokerage margin book in dbt: risk and finance marts (uti
 book_health/ simulated home and auto insurance book in dbt: growth, loss ratio and retention by province, a back-tested retention forecast, one-page brief
 ops_daily/   simulated claims operation in dbt: daily calls, handle time, backlog and service level by site and line, a back-tested flag rule, today's three things, metric definitions
 lead_cost/   ad, call-tracking and CRM exports in Bronze/Silver/Gold: one row per lead, cost per issued lead and per demo, tests for silent failures
+insurance_kpi/ simulated policy and claims exports: column profile, data-quality checks scored on planted faults, KPI tree with an exact year-on-year split
 metric_registry/ one registry file compiled to a MetricFlow layer and a glossary for simulated vehicle sales and incentives; no metric changes without a version bump
 vehicle_auction/ simulated car auction in dbt: sell-through by channel, a reserve-price test checked against the truth (learning project)
 account_reviews/ the tables behind one review page per large account, from the governed metrics
