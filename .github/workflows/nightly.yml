@@ -67,8 +67,8 @@ jobs:
           path: |
             warehouse
             .dlt_pipelines
-          key: warehouse-${{ hashFiles('requirements.txt', 'pipelines/**') }}-${{ github.run_id }}
-          restore-keys: warehouse-${{ hashFiles('requirements.txt', 'pipelines/**') }}-
+          key: warehouse-${{ hashFiles('requirements.txt', 'pipelines/*.py') }}-${{ github.run_id }}
+          restore-keys: warehouse-${{ hashFiles('requirements.txt', 'pipelines/*.py') }}-
 
       - name: Load (incremental) + dbt build
         run: python scripts/run_all.py --as-of "$AS_OF"
@@ -110,13 +110,14 @@ jobs:
             --warehouse warehouse_full/ridgeline.duckdb --dlt-dir .dlt_pipelines_full
           python -m pipelines.parity warehouse/ridgeline.duckdb warehouse_full/ridgeline.duckdb
 
+      # the key computed before the build: hashing again now would also pick up files the build wrote
       - name: Save warehouse and pipeline state for tomorrow
         uses: actions/cache/save@v4
         with:
           path: |
             warehouse
             .dlt_pipelines
-          key: warehouse-${{ hashFiles('requirements.txt', 'pipelines/**') }}-${{ github.run_id }}
+          key: ${{ steps.warehouse.outputs.cache-primary-key }}
 
   deploy:
     needs: build

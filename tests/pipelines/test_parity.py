@@ -134,8 +134,10 @@ def test_nightly_loads_incrementally_and_checks_a_rebuild_weekly():
     check = steps[names.index("Weekly check, a rebuild from scratch gives the same warehouse")]
 
     assert restore["uses"].startswith("actions/cache/restore") and save["uses"].startswith("actions/cache/save")
-    assert restore["with"]["path"] == save["with"]["path"] and restore["with"]["key"] == save["with"]["key"]
-    assert "requirements.txt" in restore["with"]["key"] and "pipelines/**" in restore["with"]["key"]
+    assert restore["with"]["path"] == save["with"]["path"]
+    # saved under the key restore computed before the build (__pycache__ would change a hash taken later)
+    assert save["with"]["key"] == "${{ steps.warehouse.outputs.cache-primary-key }}"
+    assert "requirements.txt" in restore["with"]["key"] and "pipelines/*.py" in restore["with"]["key"]
     assert "--fresh" not in build["run"]
     assert "--fresh" in check["run"] and "warehouse_full" in check["run"] and "pipelines.parity" in check["run"]
     assert "cache-matched-key" in check["if"] and "weekday == '7'" in check["if"]
