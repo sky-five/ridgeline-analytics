@@ -114,7 +114,8 @@ def definition_rows(defs: dict) -> pd.DataFrame:
     df.insert(0, "metric_sort", _sort(df["metric"]))
     for c in ("min_change_abs", "min_change_rel", "min_spread"):
         df[c] = df[c].astype(float)
-    df["good_direction"] = df["good_direction"].map({"up": "higher", "down": "lower", "none": "neither: flagged either way"})
+    better = {"up": "higher", "down": "lower", "none": "neither: flagged either way"}
+    df["good_direction"] = df["good_direction"].map(better)
     return df.sort_values("metric_sort").reset_index(drop=True)
 
 
