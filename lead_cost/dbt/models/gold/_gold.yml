@@ -1,0 +1,28 @@
+version: 2
+models:
+  - name: gold_leads
+    description: One row per lead (client and phone), its campaign, how it was attributed, and its outcome.
+    columns:
+      - name: lead_key
+        data_tests: [unique, not_null]
+      - name: campaign_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('campaigns')
+                field: campaign_id
+      - name: attributed_by
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [crm_click_id, call_click_id, tracking_number, none]
+  - name: gold_campaign_cost
+    description: Spend, leads, issued leads, demos and the cost of each, per campaign.
+    columns:
+      - name: campaign_id
+        data_tests: [unique, not_null]
+  - name: gold_client_cost
+    description: The same per client, with unattributed leads beside it.
+    columns:
+      - name: client
+        data_tests: [unique, not_null]

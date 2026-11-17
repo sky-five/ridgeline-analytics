@@ -1,0 +1,33 @@
+version: 2
+models:
+  - name: slv_ad_spend
+    columns:
+      - name: spend
+        data_tests: [not_null]
+  - name: slv_ad_clicks
+    columns:
+      - name: click_id
+        data_tests: [unique, not_null]
+  - name: slv_tracking_numbers
+    columns:
+      - name: tracking_phone
+        data_tests: [unique, not_null]
+      - name: campaign_id
+        data_tests: [not_null]
+  - name: slv_calls
+    columns:
+      - name: call_id
+        data_tests: [unique, not_null]
+      - name: caller_phone
+        data_tests: [not_null]
+  - name: slv_crm_records
+    columns:
+      - name: crm_id
+        data_tests: [unique, not_null]
+      - name: phone
+        data_tests: [not_null]
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [new, rejected, issued, demo_done]

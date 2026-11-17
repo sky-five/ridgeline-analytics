@@ -1,0 +1,19 @@
+version: 2
+sources:
+  - name: bronze
+    description: The export files as delivered (lead_cost/load.py), all text, with _batch_id, _file and _delivered_at.
+    tables:
+      - name: search_spend
+        description: Search platform daily performance; each file repeats the last three days, restated.
+      - name: social_spend
+        description: Social platform daily performance, one day a file.
+      - name: search_clicks
+      - name: social_clicks
+      - name: calls
+        description: Call tracking, one row per call, with the click id when the caller came from the website.
+      - name: tracking_numbers
+        description: Call tracking's number-to-campaign table.
+      - name: crm_leads
+        description: Every CRM record created or changed that day; the latest row per crm_id is the current one.
+      - name: load_audit
+        description: One row per delivered file; declared_rows from the manifest, loaded_rows counted in bronze.

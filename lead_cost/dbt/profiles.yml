@@ -1,0 +1,7 @@
+lead_cost:
+  target: duckdb
+  outputs:
+    duckdb:
+      type: duckdb
+      path: "{{ env_var('LEAD_COST_DUCKDB_PATH', '../../warehouse/lead_cost.duckdb') }}"
+      threads: 4
