@@ -4,8 +4,8 @@ with spend as (
     select
         campaign_id,
         sum(spend) as spend,
-        sum(clicks) as clicks,
-        sum(impressions) as impressions
+        sum(clicks)::bigint as clicks,
+        sum(impressions)::bigint as impressions
     from {{ ref('slv_ad_spend') }}
     where campaign_id is not null
     group by campaign_id

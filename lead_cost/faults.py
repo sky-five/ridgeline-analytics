@@ -72,10 +72,10 @@ def headline(db: Path) -> dict:
     """The figures a silent failure would move: spend, issued leads and demos attributed to a campaign, cost per
     issued lead, unattributed leads."""
     with duckdb.connect(str(db), read_only=True) as con:
-        spend, issued, demos, unattr = con.sql("""select round(sum(spend), 2), sum(issued_leads)::int,
+        spend, issued, demos, unattr = con.sql("""select round(sum(spend), 2)::double, sum(issued_leads)::int,
                                                   sum(demos)::int, sum(unattributed_leads)::int
                                                   from gold_client_cost""").fetchone()
-        by_client = {c: v for c, v in con.sql("select client, cost_per_issued_lead from gold_client_cost "
+        by_client = {c: v for c, v in con.sql("select client, cost_per_issued_lead::double from gold_client_cost "
                                               "order by client").fetchall()}
     return {"spend": float(spend), "paid_issued_leads": issued, "paid_demos": demos, "unattributed_leads": unattr,
             "cost_per_issued_lead": round(spend / issued, 2), "cost_per_issued_lead_by_client": by_client}

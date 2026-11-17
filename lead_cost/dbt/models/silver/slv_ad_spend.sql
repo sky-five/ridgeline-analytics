@@ -41,7 +41,7 @@ select
     c.client,
     l.impressions,
     l.clicks,
-    round(l.spend, 2) as spend,
+    round(l.spend, 2)::decimal(14, 2) as spend,  -- exact, so sums don't depend on thread order
     l._batch_id as batch_id
 from latest as l
 left join {{ ref('campaigns') }} as c
