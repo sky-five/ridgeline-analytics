@@ -1,0 +1,17 @@
+# Staging spec for the support source. python -m staging_codegen writes the models and tests from it.
+source: support
+tables:
+  - table: support_tickets
+    model: stg_support__tickets
+    columns:
+      - {name: ticket_id, tests: [unique, not_null]}
+      - {name: account_id, tests: [{relationships: stg_app_db__accounts.account_id}]}
+      - {name: created_at, type: timestamp}
+      - {name: first_reply_at, type: timestamp}
+      - {name: solved_at, type: timestamp}
+      - {name: status, tests: [{accepted_values: [open, solved]}]}
+      - {name: priority, tests: [{accepted_values: [low, normal, high, urgent]}]}
+      - {name: channel}
+      - {name: subject}
+      - {name: body}
+      - {name: updated_at, type: timestamp}

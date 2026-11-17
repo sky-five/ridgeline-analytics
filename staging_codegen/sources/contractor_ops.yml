@@ -1,0 +1,17 @@
+# Staging spec for the contractor_ops source. python -m staging_codegen writes the models and tests from it.
+source: contractor_ops
+tables:
+  - table: contractor_leads
+    model: stg_contractor_ops__leads
+    columns:
+      - {name: lead_id, tests: [unique, not_null]}
+      - {name: account_id, tests: [{relationships: stg_app_db__accounts.account_id}]}
+      - {name: lead_source, from: source, tests: [{accepted_values: [instant_estimator, google_lsa, referral, door_knocking, facebook, home_show]}]}
+      - {name: created_at, type: timestamp}
+      - {name: first_contact_at, type: timestamp}
+      - {name: inspection_at, type: timestamp}
+      - {name: proposal_sent_at, type: timestamp}
+      - {name: closed_at, type: timestamp}
+      - {name: outcome, tests: [{accepted_values: [won, lost_price, lost_competitor, lost_no_decision, unqualified, no_response, open]}]}
+      - {name: proposal_value_usd, type: numeric}
+      - {name: updated_at, type: timestamp}

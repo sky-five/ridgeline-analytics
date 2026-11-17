@@ -1,0 +1,10 @@
+# Staging spec for the product_events source. python -m staging_codegen writes the models and tests from it.
+source: product_events
+tables:
+  - table: events
+    columns:
+      - {name: event_id, tests: [unique, not_null]}
+      - {name: account_id, tests: [{relationships: stg_app_db__accounts.account_id}]}
+      - {name: event_type, tests: [{accepted_values: [login, measurement_ordered, proposal_sent, proposal_signed, job_created, invoice_paid]}]}
+      - {name: occurred_at, type: timestamp}
+      - {name: value_usd, type: json_number, from: properties}

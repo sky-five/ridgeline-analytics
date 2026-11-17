@@ -1,0 +1,12 @@
+# Staging spec for the ads source. python -m staging_codegen writes the models and tests from it.
+source: ads
+tables:
+  - table: ad_spend
+    columns:
+      - {name: spend_id, tests: [unique, not_null]}
+      - {name: spend_date, type: date}
+      - {name: channel, tests: [{accepted_values: [google_ads, facebook, supplier_partner, trade_show]}]}
+      - {name: campaign_id}
+      - {name: spend_usd, type: numeric}
+      - {name: impressions, type: int}
+      - {name: clicks, type: int}

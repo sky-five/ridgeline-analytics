@@ -1,0 +1,68 @@
+# Staging spec for the app_db source. python -m staging_codegen writes the models and tests from it.
+source: app_db
+tables:
+  - table: accounts
+    description: One row per contractor account.
+    columns:
+      - {name: account_id, tests: [unique, not_null]}
+      - {name: company_name}
+      - {name: signup_at, type: timestamp}
+      - {name: channel, tests: [{accepted_values: [google_ads, organic, facebook, referral, supplier_partner, trade_show]}]}
+      - {name: campaign_id}
+      - {name: region, tests: [{accepted_values: [Southeast, Southwest, Midwest, Northeast, West, Canada]}]}
+      - {name: crew_size, tests: [{accepted_values: ["1", "2-5", "6-15", "16+"]}]}
+      - {name: updated_at, type: timestamp}
+
+  - table: subscriptions
+    description: Current state of each subscription.
+    columns:
+      - {name: subscription_id, tests: [unique, not_null]}
+      - {name: account_id, tests: [{relationships: stg_app_db__accounts.account_id}]}
+      - {name: plan, tests: [{accepted_values: [essentials, scale]}]}
+      - {name: status, tests: [{accepted_values: [active, canceled]}]}
+      - {name: addons}
+      - {name: mrr_usd, type: numeric}
+      - {name: started_at, type: timestamp}
+      - {name: canceled_at, type: timestamp}
+      - {name: cancel_reason}
+      - {name: updated_at, type: timestamp}
+
+  - table: subscription_changes
+    description: Append-only log of every subscription change, with MRR before and after.
+    columns:
+      - {name: change_id, tests: [unique, not_null]}
+      - {name: subscription_id}
+      - {name: account_id, tests: [{relationships: stg_app_db__accounts.account_id}]}
+      - {name: changed_at, type: timestamp}
+      - {name: change_type, tests: [{accepted_values: [new, upgrade, downgrade, addon_added, addon_removed, cancel, reactivate]}]}
+      - {name: plan_after}
+      - {name: addons_after}
+      - {name: mrr_before, type: numeric}
+      - {name: mrr_after, type: numeric}
+      - {name: cancel_reason}
+
+  - table: invoices
+    columns:
+      - {name: invoice_id, tests: [unique, not_null]}
+      - {name: account_id}
+      - {name: subscription_id}
+      - {name: line_type, tests: [{accepted_values: [subscription, measurement]}]}
+      - {name: status, tests: [{accepted_values: [open, paid]}]}
+      - {name: period_start_date, type: date}
+      - {name: issued_at, type: timestamp}
+      - {name: paid_at, type: timestamp}
+      - {name: amount_usd, type: numeric}
+      - {name: updated_at, type: timestamp}
+
+  - table: measurement_orders
+    columns:
+      - {name: order_id, tests: [unique, not_null]}
+      - {name: account_id, tests: [{relationships: stg_app_db__accounts.account_id}]}
+      - {name: ordered_at, type: timestamp}
+      - {name: delivered_at, type: timestamp}
+      - {name: tier, tests: [{accepted_values: [2h, 6h, 24h]}]}
+      - {name: price_usd, type: numeric}
+      - {name: roof_type, tests: [{accepted_values: [gable, hip, complex, flat]}]}
+      - {name: redo_requested_at, type: timestamp}
+      - {name: redo_reason}
+      - {name: updated_at, type: timestamp}

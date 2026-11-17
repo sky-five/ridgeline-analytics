@@ -1,0 +1,24 @@
+# Staging spec for the crm source. python -m staging_codegen writes the models and tests from it.
+source: crm
+tables:
+  - table: crm_deals
+    model: stg_crm__deals
+    columns:
+      - {name: deal_id, tests: [unique, not_null]}
+      - {name: account_id}
+      - {name: owner_rep}
+      - {name: stage, tests: [{accepted_values: [open, won, lost]}]}
+      - {name: created_at, type: timestamp}
+      - {name: closed_at, type: timestamp}
+      - {name: amount_usd, type: numeric}
+      - {name: updated_at, type: timestamp}
+
+  - table: crm_calls
+    model: stg_crm__calls
+    columns:
+      - {name: call_id, tests: [unique, not_null]}
+      - {name: account_id}
+      - {name: rep}
+      - {name: called_at, type: timestamp}
+      - {name: outcome, tests: [{accepted_values: [connected, voicemail, no_answer, demo_booked]}]}
+      - {name: duration_s, type: int}
