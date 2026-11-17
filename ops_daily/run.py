@@ -1,7 +1,8 @@
 """Write the ops-daily results: results/summary.json (the operation, the back-check of the flag rule against the
 planted events, today's watchlist), results/today.md (the three things to look at on the as-of day and a so-what
-paragraph per metric), results/flags.csv (every flagged day, site, line and metric) and results/ops_day.csv (the
-daily metrics per site and line, for the dashboard). Every number comes from the dbt marts."""
+paragraph per metric), results/flags.csv (every flagged day, site, line and metric), and for the dashboard
+results/ops_day.csv (the daily metrics per site and line) and results/metric_day.csv (every metric value with its
+baseline, spread, score and flag). Every number comes from the dbt marts."""
 import csv
 import json
 from pathlib import Path
@@ -18,6 +19,7 @@ SUMMARY = RESULTS / "summary.json"
 TODAY = RESULTS / "today.md"
 FLAGS = RESULTS / "flags.csv"
 OPS_DAY = RESULTS / "ops_day.csv"
+METRIC_DAY = RESULTS / "metric_day.csv"
 DEFINITIONS = HERE / "dbt" / "seeds" / "metric_definitions.csv"
 METRICS = ["calls_offered", "service_level", "abandon_rate", "avg_handle_minutes", "claims_opened", "claims_closed",
            "open_backlog"]
@@ -199,6 +201,18 @@ def ops_day_csv(db: Path) -> str:
         df[c] = df[c].round(4)
     df["staffed_hours"] = df["staffed_hours"].astype(float)
     return df.drop(columns=["calls_offered"]).to_csv(index=False, lineterminator="\n")
+
+
+def metric_day_csv(db: Path) -> str:
+    """Every day, site, line and metric from ops_flags: the value, its same-weekday baseline and spread (empty in
+    the first weeks, before a weekday has any history), the score, and whether it was flagged."""
+    with duckdb.connect(str(db), read_only=True) as con:
+        df = con.sql("""select day, site, line, metric, value, baseline, spread, score, baseline_days, flagged
+                        from ops_flags order by day, site, line, metric""").df()
+    df["day"] = pd.to_datetime(df["day"]).dt.date
+    for c in ("value", "baseline", "spread", "score"):
+        df[c] = df[c].round(4)
+    return df.to_csv(index=False, lineterminator="\n")
 
 
 def to_json(s: dict) -> str:

@@ -180,6 +180,11 @@ def export(warehouse: Path, as_of: date | None = None) -> dict[str, int]:
 
     tables.update(book_tables())
 
+    # the simulated claims operation: today's three things, the seven metrics, the flag rule's back-check (ops_daily/)
+    from ops_daily.report import tables as ops_tables
+
+    tables.update(ops_tables())
+
     # the report reconciliation kit (report_reconciliation/), on the "Report reconciliation" page
     from report_reconciliation.dashboard import tables as recon_tables
 
