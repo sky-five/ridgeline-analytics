@@ -198,3 +198,18 @@ def test_committed_results_are_current(lead_db, s):
     assert SUMMARY.read_text() == to_json(s)
     assert CAMPAIGN_COST.read_text() == campaign_cost_csv(lead_db)
     assert CLIENT_COST.read_text() == client_cost_csv(lead_db)
+
+
+def test_readme_quotes_the_committed_results():
+    readme = open("lead_cost/README.md").read()
+    s = json.loads(SUMMARY.read_text())
+    h, t, g = s["headline"], s["truth_check"], s["gold_leads"]
+    for figure in (f"${h['spend']:,.2f}", f"{h['paid_issued_leads']} issued leads", f"{h['paid_demos']} demos",
+                   f"${h['cost_per_issued_lead']:.2f} per issued lead", f"{g['leads']:,} leads from",
+                   f"{s['silver']['crm_records']:,} records", f"({g['attributed_by']['crm_click_id']:,} leads)",
+                   f"{t['organic_leads']} of the {g['attributed_by']['none']} unattributed",
+                   f"The other {t['paid_leads_unattributed']} are paid leads ({t['paid_leads_unattributed_issued']}"):
+        assert figure in readme, figure
+    for f in json.loads(FAULTS_FILE.read_text()):
+        w = f["without_the_tests"]["cost_per_issued_lead"]
+        assert f"${w:.2f} ({f['cost_per_issued_lead_moves_by']:+.2f})".replace("+", "+$").replace("-", "-$") in readme

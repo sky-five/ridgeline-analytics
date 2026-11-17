@@ -70,6 +70,9 @@ jobs:
       - name: Ops daily results (flag rule back-check, today's three things, so-what per metric) match the committed files
         run: python -m ops_daily --check
 
+      - name: Lead cost results (Gold cost per issued lead, truth check, each planted silent failure caught) match the committed files
+        run: python -m lead_cost --check
+
       - name: Metric registry compiles to the committed semantic layer, no metric changed without a version bump
         run: python -m metric_registry --check
 
