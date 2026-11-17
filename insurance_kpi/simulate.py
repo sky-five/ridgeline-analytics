@@ -38,8 +38,8 @@ VALUATION = date(2026, 6, 30)
 
 # line -> policies starting a year, base annual premium, claims per policy-year, mean claim cost, lognormal sigma
 LINES = {
-    "auto": dict(policies=12000, premium=1650.0, frequency=0.075, severity=6800.0, sigma=0.9),
-    "home": dict(policies=9000, premium=1450.0, frequency=0.055, severity=11500.0, sigma=1.0),
+    "auto": dict(policies=12000, premium=1650.0, frequency=0.075, severity=6800.0, sigma=0.6),
+    "home": dict(policies=9000, premium=1450.0, frequency=0.055, severity=11500.0, sigma=0.7),
 }
 PROVINCES = {"ON": (0.40, 1.10), "AB": (0.20, 1.05), "BC": (0.25, 1.00), "QC": (0.15, 0.85)}  # share, rate factor
 CHANNELS = {"broker": (0.65, 0.12), "direct": (0.35, 0.03)}  # share, commission rate

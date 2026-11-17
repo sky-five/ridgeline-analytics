@@ -1,0 +1,173 @@
+{
+  "valuation_date": "2026-06-30",
+  "exports": {
+    "policy_rows": 63008,
+    "claim_rows": 4257
+  },
+  "cleaned": {
+    "policies": 63000,
+    "claims": 4182
+  },
+  "checks": {
+    "run": 14,
+    "with_planted_faults": 7,
+    "rows_flagged": 135,
+    "caught": 135,
+    "planted": 135,
+    "false_flags": 0,
+    "missed": 0
+  },
+  "tree": {
+    "auto_2024": {
+      "exposure": 12087.4872,
+      "earned_premium": 21413498.203,
+      "claims": 928,
+      "incurred": 6099811.25,
+      "frequency": 0.0768,
+      "severity": 6573.0725,
+      "avg_earned_premium": 1771.5426,
+      "loss_ratio": 0.2849,
+      "expense_ratio": 0.1419,
+      "combined_ratio": 0.4267
+    },
+    "home_2024": {
+      "exposure": 9027.057,
+      "earned_premium": 14063522.2721,
+      "claims": 467,
+      "incurred": 5445559.0,
+      "frequency": 0.0517,
+      "severity": 11660.7259,
+      "avg_earned_premium": 1557.9299,
+      "loss_ratio": 0.3872,
+      "expense_ratio": 0.1491,
+      "combined_ratio": 0.5363
+    },
+    "all_2024": {
+      "exposure": 21114.5442,
+      "earned_premium": 35477020.4751,
+      "claims": 1395,
+      "incurred": 11545370.25,
+      "frequency": 0.0661,
+      "severity": 8276.2511,
+      "avg_earned_premium": 1680.2172,
+      "loss_ratio": 0.3254,
+      "expense_ratio": 0.1447,
+      "combined_ratio": 0.4702
+    },
+    "auto_2025": {
+      "exposure": 11916.0341,
+      "earned_premium": 22471029.6209,
+      "claims": 941,
+      "incurred": 7714490.71,
+      "frequency": 0.079,
+      "severity": 8198.1835,
+      "avg_earned_premium": 1885.7809,
+      "loss_ratio": 0.3433,
+      "expense_ratio": 0.1388,
+      "combined_ratio": 0.4821
+    },
+    "home_2025": {
+      "exposure": 9022.7834,
+      "earned_premium": 14508934.4452,
+      "claims": 616,
+      "incurred": 7782421.83,
+      "frequency": 0.0683,
+      "severity": 12633.8017,
+      "avg_earned_premium": 1608.0331,
+      "loss_ratio": 0.5364,
+      "expense_ratio": 0.1478,
+      "combined_ratio": 0.6842
+    },
+    "all_2025": {
+      "exposure": 20938.8175,
+      "earned_premium": 36979964.0661,
+      "claims": 1557,
+      "incurred": 15496912.54,
+      "frequency": 0.0744,
+      "severity": 9953.0588,
+      "avg_earned_premium": 1766.0961,
+      "loss_ratio": 0.4191,
+      "expense_ratio": 0.1423,
+      "combined_ratio": 0.5614
+    }
+  },
+  "change_pts": {
+    "auto": {
+      "combined_ratio": 0.0553,
+      "loss_ratio": 0.0585,
+      "frequency": 0.0088,
+      "severity": 0.0692,
+      "avg_earned_premium": -0.0196,
+      "expense_ratio": -0.0031,
+      "commission_ratio": 0.0001,
+      "admin_ratio": -0.0032
+    },
+    "home": {
+      "combined_ratio": 0.1479,
+      "loss_ratio": 0.1492,
+      "frequency": 0.127,
+      "severity": 0.0367,
+      "avg_earned_premium": -0.0145,
+      "expense_ratio": -0.0012,
+      "commission_ratio": 0.0007,
+      "admin_ratio": -0.0019
+    },
+    "all": {
+      "combined_ratio": 0.0912,
+      "loss_ratio": 0.0936,
+      "frequency": 0.0438,
+      "severity": 0.0683,
+      "avg_earned_premium": -0.0185,
+      "expense_ratio": -0.0024,
+      "commission_ratio": 0.0003,
+      "admin_ratio": -0.0027
+    }
+  },
+  "planted_vs_measured": {
+    "auto_severity": {
+      "planted": 0.15,
+      "measured": 0.2472,
+      "sampling_95pct": 0.0752
+    },
+    "home_severity": {
+      "planted": 0.0,
+      "measured": 0.0834,
+      "sampling_95pct": 0.1096
+    },
+    "auto_rate": {
+      "planted_on_new_policies": 0.06,
+      "avg_earned_premium_change": 0.0645
+    },
+    "hail_frequency": {
+      "planted": 2.0,
+      "province": "AB",
+      "measured": 2.1271
+    }
+  },
+  "raw_vs_clean": [
+    {
+      "ay": 2024,
+      "claims_raw": 1423,
+      "claims_clean": 1395,
+      "incurred_raw": 11633073.72,
+      "incurred_clean": 11545370.25,
+      "loss_ratio_raw": 0.3279,
+      "loss_ratio_clean": 0.3254,
+      "loss_ratio_gap_pts": 0.0025,
+      "frequency_raw": 0.0674,
+      "frequency_clean": 0.0661
+    },
+    {
+      "ay": 2025,
+      "claims_raw": 1583,
+      "claims_clean": 1557,
+      "incurred_raw": 15707595.91,
+      "incurred_clean": 15496912.54,
+      "loss_ratio_raw": 0.4248,
+      "loss_ratio_clean": 0.4191,
+      "loss_ratio_gap_pts": 0.0057,
+      "frequency_raw": 0.0756,
+      "frequency_clean": 0.0744
+    }
+  ]
+}

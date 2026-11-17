@@ -1,0 +1,16 @@
+table_name,column_name,data_type,rows,nulls,null_share,distinct_values,min_value,max_value
+policies,policy_id,VARCHAR,63008,0,0,63008,P000001,T000008
+policies,line,VARCHAR,63008,0,0,2,auto,home
+policies,province,VARCHAR,63008,30,0.0005,4,AB,QC
+policies,channel,VARCHAR,63008,0,0,2,broker,direct
+policies,start_date,DATE,63008,0,0,1095,2023-01-01,2025-12-31
+policies,end_date,DATE,63008,0,0,1094,2024-01-01,2026-12-31
+policies,written_premium,DOUBLE,63008,0,0,52312,0.0,4980.68
+policies,commission_rate,DOUBLE,63008,0,0,2,0.03,0.12
+claims,claim_id,VARCHAR,4257,0,0,4217,C000001,C004217
+claims,policy_id,VARCHAR,4257,0,0,4061,P000010,P953146
+claims,loss_date,DATE,4257,0,0,1161,2023-01-26,2026-06-30
+claims,reported_date,DATE,4257,0,0,1149,2023-01-27,2026-06-30
+claims,status,VARCHAR,4257,0,0,2,closed,open
+claims,paid,DOUBLE,4257,0,0,4198,-16854.67,129243.65
+claims,case_reserve,DOUBLE,4257,0,0,373,0.0,64092.47

@@ -1,0 +1,15 @@
+check_name,table_name,rule,clean_step,rows_flagged,planted,caught,false_flags,missed
+duplicate_claim,claims,claim_id appears more than once,keep one copy (the copies are identical),40,40,40,0,0
+orphan_claim,claims,policy_id is in no policy export,drop the claim,15,15,15,0,0
+loss_outside_term,claims,loss date before the policy started or on/after it ended,drop the claim,20,20,20,0,0
+negative_paid,claims,paid amount below zero,flip the sign,12,12,12,0,0
+reported_before_loss,claims,reported date earlier than loss date,swap the two dates back,10,10,10,0,0
+missing_province,policies,province is empty,set province to 'unknown',30,30,30,0,0
+zero_premium_test_policy,policies,written premium zero or below,drop the policy,8,8,8,0,0
+duplicate_policy,policies,policy_id appears more than once,-,0,0,0,0,0
+term_not_positive,policies,end date not after start date,-,0,0,0,0,0
+unknown_code,policies,"line, province or channel outside the accepted values",-,0,0,0,0,0
+commission_out_of_range,policies,commission rate outside 0 to 30%,-,0,0,0,0,0
+unknown_status,claims,status not open or closed,-,0,0,0,0,0
+negative_reserve,claims,case reserve below zero,-,0,0,0,0,0
+closed_with_reserve,claims,closed claim still holds a case reserve,-,0,0,0,0,0
