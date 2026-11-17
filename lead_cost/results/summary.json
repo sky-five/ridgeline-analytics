@@ -1,0 +1,91 @@
+{
+  "first_day": "2026-04-01",
+  "as_of": "2026-06-30",
+  "exports": {
+    "calls": {
+      "files": 91,
+      "rows": 1531,
+      "repeated_files": 0
+    },
+    "crm_leads": {
+      "files": 91,
+      "rows": 6207,
+      "repeated_files": 0
+    },
+    "search_clicks": {
+      "files": 91,
+      "rows": 16574,
+      "repeated_files": 0
+    },
+    "search_spend": {
+      "files": 91,
+      "rows": 1620,
+      "repeated_files": 0
+    },
+    "social_clicks": {
+      "files": 91,
+      "rows": 41298,
+      "repeated_files": 0
+    },
+    "social_spend": {
+      "files": 92,
+      "rows": 460,
+      "repeated_files": 1
+    },
+    "tracking_numbers": {
+      "files": 1,
+      "rows": 11,
+      "repeated_files": 0
+    }
+  },
+  "silver": {
+    "spend_rows": 1001,
+    "spend_rows_dropped_as_restated_or_repeated": 1079,
+    "clicks": 57872,
+    "calls": 1531,
+    "crm_rows_delivered": 6207,
+    "crm_records": 3107,
+    "crm_click_ids_stored_as_param": 209,
+    "phone_formats_seen": 4
+  },
+  "gold_leads": {
+    "leads": 2826,
+    "crm_records_merged_into_another_lead": 281,
+    "came_by": {
+      "call": 1194,
+      "form": 1632
+    },
+    "attributed_by": {
+      "crm_click_id": 1222,
+      "none": 807,
+      "call_click_id": 675,
+      "tracking_number": 122
+    },
+    "issued": 1234,
+    "demos": 604
+  },
+  "truth_check": {
+    "people": 2826,
+    "people_missing_from_gold": 0,
+    "attributed_to_the_wrong_campaign": 0,
+    "outcome_mismatches": 0,
+    "paid_leads": 2115,
+    "paid_leads_unattributed": 96,
+    "paid_leads_unattributed_issued": 45,
+    "unattributed_paid_were_lost_click_id_forms_with_no_call": true,
+    "organic_leads": 711
+  },
+  "headline": {
+    "spend": 213675.83,
+    "paid_issued_leads": 891,
+    "paid_demos": 439,
+    "unattributed_leads": 807,
+    "cost_per_issued_lead": 239.82,
+    "cost_per_issued_lead_by_client": {
+      "lakeside_hvac": 199.38,
+      "metro_plumbing": 143.03,
+      "north_roofing": 283.46,
+      "valley_solar": 519.43
+    }
+  }
+}

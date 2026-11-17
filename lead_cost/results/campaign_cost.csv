@@ -1,0 +1,12 @@
+campaign_id,client,platform,theme,impressions,clicks,spend,leads,issued_leads,demos,cost_per_lead,cost_per_issued_lead,cost_per_demo
+lakeside_hvac__search__ac_tune_up,lakeside_hvac,search,AC Tune Up,103125.0,3466.0,21242.38,303,145,72,70.11,146.5,295.03
+lakeside_hvac__search__furnace_replacement,lakeside_hvac,search,Furnace Replacement,46722.0,1609.0,18019.99,107,58,35,168.41,310.69,514.86
+lakeside_hvac__social__ac_tune_up,lakeside_hvac,social,AC Tune Up,877399.0,9817.0,11779.53,172,53,26,68.49,222.26,453.06
+metro_plumbing__search__emergency_plumber,metro_plumbing,search,Emergency Plumber,123986.0,4233.0,32324.01,418,236,113,77.33,136.97,286.05
+metro_plumbing__social__water_heater,metro_plumbing,social,Water Heater,555488.0,6105.0,9155.68,137,54,22,66.83,169.55,416.17
+north_roofing__search__roof_repair,north_roofing,search,Roof Repair,89238.0,3052.0,28689.9,237,127,66,121.05,225.9,434.7
+north_roofing__search__roof_replacement,north_roofing,search,Roof Replacement,55306.0,1850.0,27342.32,121,66,40,225.97,414.28,683.56
+north_roofing__social__roof_repair,north_roofing,social,Roof Repair,709246.0,7970.0,13698.62,148,53,23,92.56,258.46,595.59
+valley_solar__search__solar_panels,valley_solar,search,Solar Panels,68586.0,2364.0,30601.24,107,48,25,285.99,637.53,1224.05
+valley_solar__social__home_battery,valley_solar,social,Home Battery,470346.0,5239.0,7222.5,70,11,5,103.18,656.59,1444.5
+valley_solar__social__solar_panels,valley_solar,social,Solar Panels,1079112.0,12167.0,13599.66,199,40,12,68.34,339.99,1133.3

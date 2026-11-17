@@ -1,0 +1,96 @@
+[
+  {
+    "fault": "truncated_file",
+    "what": "The 2026-06-10 CRM file arrives cut off",
+    "written_to_catch_it": "assert_every_batch_fully_loaded",
+    "failing_tests": [
+      "assert_every_batch_fully_loaded"
+    ],
+    "caught": true,
+    "without_the_tests": {
+      "spend": 213675.83,
+      "paid_issued_leads": 889,
+      "paid_demos": 435,
+      "unattributed_leads": 807,
+      "cost_per_issued_lead": 240.36,
+      "cost_per_issued_lead_by_client": {
+        "lakeside_hvac": 199.38,
+        "metro_plumbing": 144.03,
+        "north_roofing": 283.46,
+        "valley_solar": 519.43
+      }
+    },
+    "cost_per_issued_lead_moves_by": 0.54
+  },
+  {
+    "fault": "missing_day",
+    "what": "The social platform's 2026-06-20 file never arrives",
+    "written_to_catch_it": "assert_spend_every_day",
+    "failing_tests": [
+      "assert_spend_every_day"
+    ],
+    "caught": true,
+    "without_the_tests": {
+      "spend": 213201.6,
+      "paid_issued_leads": 891,
+      "paid_demos": 439,
+      "unattributed_leads": 807,
+      "cost_per_issued_lead": 239.28,
+      "cost_per_issued_lead_by_client": {
+        "lakeside_hvac": 199.06,
+        "metro_plumbing": 142.78,
+        "north_roofing": 282.87,
+        "valley_solar": 517.69
+      }
+    },
+    "cost_per_issued_lead_moves_by": -0.54
+  },
+  {
+    "fault": "renamed_campaign",
+    "what": "From 2026-06-15 the social home-battery campaign is renamed in the platform",
+    "written_to_catch_it": "assert_spend_maps_to_a_campaign",
+    "failing_tests": [
+      "assert_gold_spend_reconciles",
+      "assert_spend_every_day",
+      "assert_spend_maps_to_a_campaign"
+    ],
+    "caught": true,
+    "without_the_tests": {
+      "spend": 212398.74,
+      "paid_issued_leads": 890,
+      "paid_demos": 438,
+      "unattributed_leads": 813,
+      "cost_per_issued_lead": 238.65,
+      "cost_per_issued_lead_by_client": {
+        "lakeside_hvac": 199.38,
+        "metro_plumbing": 143.03,
+        "north_roofing": 283.46,
+        "valley_solar": 511.7
+      }
+    },
+    "cost_per_issued_lead_moves_by": -1.17
+  },
+  {
+    "fault": "click_id_case",
+    "what": "From 2026-06-01 a form update stores click ids in lower case",
+    "written_to_catch_it": "assert_crm_click_ids_match",
+    "failing_tests": [
+      "assert_crm_click_ids_match"
+    ],
+    "caught": true,
+    "without_the_tests": {
+      "spend": 213675.83,
+      "paid_issued_leads": 717,
+      "paid_demos": 359,
+      "unattributed_leads": 1187,
+      "cost_per_issued_lead": 298.01,
+      "cost_per_issued_lead_by_client": {
+        "lakeside_hvac": 244.22,
+        "metro_plumbing": 186.85,
+        "north_roofing": 336.86,
+        "valley_solar": 650.93
+      }
+    },
+    "cost_per_issued_lead_moves_by": 58.19
+  }
+]
