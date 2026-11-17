@@ -1,0 +1,21 @@
+# Generated from staging_codegen/sources/support.yml by python -m staging_codegen. Do not edit.
+version: 2
+models:
+- name: stg_support__tickets
+  columns:
+  - name: ticket_id
+    data_tests: [unique, not_null]
+  - name: account_id
+    data_tests:
+    - relationships:
+        arguments: {to: ref('stg_app_db__accounts'), field: account_id}
+  - name: status
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [open, solved]
+  - name: priority
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [low, normal, high, urgent]

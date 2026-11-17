@@ -1,0 +1,88 @@
+# Generated from staging_codegen/sources/app_db.yml by python -m staging_codegen. Do not edit.
+version: 2
+models:
+- name: stg_app_db__accounts
+  description: One row per contractor account.
+  columns:
+  - name: account_id
+    data_tests: [unique, not_null]
+  - name: channel
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [google_ads, organic, facebook, referral, supplier_partner, trade_show]
+  - name: region
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [Southeast, Southwest, Midwest, Northeast, West, Canada]
+  - name: crew_size
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: ['1', 2-5, 6-15, 16+]
+- name: stg_app_db__subscriptions
+  description: Current state of each subscription.
+  columns:
+  - name: subscription_id
+    data_tests: [unique, not_null]
+  - name: account_id
+    data_tests:
+    - relationships:
+        arguments: {to: ref('stg_app_db__accounts'), field: account_id}
+  - name: plan
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [essentials, scale]
+  - name: status
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [active, canceled]
+- name: stg_app_db__subscription_changes
+  description: Append-only log of every subscription change, with MRR before and after.
+  columns:
+  - name: change_id
+    data_tests: [unique, not_null]
+  - name: account_id
+    data_tests:
+    - relationships:
+        arguments: {to: ref('stg_app_db__accounts'), field: account_id}
+  - name: change_type
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [new, upgrade, downgrade, addon_added, addon_removed, cancel, reactivate]
+- name: stg_app_db__invoices
+  columns:
+  - name: invoice_id
+    data_tests: [unique, not_null]
+  - name: line_type
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [subscription, measurement]
+  - name: status
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [open, paid]
+- name: stg_app_db__measurement_orders
+  columns:
+  - name: order_id
+    data_tests: [unique, not_null]
+  - name: account_id
+    data_tests:
+    - relationships:
+        arguments: {to: ref('stg_app_db__accounts'), field: account_id}
+  - name: tier
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [2h, 6h, 24h]
+  - name: roof_type
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [gable, hip, complex, flat]

@@ -1,0 +1,21 @@
+# Generated from staging_codegen/sources/contractor_ops.yml by python -m staging_codegen. Do not edit.
+version: 2
+models:
+- name: stg_contractor_ops__leads
+  columns:
+  - name: lead_id
+    data_tests: [unique, not_null]
+  - name: account_id
+    data_tests:
+    - relationships:
+        arguments: {to: ref('stg_app_db__accounts'), field: account_id}
+  - name: lead_source
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [instant_estimator, google_lsa, referral, door_knocking, facebook, home_show]
+  - name: outcome
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [won, lost_price, lost_competitor, lost_no_decision, unqualified, no_response, open]

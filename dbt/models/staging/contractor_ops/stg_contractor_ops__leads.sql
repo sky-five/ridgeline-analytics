@@ -1,3 +1,4 @@
+-- Generated from staging_codegen/sources/contractor_ops.yml by python -m staging_codegen. Do not edit.
 with source as (
     select * from {{ source('contractor_ops', 'contractor_leads') }}
 )

@@ -1,3 +1,4 @@
+-- Generated from staging_codegen/sources/product_events.yml by python -m staging_codegen. Do not edit.
 with source as (
     select * from {{ source('product_events', 'events') }}
 )

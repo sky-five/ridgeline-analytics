@@ -1,0 +1,16 @@
+# Generated from staging_codegen/sources/product_events.yml by python -m staging_codegen. Do not edit.
+version: 2
+models:
+- name: stg_product_events__events
+  columns:
+  - name: event_id
+    data_tests: [unique, not_null]
+  - name: account_id
+    data_tests:
+    - relationships:
+        arguments: {to: ref('stg_app_db__accounts'), field: account_id}
+  - name: event_type
+    data_tests:
+    - accepted_values:
+        arguments:
+          values: [login, measurement_ordered, proposal_sent, proposal_signed, job_created, invoice_paid]
