@@ -97,12 +97,32 @@ Three of the four move the headline by about a dollar, which is why they need a 
 chart. The click-id change is the expensive one: 174 issued leads drop out of their campaigns and become
 unattributed, and each client's cost per issued lead rises by between $43.82 and $131.50.
 
+## The dashboard
+
+The site's [Cost per issued lead page](https://sky-five.github.io/ridgeline-analytics/lead-cost/) shows the quarter's
+spend, cost per issued lead and per demo; the same by client and by campaign (social leads cost $76.39 against
+$122.37 on search, but 29% are issued against 53%, so an issued lead costs $262.82 against $232.68); week by week
+for a chosen client, with the unfinished last weeks marked; how each lead was matched to a campaign; the load audit
+by export and file (548 files, none short, one repeated); and the four planted faults.
+
+`report.py` builds eight `reporting.lead_cost_*` tables from the committed results only, so the page needs no
+warehouse; `scripts/export_reporting.py` writes them for the site. For the page `python -m lead_cost` also writes
+[results/load_audit.csv](results/load_audit.csv) (one row per file: declared vs landed rows, checksum, which batch
+a repeat copies), [results/lead_mix.csv](results/lead_mix.csv) (leads by client, form or call, and how they were
+attributed) and [results/weekly_cost.csv](results/weekly_cost.csv) (spend and attributed leads by client and week);
+`--check` covers them. A lead is issued one to three days after it arrives and its demo follows two to ten days
+later, so from the week of 2026-06-15 the weekly cost per demo is left off the chart.
+
 ## Tests
 
-`tests/lead_cost/` (17 tests): the simulation is seeded; the exports really are messy the way the docstring says
+`tests/lead_cost/` (29 tests; `test_report.py` holds the 12 for the dashboard): the simulation is seeded; the exports really are messy the way the docstring says
 (four phone formats, restated search days, trailing spaces); every file landed in full and only the planted file
 repeats; Silver spend equals the simulator's final spend on every campaign and day; Silver CRM keeps the last version
 and cleans phones, emails and click ids; Gold against the truth (no wrong campaign, outcomes match); the unattributed
 paid leads recomputed straight from the exports; cost per issued lead and per demo recomputed in pandas; each fault
 changes only what it says; the lower-cased click id is caught by its own test and no other; the committed results are
-current, and the figures quoted in this README match them.
+current, and the figures quoted in this README match them. The dashboard tests check that the three new results
+files are what the warehouse gives, that client, campaign, weekly and attribution tables add up to the headline,
+that the audit flags only the repeated social file, that every query on the page runs for every client and every
+column it shows exists, and that the page's sentences (social vs search, which weeks are unfinished, how far each
+fault moves the headline) hold in the data.
