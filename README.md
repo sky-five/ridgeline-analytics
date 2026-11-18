@@ -50,6 +50,13 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 | Source freshness | 11 tables | Time since the last successful pipeline load: warn after 36h, error after 72h |
 | pytest | 41 | Simulator determinism, history stable across dates, planted patterns present, API paging, dlt idempotency and merge behaviour |
 
+**Python models run one at a time.** `fct_pqa_scores` and `fct_ticket_themes` both import scikit-learn, and
+dbt-duckdb runs Python models as threads in one process. When their first imports overlapped, scipy was
+caught half-imported and both models failed (it passed on re-run). `fct_ticket_themes` now refs
+`fct_pqa_scores`, so dbt builds them in order at any thread count, and
+[a test](tests/dbt/test_python_models_serial.py) reads the ref graph of every dbt project in the repo and
+fails if two Python models could run at once.
+
 ## What the data shows (as of 2026-10-07)
 
 | Finding | Number |
