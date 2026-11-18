@@ -4,6 +4,8 @@ The analytics platform of **Ridgeline**, a fictional SaaS company that sells sof
 
 > **All data is synthetic.** A deterministic simulator ([saas-world-sim](https://github.com/sky-five/saas-world-sim), pinned to a tag) generates it, with business patterns planted on purpose (listed below). No real company's data or code is used.
 
+**Start here:** [One number, end to end](WALKTHROUGH.md) follows MRR on one day from the source system through the load, the dbt models and their tests, the semantic layer and onto the dashboard, one link per step.
+
 **Live site:** https://sky-five.github.io/ridgeline-analytics/ (rebuilt every night with one more day of the same seeded history; see [how the data is made](#how-the-data-is-made))
 
 **Status:** Phases 1–4 of 5 are done. The same dbt project builds on **DuckDB and Snowflake** (identical numbers); CI tested both until the Snowflake trial account was suspended on 2026-11-10, and runs DuckDB only since then. A MetricFlow semantic layer feeds the Evidence site, which a nightly GitHub Actions job rebuilds and publishes. An AI analyst answers questions over the same metrics; its recorded eval is on the site's Ask the data page. See the [roadmap](#roadmap).
