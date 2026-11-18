@@ -19,6 +19,10 @@ def _to_pandas(relation) -> pd.DataFrame:
 
 def model(dbt, session):
     dbt.config(materialized="table", packages=["pyarrow", "scikit-learn", "pandas", "numpy"])
+    # Not read: this ref only makes dbt build fct_pqa_scores first. dbt-duckdb runs Python models as threads
+    # in one process, and two first imports of scikit-learn at once can fail on a half-imported scipy module
+    # ("cannot import name 'minkowski' from partially initialized module"). One after the other, it cannot.
+    dbt.ref("fct_pqa_scores")
     tickets_rel = dbt.ref("stg_support__tickets")
     on_snowflake = hasattr(tickets_rel, "to_pandas")
     tickets = _to_pandas(tickets_rel)[["ticket_id", "subject", "body"]]
